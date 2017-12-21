@@ -31,7 +31,7 @@ class ArancelesRusticosController extends Controller
         header('Content-type: application/json');
         //dd($request['id_sect']);
 
-        $totalg = DB::select("select count(id_ara_p_r) as total from catastro.vw_arancel_pred_rust where anio = '". $request->anio ."'");
+        $totalg = DB::select("select count(id_ara_p_r) as total from catastro.vw_arancel_pred_rust where anio='".$request['anio']."' ");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -55,7 +55,7 @@ class ArancelesRusticosController extends Controller
 
        // $sql = DB::select("select * from catastro.vw_arancel_pred_rust where anio = '". $request->anio ."' orderby");
 
-        $sql = DB::table('catastro.vw_arancel_pred_rust')->where('anio',$request->anio)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $sql = DB::table('catastro.vw_arancel_pred_rust')->where('anio',$request['anio'])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         //$sql = DB::table('adm_tri.vw_uit')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         $Lista = new \stdClass();
         $Lista->page = $page;

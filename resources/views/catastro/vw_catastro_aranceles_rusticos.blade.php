@@ -12,7 +12,7 @@
                                 <div class="col-xs-4">
                                     <label>Año:</label>
                                     <label class="select">
-                                        <select onchange="mzns_por_sector(this.value);" id="select_anio" class="input-sm">
+                                        <select onchange="seleccionar_anio();" id="select_anio" class="input-sm">
                                             @foreach ($anios as $a)
                                                 <option value='{{$a->anio}}' >{{$a->anio}}</option>
                                             @endforeach
@@ -62,8 +62,9 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        $("#menu_configuracion_catastro").show();
+        $("#menu_configuracion").show();
         $("#conf_aran_rust").addClass('cr-active');
+        seleccionar_anio();
         anio = $("#select_anio").val();
 
         var pageWidth = $("#tabla_aran_rust").parent().width() - 100;

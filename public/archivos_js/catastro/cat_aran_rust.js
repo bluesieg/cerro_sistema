@@ -189,11 +189,12 @@ function delete_aranrust() {
     });
 }
 
+function seleccionar_anio(){
+    
+    anio = $("#select_anio").val();
 
-function mzns_por_sector(id_sec){
-
-    jQuery("#tabla_manzanas").jqGrid('setGridParam', {
-        url: 'list_mzns_sector?id_sec=' + id_sec
+    jQuery("#tabla_aran_rust").jqGrid('setGridParam', {
+         url: 'list_aran_pred_rust?anio=' + anio 
     }).trigger('reloadGrid');
 
 }
