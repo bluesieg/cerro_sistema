@@ -258,6 +258,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('grid_pred_arbitrios','Recibos_MasterController@tabla_cta_arbitrios');
         Route::get('grid_cta_pago_arbitrios','Recibos_MasterController@cta_pago_arbitrios');
         Route::get('verif_est_cta_coactiva','Recibos_MasterController@verif_est_cta');
+        
+        Route::resource('rep_tesoreria', 'Reportes_TesoreriaController'); 
+        Route::get('ver_rep_tesoreria/{tipo}', 'Reportes_TesoreriaController@ver_reporte_teso'); 
     });
     Route::group(['namespace' => 'caja'], function() {
         Route::resource('caja_movimient','Caja_MovimientosController');
