@@ -260,7 +260,11 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('verif_est_cta_coactiva','Recibos_MasterController@verif_est_cta');
         
         Route::resource('rep_tesoreria', 'Reportes_TesoreriaController'); 
-        Route::get('ver_rep_tesoreria/{tipo}', 'Reportes_TesoreriaController@ver_reporte_teso'); 
+        
+        Route::get('ver_rep_tesoreria/{tipo}', 'Reportes_TesoreriaController@ver_reporte_teso');
+
+        Route::get('autocomplete_tributos', 'Reportes_TesoreriaController@autocompletar_tributos');
+
     });
     Route::group(['namespace' => 'caja'], function() {
         Route::resource('caja_movimient','Caja_MovimientosController');

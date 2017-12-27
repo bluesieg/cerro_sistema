@@ -8,8 +8,7 @@ use App\Traits\DatesTranslator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
-use App\Models\archivo\digitalizacion;
-use App\Models\archivo\auditoria_digitalizacion;
+
 
 class Reportes_TesoreriaController extends Controller
 {
@@ -33,6 +32,10 @@ class Reportes_TesoreriaController extends Controller
         {
             return $this->rep_por_partida($request);
         }
+         if($tip=='2')
+        {
+            return $this->rep_por_tributo($request);
+        }
        
     }
     
@@ -41,5 +44,58 @@ class Reportes_TesoreriaController extends Controller
       public function rep_por_partida(Request $request)
     {
         //gonzalo
+        $fechainicio = $request['ini'];
+        $fechafin = $request['fin'];
+        $sql=DB::table('presupuesto.vw_partida_presupuestal')->whereBetween('fecha', [$fechainicio, $fechafin])->orderBy('codigo','asc')->get();
+        
+       
+        
+        if(count($sql)>0)
+        {
+            $view =  \View::make('tesoreria.reportes.rep_por_partida', compact('sql','fechainicio','fechafin'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("PRUEBA".".pdf");
+        }
+        else
+        {
+            return 'NO HAY RESULTADOS';
+        }
+        
+    }
+     public function rep_por_tributo(Request $request)
+    {
+        //gonzalo
+        $id_tributo = $request['id_tributo'];
+        $fechainicio = $request['ini'];
+        $fechafin = $request['fin'];
+        $sql=DB::table('presupuesto.vw_por_tributo')->where('id_tributo',$id_tributo) ->whereBetween('fecha', [$fechainicio, $fechafin])->orderBy('fecha','asc')->get();
+        
+       
+        
+        if(count($sql)>0)
+        {
+            $view =  \View::make('tesoreria.reportes.rep_por_tributo', compact('sql','fechainicio','fechafin'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("PRUEBA".".pdf");
+        }
+        else
+        {
+            return 'NO HAY RESULTADOS';
+        }
+        
+    }
+    
+    function autocompletar_tributos() {
+        $Consulta = DB::table('presupuesto.sub_proced_tributos')->get();
+        $todo = array();
+        foreach ($Consulta as $Datos) {
+            $Lista = new \stdClass();
+            $Lista->value = $Datos->id_tributo;
+            $Lista->label = trim($Datos->descrip_tributo);
+            array_push($todo, $Lista);
+        }
+        return response()->json($todo);
     }
 }
