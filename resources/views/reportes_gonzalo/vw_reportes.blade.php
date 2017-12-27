@@ -23,11 +23,11 @@
                     <table class="table table-striped table-forum">
                         <thead>
                         <tr>
-                            <th colspan="2" style="width: 100%;">REPORTES DE CONTRIBUYENTES</th>
+                            <th colspan="2" style="width: 100%;">REPORTES</th>
                         </tr>
                         </thead>
                         <tbody>
-
+                            
                         <!-- TR -->
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
@@ -42,22 +42,6 @@
                          
                         </tr>
                         <!-- end TR -->
-
-
-                   
-
-                        </tbody>
-                    </table>
-                    
-                 
-                    
-                    <table class="table table-striped table-forum">
-                        <thead>
-                        <tr>
-                            <th colspan="2" style="width: 100%;">REPORTES ULTIMO</th>
-                        </tr>
-                        </thead>
-                        <tbody>
 
                         <!-- TR -->
                         <tr>
@@ -126,64 +110,6 @@
           
                          
                         </tr>
-
-
-                   
-
-                        </tbody>
-                    </table>
-                    
-                    <table class="table table-striped table-forum">
-                        <thead>
-                        <tr>
-                            <th colspan="2" style="width: 100%;">REPORTE DE CANTIDAD DE CONTRIBUYENTES EXONERADOS</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        <!-- TR -->
-                        <tr>
-                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
-                            <td>
-                                <h4><a href="#" onclick="dlg_reporte_contribuyentes_exonerados(0);" id="titulo_r1">
-                                        Reporte de cantidad de contribuyentes exonerados.
-                                    </a>
-                                    <small>Descripción reporte 5</small>
-                                </h4>
-                            </td>
-          
-                         
-                        </tr>
-                        <!-- end TR -->
-
-
-                   
-
-                        </tbody>
-                    </table>
-                    
-                    <table class="table table-striped table-forum">
-                        <thead>
-                        <tr>
-                            <th colspan="2" style="width: 100%;">REPORTE DE CANTIDAD DE CONTRIBUYENTES CON DEDUCCION DE 50 UIT(PENSIONISTA Y ADULTO MAYOR) Y MONTO DE LA BASE IMPONIBLE </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        <!-- TR -->
-                        <tr>
-                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
-                            <td>
-                                <h4><a href="#" onclick="dlg_reporte_cantidad_contribuyentes(0);" id="titulo_r1">
-                                        Cantidad de contribuyentes con deducción de 50 UIT(Pensionista y adulto mayor) y monto de la base imponible.
-                                    </a>
-                                    <small>Descripción reporte 6</small>
-                                </h4>
-                            </td>
-          
-                         
-                        </tr>
-                        <!-- end TR -->
 
 
                    
@@ -404,6 +330,7 @@ $("#dlg_usuario").keypress(function (e) {
                         <label class="label">SECTOR:</label>
                         <label class="select">
                             <select id='select_sect_dcp' class="form-control col-lg-8">
+                                <option value='0'>-- TODOS --</option>
                                 @foreach ($sectores as $sector_dcp)
                                     <option value='{{$sector_dcp->id_sec}}' >{{$sector_dcp->sector}}</option>
                                 @endforeach

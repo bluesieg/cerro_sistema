@@ -181,8 +181,36 @@ class ReportesController extends Controller
     
     public function listado_contribuyentes_predios($anio,$sector)
     {
+        if($anio != 0 && $sector == 0){
+            
+        \Excel::create('REPORTE DE LISTADO DE CONTRIBUYENTES Y PREDIOS', function($excel) use ( $anio ) {
+            
+            $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio ) {
+                
+                $sql = DB::select("select id_persona,nro_doc_contri,contribuyente, (coalesce(cod_via, '') || ' ' || coalesce(nom_via, '') || ' ' || coalesce(nro_mun, '') || ' ' || coalesce(referencia, '')) as list_predio,are_terr,area_const from reportes.vw_02_contri_predios where anio = '$anio' order by contribuyente asc" );
+                
+                $data= json_decode( json_encode($sql), true);
+                
+                $sheet->fromArray($data);
+                $sheet->row(1, array("CODIGO", "DNI/RUC", "NOMBRE O RAZON SOCIAL", "LISTADO DE PREDIOS", "AREA DE TERRENO CONSTRUIDA", "AREA DE TERRENO"))->freezeFirstRow();
+                $sheet->setWidth(array(
+                    'A'     =>  15,
+                    'B'     =>  20,
+                    'C'     =>  40,
+                    'D'     =>  70,
+                    'E'     =>  10,
+                    'F'     =>  10
+                ));
+            });
+        })->export('xls');
+        
+        }
+        else
+        {
         
         $sql=DB::table('reportes.vw_02_contri_predios')->where('anio',$anio)->where('id_sec',$sector)->orderBy('id_contrib')->get();
+        
+        }
 
         if(count($sql)>0)
         {
@@ -381,6 +409,25 @@ class ReportesController extends Controller
             });
         })->export('xls');
         
+        }elseif($anio != 0 && $sector != 0 && $uso == 0){
+            \Excel::create('REPORTE DE EMISION PREDIAL POR USO', function($excel) use ( $anio, $sector ) {
+            
+            $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio, $sector ) {
+                
+                $sql = DB::select("select pers_nro_doc, contribuyente, (coalesce(dir_pred, '') || ' ' || coalesce(referencia, '')) as domicilio, uso_arbitrio from reportes.vw_predios_tipo_uso_arb where anio = '$anio' and sec = '$sector' " );
+                
+                $data= json_decode( json_encode($sql), true);
+                
+                $sheet->fromArray($data);
+                $sheet->row(1, array("DNI/RUC", "CONTRIBUYENTE", "DOMICILIO", "USO"))->freezeFirstRow();
+                $sheet->setWidth(array(
+                    'A'     =>  15,
+                    'B'     =>  50,
+                    'C'     =>  120,
+                    'D'     =>  20
+                ));
+            });
+        })->export('xls');
         }
         else
         {
