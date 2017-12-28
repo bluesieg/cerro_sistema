@@ -4,15 +4,19 @@ function dlg_teso_reportes(tipo)
 {
     if(tipo==1)
     {
-        crear_dialogo_usu();
+        crear_dialogo_por_partida();
     }
     if(tipo == 2)
     {
         crear_dialogo_por_tributo()
     }
+    if(tipo == 3)
+    {
+        crear_dialogo_por_zonas()
+    }
             
 }
-function crear_dialogo_usu()
+function crear_dialogo_por_partida()
 {
     $("#dialog_por_partida").dialog({
         autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
@@ -53,6 +57,7 @@ function crear_dialogo_por_tributo()
     
     
 }
+
 function abrir_reporte(tipo)
 {
     if(tipo==1)
@@ -73,6 +78,12 @@ function abrir_reporte(tipo)
             return false;
         }
        window.open('ver_rep_tesoreria/2?ini='+$("#fec_ini").val()+'&fin='+$("#fec_fin_tributo").val()+'&id_tributo='+$('#hiddentributo').val());
+       return false;
+    }
+    if(tipo==3)
+    {
+     
+       window.open('ver_rep_tesoreria/3?ini='+$("#fec_ini").val()+'&fin='+$("#fec_fin_tributo").val()+'&id_tributo='+$('#hiddentributo').val());
        return false;
     }
    

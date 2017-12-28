@@ -359,7 +359,50 @@ function crear_dialogo_cant_cont_ded_mont_bas_imp()
         }]
     }).dialog('open');
 }
+var aux1=0;
 
+function crear_dialogo_por_zona()
+{
+    $("#dialog_por_zona").dialog({
+        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.: Reporte impuesto Predial por Hab. Urbana - Zona :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_reporte_por_zona(); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+    if(aux1==0)
+    {
+        autocompletar_haburb('hab_urb');
+        aux1=1;
+    }
+}
+function crear_dialogo_corriente()
+{
+    $("#dialog_corriente").dialog({
+        autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp.:Reporte impuesto Predial Corriente y No Corriente :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_reporte_corriente(); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+    if(aux1==0)
+    {
+        autocompletar_haburb('hab_urb');
+        aux1=1;
+    }
+}
 
 function dlg_reporte_cant_cont_ded_mont_bas_imp(tipo)
 {
@@ -367,8 +410,28 @@ function dlg_reporte_cant_cont_ded_mont_bas_imp(tipo)
         crear_dialogo_cant_cont_ded_mont_bas_imp();
     } 
 }
+function dlg_reporte_por_zona(tipo)
+{
+    if (tipo===0) {
+        crear_dialogo_por_zona();
+    } 
+    if (tipo===1) {
+        crear_dialogo_corriente();
+    } 
+}
+
 
 function abrir_reporte_cant_cont_ded_mont_bas_imp()
 {
     window.open('reporte_cant_cont_ded_mont_bas_imp/'+$('#select_anio_ccdmbi').val()+'/'+$('#select_sec_ccdmbi').val()+'/'+$('#select_condicion_ccdmbi').val()+'');
 }
+function abrir_reporte_por_zona()
+{
+    window.open('reporte_cant_cont_ded_mont_bas_imp/'+$('#select_anio_ccdmbi').val()+'/'+$('#select_sec_ccdmbi').val()+'/'+$('#select_condicion_ccdmbi').val()+'');
+}
+function abrir_reporte_corriente()
+{
+    window.open('reporte_cant_cont_ded_mont_bas_imp/'+$('#select_anio_ccdmbi').val()+'/'+$('#select_sec_ccdmbi').val()+'/'+$('#select_condicion_ccdmbi').val()+'');
+}
+
+/********************************REPORTEs andrea************************************************************/

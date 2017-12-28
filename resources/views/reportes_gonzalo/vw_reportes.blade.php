@@ -110,10 +110,30 @@
           
                          
                         </tr>
-
-
-                   
-
+                       <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_reporte_por_zona(0);" id="titulo_r1">
+                                        REPORTE 7: Reporte de Impuesto Predial Por Habilitacion Urbana - Zona. </a>
+                                    <small>Descripción reporte 7</small>
+                                </h4>
+                            </td>
+          
+                         
+                        </tr>
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_reporte_por_zona(1);" id="titulo_r1">
+                                        REPORTE 8: Reporte de Impuesto Predial Corriente y no corriente.</a>
+                                    <small>Descripción reporte 8</small>
+                                </h4>
+                            </td>
+          
+                         
+                        </tr>
+                                           
+                               
                         </tbody>
                     </table>
 
@@ -182,6 +202,31 @@ $("#dlg_usuario").keypress(function (e) {
 
 
     });
+    
+function autocompletar_haburb(textbox){
+    $.ajax({
+        type: 'GET',
+        url: 'autocomplete_hab_urb',
+        success: function (data) {
+            var $datos = data;
+            $("#hab_urb").autocomplete({
+                source: $datos,
+                focus: function (event, ui) {
+                    $("#" + textbox).val(ui.item.label);
+                    $("#hidden" + textbox).val(ui.item.value);
+                    $("#" + textbox).attr('maxlength', ui.item.label.length);
+                    return false;
+                },
+                select: function (event, ui) {
+                    $("#" + textbox).val(ui.item.label);
+                    $("#hidden" + textbox).val(ui.item.value);
+                    
+                    return false;
+                }
+            });
+        }
+    });
+}
 </script>
 @stop
 <script src="{{ asset('archivos_js/reportes_gonzalo/reportes.js') }}"></script>
@@ -569,7 +614,72 @@ $("#dlg_usuario").keypress(function (e) {
         </div>
     </div>
 </div>
+<div id="dialog_por_zona" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                
+                    <div class="row" style="padding: 20px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">Año de Trabajo <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                        <select id='anio_corriente' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                        @foreach ($anio_tra as $anio)
+                                        <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
+                                        @endforeach
+                                        </select>
+                                    </div>
+                            </div>
+                        </div>
+                    </div> 
+                    
+                    <div class="row" style="padding: 5px 30px;">
 
+                        <div class="col-xs-12" >
+                        <div class="input-group input-group-md" style="width: 100%">
+                            <span class="input-group-addon" style="width: 165px">Hab. Urbana &nbsp;<i class="fa fa-file-archive-o"></i></span>
+                            <div> 
+                                 <input type="hidden" id="hiddenhaburb" value="0">
+                                 <textarea rows="3" id="hab_urb" type="text" placeholder="Escriba una Habilitación Urbana" class="form-control" style="height: 32px; padding-left: 10px"  ></textarea>
+                            </div>
+                        </div> 
+                        
+                    </div>
+                    </div>
+                    
+                    
+                    
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dialog_corriente" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                <div class="row" style="padding: 20px 30px;">
+                <div class="col-xs-12">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Año de Trabajo <i class="fa fa-cogs"></i></span>
+                            <div class="icon-addon addon-md">
+                                <select id='anio_corriente' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                @foreach ($anio_tra as $anio)
+                                <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
+                                @endforeach
+                                </select>
+                            </div>
+                    </div>
+                </div>
+                </div> 
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 

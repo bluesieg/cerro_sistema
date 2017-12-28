@@ -502,4 +502,17 @@ class ReportesController extends Controller
             return 'No hay datos';
         }
     }
+    
+    function autocompletar_haburb() {
+        $Consulta = DB::table('catastro.hab_urb')->get();
+        $todo = array();
+        foreach ($Consulta as $Datos) {
+            $Lista = new \stdClass();
+            $Lista->value = $Datos->id_hab_urb;
+            //$Lista->label = trim($Datos->codi_hab_urba);
+            $Lista->label = trim($Datos->nomb_hab_urba);
+            array_push($todo, $Lista);
+        }
+        return response()->json($todo);
+    }
 }
