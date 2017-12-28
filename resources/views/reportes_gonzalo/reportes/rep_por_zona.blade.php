@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Ingresos por Tributo</title>
+    <title>Reporte por Hab. Urbana</title>
         <link href="{{ asset('css/pdf.css') }}" rel="stylesheet">
         <style>
             @page { margin-bottom: 10px !important; margin-left: 50px;margin-right: 50px;};
@@ -38,13 +38,14 @@
          
         <input type="hidden" value=" {{$num=1}}">
          <br>
-         <div class="sub2" style="font-size:0.8em">TRIBUTO: {{$sql[0]->descrip_tributo}}</div>
+         <div class="sub2" style="font-size:0.8em">Hab. Urbana: {{$sql[0]->nomb_hab_urba}}</div>
                  
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 10px; margin-top: 10px" >
         <thead>
           <tr>
               <th style="width: 5%">N°</th>
               <th style="width: 30%">Fecha</th>
+              <th style="width: 30%">N° de Recibo</th>
               <th style="width: 30%">Monto s/.</th>
               
           </tr>
@@ -55,6 +56,7 @@
           <tr>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$num++}}</td>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$arc->fecha}}</td>
+              <td style="text-align: center;font-size: 0.7em; padding-left: 5px;">{{$arc->nro_recibo_mtr}}</td>
               <td style="text-align: right;font-size: 0.7em; padding-right: 10px;">{{$arc->total}}</td>
               
           </tr>

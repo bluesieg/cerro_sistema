@@ -454,7 +454,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('listado_contribuyentes_predios/{anio}/{sector}','ReportesController@listado_contribuyentes_predios');
         Route::get('reporte_contribuyentes_exonerados/{anio}/{sector}/{tipo}','ReportesController@reporte_contribuyentes_exonerados');
         Route::get('reporte_cantidad_contribuyentes/{anio}/{sector}','ReportesController@reporte_cantidad_contribuyentes');
-        Route::get('autocomplete_hab_urb', 'ReportesController@autocompletar_haburb');
+        Route::get('autocomplete_hab_urba', 'ReportesController@autocompletar_haburb');
 
         //TRAER USUARIOS
         Route::get('reporte_usuarios/{id}', 'ReportesController@reporte_usuarios');
@@ -467,6 +467,9 @@ Route::group(['middleware' => 'auth'], function() {
          
         //REPORTE SUPERVISORES
         Route::get('reporte_supervisores','ReportesController@index_supervisores');
+        //andrea
+        Route::get('reporte_por_zona/{anio}/{id_hab_urb}','ReportesController@rep_por_zona');
+
           
     });
     Route::group(['namespace' => 'catastro_gonzalo'], function() {

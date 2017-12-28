@@ -427,11 +427,11 @@ function abrir_reporte_cant_cont_ded_mont_bas_imp()
 }
 function abrir_reporte_por_zona()
 {
-    window.open('reporte_cant_cont_ded_mont_bas_imp/'+$('#select_anio_ccdmbi').val()+'/'+$('#select_sec_ccdmbi').val()+'/'+$('#select_condicion_ccdmbi').val()+'');
+    window.open('reporte_por_zona/'+$('#anio_por_zona').val()+'/'+$('#hiddenhab').val()+'');
 }
 function abrir_reporte_corriente()
 {
-    window.open('reporte_cant_cont_ded_mont_bas_imp/'+$('#select_anio_ccdmbi').val()+'/'+$('#select_sec_ccdmbi').val()+'/'+$('#select_condicion_ccdmbi').val()+'');
+    window.open('reporte_corriente/'+$('#anio_corriente').val()+'');
 }
 
 /********************************REPORTEs andrea************************************************************/

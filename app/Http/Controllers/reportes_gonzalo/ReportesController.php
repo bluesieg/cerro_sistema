@@ -502,7 +502,29 @@ class ReportesController extends Controller
             return 'No hay datos';
         }
     }
+    //andrea
     
+     public function rep_por_zona($anio,$id)
+    {
+        $id = $request['id'];
+        $anio= $request['anio'];
+        $sql=DB::table('presupuesto.vw_por_tributo')->where('anio',$anio) ->where('fecha', $id)->orderBy('anio','asc')->get();
+        
+       
+        
+        if(count($sql)>0)
+        {
+            $view =  \View::make('reportes_gonzalo.reportes.rep_por_zona', compact('sql'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("PRUEBA".".pdf");
+        }
+        else
+        {
+            return 'NO HAY RESULTADOS';
+        }
+        
+    }
     function autocompletar_haburb() {
         $Consulta = DB::table('catastro.hab_urb')->get();
         $todo = array();

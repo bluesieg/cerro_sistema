@@ -206,20 +206,20 @@ $("#dlg_usuario").keypress(function (e) {
 function autocompletar_haburb(textbox){
     $.ajax({
         type: 'GET',
-        url: 'autocomplete_hab_urb',
+        url: 'autocomplete_hab_urba',
         success: function (data) {
             var $datos = data;
             $("#hab_urb").autocomplete({
                 source: $datos,
                 focus: function (event, ui) {
                     $("#" + textbox).val(ui.item.label);
-                    $("#hidden" + textbox).val(ui.item.value);
+                    $("#hiddenhab").val(ui.item.value);
                     $("#" + textbox).attr('maxlength', ui.item.label.length);
                     return false;
                 },
                 select: function (event, ui) {
                     $("#" + textbox).val(ui.item.label);
-                    $("#hidden" + textbox).val(ui.item.value);
+                    $("#hiddenhab").val(ui.item.value);
                     
                     return false;
                 }
@@ -625,7 +625,7 @@ function autocompletar_haburb(textbox){
                             <div class="input-group input-group-md">
                                 <span class="input-group-addon" style="width: 165px">Año de Trabajo <i class="fa fa-cogs"></i></span>
                                     <div class="icon-addon addon-md">
-                                        <select id='anio_corriente' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                        <select id='anio_por_zona' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
                                         @foreach ($anio_tra as $anio)
                                         <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
                                         @endforeach
@@ -636,17 +636,15 @@ function autocompletar_haburb(textbox){
                     </div> 
                     
                     <div class="row" style="padding: 5px 30px;">
-
                         <div class="col-xs-12" >
-                        <div class="input-group input-group-md" style="width: 100%">
-                            <span class="input-group-addon" style="width: 165px">Hab. Urbana &nbsp;<i class="fa fa-file-archive-o"></i></span>
-                            <div> 
-                                 <input type="hidden" id="hiddenhaburb" value="0">
-                                 <textarea rows="3" id="hab_urb" type="text" placeholder="Escriba una Habilitación Urbana" class="form-control" style="height: 32px; padding-left: 10px"  ></textarea>
-                            </div>
-                        </div> 
-                        
-                    </div>
+                            <div class="input-group input-group-md" style="width: 100%">
+                                <span class="input-group-addon" style="width: 165px">Hab. Urbana &nbsp;<i class="fa fa-file-archive-o"></i></span>
+                                <div> 
+                                     <input type="hidden" id="hiddenhab" value="0">
+                                     <textarea rows="3" id="hab_urb" type="text" placeholder="Escriba una Habilitación Urbana" class="form-control" style="height: 32px; padding-left: 10px"  ></textarea>
+                                </div>
+                            </div> 
+                         </div>
                     </div>
                     
                     
