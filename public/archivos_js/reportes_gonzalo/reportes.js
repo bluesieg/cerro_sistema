@@ -427,6 +427,10 @@ function abrir_reporte_cant_cont_ded_mont_bas_imp()
 }
 function abrir_reporte_por_zona()
 {
+    if ($("#hiddenhab").val() == 0){
+            mostraralertasconfoco("Debes Ingresar una Habilitacion Urbana","#hab_urb");
+            return false;
+    }
     window.open('reporte_por_zona/'+$('#anio_por_zona').val()+'/'+$('#hiddenhab').val()+'');
 }
 function abrir_reporte_corriente()

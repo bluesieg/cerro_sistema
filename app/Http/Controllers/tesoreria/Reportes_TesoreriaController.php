@@ -46,8 +46,7 @@ class Reportes_TesoreriaController extends Controller
         //gonzalo
         $fechainicio = $request['ini'];
         $fechafin = $request['fin'];
-        $sql=DB::table('presupuesto.vw_partida_presupuestal')->whereBetween('fecha', [$fechainicio, $fechafin])->orderBy('codigo','asc')->get();
-        
+        $sql = DB::select("SELECT codigo_1,det_especifica,codigo_2,desc_espec_detalle,SUM(monto) as total FROM presupuesto.vw_partida_presupuestal_3 where fecha between '$fechainicio' and '$fechafin' GROUP BY codigo_1,det_especifica,codigo_2,desc_espec_detalle order by codigo_1" );
        
         
         if(count($sql)>0)

@@ -72,6 +72,10 @@ function abrir_reporte(tipo)
     }
     if(tipo==2)
     {
+        if ($("#hiddentributo").val() == 0){
+            mostraralertasconfoco("Debes Ingresar un Tributo","#tributo");
+            return false;
+        }
         if($("#fec_ini_tributo").val()==""||$("#fec_fin_tributo").val()=="")
         {
             mostraralertasconfoco("Ingresar fechas correctamente","#fec_ini_tributo");
