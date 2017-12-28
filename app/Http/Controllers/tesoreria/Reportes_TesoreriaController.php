@@ -69,7 +69,7 @@ class Reportes_TesoreriaController extends Controller
         $fechainicio = $request['ini'];
         $fechafin = $request['fin'];
        // $sql=DB::table('presupuesto.vw_por_tributo')->where('id_tributo',$id_tributo) ->whereBetween('fecha', [$fechainicio, $fechafin])->orderBy('fecha','asc')->get();
-        $sql = DB::select(" select  fecha,descrip_tributo, sum(total) as total from presupuesto.vw_por_tributo where id_tributo='$id_tributo' and fecha between '$fechainicio' and '$fechafin' group by fecha,descrip_tributo  order by fecha asc" );
+        $sql = DB::select(" select  fecha,id_tributo,cod_tributo,descrip_tributo, sum(total) as total from presupuesto.vw_por_tributo where id_tributo='$id_tributo' and fecha between '$fechainicio' and '$fechafin' group by fecha,id_tributo,cod_tributo,descrip_tributo  order by fecha asc" );
         
         if(count($sql)>0)
         {

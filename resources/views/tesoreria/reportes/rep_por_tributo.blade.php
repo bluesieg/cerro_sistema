@@ -37,9 +37,11 @@
                   </div></center>
          
         <input type="hidden" value=" {{$num=1}}">
-         <br>
-         <div class="sub2" style="font-size:0.8em">TRIBUTO: {{$sql[0]->descrip_tributo}}</div>
-                 
+        <br>
+         <div class="sub2" style="font-size:0.8em"><b>CÓDIGO DE TRIBUTO: </b>{{$sql[0]->cod_tributo}}</div>
+         <div class="sub2" style="font-size:0.8em"><b>DESCRIPCIÓN: </b></div>
+         <div class="sub2" style="font-size:0.8em"> {{$sql[0]->descrip_tributo}}</div>
+         
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 10px; margin-top: 10px" >
         <thead>
           <tr>
