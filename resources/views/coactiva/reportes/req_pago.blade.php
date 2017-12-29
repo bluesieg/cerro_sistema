@@ -38,7 +38,7 @@
         <div style="margin-bottom: -15px;border-bottom: 1px solid black;margin-top: 10px;">
             <table style="font-size:13px;">
                 <tr>
-                    <td><b>Obligado</b></td>
+                    <td style="width:120px"><b>Obligado</b></td>
                     <td>:&nbsp;{{$resol->contribuyente}}</td>
                 </tr>
                 <tr>
@@ -59,7 +59,7 @@
                 </tr>
                 <tr>
                     <td>&nbsp;</td>
-                    <td>&nbsp;&nbsp;{{$resol->doc_ini}} N° 0001-2017-SGFT-MDCC/ARB</td>
+                    <td>&nbsp;&nbsp;{{$resol->doc_ini}} N° {{$resol->nro_rd.'-'.$resol->anio_rd}}-SGFT-MDCC/ARB</td>
                 </tr>
                 <tr>
                     <td><b>Fecha</b></td>
@@ -71,7 +71,7 @@
         <div style="text-align: justify;font-size:13px;overflow:auto"> 
             <p>
             Mediente el Presente escrito y en atención a las Resoluciones de referencia, le recordamos que la oficina de Ejecución Coactiva, mediante <b>Resolución de Ejecución Coactiva N° {{ $resol->nro_exped.'-'.$resol->anio_resol }}/OEC-MDCC</b>
-            se ha dado inicio al procedimiento de ejecución coactiva, a fin de que usted cumpla con pagar la deuda establecida mediante <b>Resolución de Determinación N° {{ $resol->nro_resol.'-'.$resol->anio_resol }}-SGFT-MDCC/ARB,</b> 
+            se ha dado inicio al procedimiento de ejecución coactiva, a fin de que usted cumpla con pagar la deuda establecida mediante <b> {{$resol->doc_ini}} N° {{ $resol->nro_rd.'-'.$resol->anio_rd }}-SGFT-MDCC/ARB,</b> 
             ascendiente a la suma de <b>S/. {{$resol->monto}} ({{$resol->monto_letra}})</b> por concepto de Arbitrios correspondiente a los años {{$resol->periodos}}, 
             <b>más los intereses actualizados a la fecha de pago,</b> así como tambien el pago de <u>costas y gastos</u> ocasionados a la entidad en la cobranza coactiva de dicha deuda tributaria, 
             respecto del predio ubicado en {{$resol->ubi_pred}}, Arequipa requiriéndose el cumplimiento de pago dentro de los plazos expresamente 
@@ -104,7 +104,7 @@
                 CORRERAN A CUENTA DEL OBLIGADO. ASUMIENDO COMPETENCIA EL EJECUTOR Y AUXILIAR COACTIVO QUE SUSCRIBEN POR DISPOSICION DE LA ENTIDAD.
             </p>
             <P>Atentamente.</P>
-            <br><br><br><br>
+            <br><br><br>
             <p style="font-size: 10px;">
                 <b><u>NOTA IMPORTANTE: </u></b>Se pone de conocimiento que, para efectos de <u>CONCLUSION DEL PROCEDIMIENTO Y ARCHIVO DE SU EXPEDIENTE</u> deberá efectuar el pago 
                 de su deuda en la <u>OFICINA DE EJECUCIÓN COACTIVA</u> ubicada en el <b>CUARTO PISO</b> de la MUNICIPALIDAD - Sede Administración Tributaria, sitio en la <u>CALLE 

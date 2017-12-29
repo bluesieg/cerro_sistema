@@ -93,13 +93,10 @@ function fn_bus_contrib_recep_doc(){
 
 function fn_bus_contrib_list_resep_doc(per){
     $("#hidden_vw_recep_doc_codigo").val(per);
-    
     $("#vw_recep_doc_codigo").val($('#table_contrib').jqGrid('getCell',per,'id_per'));    
     $("#vw_recep_doc_contrib").val($('#table_contrib').jqGrid('getCell',per,'contribuyente'));
     tam=($('#table_contrib').jqGrid('getCell',per,'contribuyente')).length;
-    
     $("#vw_recep_doc_contrib").attr('maxlength',tam);
-
     fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?id_contrib='+$("#hidden_vw_recep_doc_codigo").val()+'&env_op=2');
     $("#dlg_bus_contr").dialog("close");    
 }

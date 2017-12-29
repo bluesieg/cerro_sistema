@@ -22,31 +22,69 @@
                 <ul id="tabs1" class="nav nav-tabs bordered">
                     <li class="active">
                         <a href="#s1" data-toggle="tab" aria-expanded="true">
-                            POR CONTRIBUYENTE
+                            CONSOLIDADO DE EXPEDIENTES
                             <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                         </a>
                     </li>
-                    <li class="">
+                    <li>
                         <a href="#s2" data-toggle="tab" aria-expanded="false">
-                            POR EXPEDIENTE
+                            VER POR CONTRIBUYENTE
                             <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                         </a>
-                    </li>                
+                    </li>           
                 </ul>
                 <div id="myTabContent1" class="tab-content padding-10">
-                    <div id="s1" class="tab-pane fade active in" style="height: auto">
+                    <div id="s1" class="tab-pane fade active in">
+                        <section style="margin-top: 5px">                                                 
+                            <div class="row">
+                                <section class="col-lg-6">
+                                    <div class="input-group input-group-md">
+                                        <span class="input-group-addon">Contribuyente<i class="icon-append fa fa-male" style="margin-left: 15px;"></i></span>
+                                        <div class="icon-addon addon-md">
+                                            <input id="vw_coa_bus_contrib_exp" class="form-control text-uppercase" type="text">
+                                        </div>
+                                        <span class="input-group-btn">
+                                            <button onclick="bus_contrib_expediente();" class="btn btn-primary" type="button" title="BUSCAR">
+                                                <i class="glyphicon glyphicon-search"></i>&nbsp;&nbsp;Buscar
+                                            </button>
+                                        </span>                                        
+                                    </div>                                    
+                                </section>
+                                <section class="col-lg-6 text-right">
+                                    <button onclick="activar_exped();" type="button" class="btn btn-labeled bg-color-green txt-color-white">
+                                        <span class="btn-label"><i class="fa fa-file-text"></i></span>Activar
+                                    </button>
+                                    <button onclick="devolver_valor();" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                                        <span class="btn-label"><i class="fa fa-file-text"></i></span>Devolver
+                                    </button>
+                                </section>
+                            </div>
+                        </section>                        
+                        <hr style="border: 1px solid #DDD;margin: 10px -10px">
+                        <section style="">              
+                            <div class="row">
+                                <section id="content_3" class="col col-lg-12"> 
+                                    <table id="all_tabla_expedientes"></table>
+                                    <div id="p_all_tabla_expedientes"></div>                     
+                                </section>                 
+                            </div>
+                        </section>  
+                    </div>
+                    <div id="s2" class="tab-pane fade" style="height: auto">
                         <section style="margin-top: 5px">                                                 
                             <div class="row">                                
-                                <section class="col-lg-2" style="padding-right: 5px;">
+<!--                                <section class="col-lg-2" style="padding-right: 5px;">
                                     <div class="input-group input-group-md">
                                         <span class="input-group-addon">Cod.<i class="icon-append fa fa-lock" style="margin-left: 5px;"></i></span>
                                         <div class="icon-addon addon-md">
-                                            <input id="hidden_vw_ges_exped_codigo" type="hidden" value="0">
-                                            <input id="vw_ges_exped_codigo" type="text" class="form-control" style="padding-left:6px;padding-right:6px">
+                                            
                                         </div>
                                     </div>
-                                </section>
-                                <section class="col-lg-6" style="padding-left: 5px;padding-right:5px">
+                                    
+                                </section>-->
+                                <section class="col-lg-6" style="padding-right:5px">
+                                    <input id="hidden_vw_ges_exped_codigo" type="hidden" value="0">
+                                    <input id="vw_ges_exped_codigo" type="hidden">
                                     <div class="input-group input-group-md">
                                         <span class="input-group-addon">Contribuyente<i class="icon-append fa fa-male" style="margin-left: 5px;"></i></span>
                                         <div class="icon-addon addon-md">
@@ -59,9 +97,15 @@
                                         </span>                                        
                                     </div>                                    
                                 </section>
-                                <section class="col-lg-4 text-right" style="padding-left: 5px;">                                    
+                                <section class="col-lg-6 text-right" style="padding-left: 5px;">                                     
+                                    <button onclick="exped_no_trib();" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                                        <span class="btn-label"><i class="fa fa-folder"></i></span>Crear Expediente
+                                    </button>                                    
                                     <button onclick="dlg_select_new_doc();" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
                                         <span class="btn-label"><i class="fa fa-file-text"></i></span>Nuevo Documento
+                                    </button>
+                                    <button onclick="eliminar_documento();" type="button" class="btn btn-labeled bg-color-red txt-color-white">
+                                        <span class="btn-label"><i class="fa fa-trash"></i></span>Eliminar Doc.
                                     </button>
                                 </section>
                             </div>
@@ -80,9 +124,6 @@
                             </div>
                         </section>        
                     </div>
-                    <div id="s2" class="tab-pane fade" style="height: 300px">
-                        asd                    
-                    </div>
                 </div>
             </div>
         </div>       
@@ -93,62 +134,93 @@
     $(document).ready(function () {
         $("#menu_coactiva").show();
         $("#li_gesion_exped").addClass('cr-active');
+        jQuery("#all_tabla_expedientes").jqGrid({
+            url: 'get_all_exped?contrib=',
+            datatype: 'json', mtype: 'GET',
+            height: 329, autowidth: true,
+            toolbarfilter: true,
+            colNames: ['Expediente','id_contrib', 'Contribuyente', 'Materia', 'Ultimo Documento Emitido', 'Monto', 'Estado','id_val'],
+            rowNum: 20, sortname: 'id_coa_mtr', sortorder: 'desc', viewrecords: true, caption: 'Consolidado de Expedientes', align: "center",
+            colModel: [
+                {name: 'nro_exped', index: 'nro_exped', align: 'center', width: 80},
+                {name: 'id_contrib', index: 'id_contrib', hidden: true},
+                {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 210},
+                {name: 'materia', index: 'materia', align: 'left', width: 70},
+                {name: 'ult_doc', index: 'ult_doc', align: 'left', width: 200},
+                {name: 'monto', index: 'monto', align: 'right', width: 70},
+                {name: 'estado', index: 'estado', align: 'left', width: 120},
+                {name: 'id_val', index: 'id_val', hidden: true},
+            ],
+            rowList: [13, 20],
+            pager: '#p_all_tabla_expedientes',
+            gridComplete: function () {
+                var idarray = jQuery('#all_tabla_expedientes').jqGrid('getDataIDs');
+                if (idarray.length > 0) {
+                    var firstid = jQuery('#all_tabla_expedientes').jqGrid('getDataIDs')[0];
+                    $("#all_tabla_expedientes").setSelection(firstid);
+                }
+            },
+            onSelectRow: function (Id) {},
+            ondblClickRow: function (Id) {}
+        });
         jQuery("#tabla_expedientes").jqGrid({
             url: 'get_exped?id_contrib=0',
             datatype: 'json', mtype: 'GET',
             height: 329, autowidth: true,
             toolbarfilter: true,
-            colNames: ['Nro', 'Expediente'],
+            colNames: ['Nro', 'Expediente', 'monto', 'estado'],
             rowNum: 20, sortname: 'nro_procedimiento', sortorder: 'asc', viewrecords: true, caption: 'Expedientes', align: "center",
             colModel: [
-                {name: 'nro_procedimiento', index: 'nro_procedimiento',align: 'center', width: 30 },
-                {name: 'nro_exped', index: 'nro_exped', align: 'center', width: 80}                
-            ],            
+                {name: 'nro_procedimiento', index: 'nro_procedimiento', align: 'center', width: 30},
+                {name: 'nro_exped', index: 'nro_exped', align: 'center', width: 80},
+                {name: 'monto', index: 'monto', hidden: true},
+                {name: 'estado', index: 'estado', hidden: true}
+            ],
             rowList: [13, 20],
             gridComplete: function () {
-                    var idarray = jQuery('#tabla_expedientes').jqGrid('getDataIDs');
-                    if (idarray.length > 0) {
-                    var firstid = jQuery('#tabla_expedientes').jqGrid('getDataIDs')[0];
-                            $("#tabla_expedientes").setSelection(firstid);    
-                        }
-                },
-            onSelectRow: function (Id){},
-            ondblClickRow: function (Id){ ver_docum_exped(Id);}
+//                var idarray = jQuery('#tabla_expedientes').jqGrid('getDataIDs');
+//                if (idarray.length > 0) {
+//                    var firstid = jQuery('#tabla_expedientes').jqGrid('getDataIDs')[0];
+//                    $("#tabla_expedientes").setSelection(firstid);
+//                }
+            },
+            onSelectRow: function (Id) {},
+            ondblClickRow: function (Id) {
+                ver_docum_exped(Id);
+            }
         });
         jQuery("#tabla_doc_coactiva").jqGrid({
             url: 'get_doc_exped?id_coa_mtr=0',
             datatype: 'json', mtype: 'GET',
             height: 300, autowidth: true,
             toolbarfilter: true,
-            colNames: ['Nro', 'Fch.Emision', 'Tipo Gestion', 'N° Resol / Docum.','Fch.Recep','Ver','Editar'],
+            colNames: ['Nro', 'Fch.Emision', 'Tipo Gestion', 'N° Resol / Docum.', 'Fch.Recep', 'Ver', 'Editar'],
             rowNum: 20, sortname: 'id_doc', sortorder: 'asc', viewrecords: true, caption: 'Documentos', align: "center",
             colModel: [
                 {name: 'nro', index: 'nro', align: 'center', width: 20},
                 {name: 'fch_emi', index: 'fch_emi', align: 'center', width: 50},
                 {name: 'tip_gestion', index: 'tip_gestion', align: 'left', width: 230},
                 {name: 'nro_resol', index: 'nro_resol', align: 'center', width: 80},
-                {name: 'fch_recep', index: 'fch_recep', align: 'center', width: 50},                
+                {name: 'fch_recep', index: 'fch_recep', align: 'center', width: 50},
                 {name: 'ver', index: 'ver', align: 'center', width: 60},
-                {name: 'edit', index: 'edit', align: 'center', width: 60} 
+                {name: 'edit', index: 'edit', align: 'center', width: 60}
             ],
             pager: '#p_tabla_doc_coactiva',
             rowList: [13, 20],
-            onRightClick: function (rowid, iRow, iCol, e) {
-                alert(5);
-            },
             gridComplete: function () {
-                    var idarray = jQuery('#tabla_doc_coactiva').jqGrid('getDataIDs');
-                    if (idarray.length > 0) {
+                var idarray = jQuery('#tabla_doc_coactiva').jqGrid('getDataIDs');
+                if (idarray.length > 0) {
                     var firstid = jQuery('#tabla_doc_coactiva').jqGrid('getDataIDs')[0];
-                            $("#tabla_doc_coactiva").setSelection(firstid);    
-                        }
-                },
-            onSelectRow: function (Id){},
-            ondblClickRow: function (Id){}
+                    $("#tabla_doc_coactiva").setSelection(firstid);
+                }
+            },
+            onSelectRow: function (Id) {},
+            ondblClickRow: function (Id) {}
         });
         $(window).on('resize.jqGrid', function () {
             $("#tabla_expedientes").jqGrid('setGridWidth', $("#content_1").width());
             $("#tabla_doc_coactiva").jqGrid('setGridWidth', $("#content_2").width());
+            $("#all_tabla_expedientes").jqGrid('setGridWidth', $("#content_3").width());
         });
         jQuery("#table_contrib").jqGrid({
             url: 'obtiene_cotriname?dat=0',
@@ -173,17 +245,24 @@
                 }
             },
             onSelectRow: function (Id) {},
-            ondblClickRow: function (Id) {fn_bus_contrib_select(Id);}
+            ondblClickRow: function (Id) {
+                fn_bus_contrib_select(Id);
+            }
         });
         var globalvalidador = 0;
         $("#vw_ges_exped_contrib").keypress(function (e) {
             if (e.which == 13) {
-                if(globalvalidador==0){                    
-                    bus_contrib();                    
-                    globalvalidador=1;
-                }else{
-                    globalvalidador=0;
+                if (globalvalidador == 0) {
+                    bus_contrib();
+                    globalvalidador = 1;
+                } else {
+                    globalvalidador = 0;
                 }
+            }
+        });
+        $("#vw_coa_bus_contrib_exp").keypress(function (e) {
+            if (e.which == 13) {
+                bus_contrib_expediente();
             }
         });
     });
@@ -195,30 +274,34 @@
         <div  class="smart-form">
             <div class="panel-group">
                 <section style="margin-top: 10px;margin-left: 30px;">
-                        <label class="radio">
-                                <input type="radio" name="add_doc_radio" value="2">
-                                <i></i>RESOLUCION DE EJECUCION COACTIVA</label>
-                        <label class="radio">
-                                <input type="radio" name="add_doc_radio" value="3">
-                                <i></i>RESOLUCION DE SUSPENCION DE PROCEDIMIENTO</label>
-                        <label class="radio">
-                                <input type="radio" name="add_doc_radio" value="4">
-                                <i></i>RESOLUCION DE EMBARGO EN FORMA DE RETENCION</label>
-                        <label class="radio">
-                                <input type="radio" name="add_doc_radio" value="5">
-                                <i></i>RESOLUCION DE EMBARGO EN FORMA DE INSCRIPCION</label>
-                        <label class="radio">
-                                <input type="radio" name="add_doc_radio" value="6">
-                                <i></i>CONSTANCIA DE NOTIFICACION</label>
-                        <label class="radio">
-                                <input type="radio" name="add_doc_radio" value="7">
-                                <i></i>REQUERIMIENTO DE PAGO</label>
-                        <label class="radio">
-                                <input type="radio" name="add_doc_radio" value="8">
-                                <i></i>CARTA INFORMATIVA</label>
-                        <label class="radio">
-                                <input type="radio" name="add_doc_radio" value="9">
-                                <i></i>ACTA DE APERSONAMIENTO</label>
+                    <label class="radio">
+                        <input type="radio" name="add_doc_radio" value="2">
+                        <i></i>RESOLUCION DE EJECUCION COACTIVA</label>
+                    <label class="radio">
+                        <input type="radio" name="add_doc_radio" value="3">
+                        <i></i>RESOLUCION DE SUSPENCION TEMPORAL DE PROCEDIMIENTO</label>
+                    <!--                        <label class="radio">
+                                                    <input type="radio" name="add_doc_radio" value="4">
+                                                    <i></i>RESOLUCION DE EMBARGO EN FORMA DE RETENCION</label>-->
+                    <!--                        <label class="radio">
+                                                    <input type="radio" name="add_doc_radio" value="5">
+                                                    <i></i>RESOLUCION DE EMBARGO EN FORMA DE INSCRIPCION</label>
+                    -->
+                    <label class="radio">
+                        <input type="radio" name="add_doc_radio" value="6">
+                        <i></i>CONSTANCIA DE NOTIFICACION</label>
+                    <label class="radio">
+                        <input type="radio" name="add_doc_radio" value="7">
+                        <i></i>REQUERIMIENTO DE PAGO</label>
+                    <!--                        <label class="radio">
+                                                    <input type="radio" name="add_doc_radio" value="8">
+                                                    <i></i>CARTA INFORMATIVA</label>-->
+                    <label class="radio">
+                        <input type="radio" name="add_doc_radio" value="9">
+                        <i></i>ACTA DE APERSONAMIENTO</label>
+                    <label class="radio">
+                        <input type="radio" name="add_doc_radio" value="10">
+                        <i></i>RESOLUCION DE SUSPENCION DEFINITIVA DE PROCEDIMIENTO</label>
                 </section>
             </div>
         </div>
@@ -240,14 +323,14 @@
                                     </label>                      
                                 </section>
                                 <section class="col col-3" style="padding-right: 5px;padding-left: 5px;">                                    
-                                    <label class="label">Monto:</label>
+                                    <label class="label">Monto Total:</label>
                                     <label class="input">
-                                        <input id="nro_cuo_monto" onkeypress="return soloDNI(event);" type="text" class="input-sm">
+                                        <input id="nro_cuo_monto" onkeypress="return soloDNI(event);" type="text" class="input-sm" disabled="">
                                     </label>                      
                                 </section>
                                 <section class="col col-6" style="padding-right:5px;">                                    
                                     <button onclick="add_cuo_acta_aper();" class="btn btn-primary btn-lg" style="margin-top:11px" type="button" title="Agregar Cuotas al Acta">
-                                        <i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Agregar Cuotas
+                                        <i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Agregar
                                     </button>
                                 </section>                                                      
                             </div>
@@ -263,7 +346,7 @@
                                     <tr>
                                         <th width="5%" style="text-align: center">N°</th>                                        
                                         <th width="20%" style="text-align: center">Fecha de Pago</th>
-                                        <th width="20%" style="text-align: center">Monto</th>
+                                        <th width="10%" style="text-align: center">%</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -287,6 +370,115 @@
 <div id="vw_coact_ver_doc" style="display: none;">
     <iframe id="vw_coa_iframe_doc" width="885" height="580"></iframe>
 </div>
-
+<div id="dlg_new_exp_notrib" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">                
+                <div class="panel panel-success" style="border: 0px !important">
+                    <div class="panel-heading bg-color-success" >.:: Datos del Expediente ::.</div>
+                    <div class="panel-body">
+                        <fieldset>
+                            <section> 
+                                <label class="label">Contribuyente:</label>
+                                <label class="input">
+                                    <input type="hidden" id="exp_notrib_id_contrib">
+                                    <input id="exp_notrib_contrib" type="text" placeholder="CONTRIBUYENTE" class="input-sm text-uppercase" disabled="">
+                                </label>                      
+                            </section>
+                            <div class="row">
+                                <section class="col col-6" style="padding-right:5px;"> 
+                                    <label class="label">Materia:</label>
+                                    <label class="select">
+                                        <select id="exp_notrib_codmateria" onchange="fn_trae_val(this.value)" class="input-sm">
+                                            <option value='1'>TRIBUTARIA</option>
+                                            <option value='0'>NO TRIBUTARIA</option>
+                                        </select><i></i></label>
+                                </section>
+                                <section class="col col-4" style="padding-left:5px;padding-right: 5px">
+                                    <label class="label">Monto:</label>
+                                    <label class="input">
+                                        <input id="exp_notrib_monto" type="text" onkeypress="return soloNumeroTab(event);" placeholder="000.00" class="input-sm text-right" >
+                                    </label>                        
+                                </section>
+                            </div>
+                            <div class="row">
+                                <section class="col col-10" style="padding-right:5px;"> 
+                                    <label class="label">Valor:</label>
+                                    <label class="input">
+                                        <input type="hidden" id="hiddenexp_notrib_valor">
+                                        <input id="exp_notrib_valor" type="text" placeholder="Ejm: Resolucion de multa" class="input-sm text-uppercase">                                        
+                                    </label>
+                                </section>
+                                <section class="col col-2" style="padding-left:5px;"> 
+                                    <label class="label">&nbsp;</label>
+                                    <button onclick="new_otro_valor();" type="button" class="btn btn-labeled bg-color-blue txt-color-white" style="width: 80px;">
+                                       <span class="btn-label"><i class="fa fa-file-text"></i></span>Otro
+                                    </button>        
+                                </section>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>               
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dlg_new_valor" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">                
+                <div class="panel panel-success" style="border: 0px !important">
+                    <div class="panel-heading bg-color-success" >.:: Documentos Adjuntos ::.</div>
+                    <div class="panel-body">
+                        <fieldset>
+                            <div class="row">
+                                <section class="col col-6"> 
+                                    <label class="label">Materia:</label>
+                                    <label class="input">
+                                        <input type="hidden" id="hiddendlg_new_val_txt_mat">
+                                        <input id="dlg_new_val_txt_mat" type="text" class="input-sm text-uppercase" disabled="">
+                                    </label>                      
+                                </section>
+                            </div>
+                            <section> 
+                                <label class="label">Especificar Valor:</label>
+                                <label class="input">
+                                    <input id="dlg_new_val_txt_valor" type="text" placeholder="Ejm: RESOLUCION DE MULTA" class="input-sm text-uppercase">
+                                </label>                      
+                            </section>
+                            <section> 
+                                <label class="label">Abreviatura:</label>
+                                <label class="input">
+                                    <input id="dlg_new_val_txt_abrev" type="text" placeholder="Ejm: OP, RD" class="input-sm text-uppercase">
+                                </label>                      
+                            </section>
+                        </fieldset>
+                    </div>
+                </div>               
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dlg_up_doc_adjuntos" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">                
+                <div class="panel panel-success" style="border: 0px !important">
+                    <div class="panel-heading bg-color-success" >.:: Documentos Adjuntos ::.</div>
+                    <div class="panel-body">
+                        <fieldset>
+                            <section> 
+                                <label class="label">Se Adjunta:</label>
+                                <label class="input">
+                                    <input id="exp_notif_txt" type="text" placeholder="Se adjunta" class="input-sm text-uppercase">
+                                </label>                      
+                            </section>
+                        </fieldset>
+                    </div>
+                </div>               
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 

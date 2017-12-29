@@ -50,49 +50,25 @@
             </tr>
             </thead>
             <tbody>
-
-            <tr>
-                <td style="text-align: left; border-left:0px; border-bottom: 0px;border-right: 0px; border-top: 0px;"><b>{{$sql[0]->codigo_2}}</b></td>
-                <td style="text-align: left; border-left:0px; border-bottom: 0px;border-right: 0px; border-top: 0px;"><b>{{$sql[0]->det_especifica}}</b></td>
-    
-
-            </tr>
-
-            <tr>
- 
-                <td style="text-align: left; border-left:0px; border-bottom: 0px;border-right: 0px; border-top: 0px;">{{$sql[0]->codigo_1}}</td>
-                <td style="text-align: left; border-left:0px; border-bottom: 0px;border-right: 0px; border-top: 0px;">{{$sql[0]->desc_espec_detalle}}</td>
-                <td style="text-align: center; border-left:0px; border-bottom: 0px;border-right: 0px; border-top: 0px;">{{$sql[0]->total}}</td>
-            </tr>
-            
-            @for ($i = 1; $i < count($sql); $i++)
-                @if($sql[$i]->codigo_1 == $sql[$i-1]->codigo_1)
-                    <tr>
-
-                        <td style="text-align: left; border-left:0px; border-bottom: 0px;border-right: 0px; border-top: 0px;">{{$sql[$i]->codigo_1}}</td>
-                        <td style="text-align: left; border-left:0px; border-bottom: 0px;border-right: 0px; border-top: 0px;">{{$sql[$i]->desc_espec_detalle}}</td>
-                        <td style="text-align: center; border-left:0px; border-bottom: 0px;border-right: 0px; border-top: 0px;">{{$sql[$i]->total}}</td>
-                    </tr>
-                @else
-
-                    <tr>
-                        <td style="text-align: left; border-left:0px; border-bottom: 0px;border-right: 0px; border-top: 0px;"><b>{{$sql[$i]->codigo_2}}</b></td>
-                        <td style="text-align: left; border-left:0px; border-bottom: 0px;border-right: 0px; border-top: 0px;"><b>{{$sql[$i]->det_especifica}}</b></td>
-                      
-   
-                    </tr>
-
-                    <tr>
-                        
-                        <td style="text-align: left; border-left:0px; border-bottom: 0px;border-right: 0px; border-top: 0px;">{{$sql[$i]->codigo_1}}</td>
-                        <td style="text-align: left; border-left:0px; border-bottom: 0px;border-right: 0px; border-top: 0px;">{{$sql[$i]->desc_espec_detalle}}</td>
-                        <td style="text-align: center; border-left:0px; border-bottom: 0px;border-right: 0px; border-top: 0px;">{{$sql[$i]->total}}</td>
-
+            @foreach($sql as $lista)
+                @if($aux != $lista->codigo_2)
+                    <?= $aux=$lista->codigo_2 ?>
+                   <tr>
+                        <td style="text-align: left; border-left:0px; border-bottom: 0px;border-right: 0px; border-top: 0px;"><b>{{$lista->codigo_2}}</b></td>
+                        <td style="text-align: left; border-left:0px; border-bottom: 0px;border-right: 0px; border-top: 0px;"><b>{{$lista->det_especifica}}</b></td>
+                        <td style="text-align: left; border-left:0px; border-bottom: 0px;border-right: 0px; border-top: 0px;"></td>
                     </tr>
                 @endif
-            @endfor
+                <tr>
+
+                    <td style="text-align: left; border-left:0px; border-bottom: 0px;border-right: 0px; border-top: 0px;">{{$lista->codigo_1}}</td>
+                    <td style="text-align: left; border-left:0px; border-bottom: 0px;border-right: 0px; border-top: 0px;">{{$lista->desc_espec_detalle}}</td>
+                    <td style="text-align: center; border-left:0px; border-bottom: 0px;border-right: 0px; border-top: 0px;">{{$lista->total}}</td>
+                </tr>
+                
+            @endforeach
             <tr>
-                <td colspan="4" style="border-left:0px; border-bottom: 0px;border-right: 0px"></td>
+                <td colspan="3" style="border-left:0px; border-bottom: 0px;border-right: 0px"></td>
             </tr>
             </tbody>
         </table>

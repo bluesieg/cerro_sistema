@@ -182,23 +182,27 @@ class Caja_Est_CuentasController extends Controller
     }
     
     function print_est_cta_contrib($id_contrib,$desde,$hasta){        
-//        $fracc="";
+        $fracc="";
         $contrib=DB::select('select * from adm_tri.vw_contribuyentes where id_contrib='.$id_contrib);
-//        $convenio=DB::select('select * from fraccionamiento.vw_convenios where id_contribuyente='.$id_contrib);
-//        if(count($convenio) > 1){
-//            $fracc = DB::select("select * from fraccionamiento.detalle_convenio where id_conv_mtr=".$convenio[0]->id_conv." order by nro_cuota");
-//        }        
+        $convenio=DB::select('select * from fraccionamiento.vw_convenios where id_contribuyente='.$id_contrib);
+        if(count($convenio) > 1){
+            $fracc = DB::select("select * from fraccionamiento.detalle_convenio where id_conv_mtr=".$convenio[0]->id_conv." order by nro_cuota");
+        }        
         $fecha_larga = mb_strtoupper($this->getCreatedAtAttribute(date('d-m-Y'))->format('l, d \d\e F \d\e\l Y'));
-//        $arb = DB::select('select * from arbitrios.vw_cta_arbi_x_trim where id_contrib='.$id_contrib.' and anio between '.$desde.' and '.$hasta);
-//        $pred = DB::select('select * from adm_tri.vw_cta_cte2 where id_contrib='.$id_contrib.' and ano_cta between '.$desde.' and '.$hasta);
-//        $view = \View::make('caja.reportes.est_cta_contrib',compact('contrib','fecha_larga','arb','pred','desde','hasta','convenio','fracc'))->render();
+        $arb = DB::select('select * from arbitrios.vw_cta_arbi_x_trim where id_contrib='.$id_contrib.' and anio between '.$desde.' and '.$hasta);
+        $imp=DB::select('select adm_tri.calcula_reajuste_ipm('.$id_contrib.','.$desde.')');
         $imp=DB::select('select adm_tri.calcula_reajuste_ipm('.$id_contrib.','.$hasta.')');
+        $tim=DB::select('select adm_tri.calcula_tim('.$id_contrib.','.$desde.')');
         $tim=DB::select('select adm_tri.calcula_tim('.$id_contrib.','.$hasta.')');
-        $sql=DB::select("select * from adm_tri.cta_cte where id_pers=".$id_contrib."and ano_cta='".$hasta."'");
+        $pred = DB::select('select * from adm_tri.vw_cta_cte2 where id_contrib='.$id_contrib.' and ano_cta between '.$desde.' and '.$hasta);
+        $view = \View::make('caja.reportes.est_cta_contrib',compact('contrib','fecha_larga','arb','pred','desde','hasta','convenio','fracc'))->render();
         
-        $view = \View::make('caja.reportes.est_cta_contrib_new',compact('contrib','fecha_larga','hasta'))->render();
+//        $sql=DB::select("select * from adm_tri.cta_cte where id_pers=".$id_contrib."and ano_cta='".$hasta."'");
+//        
+//        $view = \View::make('caja.reportes.est_cta_contrib',compact('contrib','fecha_larga','hasta'))->render();
+        
         $pdf = \App::make('dompdf.wrapper');            
-        $pdf->loadHTML($view)->setPaper('a4');
+        $pdf->loadHTML($view)->setPaper('a4','landscape');
         return $pdf->stream();
     }
     

@@ -85,7 +85,7 @@ function update_env_op(id_gen_fis,env_op){
     $.ajax({
         url:'updat_env_doc',
         type:'GET',
-        data:{id_gen_fis:id_gen_fis,env_op:env_op},
+        data:{id_gen_fis:id_gen_fis,env_op:env_op,doc_ini:2},
         success:function(data){
             if($("input:radio[name='myradio']:checked").val()==1){
                 fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+

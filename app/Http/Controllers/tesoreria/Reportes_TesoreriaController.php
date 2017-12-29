@@ -39,19 +39,17 @@ class Reportes_TesoreriaController extends Controller
        
     }
     
-    
-
-      public function rep_por_partida(Request $request)
+    public function rep_por_partida(Request $request)
     {
         //gonzalo
         $fechainicio = $request['ini'];
         $fechafin = $request['fin'];
-        $sql = DB::select("SELECT codigo_1,det_especifica,codigo_2,desc_espec_detalle,SUM(monto) as total FROM presupuesto.vw_partida_presupuestal_3 where fecha between '$fechainicio' and '$fechafin' GROUP BY codigo_1,det_especifica,codigo_2,desc_espec_detalle order by codigo_1" );
-       
+        $sql = DB::select("SELECT codigo_2,det_especifica,codigo_1,desc_espec_detalle,SUM(monto) as total  FROM presupuesto.vw_partida_presupuestal_3 where fecha between '$fechainicio' and '$fechafin' GROUP BY codigo_2,det_especifica,codigo_1,desc_espec_detalle order by codigo_2" );
         
         if(count($sql)>0)
         {
-            $view =  \View::make('tesoreria.reportes.rep_por_partida', compact('sql','fechainicio','fechafin'))->render();
+            $aux='0';
+            $view =  \View::make('tesoreria.reportes.rep_por_partida', compact('sql','fechainicio','fechafin','aux'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("PRUEBA".".pdf");
@@ -60,7 +58,6 @@ class Reportes_TesoreriaController extends Controller
         {
             return 'NO HAY RESULTADOS';
         }
-        
     }
      public function rep_por_tributo(Request $request)
     {

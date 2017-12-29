@@ -99,16 +99,16 @@
                     <tr>                        
                         <td style="text-align: center">{{ $pred->ano_cta }}</td>
                         <td style="text-align: left">{{ $pred->descrip_tributo }}</td>
-                        <td style="text-align: right">{{ $pred->car1_cta }}</td>
-                        <td style="text-align: right">{{ number_format($pred->abo1_cta,2,'.',',') }}</td>
-                        <td style="text-align: right">{{ $pred->car2_cta }}</td>
-                        <td style="text-align: right">{{ number_format($pred->abo2_cta,2,'.',',') }}</td>
-                        <td style="text-align: right">{{ $pred->car3_cta }}</td>
-                        <td style="text-align: right">{{ number_format($pred->abo3_cta,2,'.',',') }}</td>
-                        <td style="text-align: right">{{ $pred->car4_cta }}</td>
-                        <td style="text-align: right">{{ number_format($pred->abo4_cta,2,'.',',') }}</td>
-                        <td style="text-align: right">{{ $pred->ivpp }}</td>
-                        <td style="text-align: right">{{ $pred->saldo }}</td>
+                        <td style="text-align: right">{{ number_format($pred->car1_cta,3,'.',',') }}</td>
+                        <td style="text-align: right">{{ number_format($pred->abo1_cta,3,'.',',') }}</td>
+                        <td style="text-align: right">{{ number_format($pred->car2_cta,3,'.',',') }}</td>
+                        <td style="text-align: right">{{ number_format($pred->abo2_cta,3,'.',',') }}</td>
+                        <td style="text-align: right">{{ number_format($pred->car3_cta,3,'.',',') }}</td>
+                        <td style="text-align: right">{{ number_format($pred->abo3_cta,3,'.',',') }}</td>
+                        <td style="text-align: right">{{ number_format($pred->car4_cta,3,'.',',') }}</td>
+                        <td style="text-align: right">{{ number_format($pred->abo4_cta,3,'.',',') }}</td>
+                        <td style="text-align: right">{{ number_format($pred->ivpp,3,'.',',')  }}</td>
+                        <td style="text-align: right">{{ number_format($pred->saldo,3,'.',',')  }}</td>
                     </tr>
                     @endforeach                                     
                 </tbody>
@@ -120,7 +120,7 @@
             @endif
             
         </div>        
-        @if (count($arb) > 1)
+        @if (count($arb) >= 1)
             <div style="margin-top: 10px;" id="div_arb">
                 <div> <center> ARBITRIOS</center></div>
                 <table style="width: 100%;" class="t1" id="est_cta_t_arb">

@@ -58,7 +58,7 @@
                 </tr>
                 <tr>
                     <td style="width: 120px"><b>Obligacion</b></td>
-                    <td>:&nbsp;TRIBUTARIA(x)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NO TRIBUTARIA(&nbsp;&nbsp;&nbsp;)<br/></td>
+                    <td>:&nbsp;TRIBUTARIA(&nbsp;&nbsp;&nbsp;)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NO TRIBUTARIA(&nbsp;&nbsp;&nbsp;)<br/></td>
                 </tr>
                 <tr>
                     <td style="width: 120px"><b>Materia</b></td>
@@ -66,7 +66,7 @@
                 </tr>
                 <tr>
                     <td colspan="2">Lo Notifico a Usted con arreglo a Ley.<br>
-                        SE ADJUNTA LA RESOLUCIÓN N° {{$nro_resol}}-2017/OEC-MDCC, de fecha ....../....../20..... CON RELACIÓN AL ESCRITO:................................................... de fecha, ....../....../20..... CON UN TOTAL DE:(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;) FOLIO(S).
+                        {{$documento[0]->texto}}, de fecha ....../....../20..... CON RELACIÓN AL ESCRITO:................................................... de fecha, ....../....../20..... CON UN TOTAL DE:(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;) FOLIO(S).
                     </td>                    
                 </tr>
             </table>
