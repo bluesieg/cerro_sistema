@@ -264,6 +264,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('ver_rep_tesoreria/{tipo}', 'Reportes_TesoreriaController@ver_reporte_teso');
 
         Route::get('autocomplete_tributos', 'Reportes_TesoreriaController@autocompletar_tributos');
+        
 
     });
     Route::group(['namespace' => 'caja'], function() {
@@ -469,6 +470,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('reporte_supervisores','ReportesController@index_supervisores');
         //andrea
         Route::get('reporte_por_zona/{anio}/{id_hab_urb}','ReportesController@rep_por_zona');
+        Route::get('reporte_corriente/{anio}','ReportesController@rep_corriente');
+
 
           
     });

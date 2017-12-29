@@ -414,6 +414,9 @@ function dlg_reporte_por_zona(tipo)
 {
     if (tipo===0) {
         crear_dialogo_por_zona();
+         $('#hab_urb').val("");
+         $('#hiddenhab').val("");
+
     } 
     if (tipo===1) {
         crear_dialogo_corriente();

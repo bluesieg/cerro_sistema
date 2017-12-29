@@ -506,15 +506,32 @@ class ReportesController extends Controller
     
      public function rep_por_zona($anio,$id)
     {
-        $id = $request['id'];
-        $anio= $request['anio'];
-        $sql=DB::table('presupuesto.vw_por_tributo')->where('anio',$anio) ->where('fecha', $id)->orderBy('anio','asc')->get();
+        $sql=DB::table('')->where('',$anio) ->where('', $id)->orderBy('','asc')->get();
         
        
         
         if(count($sql)>0)
         {
             $view =  \View::make('reportes_gonzalo.reportes.rep_por_zona', compact('sql'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("PRUEBA".".pdf");
+        }
+        else
+        {
+            return 'NO HAY RESULTADOS';
+        }
+        
+    }
+    public function rep_corriente($anio)
+    {
+        //$anio= $request['anio'];
+       // $sql=DB::table('presupuesto.vw_por_tributo')->where('id_tributo',$id_tributo) ->whereBetween('fecha', [$fechainicio, $fechafin])->orderBy('fecha','asc')->get();
+        $sql = DB::select(" select * from presupuesto.vw_imp_pre_corr_nocorr where periodo='$anio' order by periodo asc" );
+        
+        if(count($sql)>0)
+        {
+            $view =  \View::make('reportes_gonzalo.reportes.rep_corriente', compact('sql'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("PRUEBA".".pdf");

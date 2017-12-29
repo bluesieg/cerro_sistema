@@ -9,6 +9,9 @@ function dlg_teso_reportes(tipo)
     if(tipo == 2)
     {
         crear_dialogo_por_tributo()
+         $('#tributo').val("");
+         $('#hiddentributo').val("");
+
     }
     if(tipo == 3)
     {
