@@ -527,11 +527,11 @@ class ReportesController extends Controller
     {
         //$anio= $request['anio'];
        // $sql=DB::table('presupuesto.vw_por_tributo')->where('id_tributo',$id_tributo) ->whereBetween('fecha', [$fechainicio, $fechafin])->orderBy('fecha','asc')->get();
-        $sql = DB::select(" select * from presupuesto.vw_imp_pre_corr_nocorr where periodo='$anio' order by periodo asc" );
-        
+        $sql = DB::select(" select * from presupuesto.vw_imp_pre_corr_nocorr where periodo='$anio' order by periodo desc" );
+        $sql1 = DB::select("select sum(sum) from presupuesto.vw_imp_pre_corr_nocorr where periodo<'$anio' " );
         if(count($sql)>0)
         {
-            $view =  \View::make('reportes_gonzalo.reportes.rep_corriente', compact('sql'))->render();
+            $view =  \View::make('reportes_gonzalo.reportes.rep_corriente', compact('sql','sql1'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("PRUEBA".".pdf");

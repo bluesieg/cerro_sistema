@@ -33,7 +33,7 @@
                 </b></div></center>
         <br>
         
-        
+        <div class="sub2" style="font-size:0.8em"><b>Año Seleccionado: </b>{{$sql[0]->periodo}}</div>
          
         <input type="hidden" value=" {{$num=1}}">
         <br>
@@ -41,9 +41,9 @@
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 10px; margin-top: 10px" >
         <thead>
           <tr>
-              <th style="width: 5%">N°</th>
-              <th style="width: 30%">Fecha</th>
-              <th style="width: 30%">Monto s/.</th>
+
+              <th style="width: 30%">Corriente</th>
+              <th style="width: 30%">No Corriente</th>
               
           </tr>
         </thead>
@@ -51,9 +51,13 @@
           
           @foreach ($sql as $arc)
           <tr>
-              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$num++}}</td>
-              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$arc->periodo}}</td>
-              <td style="text-align: right;font-size: 0.7em; padding-right: 10px;">{{$arc->sum}}</td>
+              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$arc->sum}}</td>
+              
+
+          @endforeach
+          @foreach ($sql1 as $arc1)
+
+              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$arc1->sum}}</td>
               
           </tr>
           @endforeach
