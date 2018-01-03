@@ -75,6 +75,7 @@ class Oficinas_Uit extends Controller {
                 trim($Datos->deoa15),
                 trim($Datos->de15a60),
                 trim($Datos->mas60),
+                trim($Datos->factor_instalaciones),
             );
         }
 
@@ -156,7 +157,8 @@ class Oficinas_Uit extends Controller {
             'base_03' => $data['base_03'],
             'mas60' => $data['mas60'],
             'porc_min_ivpp' => $data['porc_min_ivpp'],
-            'porc_ot_ins' => $data['porc_ot_ins']
+            'porc_ot_ins' => $data['porc_ot_ins'],
+            'factor_instalaciones' => $data['factor_instalaciones']
         );
         // $uit=array('uit'=>$data['uit']); 
         //$insert = DB::table('uit')->insert($arr_uit)->where('id','=',$id);
@@ -194,7 +196,8 @@ class Oficinas_Uit extends Controller {
             'base_03' => $data['base_03'],
             'mas60' => $data['mas60'],
             'porc_min_ivpp' => $data['porc_min_ivpp'],
-            'porc_ot_ins' => $data['porc_ot_ins']
+            'porc_ot_ins' => $data['porc_ot_ins'],
+            'factor_instalaciones' => $data['factor_instalaciones']
         );
         // $uit=array('uit'=>$data['uit']); 
 

@@ -27,7 +27,7 @@ class ProcedimientoController extends Controller
         $data = new Procedimientos();
         $data->descrip_procedim = $request['descrip_procedim'];
         $data->id_ofic = $request['id_ofic'];
-        $data->anio = date('Y');
+        $data->anio = $request['anio'];
         $data->id_espec_det = $request['id_espec_det'];        
         $data->save();
         return $data->id_proced;
@@ -66,10 +66,11 @@ class ProcedimientoController extends Controller
         }
         return response()->json($todo);
     }
-    function autocompletar_esp_detalle(){
-        $Consulta = DB::table('presupuesto.vw_especif_detalle_1')->get();
+    function autocompletar_esp_detalle(Request $request){
+        //$Consulta = DB::table('presupuesto.vw_especif_detalle_1')->get();
+        $sql = DB::select("select id_espec_det,detalle from presupuesto.vw_especif_detalle_1 where anio='".$request['anio']."' ");
         $todo = array();
-        foreach ($Consulta as $Datos) {
+        foreach ($sql as $Datos) {
             $Lista = new \stdClass();
             $Lista->value = $Datos->id_espec_det;
             $Lista->label = trim($Datos->detalle);

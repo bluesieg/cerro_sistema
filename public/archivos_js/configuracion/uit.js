@@ -76,6 +76,7 @@ function open_dialog_nuevo_uit(tipe, Id)
         $("#txt_15uit").val(0.2);
         $("#txt_60uit").val(0.6);
         $("#txt_60mas").val(1.0);
+        $("#txt_finstalaciones").val("");
 
     } else {
         $("#txt_anio").val($.trim($("#table_vw_uit").getCell(Id, "anio")));
@@ -88,6 +89,7 @@ function open_dialog_nuevo_uit(tipe, Id)
         $("#txt_60mas").val($.trim($("#table_vw_uit").getCell(Id, "mas60")));
         $("#txt_min_ivpp").val($.trim($("#table_vw_uit").getCell(Id, "porc_min_ivpp")));
         $("#txt_ot_ins").val($.trim($("#table_vw_uit").getCell(Id, "porc_ot_ins")));
+        $("#txt_finstalaciones").val($.trim($("#table_vw_uit").getCell(Id, "factor_instalaciones")));
     }
 }
 
@@ -136,6 +138,7 @@ function guardar_uit() {
     v_mas60 = $("#txt_60mas").val();
     v_porc_min_ivpp = $("#txt_min_ivpp").val();
     v_porc_ot_ins = $("#txt_ot_ins").val();
+    fact_instalaciones = $("#txt_finstalaciones").val();
 
     $.ajax({
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -155,7 +158,8 @@ function guardar_uit() {
             base_03: v_base_03,
             mas60: v_mas60.replace(',', '.'),
             porc_min_ivpp: v_porc_min_ivpp,
-            porc_ot_ins: v_porc_ot_ins
+            porc_ot_ins: v_porc_ot_ins,
+            factor_instalaciones: fact_instalaciones
         },
         success: function (data) {
             if (data.msg == 'si') {
@@ -187,6 +191,7 @@ function modificar_uit(Id) {
     v_mas60 = $("#txt_60mas").val();
     v_porc_min_ivpp = $("#txt_min_ivpp").val();
     v_porc_ot_ins = $("#txt_ot_ins").val();
+    f_instalaciones = $("#txt_finstalaciones").val();
 
     $.confirm({
         type: 'green',
@@ -198,7 +203,7 @@ function modificar_uit(Id) {
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     type: 'POST',
                     url: 'uit_mod',
-                    data: {pk_uit: Id, anio: v_anio, uit: v_uit, uit_alc: v_uit_alc, tas_alc: v_tas_alc, formatos: v_formatos, base_01: v_base_01, deoa15: v_deoa15, tram_01: v_tram_01, base_02: v_base_02, de15a60: v_de15a60, tram_02: v_tram_02, base_03: v_base_03, mas60: v_mas60, porc_min_ivpp: v_porc_min_ivpp, porc_ot_ins: v_porc_ot_ins},
+                    data: {pk_uit: Id, anio: v_anio, uit: v_uit, uit_alc: v_uit_alc, tas_alc: v_tas_alc, formatos: v_formatos, base_01: v_base_01, deoa15: v_deoa15, tram_01: v_tram_01, base_02: v_base_02, de15a60: v_de15a60, tram_02: v_tram_02, base_03: v_base_03, mas60: v_mas60, porc_min_ivpp: v_porc_min_ivpp, porc_ot_ins: v_porc_ot_ins, factor_instalaciones: f_instalaciones},
                     success: function (data) {
                         if (data.msg == 'si') {
                             recargar_uit();

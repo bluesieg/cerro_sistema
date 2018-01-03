@@ -194,7 +194,7 @@ class TributosController extends Controller
     }
     
     function autocompletar_procedimientos(Request $request) {
-        $Consulta = DB::table('presupuesto.procedimientos')->where('id_ofic',$request['ofi'])->get();
+        $Consulta = DB::table('presupuesto.procedimientos')->where('id_ofic',$request['ofi'])->where('anio',$request['anio'])->get();
         $todo = array();
         foreach ($Consulta as $Datos) {
             $Lista = new \stdClass();

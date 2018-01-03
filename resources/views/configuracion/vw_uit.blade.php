@@ -77,6 +77,10 @@
             <td>
                 <input type="number" id="txt_tas_alc" min="0" max="10000" step="0.01"  required="required"><p>
             </td>
+            <td> &nbsp &nbsp Factor Instalaciones : </td>
+            <td>
+                <input type="number" id="txt_finstalaciones" min="0" max="10000" step="0.01"  required="required"><p>
+            </td>
         </tr>
         <tr>
             <td> Formatos : </td>
@@ -125,7 +129,7 @@
             url: 'list_uit',
             datatype: 'json', mtype: 'GET',
             autowidth: true, height: 'auto',
-            colNames: ['pk_uit', 'Año', 'UIT', 'Uit Alcab %', 'Tasa Alcab', 'Formatos', '% Min Ivpp', '% Min O Inst', 'deoa15', 'de15a60', 'mas60'],
+            colNames: ['pk_uit', 'Año', 'UIT', 'Uit Alcab %', 'Tasa Alcab', 'Formatos', '% Min Ivpp', '% Min O Inst', 'deoa15', 'de15a60', 'mas60','Factor Instalaciones'],
             rowNum: 15, sortname: 'pk_uit', sortorder: 'desc', viewrecords: true, caption: 'Lista UIT', align: "center",
             colModel: [
                 {name: 'pk_uit', index: 'pk_uit', hidden: true},
@@ -139,6 +143,7 @@
                 {name: 'deoa15', index: 'deoa15', align: 'center', hidden: true},
                 {name: 'de15a60', index: 'de15a60', align: 'center', hidden: true},
                 {name: 'mas60', index: 'mas60', align: 'center', hidden: true},
+                {name: 'factor_instalaciones', index: 'factor_instalaciones', align: 'center'},
             ],
             pager: '#pager_table_vw_uit',
             rowList: [15, 25],

@@ -33,13 +33,15 @@ function new_procedimiento(){
         mostraralertasconfoco('Ingrese Descripción','#proced_desc');
         return false;
     }
+    vw_procedim_anio
     $.ajax({
         url: 'procedimientos/create',
         type: 'GET',
         data: {            
             descrip_procedim:desc.toUpperCase(),
             id_ofic:$("#hiddenproced_ofi").val(),
-            id_espec_det:$("#hiddenproced_esp_det").val()
+            id_espec_det:$("#hiddenproced_esp_det").val(),
+            anio:$("#vw_procedim_anio").val()
         },
         success: function (data) {
             if(data){
@@ -137,6 +139,9 @@ function auto_esp_detalle(textbox){
     $.ajax({
         type: 'GET',
         url: 'auto_esp_detalle',
+        data: {            
+            anio:$("#vw_procedim_anio").val(),
+        },
         success: function (data) {
             var $datos = data;
             $("#" + textbox).autocomplete({

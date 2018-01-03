@@ -236,6 +236,9 @@ function autocompletar_procedimientos(textbox){
     $.ajax({
         type: 'GET',
         url: 'autocomplete_procedimientos?ofi=' + $("#hiddenproced_ofi").val(),
+        data: {            
+            anio:$("#select_anio").val(),
+        },
         success: function (data) {
             var $datos = data;
             $("#nombre_procedimiento").autocomplete({

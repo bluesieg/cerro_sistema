@@ -414,7 +414,7 @@ class ReportesController extends Controller
             
             $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio, $sector ) {
                 
-                $sql = DB::select("select pers_nro_doc, contribuyente, (coalesce(dir_pred, '') || ' ' || coalesce(referencia, '')) as domicilio, uso_arbitrio from reportes.vw_predios_tipo_uso_arb where anio = '$anio' and sec = '$sector' " );
+                $sql = DB::select("select pers_nro_doc, contribuyente, (coalesce(dir_pred, '') || ' ' || coalesce(referencia, '')) as domicilio, uso_arbitrio from reportes.vw_predios_tipo_uso_arb where anio = '$anio' and id_sec = '$sector' " );
                 
                 $data= json_decode( json_encode($sql), true);
                 
@@ -479,6 +479,29 @@ class ReportesController extends Controller
             });
         })->export('xls');
         
+        }
+        elseif($anio != 0 && $sector != 0 && $condicion == 0){
+            \Excel::create('Cantidad de contribuyentes por Condicion(Afecto, Inafecto, Exoneracion Parcial, Pensionista y Adulto mayor)', function($excel) use ( $anio, $condicion ) {
+            
+            $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio, $condicion ) {
+                
+                $sql = DB::select("select pers_nro_doc, contribuyente, dom_fis, porctje, desc_exon, sec, base_impon from reportes.vw_por_tipo_exoneracion where anio = '$anio' and id_cond_exonerac = '$condicion' " );
+                
+                $data= json_decode( json_encode($sql), true);
+                
+                $sheet->fromArray($data);
+                $sheet->row(1, array("DNI", "NOMBRE", "DOMICILIO FISCAL", "DEDUCCION", "CONDICION", "SECTOR", "BASE IMPONIBLE"))->freezeFirstRow();
+                $sheet->setWidth(array(
+                    'A'     =>  15,
+                    'B'     =>  50,
+                    'C'     =>  100,
+                    'D'     =>  30,
+                    'E'     =>  30,
+                    'F'     =>  20,
+                    'G'     =>  20
+                ));
+            });
+        })->export('xls');
         }
         else{
         

@@ -120,7 +120,7 @@ function imp_pred_insert_detalle(id_recibo){
         data: {
             id_rec_master: id_recibo,
             id_trib: rowId,
-            periodo:$("#vw_emi_rec_imp_pre_anio").val(),
+            periodo:$("#vw_emi_rec_imp_pre_contrib_anio").val(),
             monto: monto,
             cant: select_check,
             p_unit:$("#vw_emis_re_pag_pre_x_trim").val().replace(',', '')
@@ -136,7 +136,7 @@ function imp_pred_insert_detalle(id_recibo){
                             id_rec_master: id_recibo,
                             id_trib: 104,    
                             monto: pago_im_formatos,
-                            periodo:$("#vw_emi_rec_imp_pre_anio").val(),
+                            periodo:$("#vw_emi_rec_imp_pre_contrib_anio").val(),
                             cant: 4,
                             p_unit: (pago_im_formatos/4)
                         }                   
