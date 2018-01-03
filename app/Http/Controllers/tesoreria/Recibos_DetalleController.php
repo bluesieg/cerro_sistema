@@ -29,7 +29,16 @@ class Recibos_DetalleController extends Controller
         date_default_timezone_set('America/Lima');
         $rec_det = new Recibos_Detalle(); 
         $rec_det->id_rec_master=$request->id_rec_master;
-        $rec_det->periodo=date('Y');
+        
+        if($request->periodo != null){
+            $rec_det->periodo=$request->periodo;
+        }else{
+            $sql = DB::select("select date_part('year',current_date) as anio");
+            foreach ($sql as $row){
+                $rec_det->periodo=$row->anio;
+            }  
+        }
+        
         $rec_det->id_ofi=0;
         $rec_det->id_trib=$request->id_trib;
         $rec_det->monto=$request->monto;

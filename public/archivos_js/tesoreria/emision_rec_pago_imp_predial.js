@@ -79,6 +79,7 @@ function gen_rec_imp_pred(s_checks){
                         glosa: ($("#vw_emi_rec_imp_pred_glosa").val()).toUpperCase(),
                         total: $("#vw_emision_rec_pago_imp_pred_total_trimestre").val().replace(',', ''),
                         id_pers:$("#vw_emi_rec_imp_pre_id_pers").val(),
+                        periodo:$("#vw_emi_rec_imp_pre_anio").val(),
                         clase_recibo:0,
                         pred_check : s_checks,
                         form_pred_check:formatos_checks || '0'
@@ -112,12 +113,14 @@ function imp_pred_insert_detalle(id_recibo){
     rowId=$('#table_cta_cte2').jqGrid ('getGridParam', 'selrow');
     
     monto = (parseFloat($("#vw_emision_rec_pago_imp_pred_total_trimestre").val().replace(',', ''))-parseFloat($("#table_cta_cte2").getCell(104, 'saldo')));
+
     $.ajax({
         url: 'emi_recibo_detalle/create',
         type: 'GET',
         data: {
             id_rec_master: id_recibo,
             id_trib: rowId,
+            periodo:$("#vw_emi_rec_imp_pre_anio").val(),
             monto: monto,
             cant: select_check,
             p_unit:$("#vw_emis_re_pag_pre_x_trim").val().replace(',', '')
@@ -131,8 +134,9 @@ function imp_pred_insert_detalle(id_recibo){
                         type: 'GET',
                         data: {
                             id_rec_master: id_recibo,
-                            id_trib: 104,
+                            id_trib: 104,    
                             monto: pago_im_formatos,
+                            periodo:$("#vw_emi_rec_imp_pre_anio").val(),
                             cant: 4,
                             p_unit: (pago_im_formatos/4)
                         }                   

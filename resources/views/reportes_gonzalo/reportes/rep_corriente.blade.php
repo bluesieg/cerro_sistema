@@ -51,13 +51,16 @@
           
           @foreach ($sql as $arc)
           <tr>
-              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$arc->sum}}</td>
+              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{number_format($arc->sum,3,".",",")}}</td>
               
 
           @endforeach
           @foreach ($sql1 as $arc1)
+            @if($arc1->sum == '')
+           
+            @endif
 
-              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$arc1->sum}}</td>
+              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{number_format($arc1->sum,3,".",",")}}</td>
               
           </tr>
           @endforeach

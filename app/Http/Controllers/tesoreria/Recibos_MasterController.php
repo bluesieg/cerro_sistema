@@ -322,10 +322,11 @@ class Recibos_MasterController extends Controller
     function completar_tributo(Request $request){
         $tributo = strtoupper($request['tributo']);
 
-        $Consulta = DB::table('presupuesto.vw_tributos_vladi')->where('tributo', 'like', '%'.$tributo.'%')->get();
+        //$Consulta = DB::table('presupuesto.vw_tributos_vladi')->where('tributo', 'like', '%'.$tributo.'%')->get();
+        $sql= DB::select("select id_tributo,tributo,para_recibo,soles from presupuesto.vw_tributos_vladi where tributo like " . "'%".$tributo."%'" . "and anio = (select date_part('year',current_date))");
 
         $todo = array();
-        foreach ($Consulta as $Datos) {
+        foreach ($sql as $Datos) {
             $Lista = new \stdClass();
             $Lista->value = $Datos->id_tributo;
             $Lista->p_recibo = $Datos->para_recibo;
