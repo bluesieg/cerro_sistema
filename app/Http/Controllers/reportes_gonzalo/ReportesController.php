@@ -139,7 +139,8 @@ class ReportesController extends Controller
     public function listado_contribuyentes($anio,$sector){
         
         if($anio != 0 && $sector == 0){
-            
+            set_time_limit(0);
+            ini_set('memory_limit', '1G');
         \Excel::create('REPORTE DE CONTRIBUYENTES', function($excel) use ( $anio ) {
             
             $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio ) {
@@ -182,7 +183,8 @@ class ReportesController extends Controller
     public function listado_contribuyentes_predios($anio,$sector)
     {
         if($anio != 0 && $sector == 0){
-            
+            set_time_limit(0);
+            ini_set('memory_limit', '1G');
         \Excel::create('REPORTE DE LISTADO DE CONTRIBUYENTES Y PREDIOS', function($excel) use ( $anio ) {
             
             $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio ) {
@@ -339,7 +341,8 @@ class ReportesController extends Controller
     {
         
         if($anio != 0 && $sector == 0){
-            
+            set_time_limit(0);
+            ini_set('memory_limit', '1G');
         \Excel::create('REPORTE DE CANTIDAD DE CONTRIBUYENTES Y PREDIOS POR ZONA', function($excel) use ( $anio ) {
             
             $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio ) {
@@ -389,7 +392,8 @@ class ReportesController extends Controller
     public function reporte_emision_predial($anio,$sector,$uso)
     {
         if($anio != 0 && $sector == 0 && $uso == 0){
-            
+            set_time_limit(0);
+            ini_set('memory_limit', '1G');
         \Excel::create('REPORTE DE EMISION PREDIAL POR USO', function($excel) use ( $anio ) {
             
             $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio ) {
@@ -410,6 +414,8 @@ class ReportesController extends Controller
         })->export('xls');
         
         }elseif($anio != 0 && $sector != 0 && $uso == 0){
+            set_time_limit(0);
+            ini_set('memory_limit', '1G');
             \Excel::create('REPORTE DE EMISION PREDIAL POR USO', function($excel) use ( $anio, $sector ) {
             
             $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio, $sector ) {
@@ -456,7 +462,8 @@ class ReportesController extends Controller
     public function reporte_cant_cont_ded_mont_bas_imp($anio,$sector,$condicion)
     {
         if($anio != 0 && $sector == 0 && $condicion == 0){
-            
+            set_time_limit(0);
+            ini_set('memory_limit', '1G');
         \Excel::create('Cantidad de contribuyentes por Condicion(Afecto, Inafecto, Exoneracion Parcial, Pensionista y Adulto mayor)', function($excel) use ( $anio ) {
             
             $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio ) {
@@ -477,15 +484,18 @@ class ReportesController extends Controller
                     'G'     =>  20
                 ));
             });
+            
         })->export('xls');
         
         }
         elseif($anio != 0 && $sector != 0 && $condicion == 0){
-            \Excel::create('Cantidad de contribuyentes por Condicion(Afecto, Inafecto, Exoneracion Parcial, Pensionista y Adulto mayor)', function($excel) use ( $anio, $condicion ) {
+            set_time_limit(0);
+            ini_set('memory_limit', '1G');
+            \Excel::create('Cantidad de contribuyentes por Condicion(Afecto, Inafecto, Exoneracion Parcial, Pensionista y Adulto mayor)', function($excel) use ( $anio, $sector ) {
             
-            $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio, $condicion ) {
+            $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio, $sector ) {
                 
-                $sql = DB::select("select pers_nro_doc, contribuyente, dom_fis, porctje, desc_exon, sec, base_impon from reportes.vw_por_tipo_exoneracion where anio = '$anio' and id_cond_exonerac = '$condicion' " );
+                $sql = DB::select("select pers_nro_doc, contribuyente, dom_fis, porctje, desc_exon, sec, base_impon from reportes.vw_por_tipo_exoneracion where anio = '$anio' and id_sec = '$sector' " );
                 
                 $data= json_decode( json_encode($sql), true);
                 
