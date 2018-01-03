@@ -1,14 +1,14 @@
-
+var inigridarb=0;
 function dialog_emi_rec_pag_arbitrios() {
     $("#vw_emision_rec_pag_arbitrios").dialog({
-        autoOpen: false, modal: true, width: 1300, show: {effect: "fade", duration: 300}, resizable: false,
+        autoOpen: false, modal: true, width: 1350, show: {effect: "fade", duration: 300}, resizable: false,
         position: ['auto',10],
         create: function (event) { $(event.target).parent().css('position', 'fixed');},
         title: "<div class='widget-header'><h4>.: RECIBO ARBITRIOS :.</h4></div>",
         buttons: [{
                 html: "<i class='fa fa-fax'></i>&nbsp; Generar Recibo",
                 "class": "btn btn-primary",
-                click: function () {}
+                click: function () {gen_recibo_imp_arbitrios();}
             }, {
                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
                 "class": "btn btn-danger",
@@ -16,8 +16,47 @@ function dialog_emi_rec_pag_arbitrios() {
             }],
         open: function(){limpiar_form_rec_arbitrios();}       
     }).dialog('open');
+    if(inigridarb==0)
+    {
+        inigridarb=1;
+        grid_predios_arbitrios();
+    }
+    else
+    {
+        $("#vw_emi_rec_arbitrios_contrib_hidden").val(0)
+        $("#vw_emi_rec_arbitrios_contrib,#vw_emi_rec_arbitrios_contrib_cod").val("");
+        $("#table_Predios_Arbitrios").jqGrid("clearGridData", true);
+        $("#table_cta_Arbitrios").jqGrid("clearGridData", true);
+    }
+}
+function gen_recibo_imp_arbitrios(){
+    var Seleccionados = new Array();
+    $('input[type=checkbox][name=chk_abr]:checked').each(function() {
+        Seleccionados.push($(this).attr( "pago" )+"-"+$(this).attr( "mes" ));
+    });
+    s_checks=Seleccionados.join("and");
+    tot_trim = parseFloat($("#vw_emision_rec_Arbitrios_tot").val());
+    if(tot_trim==0){
+        mostraralertas('No hay meses seleccionados');
+        return false;
+    }
     
-    grid_predios_arbitrios();
+    MensajeDialogLoadAjax('vw_emision_rec_pag_arbitrios', '.:: Guardando ...');
+    id_contrib=$("#vw_emi_rec_arbitrios_contrib_hidden").val();
+    firstid=$('#table_Predios_Arbitrios').jqGrid ('getGridParam', 'selrow');
+    $.ajax({
+        url:'insertar_pago_arbitrio',
+        type:'GET',
+        data:{check:s_checks,id_contrib:id_contrib,anio:$("#vw_emi_rec_arbitrios_contrib_anio").val()},
+        success: function(data){
+            MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
+            MensajeDialogLoadAjaxFinish('vw_emision_rec_pag_arbitrios');
+            $("#vw_emision_rec_pag_arbitrios").dialog('close');
+           fn_actualizar_grilla('table_Resumen_Recibos', 'grid_Resumen_recibos?fecha=' + $("#vw_emision_reg_pag_fil_fecha").val());
+//            $("#vw_emision_rec_Arbitrios_tot").val(0);
+//            fn_actualizar_grilla('table_cta_Arbitrios', 'grid_cta_pago_arbitrios?id_contrib='+id_contrib+'&id_pred='+firstid);
+        }        
+    });
 }
 tope_parques=0;
 tope_seguridad=0;
@@ -25,7 +64,7 @@ tope_recojo=0;
 tope_barrido=0;
 function grid_predios_arbitrios(){
     jQuery("#table_Predios_Arbitrios").jqGrid({
-        url: 'grid_pred_arbitrios?id_contrib=0',
+        url: 'grid_pred_arbitrios?id_contrib=0&anio='+$("#vw_emi_rec_arbitrios_contrib_anio").val(),
         datatype: 'json', mtype: 'GET',
         height: 100, autowidth: true,
         colNames: ['id_pred', 'id_contrib','Sec','Mzna','Lote','Contribuyente / Razon Social', 'Tip.Predio', 'Est.Construccion', 'S/. Terreno', 'S/. Contruccion'],
@@ -49,88 +88,78 @@ function grid_predios_arbitrios(){
             if (rows.length > 0) {
                 var firstid = jQuery('#table_Predios_Arbitrios').jqGrid('getDataIDs')[0];
                 $("#table_Predios_Arbitrios").setSelection(firstid);
-            }  
-        },            
-        ondblClickRow: function (Id) {
+            }
+            id_contrib =$("#table_Predios_Arbitrios").getCell(firstid, 'id_contrib');
+            fn_actualizar_grilla('table_cta_Arbitrios', 'grid_cta_pago_arbitrios?id_contrib='+id_contrib+'&id_pred='+firstid);
+            deuda_total=0;
+        },  
+        onSelectRow: function (Id){
             id_contrib =$("#table_Predios_Arbitrios").getCell(Id, 'id_contrib');
-            fn_actualizar_grilla('table_cta_Arbitrios', 'grid_cta_pago_arbitrios?id_contrib='+id_contrib+'&id_pred='+Id+'&anio='+$("#vw_emi_rec_arbitrios_anio").val());
+            fn_actualizar_grilla('table_cta_Arbitrios', 'grid_cta_pago_arbitrios?id_contrib='+id_contrib+'&id_pred='+Id);
             deuda_total=0;
         }
     });
     jQuery("#table_cta_Arbitrios").jqGrid({
         url: 'grid_cta_pago_arbitrios?id_contrib=0&id_pred=0&anio=0',
         datatype: 'json', mtype: 'GET',
-        height: 'auto', autowidth: true,
-        colNames: ['id_cta_arb', 'id_pgo_arb','id_contri', 'Descripcion', 'Ene', 'abo_ene','Feb', 'abo_feb','Mar', 'abo_mar','Abr', 'abo_abr','May', 'abo_may','Jun', 'abo_jun',
+        height: '150', autowidth: true,
+        colNames: ['id', 'id_contri', 'Uso','Piso','Descripcion', 'Ene', 'abo_ene','Feb', 'abo_feb','Mar', 'abo_mar','Abr', 'abo_abr','May', 'abo_may','Jun', 'abo_jun',
         'Jul', 'abo_jul','Ago', 'abo_ago','Sep', 'abo_sep','Oct', 'abo_oct','Nov', 'abo_nov','Dic', 'abo_dic','Total Debe'],
-        rowNum: 5, sortname: 'id_cta_arb', sortorder: 'desc', viewrecords: true,caption:'Arbitrios del Predio', align: "center",
+        rowNum: 20, sortname: 'id_cta_arb', sortorder: 'asc', viewrecords: true,caption:'Arbitrios del Predio', align: "center",
         colModel: [
-            {name: 'id_cta_arb', index: 'id_cta_arb', hidden: true},
-            {name: 'id_pgo_arb', index: 'id_pgo_arb', hidden: true},
-            {name: 'id_contri', index: 'id_contri', hidden: true},            
-            {name: 'descripcion', index: 'descripcion',  width: 90},
-            {name: 'pgo1',index: 'pgo_ene', align:'center', width: 35},
-            {name: 'abo1',index: 'abo_ene', hidden: true},
-            {name: 'pgo2',index: 'pgo_feb', align:'center', width: 35},
-            {name: 'abo2',index: 'abo_feb', hidden: true},
-            {name: 'pgo3',index: 'pgo_mar', align:'center', width: 35},
-            {name: 'abo3',index: 'abo_mar', hidden: true},
-            {name: 'pgo4',index: 'pgo_abr', align:'center', width: 35},
-            {name: 'abo4',index: 'abo_abr', hidden: true},
-            {name: 'pgo5',index: 'pgo_may', align:'center', width: 35},
-            {name: 'abo5',index: 'abo_may', hidden: true},
-            {name: 'pgo6',index: 'pgo_jun', align:'center', width: 35},
-            {name: 'abo6',index: 'abo_jun', hidden: true},
-            {name: 'pgo7',index: 'pgo_jul', align:'center', width: 35},
-            {name: 'abo7',index: 'abo_jul', hidden: true},
-            {name: 'pgo8',index: 'pgo_ago', align:'center', width: 35},
-            {name: 'abo8',index: 'abo_ago', hidden: true},
-            {name: 'pgo9',index: 'pgo_sep', align:'center', width: 35},
-            {name: 'abo9',index: 'abo_sep', hidden: true},
-            {name: 'pgo10',index: 'pgo_oct', align:'center', width: 35},
-            {name: 'abo10',index: 'abo_oct', hidden: true},
-            {name: 'pgo11',index: 'pgo_nov', align:'center', width: 35},
-            {name: 'abo11',index: 'abo_nov', hidden: true},
-            {name: 'pgo12',index: 'pgo_dic', align:'center', width: 35},
-            {name: 'abo12',index: 'abo_dic', hidden: true},            
+            {name: 'id', index: 'id', hidden: true},
+            {name: 'id_contri', index: 'id_contri', hidden: true},
+            {name: 'uso_arbitrio', index: 'uso_arbitrio',  width: 50},
+            {name: 'cod_piso', index: 'cod_piso',  width: 20},
+            {name: 'descripcion', index: 'descripcion',  width: 70},
+            {name: 'pgo1',index: 'pgo1', align:'left', width: 35},
+            {name: 'abo1',index: 'abo1', hidden: true},
+            {name: 'pgo2',index: 'pgo2', align:'left', width: 35},
+            {name: 'abo2',index: 'abo2', hidden: true},
+            {name: 'pgo3',index: 'pgo3', align:'left', width: 35},
+            {name: 'abo3',index: 'abo3', hidden: true},
+            {name: 'pgo4',index: 'pgo4', align:'left', width: 35},
+            {name: 'abo4',index: 'abo4', hidden: true},
+            {name: 'pgo5',index: 'pgo5', align:'left', width: 35},
+            {name: 'abo5',index: 'abo5', hidden: true},
+            {name: 'pgo6',index: 'pgo6', align:'left', width: 35},
+            {name: 'abo6',index: 'abo6', hidden: true},
+            {name: 'pgo7',index: 'pgo7', align:'left', width: 35},
+            {name: 'abo7',index: 'abo7', hidden: true},
+            {name: 'pgo8',index: 'pgo8', align:'left', width: 35},
+            {name: 'abo8',index: 'abo8', hidden: true},
+            {name: 'pgo9',index: 'pgo9', align:'left', width: 35},
+            {name: 'abo9',index: 'abo9', hidden: true},
+            {name: 'pgo10',index: 'pgo10', align:'left', width: 35},
+            {name: 'abo10',index: 'abo10', hidden: true},
+            {name: 'pgo11',index: 'pgo11', align:'left', width: 35},
+            {name: 'abo11',index: 'abo11', hidden: true},
+            {name: 'pgo12',index: 'pgo12', align:'left', width: 35},
+            {name: 'abo12',index: 'abo12', hidden: true},            
             {name: 'deuda_arb',index: 'deuda_arb',align:'right', width: 35}
         ],
         pager: '#pager_table_cta_Arbitrios',
         rowList: [10, 20],
         gridComplete: function () {
             var rows = $("#table_cta_Arbitrios").getDataIDs();
-            for (var i = 0; i < rows.length; i++){                        
-                for (var a = 1; a <= 12; a++){
-                    var abo = $("#table_cta_Arbitrios").getCell(rows[i], 'abo'+a);
-                    
-                    if(abo=='0' && rows[i]=='57'){
-                        tope_parques++;
-                        pgo = $("#table_cta_Arbitrios").getCell(rows[i], 'pgo'+a);
-                        $("#table_cta_Arbitrios").jqGrid("setCell", rows[i], 'pgo'+a, 
-                        "<input type='checkbox' name='"+rows[i]+"' value='"+pgo+"' id='57_"+a+"' onchange='calc_tot_a_pagar("+a+","+pgo+",this)'>"+pgo,{'text-align':'center'});
+            for (var i = 0; i < rows.length; i++) {
+                   
+                    for (var a = 1; a <= 12; a++) {
+                        var val = $("#table_cta_Arbitrios").getCell(rows[i], 'abo'+a);
+                        var pag = $("#table_cta_Arbitrios").getCell(rows[i], 'pgo'+a);
+                        var id = rows[i];
+                        if (val == 0) {
+                            $("#table_cta_Arbitrios").jqGrid("setCell", rows[i], 'pgo'+a,
+                                    "<input type='checkbox' name='chk_abr' value='" + pag + "' pago='"+id+"' mes='"+a+"' onchange='calc_tot_arbitrios(this.value,this,"+id+","+a+")'>"+pag);
+                        }
+                        else
+                        {
+                            $("#table_cta_Arbitrios").jqGrid("setCell", rows[i], 'pgo'+a,
+                            '<a href="javascript:void(0);" class="btn bg-color-green txt-color-white btn-circle" style="font-size: 8px;width: 15px; height: 15px; padding-top: 0px; margin-right: 7px"><i class="glyphicon glyphicon-ok"></i></a>'+val);
+                        }
                     }
-                    if(abo=='0' && rows[i]=='56'){
-                        tope_seguridad++;
-                        pgo = $("#table_cta_Arbitrios").getCell(rows[i], 'pgo'+a);
-                        $("#table_cta_Arbitrios").jqGrid("setCell", rows[i], 'pgo'+a, 
-                        "<input type='checkbox' name='"+rows[i]+"' value='"+pgo+"' id='56_"+a+"' onchange='calc_tot_a_pagar("+a+","+pgo+",this)'>"+pgo,{'text-align':'center'});
-                    }
-                    if(abo=='0' && rows[i]=='55'){
-                        tope_recojo++;
-                        pgo = $("#table_cta_Arbitrios").getCell(rows[i], 'pgo'+a);
-                        $("#table_cta_Arbitrios").jqGrid("setCell", rows[i], 'pgo'+a, 
-                        "<input type='checkbox' name='"+rows[i]+"' value='"+pgo+"' id='55_"+a+"' onchange='calc_tot_a_pagar("+a+","+pgo+",this)'>"+pgo,{'text-align':'center'});
-                    }
-                    if(abo=='0' && rows[i]=='54'){
-                        tope_barrido++;
-                        pgo = $("#table_cta_Arbitrios").getCell(rows[i], 'pgo'+a);
-                        $("#table_cta_Arbitrios").jqGrid("setCell", rows[i], 'pgo'+a, 
-                        "<input type='checkbox' name='"+rows[i]+"' value='"+pgo+"' id='54_"+a+"' onchange='calc_tot_a_pagar("+a+","+pgo+",this)'>"+pgo,{'text-align':'center'});
-                    }
-                }                
-            }
+                }
             
-            $("#vw_emision_rec_Arbitrios_tot").val('0.00');
             if (rows.length > 0) {
                 var firstid = jQuery('#table_cta_Arbitrios').jqGrid('getDataIDs')[0];
                 $("#table_cta_Arbitrios").setSelection(firstid);
@@ -139,19 +168,19 @@ function grid_predios_arbitrios(){
         ondblClickRow: function (Id) {}
     });    
 }
-function calc_tot_a_pagar(id,value,source){ 
-//    alert(source.checked);
-    if(source.checked){
-        deuda_total=deuda_total+value;
-    } else {
-        deuda_total=deuda_total-value;      
+function calc_tot_arbitrios(valor,esto,id,mes){
+   total=$("#vw_emision_rec_Arbitrios_tot").val();
+    if($(esto).is(':checked')){
+        suma=parseFloat(total)+parseFloat(valor);
+        
+        $("#vw_emision_rec_Arbitrios_tot").val(redondeo(suma,4));
+    } 
+    else
+    {
+        resta=parseFloat(total)-parseFloat(valor);
+        $("#vw_emision_rec_Arbitrios_tot").val(redondeo(resta,4));
     }
-//    if($('56_'+id).is(':checked')){
-//        deuda_total=deuda_total+value;
-//    } else {
-//        deuda_total=deuda_total-value;      
-//    }
-    $("#vw_emision_rec_Arbitrios_tot").val(formato_numero(deuda_total,3,'.',','));
+    
 }
 deuda_total=0;
 function check_anio(name,source,deuda){ 
@@ -177,9 +206,7 @@ function check_anio(name,source,deuda){
             checkboxes[i].checked = source.checked;
         }   
     }
-    
-//    deuda = parseFloat($("#table_cta_Arbitrios").getCell(name, 'deuda_arb'));
-    
+
     if($(checkboxes).is(':checked')){
         deuda_total=0;
         deuda_total=deuda_total+deuda;
@@ -190,36 +217,23 @@ function check_anio(name,source,deuda){
 }
 function selanio_arbi_pred(anio){
     rowId=$('#table_Predios_Arbitrios').jqGrid ('getGridParam', 'selrow');
-    fn_actualizar_grilla('table_cta_Arbitrios', 'grid_cta_pago_arbitrios?id_contrib='+$("#vw_emi_rec_arbitrios_id_pers").val()+'&id_pred='+rowId+'&anio='+anio);
-}
-function fn_bus_contrib_arb(){
-    if($("#vw_emi_rec_arbitrios_contrib").val()==""){
-        mostraralertasconfoco("Ingrese un Contribuyente para Buscar","#vw_emi_rec_arbitrios_contrib"); 
-        return false;
+    if($("#vw_emi_rec_arbitrios_contrib_hidden").val()>0)
+    {
+        fn_actualizar_grilla('table_Predios_Arbitrios','grid_pred_arbitrios?id_contrib='+id_contrib+'&anio='+anio);
     }
-    if($("#vw_emi_rec_arbitrios_contrib").val().length<4){
-        mostraralertasconfoco("Ingresar al menos 4 caracteres de busqueda","#vw_emi_rec_arbitrios_contrib"); 
-        return false;
-    }
-    jQuery("#table_contrib").jqGrid('setGridParam', {url: 'obtiene_cotriname?dat='+$("#vw_emi_rec_arbitrios_contrib").val()}).trigger('reloadGrid');
-    jQuery('#table_contrib').jqGrid('bindKeys', {"onEnter":function( rowid ){fn_bus_contrib_list_arb(rowid);} } ); 
-    $("#dlg_bus_contr").dialog({
-        autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>.:  Busqueda de Contribuyente :.</h4></div>"       
-        }).dialog('open');
-       
 }
+
 function fn_bus_contrib_list_arb(per){
-    $("#vw_emi_rec_arbitrios_id_pers").val(per);
+    $("#vw_emi_rec_arbitrios_contrib_hidden").val(per);
     
-    $("#vw_emi_rec_arbitrios_cod_contrib").val($('#table_contrib').jqGrid('getCell',per,'id_per'));    
+    $("#vw_emi_rec_arbitrios_contrib_cod").val($('#table_contrib').jqGrid('getCell',per,'id_per'));    
     $("#vw_emi_rec_arbitrios_contrib").val($('#table_contrib').jqGrid('getCell',per,'contribuyente'));
     tam=($('#table_contrib').jqGrid('getCell',per,'contribuyente')).length;
 //    anio=$("#vw_emi_rec_imp_pre_anio").val();
     
     $("#vw_emi_rec_arbitrios_contrib").attr('maxlength',tam);
 //    id_pers=$('#table_contrib').jqGrid('getCell',per,'id_pers');
-    fn_actualizar_grilla('table_Predios_Arbitrios','grid_pred_arbitrios?id_contrib='+$("#vw_emi_rec_arbitrios_id_pers").val());
+    fn_actualizar_grilla('table_Predios_Arbitrios','grid_pred_arbitrios?id_contrib='+$("#vw_emi_rec_arbitrios_contrib_hidden").val());
     $("#dlg_bus_contr").dialog("close");    
 }
 

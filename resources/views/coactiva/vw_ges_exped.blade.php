@@ -31,7 +31,20 @@
                             VER POR CONTRIBUYENTE
                             <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                         </a>
-                    </li>           
+                    </li>
+                    <div class="col-xs-3" style="margin-top: 2px; padding-right: 23px;margin-left: 335px">
+                        <div class="input-group input-group-md">
+                            <span class="input-group-addon">Año de Tramite <i class="fa fa-cogs"></i></span>
+                            <div class="icon-addon addon-md">
+                                <select id='selanio_tra' class="form-control col-lg-8" style="height: 32px;">
+                                    <option value="0">Seleccione</option>
+                                    @foreach ($anio_tra as $anio)
+                                    <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </ul>
                 <div id="myTabContent1" class="tab-content padding-10">
                     <div id="s1" class="tab-pane fade active in">
@@ -50,10 +63,24 @@
                                         </span>                                        
                                     </div>                                    
                                 </section>
-                                <section class="col-lg-6 text-right">
-                                    <button onclick="activar_exped();" type="button" class="btn btn-labeled bg-color-green txt-color-white">
-                                        <span class="btn-label"><i class="fa fa-file-text"></i></span>Activar
+                                <section class="col-lg-2" style="padding-left: 5px;padding-right: 5px">
+                                    <div class="input-group input-group-md">
+                                        <span class="input-group-addon">Mat.</span>
+                                        <div class="icon-addon addon-md">
+                                            <select id="ges_exped_mat" class="form-control" onchange="select_materia();">
+                                                <option value='1' >TRIBUTARIA</option>
+                                                <option value='0' >NO TRIBUTARIA</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </section>
+                                <section class="col-lg-4 text-right">                                    
+                                    <button id="btn_hab_pago_coa" onclick="habilitar_pago();" type="button" class="btn btn-labeled bg-color-green txt-color-white">
+                                        <span class="btn-label"><i class="fa fa-file-text"></i></span>Habilitar Pago
                                     </button>
+<!--                                    <button onclick="activar_exped();" type="button" class="btn btn-labeled bg-color-green txt-color-white">
+                                        <span class="btn-label"><i class="fa fa-file-text"></i></span>Activar
+                                    </button>-->
                                     <button onclick="devolver_valor();" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
                                         <span class="btn-label"><i class="fa fa-file-text"></i></span>Devolver
                                     </button>
@@ -72,16 +99,7 @@
                     </div>
                     <div id="s2" class="tab-pane fade" style="height: auto">
                         <section style="margin-top: 5px">                                                 
-                            <div class="row">                                
-<!--                                <section class="col-lg-2" style="padding-right: 5px;">
-                                    <div class="input-group input-group-md">
-                                        <span class="input-group-addon">Cod.<i class="icon-append fa fa-lock" style="margin-left: 5px;"></i></span>
-                                        <div class="icon-addon addon-md">
-                                            
-                                        </div>
-                                    </div>
-                                    
-                                </section>-->
+                            <div class="row">
                                 <section class="col-lg-6" style="padding-right:5px">
                                     <input id="hidden_vw_ges_exped_codigo" type="hidden" value="0">
                                     <input id="vw_ges_exped_codigo" type="hidden">
@@ -113,11 +131,11 @@
                         <hr style="border: 1px solid #DDD;margin: 10px -10px">
                         <section style="">              
                             <div class="row">
-                                <section id="content_1" class="col col-lg-2" style="padding-right:5px"> 
+                                <section id="content_1" class="col col-lg-2" style="padding-right:5px;width: 20%"> 
                                     <table id="tabla_expedientes"></table>
                                     <div id="p_tabla_expedientes"></div>                     
                                 </section>                                
-                                <section id="content_2" class="col col-lg-10" style="padding-left:5px">
+                                <section id="content_2" class="col col-lg-10" style="padding-left:5px;width: 80%">
                                     <table id="tabla_doc_coactiva"></table>
                                     <div id="p_tabla_doc_coactiva"></div>
                                 </section>                            
@@ -135,7 +153,7 @@
         $("#menu_coactiva").show();
         $("#li_gesion_exped").addClass('cr-active');
         jQuery("#all_tabla_expedientes").jqGrid({
-            url: 'get_all_exped?contrib=',
+            url: 'get_all_exped?contrib=&materia=1',
             datatype: 'json', mtype: 'GET',
             height: 329, autowidth: true,
             toolbarfilter: true,
@@ -149,7 +167,7 @@
                 {name: 'ult_doc', index: 'ult_doc', align: 'left', width: 200},
                 {name: 'monto', index: 'monto', align: 'right', width: 70},
                 {name: 'estado', index: 'estado', align: 'left', width: 120},
-                {name: 'id_val', index: 'id_val', hidden: true},
+                {name: 'id_val', index: 'id_val', hidden: true}
             ],
             rowList: [13, 20],
             pager: '#p_all_tabla_expedientes',
@@ -162,28 +180,23 @@
             },
             onSelectRow: function (Id) {},
             ondblClickRow: function (Id) {}
-        });
+        });        
         jQuery("#tabla_expedientes").jqGrid({
             url: 'get_exped?id_contrib=0',
             datatype: 'json', mtype: 'GET',
             height: 329, autowidth: true,
             toolbarfilter: true,
-            colNames: ['Nro', 'Expediente', 'monto', 'estado'],
+            colNames: ['Nro', 'Expediente', 'monto', 'estado','Materia'],
             rowNum: 20, sortname: 'nro_procedimiento', sortorder: 'asc', viewrecords: true, caption: 'Expedientes', align: "center",
             colModel: [
                 {name: 'nro_procedimiento', index: 'nro_procedimiento', align: 'center', width: 30},
-                {name: 'nro_exped', index: 'nro_exped', align: 'center', width: 80},
+                {name: 'nro_exped', index: 'nro_exped', align: 'center', width: 90},
                 {name: 'monto', index: 'monto', hidden: true},
-                {name: 'estado', index: 'estado', hidden: true}
+                {name: 'estado', index: 'estado', hidden: true},
+                {name: 'materia', index: 'materia', align: 'center', width: 70}
             ],
             rowList: [13, 20],
-            gridComplete: function () {
-//                var idarray = jQuery('#tabla_expedientes').jqGrid('getDataIDs');
-//                if (idarray.length > 0) {
-//                    var firstid = jQuery('#tabla_expedientes').jqGrid('getDataIDs')[0];
-//                    $("#tabla_expedientes").setSelection(firstid);
-//                }
-            },
+            gridComplete: function () {},
             onSelectRow: function (Id) {},
             ondblClickRow: function (Id) {
                 ver_docum_exped(Id);
@@ -194,13 +207,13 @@
             datatype: 'json', mtype: 'GET',
             height: 300, autowidth: true,
             toolbarfilter: true,
-            colNames: ['Nro', 'Fch.Emision', 'Tipo Gestion', 'N° Resol / Docum.', 'Fch.Recep', 'Ver', 'Editar'],
+            colNames: ['Nro', 'Fch.Emision', 'Tipo Gestion', 'N° Resolucion', 'Fch.Recep', 'Ver', 'Editar'],
             rowNum: 20, sortname: 'id_doc', sortorder: 'asc', viewrecords: true, caption: 'Documentos', align: "center",
             colModel: [
                 {name: 'nro', index: 'nro', align: 'center', width: 20},
                 {name: 'fch_emi', index: 'fch_emi', align: 'center', width: 50},
                 {name: 'tip_gestion', index: 'tip_gestion', align: 'left', width: 230},
-                {name: 'nro_resol', index: 'nro_resol', align: 'center', width: 80},
+                {name: 'nro_resol', index: 'nro_resol', align: 'center', width: 60},
                 {name: 'fch_recep', index: 'fch_recep', align: 'center', width: 50},
                 {name: 'ver', index: 'ver', align: 'center', width: 60},
                 {name: 'edit', index: 'edit', align: 'center', width: 60}
@@ -249,6 +262,39 @@
                 fn_bus_contrib_select(Id);
             }
         });
+        jQuery("#t_cta_cte").jqGrid({
+            url: 'get_ctacte?id_contrib=0',
+            datatype: 'json', mtype: 'GET',
+            height: 'auto', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['Descripcion', 'Trim I', 'Trim II', 'Trim III', 'Trim IV'],
+            rowNum: 20, sortname: 'id_coa_mtr', sortorder: 'desc', viewrecords: true, caption: 'Trimestres en Coactiva', align: "center",
+            colModel: [
+                {name: 'descrip', index: 'descrip', align: 'center', width: 200},
+                {name: 'trim1', index: 'abo1', align: 'right', width: 80},
+                {name: 'trim2', index: 'abo2', align: 'right', width: 80},
+                {name: 'trim3', index: 'abo3', align: 'right', width: 80},
+                {name: 'trim4', index: 'abo4', align: 'right', width: 80}                    
+            ],
+            rowList: [13, 20],
+            pager: '#p_t_cta_cte',
+            gridComplete: function () {
+                var idarray = jQuery('#t_cta_cte').jqGrid('getDataIDs');
+                for (var i = 0; i < idarray.length; i++) {                    
+                    for (var a = 1; a <= 4; a++) {
+                        var val = $("#t_cta_cte").getCell(idarray[i], 'trim' + a);                        
+                        if (val == 2) {
+                            $("#t_cta_cte").jqGrid("setCell", idarray[i], 'trim' + a ,
+                                "<input type='checkbox' name='est_trim' value='" + a + "' onchange='trim_select(" + a + ")'>", {'text-align': 'center'});
+                        }
+                        if (val == 10) {
+                            $("#t_cta_cte").jqGrid("setCell", idarray[i], 'trim' + a ,
+                                "PAGADO", {'text-align': 'center'});
+                        }
+                    }                    
+                }
+            }                
+        });
         var globalvalidador = 0;
         $("#vw_ges_exped_contrib").keypress(function (e) {
             if (e.which == 13) {
@@ -288,7 +334,7 @@
                                                     <i></i>RESOLUCION DE EMBARGO EN FORMA DE INSCRIPCION</label>
                     -->
                     <label class="radio">
-                        <input type="radio" name="add_doc_radio" value="6">
+                        <input onchange="desactivar_adjuntos(this);" type="radio" name="add_doc_radio" value="6">
                         <i></i>CONSTANCIA DE NOTIFICACION</label>
                     <label class="radio">
                         <input type="radio" name="add_doc_radio" value="7">
@@ -303,6 +349,19 @@
                         <input type="radio" name="add_doc_radio" value="10">
                         <i></i>RESOLUCION DE SUSPENCION DEFINITIVA DE PROCEDIMIENTO</label>
                 </section>
+                <div class="panel panel-success">                    
+                    <div class="panel-body">
+                        <fieldset>
+                            <section class="col-lg-10 text-right">
+                                <div class="smart-form">
+                                    <label class="toggle">
+                                        <input id="adjuntar_const" onchange="adjuntar_const_chk(this);" value="1" type="checkbox" name="checkbox-toggle" checked="checked">
+                                        <i data-swchon-text="SI" data-swchoff-text="NO"></i>ADJUNTAR CONSTANCIA DE NOTIFICACIÓN</label>
+                                </div>
+                            </section>
+                        </fieldset>
+                    </div>
+                </div>               
             </div>
         </div>
     </div>    
@@ -473,6 +532,32 @@
                                     <input id="exp_notif_txt" type="text" placeholder="Se adjunta" class="input-sm text-uppercase">
                                 </label>                      
                             </section>
+                        </fieldset>
+                    </div>
+                </div>               
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dlg_enable_pago" style="display: none;">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">                
+                <div class="panel panel-success" style="border: 0px !important">
+                    <div class="panel-body">
+                        <fieldset>                            
+                            <section> 
+                                <label class="label">Contribuyente:</label>
+                                <label class="input">
+                                    <input type="hidden" id="dlg_enable_pago_idcontrib">
+                                    <input id="dlg_enable_pago_contrib" type="text" placeholder="CONTRIBUYENTE" class="input-sm text-uppercase" disabled="">
+                                </label>                      
+                            </section>                            
+                            <section style="margin-top:10px"> 
+                                <table id="t_cta_cte"></table>
+                                <div id="p_t_cta_cte"></div>                     
+                            </section>                            
                         </fieldset>
                     </div>
                 </div>               

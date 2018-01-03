@@ -178,7 +178,7 @@
             <tr>
               <td>{{ $loop->iteration }}</td>
               <td>{{$pre->tp}}</td>
-              <td>{{$pre->cod_cat." - ".$pre->nom_via}}</td>
+              <td>{{$pre->cod_cat." - ".$pre->nom_via." ".$pre->nro_mun}}</td>
               <td style="text-align: center">{{$pre->nro_condominios}}</td>
               <td style="text-align: right; padding-right: 5px;">{{number_format($pre->base_impon_afecto,3,".",",")}}</td>
             </tr>

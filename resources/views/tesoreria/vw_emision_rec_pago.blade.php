@@ -230,21 +230,21 @@
         $("#vw_emi_rec_imp_pre_contrib").keypress(function (e) {
             if (e.which == 13) {
                 if (globalvalidador == 0) {
-                    fn_bus_contrib_predial();
+                    fn_bus_contrib_predial("vw_emi_rec_imp_pre_contrib");
                     globalvalidador = 1;
                 } else {
                     globalvalidador = 0;
                 }
             }
         });
-        var globalvalidador_2 = 0;
+        
         $("#vw_emi_rec_arbitrios_contrib").keypress(function (e) {
             if (e.which == 13) {
-                if (globalvalidador_2 == 0) {
-                    fn_bus_contrib_arb();
-                    globalvalidador_2 = 1;
+                if (globalvalidador == 0) {
+                    fn_bus_contrib_predial("vw_emi_rec_arbitrios_contrib");
+                    globalvalidador = 1;
                 } else {
-                    globalvalidador_2 = 0;
+                    globalvalidador = 0;
                 }
             }
         });
@@ -406,20 +406,20 @@
                                     <input type="hidden" id="vw_emi_rec_txt_id_pers">
                                     <label class="label">Cod Contrib:</label>
                                     <label class="input">
-                                        <input id="vw_emi_rec_imp_pre_cod_contrib" type="text" onkeypress="return soloDNI(event);"  placeholder="00000000" class="input-sm">
+                                        <input id="vw_emi_rec_imp_pre_contrib_cod" type="text" onkeypress="return soloDNI(event);"  placeholder="00000000" class="input-sm">
                                     </label>                      
                                 </section>
                                 <section class="col col-8" style="padding-left: 5px;padding-right:5px; ">
                                     <label class="label">Contribuyente:</label>
                                     <label class="input">
-                                        <input type="hidden" id="vw_emi_rec_imp_pre_id_pers">
+                                        <input type="hidden" id="vw_emi_rec_imp_pre_contrib_hidden">
                                         <input id="vw_emi_rec_imp_pre_contrib" type="text" placeholder="ejm. jose min 4 caracteres" class="input-sm text-uppercase">
                                     </label>
                                 </section>
                                 <section class="col col-2" style="padding-left:5px">
                                     <label class="label">Año:</label>                                   
                                     <label class="select">
-                                        <select onchange="filter_anio(this.value);" id="vw_emi_rec_imp_pre_anio" class="input-sm">                                       
+                                        <select onchange="filter_anio(this.value);" id="vw_emi_rec_imp_pre_contrib_anio" class="input-sm">                                       
                                             @foreach ($anio as $anio1)                                        
                                             <option value='{{$anio1->anio}}' >{{$anio1->anio}}</option>
                                             @endforeach                                    
@@ -488,22 +488,23 @@
                         <fieldset>
                             <div class="row">                                
                                 <section class="col col-2" style="padding-right: 5px;">
-                                    <input type="hidden" id="vw_emi_rec_arbitrios_id_pers">
+                                    
                                     <label class="label">Cod Contrib:</label>
                                     <label class="input">
-                                        <input id="vw_emi_rec_arbitrios_cod_contrib" type="text" onkeypress="return soloDNI(event);"  placeholder="00000000" class="input-sm">
+                                        <input id="vw_emi_rec_arbitrios_contrib_cod" type="text" onkeypress="return soloDNI(event);"  placeholder="00000000" class="input-sm">
                                     </label>                      
                                 </section>
                                 <section class="col col-8" style="padding-left: 5px;padding-right:5px; ">
                                     <label class="label">Contribuyente:</label>
-                                    <label class="input">                                        
+                                    <label class="input">
+                                        <input type="hidden" id="vw_emi_rec_arbitrios_contrib_hidden" value="0"> 
                                         <input id="vw_emi_rec_arbitrios_contrib" type="text" placeholder="ejm. jose min 4 caracteres" class="input-sm text-uppercase">
                                     </label>
                                 </section>
                                 <section class="col col-2" style="padding-left:5px">
                                     <label class="label">Año:</label>                                   
                                     <label class="select">
-                                        <select onchange="selanio_arbi_pred(this.value);" id="vw_emi_rec_arbitrios_anio" class="input-sm">                                       
+                                        <select onchange="selanio_arbi_pred(this.value);" id="vw_emi_rec_arbitrios_contrib_anio" class="input-sm">                                       
                                             @foreach ($anio as $anio2)                                        
                                             <option value='{{$anio2->anio}}' >{{$anio2->anio}}</option>
                                             @endforeach                                    
@@ -527,7 +528,7 @@
                             <table id="table_cta_Arbitrios"></table>
                             <div id="pager_table_cta_Arbitrios">
                                 <div style="float: right; font-weight: bold;">
-                                    Total S/. <input type="text" id="vw_emision_rec_Arbitrios_tot" class="input-xm text-right" style="width: 100px; height: 21px;padding-right: 4px;margin-bottom: -3px;" readonly="">
+                                    Total S/. <input type="text" id="vw_emision_rec_Arbitrios_tot" class="input-xm text-right" style="width: 100px; height: 21px;padding-right: 4px;margin-bottom: -3px;" readonly="" value="0">
                                 </div>
                             </div>
                         </article>

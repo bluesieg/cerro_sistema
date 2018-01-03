@@ -33,6 +33,7 @@
             </center>
            
             <div style="text-align:center"><b>REPORTE DE EXPEDIENTES / OEC-MDCC</b></div>
+            <div style="position:absolute; left: 910px; top: 145px;">{{date('d-m-Y H:i A')}}</div>
             <div style="text-align:center">{{$desde}} AL {{$hasta}}</div>
             
             <div style="width:100%;">
@@ -50,7 +51,7 @@
                     <tr>
                         <th width="2%" align="center">N</th>
                         <th width="8%" align="center">Expediente</th>
-                        <th width="35%" align="center">Contribuyente</th>
+                        <th width="30%" align="center">Contribuyente</th>
                         <th width="10%" align="center">Materia</th>
                         <th width="25%" align="center">Ultimo Documento Emitido</th>
                         <th width="10%" align="center">Monto</th>
@@ -76,7 +77,7 @@
             <table style="width: 100%;" class="t1">
                 <tr>
                 
-                <td style="text-align: right" width="62%">TOTAL</td>
+                <td style="text-align: right" width="58%">TOTAL</td>
                 <td style="text-align: right" width="10%">{{ number_format($ttotal,3,'.',',') }}</td>
                 <td style="text-align: center" width="22.4%"></td>
                 

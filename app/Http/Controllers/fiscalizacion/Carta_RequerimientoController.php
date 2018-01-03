@@ -271,24 +271,34 @@ class Carta_RequerimientoController extends Controller
             $Lista->total = $total_pages;
             $Lista->records = $count;
             foreach ($sql as $Index => $Datos) {
-                $dir=$Datos->nom_via;
-                if($Datos->nro_mun!=""){
-                    $dir=$dir." N° ".$Datos->nro_mun;
+                $dir="";
+                if(trim($Datos->tp)=="URB")
+                {
+                    $dir=$Datos->nom_via;
+                    if($Datos->nro_mun!=""){
+                        $dir=$dir." N° ".$Datos->nro_mun;
+                    }
+                    if($Datos->mzna_dist!=""){
+                        $dir=$dir." Mzna ".$Datos->mzna_dist;
+                    }
+                    if($Datos->lote_dist!=""){
+                        $dir=$dir." Lt ".$Datos->lote_dist;
+                    }
+                    if($Datos->zona!=""){
+                        $dir=$dir." Zn ".$Datos->zona;
+                    }
+                    $dir=$dir." ".$Datos->habilitacion;
                 }
-                if($Datos->mzna_dist!=""){
-                    $dir=$dir." Mzna ".$Datos->mzna_dist;
-                }
-                if($Datos->lote_dist!=""){
-                    $dir=$dir." Lt ".$Datos->lote_dist;
-                }
-                if($Datos->zona!=""){
-                    $dir=$dir." Zn ".$Datos->zona;
+                else
+                {
+                    $dir.=$Datos->lugar_pr_rust;
                 }
                 $fiscalizado='<a href="javascript:void(0);" class="btn btn-danger txt-color-white btn-circle"><i class="glyphicon glyphicon-remove"></i></a>';
                 if($Datos->id_fic)
                 {
                     $fiscalizado='<a href="javascript:void(0);" class="btn bg-color-green txt-color-white btn-circle"><i class="glyphicon glyphicon-ok"></i></a>';
                 }
+                
                 $Lista->rows[$Index]['id'] = $Datos->id_pred_anio;            
                 $Lista->rows[$Index]['cell'] = array(
                     trim($Datos->id_pred_anio),
@@ -296,7 +306,7 @@ class Carta_RequerimientoController extends Controller
                     trim($Datos->id_fic),
                     trim($Datos->tp),
                     trim($Datos->cod_cat),
-                    $dir." ".$Datos->habilitacion,
+                    $dir,
                     trim($Datos->nro_fic),
                     '<button class="btn btn-labeled bg-color-blueDark txt-color-white" type="button" onclick="clickmodgrid('.trim($Datos->id_pred_anio).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Fiscalizar</button>',
                     $fiscalizado

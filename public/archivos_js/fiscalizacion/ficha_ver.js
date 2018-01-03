@@ -69,17 +69,25 @@ function call_list_contrib_carta(tip)
     
 }
 
-
+creardlgcarta=0;
 function datos_carta($id)
 {
     limpiar_carta();
-    $("#dlg_vista_carta").dialog({
+    if(creardlgcarta==0)
+    {
+        creardlgcarta=1;
+        $("#dlg_vista_carta").dialog({
         autoOpen: false, modal: true, width: 1300, 
         show:{ effect: "explode", duration: 500},
-        hide:{ effect: "explode", duration: 800}, resizable: false,
+        resizable: false,
         title: "<div class='widget-header'><h4><span class='widget-icon'> <i class='fa fa-align-justify'></i> </span> Datos Generales de Carta</h4></div>"
         }).dialog('open');
-        traer_carta($id);
+    }
+    else
+    {
+        $("#dlg_vista_carta").dialog('open');
+    }
+    traer_carta($id);
 }
 function limpiar_carta()
 {
@@ -133,14 +141,19 @@ function validacond()
     }
 }
 autocompletar=0;
+creadialog=0;
 function limpiarpred()
 {
     $("#dlg_img_view").html('<center><img src="img/recursos/Home-icon.png" height="100%" width="65%"/></center>');
     autocompletar=1;
-    $("#dlg_reg_dj").dialog({
-    autoOpen: false, modal: true, width: 1300, show: {effect: "fade", duration: 300}, resizable: false,
-    title: "<div class='widget-header'><h4>.: Ficha Unica de Verificación Del Impuesto Predial :.</h4></div>",
-    });
+    if(creadialog==0)
+    {
+        creadialog=1;
+        $("#dlg_reg_dj").dialog({
+        autoOpen: false, modal: true, width: 1300, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.: Ficha Unica de Verificación Del Impuesto Predial :.</h4></div>",
+        });
+    }
     $("#dlg_sel_condpre,#dlg_nro_ficha,#dlg_observa").val("");
     $( "#dlg_dni, #dlg_lot" ).prop( "disabled", true );
     $('#dlg_inp_condos').val("");
@@ -148,7 +161,7 @@ function limpiarpred()
 }
 function clickmodgrid(Id)
 {
-    $("#dlg_idpre").val(Id);
+   $("#dlg_idpre").val(Id);
    limpiarpred();
    $("#dlg_reg_dj").dialog('open');
    MensajeDialogLoadAjax('dlg_reg_dj', '.:: Cargando ...');

@@ -1001,9 +1001,6 @@
         </div>
     </div>
 </div>  
-
-
-
 <div id="dlg_reg_inst" style="display: none;">
     <div class="widget-body">
         <div  class="smart-form">

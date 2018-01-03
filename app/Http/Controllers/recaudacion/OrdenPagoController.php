@@ -29,7 +29,7 @@ class OrdenPagoController extends Controller
     {
         if($request['tip']=='1'||$request['tip']=='3')
         {
-            return $this->create_by_user($request['per']);
+            return $this->create_by_user($request['per'],$request['an']);
         }
         if($request['tip']=='4')
         {
@@ -37,7 +37,7 @@ class OrdenPagoController extends Controller
             $orden=0;
             foreach ($sql as $contri)
             {
-                $valor=$this->create_by_user($contri->id_contrib);
+                $valor=$this->create_by_user($contri->id_contrib,$request['an']);
                 if($orden==0)
                 {
                     $orden=$valor;
@@ -46,11 +46,12 @@ class OrdenPagoController extends Controller
             return $orden."-".$valor;
         }
     }
-    public function create_by_user($per)
+    public function create_by_user($per,$anio)
     {
-        $ivpp= DB::table('adm_tri.base_ivpp_op')->where('ano_cta',date("Y"))->where('id_pers',$per)->get()->first();
+        $ivpp= DB::table('adm_tri.base_ivpp_op')->where('ano_cta',$anio)->where('id_pers',$per)->get()->first();
         $fisca= new orden_pago_master;
-        $fisca->anio=date("Y");
+        $fisca->anio=$anio;
+        $fisca->anio_reg=date("Y");
         $fisca->fec_reg=date("d/m/Y");
         $fisca->id_contrib=$per;
         $fisca->ivpp_afecto=$ivpp->ivpp_afecto;
@@ -111,7 +112,7 @@ class OrdenPagoController extends Controller
                 }
                 else
                 {
-                    $totalg = DB::select('select count(id_gen_fis) as total from recaudacion.vw_genera_fisca where id_per='.$dat);
+                $totalg = DB::select('select count(id_gen_fis) as total from recaudacion.vw_genera_fisca where id_per='.$dat.' and anio='.$an);
                     $sql = DB::table('recaudacion.vw_genera_fisca')->where('id_per',$dat)->where("anio",$an)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
                 }
             }
@@ -239,7 +240,18 @@ class OrdenPagoController extends Controller
             $sql    =DB::table('recaudacion.vw_op_detalle')->where('id_gen_fis',$id)->get()->first();
             if(count($sql)>=1)
             {
-                $sql->trimestre=$this->get_trimestre_actual($sql->fec_reg);
+                if($sql->anio<date("Y"))
+                {
+                    $sql->trimestre=4;
+                }
+                else
+                {
+                    $sql->trimestre=$this->get_trimestre_actual($sql->fec_reg);
+                    if($sql->trimestre>1)
+                    {
+                        $sql->trimestre=$sql->trimestre-1;
+                    }
+                }
                 $sql->fec_reg=$this->getCreatedAtAttribute($sql->fec_reg)->format('l d, F Y ');
                 $UIT =DB::table('adm_tri.uit')->where('anio',$sql->anio)->get()->first();
                 
@@ -258,7 +270,18 @@ class OrdenPagoController extends Controller
                 for($i=0;$i<count($sql);$i++)
                 {
                     $sql[$i]->index=$i;
-                    $sql[$i]->trimestre=$this->get_trimestre_actual($sql[$i]->fec_reg);
+                    if($sql[$i]->anio<date("Y"))
+                    {
+                        $sql[$i]->trimestre=4;
+                    }
+                    else
+                    {
+                        $sql[$i]->trimestre=$this->get_trimestre_actual($sql[$i]->fec_reg);
+                        if($sql[$i]->trimestre>1)
+                        {
+                            $sql[$i]->trimestre=$sql[$i]->trimestre-1;
+                        }
+                    }
                     $sql[$i]->fec_reg=$this->getCreatedAtAttribute($sql[$i]->fec_reg)->format('l d, F Y ');
                 }
                 $UIT =DB::table('adm_tri.uit')->where('anio',$sql[0]->anio)->get()->first();
@@ -277,7 +300,18 @@ class OrdenPagoController extends Controller
                 for($i=0;$i<count($sql);$i++)
                 {
                     $sql[$i]->index=$i;
-                    $sql[$i]->trimestre=$this->get_trimestre_actual($sql[$i]->fec_reg);
+                     if($sql[$i]->anio<date("Y"))
+                    {
+                        $sql[$i]->trimestre=4;
+                    }
+                    else
+                    {
+                        $sql[$i]->trimestre=$this->get_trimestre_actual($sql[$i]->fec_reg);
+                        if($sql[$i]->trimestre>1)
+                        {
+                            $sql[$i]->trimestre=$sql[$i]->trimestre-1;
+                        }
+                    }
                     $sql[$i]->fec_reg=$this->getCreatedAtAttribute($sql[$i]->fec_reg)->format('l d, F Y ');
                 }
                 $UIT =DB::table('adm_tri.uit')->where('anio',$sql[0]->anio)->get()->first();
@@ -330,7 +364,7 @@ class OrdenPagoController extends Controller
     {
         if($tip=='1')
         {
-            $sql    =DB::table('recaudacion.vw_genera_fisca')->where('anio',$an)->where('fec_notifica',"<>",null)->get();
+            $sql    =DB::table('recaudacion.vw_genera_fisca')->where('anio_reg',$an)->where('fec_notifica',"<>",null)->get();
             if(count($sql)>=1)
             {
                 //$sql->fec_notifica=$this->getCreatedAtAttribute($sql->fec_notifica)->format('l d, F Y ');
@@ -346,7 +380,7 @@ class OrdenPagoController extends Controller
         }
         if($tip=='2')
         {
-            $sql    =DB::table('recaudacion.vw_genera_fisca')->where('anio',$an)->where('fec_notifica',"<>",null)->get();
+            $sql    =DB::table('recaudacion.vw_genera_fisca')->where('anio_reg',$an)->where('fec_notifica',"<>",null)->get();
             if(count($sql)>=1)
             {
                 //$sql->fec_notifica=$this->getCreatedAtAttribute($sql->fec_notifica)->format('l d, F Y ');

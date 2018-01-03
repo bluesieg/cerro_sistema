@@ -109,7 +109,7 @@
             datatype: 'json', mtype: 'GET',
             height: 329, autowidth: true,
             toolbarfilter: true,
-            colNames: ['Expediente', 'Contribuyente', 'Materia', 'Ultimo Documento Emitido', 'Monto', 'Estado','Valor'],
+            colNames: ['Expediente', 'Contribuyente', 'Materia', 'Ultimo Documento Emitido', 'Monto', 'Estado','Valor','Dias Atraso'],
             rowNum: 20, sortname: 'id_coa_mtr', sortorder: 'desc', viewrecords: true, align: "center",
             colModel: [
                 {name: 'nro_exped', index: 'nro_exped', align: 'center', width: 70},
@@ -118,7 +118,8 @@
                 {name: 'ult_doc', index: 'ult_doc', align: 'left', width: 180},
                 {name: 'monto', index: 'monto', align: 'right', width: 60},
                 {name: 'estado', index: 'estado', align: 'left', width: 100},
-                {name: 'valor', index: 'valor', align: 'left', width: 100}
+                {name: 'valor', index: 'valor', align: 'left', width: 100},
+                {name: 'dias', index: 'dias', align: 'right', width: 60}
             ],
             rowList: [13, 20],
             pager: '#p_all_tabla_expedientes',

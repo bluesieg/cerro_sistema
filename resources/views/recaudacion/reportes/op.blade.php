@@ -29,7 +29,7 @@
             
         </table>
         
-        <center><div Class="asunto" style="margin-top: 10px;"><b>ORDEN DE PAGO PREDIAL N° {{$sql->nro_fis}}-{{$sql->anio}}-GAT-MDCC</b></div></center>
+        <center><div Class="asunto" style="margin-top: 10px;"><b>ORDEN DE PAGO PREDIAL N° {{$sql->nro_fis}}-{{$sql->anio_reg}}-GAT-MDCC</b></div></center>
         <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px;">Cerro Colorado, {{$sql->fec_reg}}</div>
 
         <div class="lado3" style="margin-top: 30px; font-weight: bold">
@@ -93,7 +93,7 @@
           <tr>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">Imp.<br>Predial</td>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$sql->nro_fis}}</td>
-              <td style="text-align: center;font-size: 0.7em; padding: 0px;">2017-1</td>
+              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$sql->anio}}-1</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp_afecto,2)}}</td>
               <td style="text-align: right; font-size: 0.6em;padding-right: 2px;">Hasta 15 UIT<br>De 15 a 60 UIT<br>Más de 60 UIT</td>
               <td style="text-align: right; font-size: 0.6em; padding-right: 2px;">0.2%<br>0.6%<br>1.0%</td>

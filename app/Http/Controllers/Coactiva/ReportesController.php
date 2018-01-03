@@ -25,6 +25,16 @@ class ReportesController extends Controller
         return view('coactiva.reportes.vw_reportes_coa',compact('menu','permisos','est_exped'));
     }
     
+    function rep_ingresos(){
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_rep_coa_ingresos' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
+        return view('coactiva.vw_reporte_ingresos',compact('menu','permisos'));
+    }
+    
     public function create(){}
 
     public function edit($id){}
@@ -136,6 +146,20 @@ class ReportesController extends Controller
         $Lista->records = $count;
 
         foreach ($sql as $Index => $Datos) {
+            $fecha = DB::table('coactiva.coactiva_documentos')->where([['id_coa_mtr',$Datos->id_coa_mtr],['id_tip_doc',6]])->orderBy('id_doc', 'desc')
+                    ->limit(1)->value('fch_recep');
+            if(isset($fecha)){
+                $nuevafecha = strtotime ( '+7 day' , strtotime ( $fecha ) ) ;
+                $nuevafecha = date ( 'd-m-Y' , $nuevafecha );
+                $dias = (strtotime(date('Y-m-d'))-strtotime($nuevafecha))/86400;
+                $dias = floor($dias).' DIAS';
+            }else{
+                $dias='';
+            }
+            if($dias<0){
+                $dias='';                
+            }
+            
             $Lista->rows[$Index]['id'] = $Datos->id_coa_mtr;            
             $Lista->rows[$Index]['cell'] = array(
                 trim($Datos->nro_exped).'-'.$Datos->anio,
@@ -144,7 +168,8 @@ class ReportesController extends Controller
                 trim($Datos->ult_gestion),
                 trim($Datos->monto),
                 $Datos->estado,
-                trim($Datos->doc_ini)
+                trim($Datos->doc_ini),
+                $dias
             );
         }
         return response()->json($Lista); 
@@ -202,21 +227,32 @@ class ReportesController extends Controller
         $estado2=$request['estado2'] ?? 'TODOS';
         $valor2=$request['valor2'] ?? 'TODOS';
         
+        
+        
         $cc=1;
         $ttotal=0;
         $todo = array();
-        foreach ($sql as $Datos){            
+        foreach ($sql as $Datos){
+            if($Datos->id_val==2){
+                $nro_op = DB::table('recaudacion.orden_pago_master')->where('id_coa_mtr',$Datos->id_coa_mtr)->value('nro_fis');
+                $anio_op = DB::table('recaudacion.orden_pago_master')->where('id_coa_mtr',$Datos->id_coa_mtr)->value('anio');
+            }
+            if($Datos->id_val==1){
+//                $nro_op = DB::table('recaudacion.orden_pago_master')->where('id_coa_mtr',$Datos->id_coa_mtr)->value('nro_fis');
+//                $anio_op = DB::table('recaudacion.orden_pago_master')->where('id_coa_mtr',$Datos->id_coa_mtr)->value('anio');
+            }
             $resol=new \stdClass();
             $resol->cc=$cc++;
             $resol->nro_exped=$Datos->nro_exped;
             $resol->anio=$Datos->anio;
             $resol->estado=$Datos->estado;            
-            $resol->doc_ini=$Datos->doc_ini;
+            $resol->doc_ini=$Datos->doc_ini.' - '.$nro_op.' '.$anio_op;
             $resol->monto= number_format($Datos->monto,3,'.',',');
             $resol->contribuyente=$Datos->contribuyente;
             $resol->desc_mat=$Datos->desc_mat;
             $resol->ult_gestion=$Datos->ult_gestion;
             $ttotal=$ttotal+$Datos->monto;
+            
             array_push($todo, $resol);
         }
 //        dd($todo);

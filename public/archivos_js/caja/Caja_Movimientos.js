@@ -60,8 +60,8 @@ function confirmar_Pago(id_recibo){
                 imp_pago_rec(id_recibo);
                 fn_actualizar_grilla('tabla_Caja_Movimientos', 'grid_Caja_Movimientos?est_recibo=' + $("#vw_caja_mov_txt_tipo_recibo").val());
 //                printTrigger('imp_pago_rec?id_rec='+id_recibo);                
-//                dialog_close('vw_caja_mov_realizar_pago');
-//                MensajeExito('Conforme', 'EL Pago se ha realizado con Exito');
+                dialog_close('vw_caja_mov_realizar_pago');
+                MensajeExito('Conforme', 'EL Pago se ha realizado con Exito');
             }
         },
         error: function (data) {

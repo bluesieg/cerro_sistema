@@ -36,8 +36,18 @@ class EnvDocCoactivaController extends Controller
         $sql = $data->save();
         if($sql){
             $this->create_coa_documentos($data->id_coa_mtr,$id_gen_fis);
-            DB::table('adm_tri.cta_cte')->where([['id_pers','=',$id_contrib],['id_tribu','=',103],['ano_cta',date('Y')]])
-                    ->update(['id_coa_mtr'=>$data->id_coa_mtr,'trim1_estado'=>2,'trim2_estado'=>2,'trim3_estado'=>2,'trim4_estado'=>2]);
+            $i=1;
+            for($i==1;$i<=4;$i++){
+                $trim = DB::table('recaudacion.vw_op_detalle')->where('id_gen_fis',$id_gen_fis)->value('trimestre'.$i);
+                if(isset($trim)){
+                    if($trim>0){
+                        DB::table('adm_tri.cta_cte')->where([['id_pers','=',$id_contrib],['id_tribu','=',103]/*,['ano_cta',date('Y')]*/])
+                        ->update(['trim'.$i.'_estado'=>2]);
+                    }                    
+                }
+            }
+            DB::table('adm_tri.cta_cte')->where([['id_pers','=',$id_contrib],['id_tribu','=',103]/*,['ano_cta',date('Y')]*/])
+                    ->update(['id_coa_mtr'=>$data->id_coa_mtr]);
             return $data->id_coa_mtr;
         }
     }
@@ -174,10 +184,11 @@ class EnvDocCoactivaController extends Controller
                 $update = $val->save();                
             }
             if($update){
-                $coa_mtr=new coactiva_master;
-                $value=  $coa_mtr::where("id_coa_mtr","=",$val->id_coa_mtr)->first();
-                if(count($val)>=1){ $value->delete();}
+                DB::table('adm_tri.cta_cte')->where([['id_pers','=',$val->id_contrib],['id_tribu','=',103],['ano_cta',date('Y')]])
+                    ->update(['id_coa_mtr'=>null,'trim1_estado'=>'1','trim2_estado'=>'1','trim3_estado'=>'1','trim4_estado'=>'1']);
             }
+            DB::table('coactiva.coactiva_master')->where('id_coa_mtr',$val->id_coa_mtr)->delete();
+            
             $val = $data::where("id_gen_fis", "=", $request['id_gen_fis'])->first();
             if (count($val) >= 1) {                
                 $val->id_coa_mtr=null;

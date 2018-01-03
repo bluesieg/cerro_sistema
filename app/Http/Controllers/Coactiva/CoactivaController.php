@@ -25,7 +25,8 @@ class CoactivaController extends Controller
         {
             return view('errors/sin_permiso',compact('menu','permisos'));
         }
-        return view('coactiva.vw_ges_exped',compact('menu','permisos'));
+        $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
+        return view('coactiva.vw_ges_exped',compact('menu','permisos','anio_tra'));
     }   
     public function recep_doc() {
         $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_recep_doc' and id_usu=".Auth::user()->id);
@@ -70,7 +71,7 @@ class CoactivaController extends Controller
             $resol->fch_recep=mb_strtolower($this->getCreatedAtAttribute($fch_recep)->format('l, d \d\e F \d\e\l Y'));
             $resol->anio_resol=$Datos->anio_resol;
             $resol->monto=$Datos->monto;
-            $resol->monto_letra=$this->num_letras($Datos->monto);
+            $resol->monto_letra=$this->num_letras(number_format($Datos->monto,2));
             $resol->periodos=$Datos->periodos;
             $resol->nro_rd=$nro_rd_op[0]->nro_rd ?? '...............';
             $resol->anio_rd=$nro_rd_op[0]->anio ?? '........';
@@ -185,7 +186,8 @@ class CoactivaController extends Controller
                 str_replace('0','',trim($Datos->nro_procedimiento)),
                 trim($Datos->nro_exped.'-'.$Datos->anio),
                 $Datos->monto,
-                $Datos->estado
+                $Datos->estado,
+                trim($Datos->desc_mat)
             );
         }
         return response()->json($Lista);
@@ -299,7 +301,7 @@ class CoactivaController extends Controller
             }else if($tip_bus=='2'){
                 $del=str_pad($request['del'], 7, "0", STR_PAD_LEFT);
                 $al=str_pad($request['al'], 7, "0", STR_PAD_LEFT);
-                $totalg = DB::select("select count(id_per) as total from recaudacion.vw_genera_fisca where env_op=2 and verif_env=0 and nro_fis between '".$del."' and '".$al."' ");            
+                $totalg = DB::select("selecta count(id_per) as total from recaudacion.vw_genera_fisca where env_op=2 and verif_env=0 and nro_fis between '".$del."' and '".$al."' ");            
             }
         }else if($tip_doc=='1'){
             if($tip_bus=='1'){
@@ -529,7 +531,10 @@ class CoactivaController extends Controller
                 $resol->doc_ini=$Datos->doc_ini;
                 $resol->desc_mat=$Datos->desc_mat;
             }
+            
+            
             $plantilla = $this->rec_res_eje_coa_plantilla($id_doc, $id_coa_mtr);
+//            dd($plantilla);
             $view = \View::make('coactiva.reportes.rec_apertura',compact('plantilla','resol'))->render();
             $pdf = \App::make('dompdf.wrapper');            
             $pdf->loadHTML($view)->setPaper('a4');
@@ -593,7 +598,7 @@ class CoactivaController extends Controller
                 $resol->anio_rd=$nro_rd_op[0]->anio ?? '........';
                 $resol->anio_resol=$Datos->anio_resol;
                 $resol->monto= number_format($Datos->monto,2,'.',',');
-                $resol->monto_letra=$this->num_letras(round($Datos->monto,2));
+                $resol->monto_letra=$this->num_letras(number_format($Datos->monto,2));
                 $resol->periodos=$Datos->periodos;
                 $resol->dom_fis=$Datos->dom_fis;
                 $resol->ubi_pred=$Datos->ubi_pred;
@@ -711,6 +716,8 @@ class CoactivaController extends Controller
     }
     
     function add_documento(Request $request){
+        $adjuntar = $request['adjuntar'];
+        
         $data = new coactiva_documentos();
         $data->id_coa_mtr = $request['id_coa_mtr'];
         $data->id_tip_doc = $request['id_tip_doc'];
@@ -722,33 +729,51 @@ class CoactivaController extends Controller
         $insert = $data->save();
 
         if($insert){
-            if($request['id_tip_doc']=='9'){
+            if($request['id_tip_doc']=='9'){//acta de apersonamiento
                 DB::select("update coactiva.coactiva_documentos set texto=(select texto from coactiva.tip_doc where id_tip=9) where id_coa_mtr=".$request['id_coa_mtr']." and id_tip_doc=9");
+                $fechas = explode('*', $request['fechas_cuotas']);
+                $montos = explode('*', $request['monto']);
+                $count=count($fechas);
+                $i=0;
+                for($i==0;$i<=$count-1;$i++){
+                    $array_data = array();
+                    $array_data['id_doc']=$data->id_doc;
+                    $array_data['nro_cuo']=$i+1;
+                    $array_data['fch_pago']=$fechas[$i];
+                    $array_data['monto']=$montos[$i];
+                    $array_data['estado']=0;
+                    DB::table('coactiva.apersonamiento_cuotas')->insert($array_data);
+                }
             }else if($request['id_tip_doc']=='10'){                
                 DB::table('coactiva.coactiva_master')->where('id_coa_mtr',$data->id_coa_mtr)->update(['estado' => 0]);
-                $data = new coactiva_documentos();
-                $data->id_coa_mtr = $request['id_coa_mtr'];
-                $data->id_tip_doc = 6;
-                $data->fch_emi = date('Y-m-d');
-                $data->anio = date('Y');
-                $insert = $data->save();
+                $adjuntar=1;
             }else if($request['id_tip_doc']=='3'){
                 DB::table('coactiva.coactiva_master')->where('id_coa_mtr',$data->id_coa_mtr)->update(['estado' => 2]);
             }
             
             
+            if($adjuntar==1){
+                $data = new coactiva_documentos();//adjuntar constancia de notificacion
+                $data->id_coa_mtr = $request['id_coa_mtr'];
+                $data->id_tip_doc = 6;
+                $data->fch_emi = date('Y-m-d');
+                $data->anio = date('Y');
+                $data->save();
+            }            
             return response()->json(['msg'=>'si']);
         }
     }
     
     function get_all_expedientes(Request $request){
         $buscar=$request['contrib'];
+        $materia= $request['materia'];
+        if($materia==1){$materia='TRIBUTARIA';}else{$materia='NO TRIBUTARIA';}
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
         $sord = $_GET['sord'];
         
-        $totalg = DB::select("select count(id_coa_mtr) as total from coactiva.vw_all_exped where contribuyente  like '%".$buscar."%'"); 
+        $totalg = DB::select("select count(id_coa_mtr) as total from coactiva.vw_all_exped where desc_mat='".$materia."' AND contribuyente like '%".$buscar."%'"); 
         
         $total_pages = 0;
         if (!$sidx) {
@@ -766,7 +791,7 @@ class CoactivaController extends Controller
             $start = 0;
         }
         
-        $sql = DB::table('coactiva.vw_all_exped')->where('contribuyente', 'like', '%'.$buscar.'%')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $sql = DB::table('coactiva.vw_all_exped')->where([['desc_mat',$materia],['contribuyente', 'like', '%'.$buscar.'%']])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
                 
         $Lista = new \stdClass();
         $Lista->page = $page;
@@ -821,16 +846,22 @@ class CoactivaController extends Controller
         $id_coa_mtr = $request['id_coa_mtr'];
         $id_contrib = $request['id_contrib'];
         $id_val = $request['id_val'];
+        $anio_tra=$request['ano_tra'];
         
         if($id_val=='1' || $id_val=='2'){
-            DB::table('adm_tri.cta_cte')->where([['id_pers',$id_contrib],['id_tribu',103],['id_coa_mtr',$id_coa_mtr]])->update([
+            DB::table('adm_tri.cta_cte')->where([['id_pers',$id_contrib],['id_tribu',103],['id_coa_mtr',$id_coa_mtr],['ano_cta',$anio_tra]])->update([
                 'trim1_estado'=>'1',
                 'trim2_estado'=>'1',
                 'trim3_estado'=>'1',
-                'trim4_estado'=>'1'
+                'trim4_estado'=>'1',
+                'id_coa_mtr'=>null
             ]);
         }
         DB::table('coactiva.coactiva_master')->where('id_coa_mtr',$id_coa_mtr)->update(['estado'=>'3']);
+        
+        DB::table('recaudacion.orden_pago_master')->where([['id_coa_mtr',$id_coa_mtr],['id_contrib',$id_contrib]])->update([
+            'env_op'=>1,'verif_env'=>0,'fch_env'=>null,'hora_env'=>null,'fch_recep'=>null,'hora_recep'=>null,'id_coa_mtr'=>null
+        ]);
 
         return response()->json(['msg'=>'si']);        
     }
@@ -857,5 +888,67 @@ class CoactivaController extends Controller
         DB::table('coactiva.coactiva_master')->where('id_coa_mtr',$id_coa_mtr)->update(['estado'=>'1']);
 
         return response()->json(['msg'=>'si']);        
+    }
+    
+    function cta_cte(Request $request){
+        $id_contrib = $request['id_contrib'];
+//        $ano_cta = $request['ano_cta'];
+//        $totalg = DB::select("select count(id_cta_cte) as total from adm_tri.vw_cta_cte2 where id_contrib='".$id_contrib."' and ano_cta='".$ano_cta."'");
+        $totalg = DB::select("select count(id_cta_cte) as total from adm_tri.vw_cta_cte2 where id_contrib=".$id_contrib." and id_tribu=103");
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $start = ($limit * $page) - $limit;
+        if ($start < 0) {
+            $start = 0;
+        }
+
+        $sql = DB::table('adm_tri.vw_cta_cte2')->where('id_contrib',$id_contrib)->where('id_tribu',103)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        
+        foreach ($sql as $Index => $Datos) {            
+            $Lista->rows[$Index]['id'] = $Datos->id_cta_cte;
+            $Lista->rows[$Index]['cell'] = array(                
+                trim($Datos->descrip_tributo),                                
+                trim($Datos->trim1_est),                
+                trim($Datos->trim2_est),
+                trim($Datos->trim3_est),
+                trim($Datos->trim4_est)                                
+            );
+        }        
+        return response()->json($Lista);
+    }
+    
+    function habilitar_pago_cta_cte(Request $request){
+        $id_coa_mtr = $request['id_coa_mtr'];
+        $id_contrib = $request['id_contrib'];
+        $trim_checks = $request['trim_checks'];
+        
+        $trim = explode('*', $trim_checks);
+        
+        $count=count($trim);
+        $i=0;
+        for($i==0;$i<=$count-1;$i++){            
+            DB::table('adm_tri.cta_cte')->where('id_pers',$id_contrib)->where('id_coa_mtr',$id_coa_mtr)
+                        ->update(['trim'.$trim[$i].'_estado'=>10]);
+        }
+        return response()->json(['msg'=>'si']);
     }
 }

@@ -49,7 +49,7 @@ function gen_recibo_imp_predial(){
     $.ajax({
         url:'verif_est_cta_coactiva',
         type:'GET',
-        data:{check:s_checks,id_contrib:$("#vw_emi_rec_imp_pre_id_pers").val()},
+        data:{check:s_checks,id_contrib:$("#vw_emi_rec_imp_pre_contrib_hidden").val()},
         success: function(data){
             if(data.length>0){                
                 mostraralertas('No se Puede Generar El Recibo<br>Trimestre(s): '+data+', Estan en Cobranza Coactiva'); 
@@ -78,8 +78,8 @@ function gen_rec_imp_pred(s_checks){
                         id_est_rec: 1,
                         glosa: ($("#vw_emi_rec_imp_pred_glosa").val()).toUpperCase(),
                         total: $("#vw_emision_rec_pago_imp_pred_total_trimestre").val().replace(',', ''),
-                        id_pers:$("#vw_emi_rec_imp_pre_id_pers").val(),
-                        periodo:$("#vw_emi_rec_imp_pre_anio").val(),
+                        id_pers:$("#vw_emi_rec_imp_pre_contrib_hidden").val(),
+                        periodo:$("#vw_emi_rec_imp_pre_contrib_anio").val(),
                         clase_recibo:0,
                         pred_check : s_checks,
                         form_pred_check:formatos_checks || '0'
@@ -194,19 +194,20 @@ function calc_tot_a_pagar_form(num){
 function calcular_tot_a_pagar(){
 //    alert($("#vw_emi_rec_imp_pred_hora_act").val());
 }
-
-function fn_bus_contrib_predial(){
-    if($("#vw_emi_rec_imp_pre_contrib").val()=="")
+var globalinputcontri="";
+function fn_bus_contrib_predial(input){
+    globalinputcontri=input;
+    if($("#"+input).val()=="")
     {
-        mostraralertasconfoco("Ingrese un Contribuyente para Buscar","#dlg_contri"); 
+        mostraralertasconfoco("Ingrese un Contribuyente para Buscar","#"+input); 
         return false;
     }
-    if($("#vw_emi_rec_imp_pre_contrib").val().length<4)
+    if($("#"+input).val().length<4)
     {
-        mostraralertasconfoco("Ingresar al menos 4 caracteres de busqueda","#dlg_contri"); 
+        mostraralertasconfoco("Ingresar al menos 4 caracteres de busqueda","#"+input); 
         return false;
     }
-    fn_actualizar_grilla('table_contrib','obtiene_cotriname?dat='+$("#vw_emi_rec_imp_pre_contrib").val());
+    fn_actualizar_grilla('table_contrib','obtiene_cotriname?dat='+$("#"+input).val());
     jQuery('#table_contrib').jqGrid('bindKeys', {"onEnter":function( rowid ){fn_bus_contrib_list(rowid);} } ); 
     $("#dlg_bus_contr").dialog({
         autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
@@ -214,16 +215,22 @@ function fn_bus_contrib_predial(){
         }).dialog('open');       
 }
 function fn_bus_contrib_list(per){
-    $("#vw_emi_rec_imp_pre_id_pers").val(per);
+    $("#"+globalinputcontri+"_hidden").val(per);
     
-    $("#vw_emi_rec_imp_pre_cod_contrib").val($('#table_contrib').jqGrid('getCell',per,'id_per'));    
-    $("#vw_emi_rec_imp_pre_contrib").val($('#table_contrib').jqGrid('getCell',per,'contribuyente'));
+    $("#"+globalinputcontri+"_cod").val($('#table_contrib').jqGrid('getCell',per,'id_per'));    
+    $("#"+globalinputcontri).val($('#table_contrib').jqGrid('getCell',per,'contribuyente'));
     tam=($('#table_contrib').jqGrid('getCell',per,'contribuyente')).length;
-    anio=$("#vw_emi_rec_imp_pre_anio").val();
-    
-    $("#vw_emi_rec_imp_pre_contrib").attr('maxlength',tam);
-    id_contrib=$('#table_contrib').jqGrid('getCell',per,'id_pers');
+    anio=$("#"+globalinputcontri+"_anio").val();
+    $("#"+globalinputcontri).attr('maxlength',tam);
+    id_contrib=per;
+    if(globalinputcontri=='vw_emi_rec_imp_pre_contrib')
+    {
     fn_actualizar_grilla('table_cta_cte2','get_grid_cta_cte2?id_contrib='+id_contrib+'&ano_cta='+anio);
+    }
+    if(globalinputcontri='vw_emi_rec_imp_pre_contrib')
+    {
+        fn_actualizar_grilla('table_Predios_Arbitrios','grid_pred_arbitrios?id_contrib='+id_contrib+'&anio='+anio);
+    }
     $("#dlg_bus_contr").dialog("close");    
 }
 function filter_anio(anio){
@@ -232,8 +239,8 @@ function filter_anio(anio){
 
 function limpiar_form_rec_imp_predial(){
     $("#vw_emi_rec_imp_pre_contrib").val('');
-    $("#vw_emi_rec_imp_pre_cod_contrib").val('');
-    $("#vw_emi_rec_imp_pre_id_pers").val('');
+    $("#vw_emi_rec_imp_pre_contrib_cod").val('');
+    $("#vw_emi_rec_imp_pre_contrib_hidden").val('');
     $("#vw_emi_rec_imp_pred_glosa").val('');
     global_tot_a_pagar=0;
     select_check=0;

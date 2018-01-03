@@ -247,7 +247,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('get_instalaciones', 'ObrasController@grid_obras');
     });
     /******************** ********    TESORERIA     ****   EMISION DE RECIBOS DE PAGO            ************************************/
-    Route::group(['namespace' => 'tesoreria'], function() {
+     Route::group(['namespace' => 'tesoreria'], function() {
         Route::resource('emi_recibo_master', 'Recibos_MasterController');
         Route::resource('emi_recibo_detalle', 'Recibos_DetalleController');
         Route::get('grid_Resumen_recibos','Recibos_MasterController@tabla_Resumen_recibos');
@@ -258,13 +258,13 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('grid_pred_arbitrios','Recibos_MasterController@tabla_cta_arbitrios');
         Route::get('grid_cta_pago_arbitrios','Recibos_MasterController@cta_pago_arbitrios');
         Route::get('verif_est_cta_coactiva','Recibos_MasterController@verif_est_cta');
+        Route::get('insertar_pago_arbitrio','Recibos_MasterController@edit_arbitrio');
         
         Route::resource('rep_tesoreria', 'Reportes_TesoreriaController'); 
         
         Route::get('ver_rep_tesoreria/{tipo}', 'Reportes_TesoreriaController@ver_reporte_teso');
 
         Route::get('autocomplete_tributos', 'Reportes_TesoreriaController@autocompletar_tributos');
-        
 
     });
     Route::group(['namespace' => 'caja'], function() {
@@ -299,6 +299,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('coactiva','CoactivaController');
         Route::get('gestion_expedientes','CoactivaController@gest_exped');
         Route::get('get_exped','CoactivaController@get_expedientes');
+        Route::get('get_all_exped','CoactivaController@get_all_expedientes');        
         Route::get('get_doc_exped','CoactivaController@get_docum_expediente');
         Route::get('coactiva_recep_doc','CoactivaController@get_doc');
         Route::get('recib_doc_coactiva','CoactivaMasterController@resep_documentos_op');
@@ -310,11 +311,26 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('update_documento','CoactivaController@update_documento');
         Route::get('agreg_fch_recep_notif','CoactivaController@fch_recep_notif');
         Route::get('num_letra','CoactivaController@letra');
+        Route::get('new_exp_notrib','CoactivaController@create_coa_master');
+        Route::get('notif_up_texto','CoactivaController@notif_up_texto');
+        Route::get('recepcion_doc','CoactivaController@recep_doc');        
+        Route::resource('reportes_coa','ReportesController');
+        Route::get('rep_exped','ReportesController@expedientes');
+        Route::get('autocompletar_valores','ReportesController@trae_valores');
+        Route::get('add_new_valor','ReportesController@new_valor');
+        Route::get('report_exped_coa','ReportesController@report_exped_coa');
+        Route::get('cbo_valores','ReportesController@cbo_valores');
+        Route::get('devolver_valor','CoactivaController@devolver_valor');
+        Route::get('eliminar_documento','CoactivaController@eliminar_documento');
+        Route::get('activar_exped','CoactivaController@activar_exped');
+        Route::get('get_ctacte','CoactivaController@cta_cte');
+        Route::get('update_pago_trim','CoactivaController@habilitar_pago_cta_cte');
         
-        Route::get('emision_rec','CoactivaController@emision_apertura_resolucion');
-        Route::get('recepcion_doc','CoactivaController@recep_doc');
-        Route::get('coactiva_gen_resolucion','CoactivaController@get_doc_recibidos');
-        Route::get('all_resoluciones','CoactivaController@grid_all_resoluciones');
+        Route::resource('compromiso_pago','CompromisoPagoController');
+        Route::get('get_compromisopago','CompromisoPagoController@compromisopago');
+        Route::get('edit_estado','CompromisoPagoController@edit_estado_compromiso');
+        
+        Route::get('reporte_ingresos','ReportesController@rep_ingresos');
     });
     
     Route::group(['namespace' => 'adm_tributaria'], function() {

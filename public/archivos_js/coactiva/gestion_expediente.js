@@ -38,6 +38,8 @@ function dlg_select_new_doc(){
 function add_doc_al_exped(){    
     id_coa_mtr = $('#tabla_expedientes').jqGrid ('getGridParam', 'selrow');
     id_tip_doc = $("input:radio[name ='add_doc_radio']:checked").val();
+    adjuntar = $("#adjuntar_const").val();
+    
     if(!id_tip_doc){
         mostraralertas('Seleccione un Documento...');
         return false;
@@ -70,7 +72,7 @@ function add_doc_al_exped(){
                         fechas_cuotas = fechas.join('*');
                         monto_cuotas = montos.join('*');
 //                        monto=$("#nro_cuo_monto").val();
-                        save_doc(id_coa_mtr,id_tip_doc,fechas_cuotas,monto_cuotas);
+                        save_doc(adjuntar,id_coa_mtr,id_tip_doc,fechas_cuotas,monto_cuotas);
                         setTimeout(function(){ 
                             MensajeDialogLoadAjaxFinish('vw_coa_acta_apersonamiento');
                             dialog_close('vw_coa_acta_apersonamiento');
@@ -89,20 +91,17 @@ function add_doc_al_exped(){
         
         $("#nro_cuo_monto").val(formato_numero(monto_tot,2,'.',','));
     }else{
-        save_doc(id_coa_mtr,id_tip_doc);
+        save_doc(adjuntar,id_coa_mtr,id_tip_doc);
     }
 }
 function add_cuo_acta_aper(){
     nro_cuo=$("#nro_cuo_apersonamiento").val();
-//    monto=parseFloat($("#nro_cuo_monto").val());
+
     if(nro_cuo==""){
         mostraralertasconfoco("Ingrese el Numero de Cuotas...","#nro_cuo_apersonamiento"); 
         return false;
     }
-//    if(isNaN(monto)){
-//        mostraralertasconfoco("Ingrese Monto...","#nro_cuo_monto"); 
-//        return false;
-//    }
+
     for(i=1;i<=nro_cuo;i++){
         $('#t_dina_acta_aper').append(
         "<tr>\n\
@@ -112,14 +111,15 @@ function add_cuo_acta_aper(){
         </tr>");
     }
 }
-function save_doc(id_coa_mtr,id_tip_doc,fechas_cuotas,monto_cuotas){
+function save_doc(adjuntar,id_coa_mtr,id_tip_doc,fechas_cuotas,monto_cuotas){
     id_coa_mtr=id_coa_mtr || $('#tabla_expedientes').jqGrid ('getGridParam', 'selrow');
     fechas_cuotas=fechas_cuotas || null; 
     monto_cuotas=monto_cuotas||null;
-    $.ajax({
+    
+    $.ajax({        
         type:'GET',
         url:'add_documento_exped',
-        data:{id_coa_mtr:id_coa_mtr,id_tip_doc:id_tip_doc,fechas_cuotas:fechas_cuotas,monto:monto_cuotas},
+        data:{id_coa_mtr:id_coa_mtr,id_tip_doc:id_tip_doc,fechas_cuotas:fechas_cuotas,monto:monto_cuotas,adjuntar:adjuntar},
         success:function(data){
             if(data.msg=='si'){
                 MensajeExito('COACTIVA','Documento Agregado...');
@@ -240,7 +240,7 @@ function save_exp_notrib(){
     $.ajax({
         url:'new_exp_notrib',
         type:'GET',
-        data:{id_contrib:$("#exp_notrib_id_contrib").val(),monto:monto,doc_ini:$("#hiddenexp_notrib_valor").val()},
+        data:{id_contrib:$("#exp_notrib_id_contrib").val(),monto:monto.toFixed(3),doc_ini:$("#hiddenexp_notrib_valor").val()},
         success: function(data){
             fn_actualizar_grilla('tabla_expedientes','get_exped?id_contrib='+$("#hidden_vw_ges_exped_codigo").val());
             fn_actualizar_grilla('all_tabla_expedientes','get_all_exped');
@@ -314,8 +314,17 @@ function trae_valores(textbox){
 function devolver_valor(){
     id_coa_mtr = $('#all_tabla_expedientes').jqGrid ('getGridParam', 'selrow');
     id_contrib = $("#all_tabla_expedientes").getCell(id_coa_mtr, 'id_contrib');
-    id_val = $("#all_tabla_expedientes").getCell(id_coa_mtr, 'id_val');
-
+    id_val = $("#all_tabla_expedientes").getCell(id_coa_mtr, 'id_val');    
+    estado = $("#all_tabla_expedientes").getCell(id_coa_mtr, 'estado');
+    
+    if(estado=='DEVUELTO'){
+        return false;
+    }
+    ano_tra = $("#selanio_tra").val();
+    if(ano_tra==0){
+        mostraralertas('* Seleccione Año Tramite');
+        return false;
+    }
     $.confirm({
         title:'COACTIVA',
         content: '* Devolver y Cambiar Estado de Expediente...',
@@ -324,7 +333,7 @@ function devolver_valor(){
                 $.ajax({
                     url:'devolver_valor',
                     type:'GET',
-                    data:{id_coa_mtr:id_coa_mtr,id_contrib:id_contrib,id_val:id_val},
+                    data:{id_coa_mtr:id_coa_mtr,id_contrib:id_contrib,id_val:id_val,ano_tra:ano_tra},
                     success: function(data){
                         if(data.msg=='si'){
                             MensajeExito('DEVOLVER DOCUMENTO','Operacion Completada Correctamente...');
@@ -339,6 +348,16 @@ function devolver_valor(){
 }
 function eliminar_documento(){
     id_doc = $('#tabla_doc_coactiva').jqGrid ('getGridParam', 'selrow');
+    
+    id_coa_mtr = $('#tabla_expedientes').jqGrid ('getGridParam', 'selrow');
+    estado_proced = $("#tabla_expedientes").getCell(id_coa_mtr, 'estado');
+    if(estado_proced==0){ 
+        mostraralertas('* Expediente Archivado, <br>* No puede Eliminar los Documentos...');
+        return false; }
+    if(estado_proced==3){ 
+        mostraralertas('* Expediente Devuelto, <br>* No puede Eliminar los Documentos...');
+        return false; }
+    
     $.confirm({
         title:'COACTIVA',
         content: '* Eliminar Documento Seleccionado...',
@@ -421,7 +440,8 @@ function ver_docum_exped(id_coa_mtr){
     fn_actualizar_grilla('tabla_doc_coactiva','get_doc_exped?id_coa_mtr='+id_coa_mtr);
 }
 function bus_contrib_expediente(){
-    fn_actualizar_grilla('all_tabla_expedientes','get_all_exped?contrib='+($("#vw_coa_bus_contrib_exp").val()).toUpperCase());
+    materia = $("#ges_exped_mat").val();
+    fn_actualizar_grilla('all_tabla_expedientes','get_all_exped?contrib='+($("#vw_coa_bus_contrib_exp").val()).toUpperCase()+'&materia='+materia);
 }
 function limpiar_form_notrib(){
     $("#exp_notrib_monto,#exp_notrib_contrib,#exp_notrib_id_contrib,#exp_notrib_valor,#hiddenexp_notrib_valor").val('');
@@ -455,6 +475,79 @@ function editar_notificacion(id_doc,id_coa_mtr,texto){
         open: function(){ $("#exp_notif_txt").val(texto); },
         close:function(){ $("#exp_notif_txt").val(''); }
     }).dialog('open');
+}
+
+function habilitar_pago(){
+    id_coa_mtr = $('#all_tabla_expedientes').jqGrid ('getGridParam', 'selrow');
+    id_contrib = $("#all_tabla_expedientes").getCell(id_coa_mtr, 'id_contrib');
+    estado = $("#all_tabla_expedientes").getCell(id_coa_mtr, 'estado');
     
+    if(estado=='DEVUELTO'){
+        mostraralertas('* Expediente Devuelto.<br>* La Cuenta Cte. Esta Habilitada para realizar pagos.');
+        return false;
+    }
+    
+    $("#dlg_enable_pago").dialog({
+        autoOpen: false, modal: true, width: 600,height: 'auto', show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.: HABILITAR / DESHABILITAR PAGO COACTIVO :.</h4></div>",
+        buttons: [{
+                html: "<i class='fa fa-save'></i>&nbsp; Habilitar y Guardar",
+                "class": "btn btn-primary",
+                click: function () { update_pago_trim(); }
+            }, {
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir","class": "btn btn-danger",
+                click: function () {$(this).dialog("close");}
+            }],
+        open: function(){fn_actualizar_grilla('t_cta_cte','get_ctacte?id_contrib='+id_contrib); },
+        close:function(){ }
+    }).dialog('open');
+    $("#dlg_enable_pago_idcontrib").val($("#all_tabla_expedientes").getCell(id_coa_mtr, 'id_contrib'));
+    $("#dlg_enable_pago_contrib").val($("#all_tabla_expedientes").getCell(id_coa_mtr, 'contribuyente'));
+}
+trim_checks='';
+function trim_select(){
+    var Seleccionados = new Array();
+    $('input[type=checkbox]:checked').each(function() {
+        Seleccionados.push($(this).val());
+    });
+    cant=Seleccionados.length;    
+    trim_checks = Seleccionados.join('*');    
+}
+function update_pago_trim(){    
+    id_coa_mtr = $('#all_tabla_expedientes').jqGrid ('getGridParam', 'selrow');
+    id_contrib = $("#all_tabla_expedientes").getCell(id_coa_mtr, 'id_contrib');
+    $.ajax({
+        url:'update_pago_trim',
+        type:'GET',
+        data:{id_coa_mtr:id_coa_mtr,id_contrib:id_contrib,trim_checks:trim_checks},
+        success: function(data){
+            if(data.msg=='si'){
+                MensajeExito('Operacion Completada','Ya Puede pagar Impuesto en Ventanilla...');
+                dialog_close('dlg_enable_pago');
+            }
+        }                           
+    });
+}
+function select_materia(){
+    materia = $("#ges_exped_mat").val();
+    fn_actualizar_grilla('all_tabla_expedientes','get_all_exped?contrib='+($("#vw_coa_bus_contrib_exp").val()).toUpperCase()+'&materia='+materia);
+    if(materia==0){
+       $("#btn_hab_pago_coa").attr('disabled',true); 
+    }else{$("#btn_hab_pago_coa").attr('disabled',false); }
+}
+
+function adjuntar_const_chk(source){
+    if($(source).is(':checked')){
+        $(source).val(1);
+    } else {
+        $(source).val(0);      
+    }
+}
+
+function desactivar_adjuntos(source){
+    if($(source).is(':checked')){
+        $('#adjuntar_const').val(0);
+        $('#adjuntar_const').attr('checked',false);        
+    }
 }
 
