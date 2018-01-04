@@ -23,7 +23,7 @@ class Recibos_MasterController extends Controller
             return view('errors/sin_permiso',compact('menu','permisos'));
         }
         $tip_doc = DB::table('adm_tri.tipo_documento')->get();
-        $anio = DB::table('adm_tri.vw_uit')->select('anio')->orderBy('anio','desc')->get();
+        $anio = DB::table('presupuesto.vw_anio_para_recibos')->orderBy('anio','desc')->get();
         return view('tesoreria/vw_emision_rec_pago',compact('tip_doc','anio','menu','permisos'));        
     }
     
@@ -93,6 +93,8 @@ class Recibos_MasterController extends Controller
     {
         //
     }
+   
+
     
     function tabla_cta_cte_2(Request $request){
         $id_contrib = $request['id_contrib'];
@@ -129,7 +131,8 @@ class Recibos_MasterController extends Controller
         foreach ($sql as $Index => $Datos) {            
             $Lista->rows[$Index]['id'] = $Datos->id_tribu;
             $Lista->rows[$Index]['cell'] = array(
-                $Datos->id_contrib,
+                $Datos->id_tribu,
+                //$Datos->id_contrib,
                 trim($Datos->descrip_tributo),
                 trim($Datos->ivpp),
                 trim($Datos->saldo),                

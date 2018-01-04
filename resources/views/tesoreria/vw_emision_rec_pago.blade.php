@@ -145,7 +145,7 @@
             colNames: ['id_tribu', 'Descripción', 'Total a Pagar', 'Saldo S/.', 'Trim I', 'Trim II', 'Trim III', 'Trim IV','con','coa'],
             rowNum: 5, sortname: 'descrip_tributo', sortorder: 'asc', viewrecords: true, align: "center",
             colModel: [
-                {name: 'id_tribu', index: 'id_tribu', hidden: true},
+                {name: 'id_tribu', index: 'id_tribu', hidden:true},
                 {name: 'descrip_tributo', index: 'descrip_tributo', width: 292},
                 {name: 'ivpp', index: 'ivpp', align: 'center', width: 90},
                 {name: 'saldo', index: 'saldo', align: 'center', width: 70},
@@ -159,13 +159,15 @@
             pager: '#pager_table_cta_cte2',
             rowList: [5, 10],
             gridComplete: function () {
+                var predial = ($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("predial"));
+                var formatos = ($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("formatos"));
                 var pre_x_trim = 0;
                 var idarray = jQuery('#table_cta_cte2').jqGrid('getDataIDs');
 
                 for (var i = 0; i < idarray.length; i++) {
                     var conv = $("#table_cta_cte2").getCell(idarray[i], 'conv');
                     
-                    if(conv!='' && idarray[i] == 103){
+                    if(conv!='' && idarray[i] == predial){
                         $("#table_cta_cte2").closest(".ui-jqgrid").block({
                             message:"<div style='font-size:1.5em;text-align:center;font-weight: bold'>Esta Cuenta esta en Fraccionamiento...</div>",
                             theme: true,
@@ -174,11 +176,11 @@
                     }
                     for (var a = 1; a <= 4; a++) {
                         var val = $("#table_cta_cte2").getCell(idarray[i], 'abo' + a + '_cta');
-                        if (val == '0.000' && idarray[i] == 103) {
+                        if (val == '0.000' && idarray[i] == predial) {
                             $("#table_cta_cte2").jqGrid("setCell", idarray[i], 'abo' + a + '_cta',
                                     "<input type='checkbox' name='chk_trim' value='" + a + "' id='chk_calc_pag_" + a + "' onchange='calc_tot_a_pagar_predial(" + a + ")'>", {'text-align': 'center'});
                         }
-                        if (val == '0.000' && idarray[i] == 104) {
+                        if (val == '0.000' && idarray[i] == formatos) {
                             $("#table_cta_cte2").jqGrid("setCell", idarray[i], 'abo' + a + '_cta',
                                     "<input type='checkbox' name='chk_trim_form' value='" + a + "' id='chk_calc_form_imp_" + a + "' onchange='calc_tot_a_pagar_predial(" + a + ")' disabled='disabled' checked>", {'text-align': 'center'});
                         }
@@ -188,7 +190,7 @@
 
                 pre_x_trim = formato_numero((pre_x_trim / 4), 2, '.', ',');
                 $("#vw_emis_re_pag_pre_x_trim").val(pre_x_trim);
-                form = $("#table_cta_cte2").getCell(104, 'saldo') || '0.00';
+                form = $("#table_cta_cte2").getCell(formatos, 'saldo') || '0.00';
                 $("#vw_emision_rec_pago_imp_pred_total_trimestre").val(form);
                 if (idarray.length > 0) {
                     var firstid = jQuery('#table_cta_cte2').jqGrid('getDataIDs')[1];
@@ -421,7 +423,7 @@
                                     <label class="select">
                                         <select onchange="filter_anio(this.value);" id="vw_emi_rec_imp_pre_contrib_anio" class="input-sm">                                       
                                             @foreach ($anio as $anio1)                                        
-                                            <option value='{{$anio1->anio}}' >{{$anio1->anio}}</option>
+                                            <option value='{{$anio1->anio}}' predial = '{{$anio1->impuesto_predial}}' formatos = '{{$anio1->formatos}}' >{{$anio1->anio}}</option>
                                             @endforeach                                    
                                         </select><i></i>                        
                                 </section>

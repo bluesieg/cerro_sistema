@@ -111,8 +111,8 @@ function gen_rec_imp_pred(s_checks){
 }
 function imp_pred_insert_detalle(id_recibo){
     rowId=$('#table_cta_cte2').jqGrid ('getGridParam', 'selrow');
-    
-    monto = (parseFloat($("#vw_emision_rec_pago_imp_pred_total_trimestre").val().replace(',', ''))-parseFloat($("#table_cta_cte2").getCell(104, 'saldo')));
+    formatos = ($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("formatos"));
+    monto = (parseFloat($("#vw_emision_rec_pago_imp_pred_total_trimestre").val().replace(',', ''))-parseFloat($("#table_cta_cte2").getCell(formatos, 'saldo')));
 
     $.ajax({
         url: 'emi_recibo_detalle/create',
@@ -127,14 +127,14 @@ function imp_pred_insert_detalle(id_recibo){
         },
         success: function (data) {
             if (data) {
-                pago_im_formatos=$("#table_cta_cte2").getCell(104, 'saldo');
+                pago_im_formatos=$("#table_cta_cte2").getCell(formatos, 'saldo');
                 if(pago_im_formatos!=0){
                     $.ajax({
                         url: 'emi_recibo_detalle/create',
                         type: 'GET',
                         data: {
                             id_rec_master: id_recibo,
-                            id_trib: 104,    
+                            id_trib: formatos,    
                             monto: pago_im_formatos,
                             periodo:$("#vw_emi_rec_imp_pre_contrib_anio").val(),
                             cant: 4,
@@ -159,7 +159,7 @@ var select_check=0;
 var select_check_form=0;
 var inter=0;
 function calc_tot_a_pagar_predial(num){
-    rowId=103;
+    rowId=($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("predial"));
     if(inter==0){inter=1;global_tot_a_pagar = parseFloat($("#vw_emision_rec_pago_imp_pred_total_trimestre").val());}
     pre_x_trim = parseFloat($("#table_cta_cte2").getCell(rowId, 'ivpp'));                    
     pre_x_trim = (pre_x_trim/4);
@@ -176,7 +176,7 @@ function calc_tot_a_pagar_predial(num){
 }
 var select_check_2=0;
 function calc_tot_a_pagar_form(num){
-    rowId=104;
+    rowId=($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("formatos"));
     pre_x_trim = parseFloat($("#table_cta_cte2").getCell(rowId, 'ivpp'));                    
     pre_x_trim = (pre_x_trim/4);
 //    alert(pre_x_trim);
@@ -234,6 +234,9 @@ function fn_bus_contrib_list(per){
     $("#dlg_bus_contr").dialog("close");    
 }
 function filter_anio(anio){
+    //rowId=($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("formatos"));
+    //alert(rowId);
+    //ACTUALIZA GRILLA
     fn_actualizar_grilla('table_cta_cte2','get_grid_cta_cte2?id_contrib='+id_contrib+'&ano_cta='+anio);
 }
 
