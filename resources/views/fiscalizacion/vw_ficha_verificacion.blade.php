@@ -423,172 +423,213 @@
                     <div  class="smart-form">
                         <div class="col-xs-10">
                              
-                        <div class="panel-group col-xs-3 " style="margin-top: 5px;  ">                
-                            <div class="panel panel-success">
-                                <div class="panel-heading bg-color-success">N° Ficha de Verificacion</div>
-                                <div class="panel-body cr-body">
-                                   
-                                    <div class="col col-12" style=" margin-top: 8px;">
-                                        <div class="input-group input-group-md">
-                                            <input type="hidden" id="dlg_idfic" value="0">
-                                            <span class="input-group-addon">Numero &nbsp;<i class="fa fa-hashtag"></i></span>
-                                            <div class="icon-addon addon-md" style="padding: 0px;">
-                                                <input id="dlg_nro_ficha" class="col-xs-12 form-control"  style="height: 32px; padding-left: 10px; padding-right: 0px;" type="text" maxlength="7" onkeypress="return soloDNI(event);" onblur="ajustar(6, 'dlg_nro_ficha')">
+                            <div class="panel-group col-xs-3 " style="margin-top: 5px;  ">                
+                                <div class="panel panel-success">
+                                    <div class="panel-heading bg-color-success">N° Ficha de Verificacion</div>
+                                    <div class="panel-body cr-body">
+
+                                        <div class="col col-12" style=" margin-top: 8px;">
+                                            <div class="input-group input-group-md">
+                                                <input type="hidden" id="dlg_idfic" value="0">
+                                                <span class="input-group-addon">Numero &nbsp;<i class="fa fa-hashtag"></i></span>
+                                                <div class="icon-addon addon-md" style="padding: 0px;">
+                                                    <input id="dlg_nro_ficha" class="col-xs-12 form-control"  style="height: 32px; padding-left: 10px; padding-right: 0px;" type="text" maxlength="7" onkeypress="return soloDNI(event);" onblur="ajustar(6, 'dlg_nro_ficha')">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>    
+
+                            <div id="div_urb">    
+                                <div class="panel-group col-xs-9 " style="margin-top: 5px">               
+                                    <div class="panel panel-success cr-panel-sep">
+                                        <div class="panel-heading bg-color-success">.:: Codigo de Referencia ::.</div>
+                                        <div class="panel-body cr-body" style="padding-top: 8px;">
+                                            <div class="col col-4">
+                                                <div class="input-group input-group-md">
+                                                    <input type="hidden" id="dlg_idpre" value="0">
+                                                    <span class="input-group-addon">Sector &nbsp;&nbsp;<i class="fa fa-cogs"></i></span>
+                                                    <div class="icon-addon addon-md">
+                                                        <input class="text-center col-xs-12 form-control"  style="height: 32px; width: 90%" id="dlg_sec" type="text" name="dlg_sec" disabled="" >
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col col-4">
+                                                <div class="input-group input-group-md">
+                                                    <span class="input-group-addon">Manzana &nbsp;&nbsp;<i class="fa fa-apple"></i></span>
+                                                    <div class="icon-addon addon-md">
+                                                        <input class="text-center form-control" style="height: 32px; ; width: 90%" id="dlg_mzna" type="text" name="dlg_mzna" disabled="" >
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col col-4">
+                                                <div class="input-group input-group-md">
+                                                    <span class="input-group-addon">Lotes &nbsp;<i class="fa fa-home"></i></span>
+                                                    <div class="icon-addon addon-md">
+                                                        <select id='dlg_lot' class="form-control col-lg-8" style="height: 32px; text-align: center; width: 90%" onchange="traerfoto()">
+
+                                                        </select>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>    
-                            
-                            
-                        <div class="panel-group col-xs-9 " style="margin-top: 5px">               
-                            <div class="panel panel-success cr-panel-sep">
-                                <div class="panel-heading bg-color-success">.:: Codigo de Referencia ::.</div>
-                                <div class="panel-body cr-body" style="padding-top: 8px;">
-                                    <div class="col col-4">
-                                        <div class="input-group input-group-md">
-                                            <input type="hidden" id="dlg_idpre" value="0">
-                                            <span class="input-group-addon">Sector &nbsp;&nbsp;<i class="fa fa-cogs"></i></span>
-                                            <div class="icon-addon addon-md">
-                                                <input class="text-center col-xs-12 form-control"  style="height: 32px; width: 90%" id="dlg_sec" type="text" name="dlg_sec" disabled="" >
+                            <div id="div_rus">    
+                                <div class="panel-group col-xs-3 " style="margin-top: 5px">               
+                                    <div class="panel panel-success cr-panel-sep">
+                                        <div class="panel-heading bg-color-success">.:: Tipo de Predio ::.</div>
+                                        <div class="panel-body cr-body text-align-center" style="padding-top: 8px;padding-bottom: 18px;">
+                                            <h1 class="txt-color-green"><b>Predio Rustico</b></h1>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-group col-xs-4 " style="margin-top: 5px;  ">                
+                                    <div class="panel panel-success cr-panel-sep">
+                                        <div class="panel-heading bg-color-success">Grupo Tierras</div>
+                                        <div class="panel-body cr-body">
+
+                                            <div class="col col-12" style=" margin-top: 8px;">
+                                                <select id='dlg_sel_gpoterr' class="form-control" onchange="llamarcambio();" style="height: 32px; padding-left: 10px; width: 100%">
+                                                    @foreach ($gpoterr as $gter)
+                                                    <option value='{{$gter->id_gpo}}' >{{$gter->gpo_descrip}}</option>
+                                                    @endforeach
+                                                </select> 
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col col-4">
-                                        <div class="input-group input-group-md">
-                                            <span class="input-group-addon">Manzana &nbsp;&nbsp;<i class="fa fa-apple"></i></span>
-                                            <div class="icon-addon addon-md">
-                                                <input class="text-center form-control" style="height: 32px; ; width: 90%" id="dlg_mzna" type="text" name="dlg_mzna" disabled="" >
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col col-4">
-                                        <div class="input-group input-group-md">
-                                            <span class="input-group-addon">Lotes &nbsp;<i class="fa fa-home"></i></span>
-                                            <div class="icon-addon addon-md">
-                                                <select id='dlg_lot' class="form-control col-lg-8" style="height: 32px; text-align: center; width: 90%" onchange="traerfoto()">
+                                </div> 
+                                <div class="panel-group col-xs-2 " style="margin-top: 5px;  ">                
+                                    <div class="panel panel-success cr-panel-sep">
+                                        <div class="panel-heading bg-color-success">Categoria Tierras</div>
+                                        <div class="panel-body cr-body">
+
+                                            <div class="col col-12" style=" margin-top: 8px;">
+                                                <select id='dlg_sel_gpocatterr' class="form-control" onchange="callchangeoption('dlg_sel_gpocatterr',1);" style="height: 32px; padding-left: 10px; width: 100%" >
                                                 
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> 
+                               
                             </div>
-                        </div>
-                    
-                        <div class="panel-group col-xs-6 " style="margin-top: 5px">                
-                            <div class="panel panel-success">
-                                <div class="panel-heading bg-color-success">.:: Datos del Propietario (Contribuyente) ::.</div>
-                                <div class="panel-body cr-body">
-                                    <div class="col col-3" style="padding-right: 0px; margin-top: 8px;">
-                                        <div class="input-group input-group-md" style="padding: 0px;">
-                                            <span class="input-group-addon"><i class="fa fa-hashtag"></i></span>
-                                            <div class="icon-addon addon-md" style="padding: 0px;">
-                                                <input id="dlg_dni_pred" class="text-center col-xs-12 form-control"  style="height: 32px; padding-left: 3px; padding-right: 0px;" type="text" disabled="" >
+                                    
+                               
+                            <div class="panel-group col-xs-6 " style="margin-top: 5px">                
+                                    <div class="panel panel-success">
+                                        <div class="panel-heading bg-color-success">.:: Datos del Propietario (Contribuyente) ::.</div>
+                                        <div class="panel-body cr-body">
+                                            <div class="col col-3" style="padding-right: 0px; margin-top: 8px;">
+                                                <div class="input-group input-group-md" style="padding: 0px;">
+                                                    <span class="input-group-addon"><i class="fa fa-hashtag"></i></span>
+                                                    <div class="icon-addon addon-md" style="padding: 0px;">
+                                                        <input id="dlg_dni_pred" class="text-center col-xs-12 form-control"  style="height: 32px; padding-left: 3px; padding-right: 0px;" type="text" disabled="" >
+                                                    </div>
+                                                </div>
                                             </div>
+                                            <div class="col col-9" style="padding-right: 10px; margin-top: 8px;">
+                                                <div class="input-group input-group-md" >
+                                                    <span class="input-group-addon"><i class="fa fa-male"></i></span>
+                                                    <div class="icon-addon addon-md" >
+                                                        <input id="dlg_contri_pred" class="col-xs-12 form-control"  style="height: 32px; padding-left: 5px; padding-right: 0px;" type="text" disabled="" >
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
                                         </div>
                                     </div>
-                                    <div class="col col-9" style="padding-right: 10px; margin-top: 8px;">
-                                        <div class="input-group input-group-md" >
-                                            <span class="input-group-addon"><i class="fa fa-male"></i></span>
-                                            <div class="icon-addon addon-md" >
-                                                <input id="dlg_contri_pred" class="col-xs-12 form-control"  style="height: 32px; padding-left: 5px; padding-right: 0px;" type="text" disabled="" >
+                                </div>
+                            <div class="panel-group col-xs-6 " style="margin-top: 5px;  ">                
+                                <div class="panel panel-success cr-panel-sep">
+                                    <div class="panel-heading bg-color-success">.:: Ubicación del Predio ::.</div>
+                                    <div class="panel-body cr-body">
+
+                                        <div class="col col-12" style=" margin-top: 8px;">
+                                            <div class="input-group input-group-md">
+                                                <span class="input-group-addon"><i class="fa fa-map-signs"></i></span>
+                                                <div class="icon-addon addon-md" style="padding: 0px;">
+                                                    <input id="dlg_inp_direcc" class="text-center col-xs-12 form-control"  style="height: 32px; padding-left: 3px; padding-right: 0px;" type="text" disabled="" >
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    
-                      
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="panel-group col-xs-6 " style="margin-top: 5px;  ">                
-                            <div class="panel panel-success cr-panel-sep">
-                                <div class="panel-heading bg-color-success">.:: Ubicación del Predio ::.</div>
-                                <div class="panel-body cr-body">
-                                   
-                                    <div class="col col-12" style=" margin-top: 8px;">
-                                        <div class="input-group input-group-md">
-                                            <span class="input-group-addon"><i class="fa fa-map-signs"></i></span>
-                                            <div class="icon-addon addon-md" style="padding: 0px;">
-                                                <input id="dlg_inp_direcc" class="text-center col-xs-12 form-control"  style="height: 32px; padding-left: 3px; padding-right: 0px;" type="text" disabled="" >
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        
-                        </div>
-                        <div class="col-xs-2">
-                            <div class="panel panel-success cr-panel-sep" style="height: 154px">
-                                <div class="panel-heading bg-color-success">.:: Foto Predio ::.</div>
-                                <div class="panel-body cr-body">
-                                    <div id="dlg_img_view" style="padding-top: 10px" onclick="viewlong()"></div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="panel-group col-xs-2 " style="margin-top: 5px; margin-bottom: 5px  ">                
-                            <div class="panel panel-success ">
-                                <div class="panel-heading bg-color-success">Condicion de Propiedad</div>
-                                <div class="panel-body cr-body" style="margin-top: 8px">
-                                    <div class="col-xs-12" style="padding-left: 15px;">
-                                        <select id="dlg_sel_condpre"  class="form-control" style="width: 85%" onchange="validacond()">
-                                            @foreach ($condicion as $condicion)
-                                            <option value='{{$condicion->id_cond}}' >{{$condicion->descripcion}}</option>
-                                            @endforeach
-                                        </select>                       
-                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel-group col-xs-1 " style="margin-top: 5px; margin-bottom: 5px  ">                
-                            <div class="panel panel-success cr-panel-sep">
-                                <div class="panel-heading bg-color-success">% Codominio</div>
-                                <div class="panel-body cr-body" style="margin-top: 8px">
-                                    <div class="col-xs-12" >
-                                        <label class="input" style="padding-left: 15px;">
-                                            <input id="dlg_inp_condos"  type="text"  class="input-sm text-right" maxlength="3" onkeypress="return soloNumeroTab(event);" disabled="" style="width: 85%">
-                                        </label>
+
+
                                     </div>
                                 </div>
                             </div>
+                        
                         </div>
-                    
-                        <div class="panel-group col-xs-2 " style="margin-top: 5px; margin-bottom: 5px  ">                
-                            <div class="panel panel-success cr-panel-sep">
-                                <div class="panel-heading bg-color-success">Estado de Construccion</div>
-                                <div class="panel-body cr-body" style="margin-top: 8px">
-                                    <div class='col-xs-12 pd_dlg_cr'>
-                                        <select id='dlg_sel_estcon' class="form-control" style="width: 85%" >
-                                                @foreach ($ecc as $eccpre)
-                                                <option value='{{$eccpre->id_ecc}}' >{{$eccpre->descripcion}}</option>
+                       
+                            <div class="col-xs-2">
+                                <div class="panel panel-success cr-panel-sep" style="height: 154px">
+                                    <div class="panel-heading bg-color-success">.:: Foto Predio ::.</div>
+                                    <div class="panel-body cr-body">
+                                        <div id="dlg_img_view" style="padding-top: 10px" onclick="viewlong()"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="panel-group col-xs-2 " style="margin-top: 5px; margin-bottom: 5px  ">                
+                                <div class="panel panel-success ">
+                                    <div class="panel-heading bg-color-success">Condicion de Propiedad</div>
+                                    <div class="panel-body cr-body" style="margin-top: 8px">
+                                        <div class="col-xs-12" style="padding-left: 15px;">
+                                            <select id="dlg_sel_condpre"  class="form-control" style="width: 85%" onchange="validacond()">
+                                                @foreach ($condicion as $condicion)
+                                                <option value='{{$condicion->id_cond}}' >{{$condicion->descripcion}}</option>
                                                 @endforeach
-                                        </select>
+                                            </select>                       
+                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="panel-group col-xs-2 " style="margin-top: 5px; margin-bottom: 5px  ">                
-                            <div class="panel panel-success cr-panel-sep">
-                                <div class="panel-heading bg-color-success">Tipo de Predio</div>
-                                <div class="panel-body cr-body" style="margin-top: 8px">
-                                    <div class='col col-12 '>
-                                        <select id='dlg_sel_tippre' class="form-control" >
-                                            @foreach ($tpre as $tpre)
-                                                <option value='{{$tpre->id_tip_p}}' >{{$tpre->descrip_tip_pre}}</option>
-                                            @endforeach
-                                        </select>
+                            <div class="panel-group col-xs-1 " style="margin-top: 5px; margin-bottom: 5px  ">                
+                                <div class="panel panel-success cr-panel-sep">
+                                    <div class="panel-heading bg-color-success">% Codominio</div>
+                                    <div class="panel-body cr-body" style="margin-top: 8px">
+                                        <div class="col-xs-12" >
+                                            <label class="input" style="padding-left: 15px;">
+                                                <input id="dlg_inp_condos"  type="text"  class="input-sm text-right" maxlength="3" onkeypress="return soloNumeroTab(event);" disabled="" style="width: 85%">
+                                            </label>
+                                        </div>
                                     </div>
-                                    
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-xs-5" style="padding: 0px;">
+                            <div class="panel-group col-xs-2 " style="margin-top: 5px; margin-bottom: 5px  ">                
+                                <div class="panel panel-success cr-panel-sep">
+                                    <div class="panel-heading bg-color-success">Estado de Construccion</div>
+                                    <div class="panel-body cr-body" style="margin-top: 8px">
+                                        <div class='col-xs-12 pd_dlg_cr'>
+                                            <select id='dlg_sel_estcon' class="form-control" style="width: 85%" >
+                                                    @foreach ($ecc as $eccpre)
+                                                    <option value='{{$eccpre->id_ecc}}' >{{$eccpre->descripcion}}</option>
+                                                    @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-group col-xs-2 " style="margin-top: 5px; margin-bottom: 5px  ">                
+                                    <div class="panel panel-success cr-panel-sep">
+                                        <div class="panel-heading bg-color-success">Tipo de Predio</div>
+                                        <div class="panel-body cr-body" style="margin-top: 8px">
+                                            <div class='col col-12 '>
+                                                <select id='dlg_sel_tippre' class="form-control" >
+                                                    @foreach ($tpre as $tpre)
+                                                        <option value='{{$tpre->id_tip_p}}' >{{$tpre->descrip_tip_pre}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        
+                            
+                            <div class="col-xs-5" style="padding: 0px;">
                             <div class="panel-group col-xs-3 " style="margin-top: 5px; ">                
                                 <div class="panel panel-success cr-panel-sep">
                                     <div class="panel-heading bg-color-success">Arancel</div>
@@ -601,26 +642,43 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="panel-group col-xs-3 " style="margin-top: 5px;   ">                
-                                <div class="panel panel-success cr-panel-sep">
-                                    <div class="panel-heading bg-color-success">Area Terr</div>
-                                    <div class="panel-body cr-body">
-                                        <div class='col-lg-12 pd_dlg_cr' style="margin-top: 8px; padding-left: 10px;">
-                                            <label class="input">
-                                                <input id="dlg_inp_areter" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" onkeyup="validarvalter();" style="text-align: right;width: 85%" placeholder="0.00">
-                                            </label>
+                            <div id="div_urb2">
+                                <div class="panel-group col-xs-3 " style="margin-top: 5px;   ">                
+                                    <div class="panel panel-success cr-panel-sep">
+                                        <div class="panel-heading bg-color-success">Area Terr</div>
+                                        <div class="panel-body cr-body">
+                                            <div class='col-lg-12 pd_dlg_cr' style="margin-top: 8px; padding-left: 10px;">
+                                                <label class="input">
+                                                    <input id="dlg_inp_areter" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" onkeyup="validarvalter(1);" style="text-align: right;width: 85%" placeholder="0.00">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="panel-group col-xs-3 " style="margin-top: 5px;  ">                
+                                    <div class="panel panel-success cr-panel-sep">
+                                        <div class="panel-heading bg-color-success">Area comun Terr</div>
+                                        <div class="panel-body cr-body">
+                                            <div class='col-lg-12 pd_dlg_cr' style="margin-top: 8px; padding-left: 10px;">
+                                                <label class="input">
+                                                    <input id="dlg_inp_arecomter" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" onkeyup="validarvalter(1);" style="text-align: right;width: 85%" placeholder="0.00">
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="panel-group col-xs-3 " style="margin-top: 5px;  ">                
-                                <div class="panel panel-success cr-panel-sep">
-                                    <div class="panel-heading bg-color-success">Area comun Terr</div>
-                                    <div class="panel-body cr-body">
-                                        <div class='col-lg-12 pd_dlg_cr' style="margin-top: 8px; padding-left: 10px;">
-                                            <label class="input">
-                                                <input id="dlg_inp_arecomter" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" onkeyup="validarvalter();" style="text-align: right;width: 85%" placeholder="0.00">
-                                            </label>
+                            <div id="div_rus2" >
+                                <div class="panel-group col-xs-3 " style="margin-top: 5px;   ">                
+                                    <div class="panel panel-success cr-panel-sep">
+                                        <div class="panel-heading bg-color-success">Hectareas</div>
+                                        <div class="panel-body cr-body">
+                                            <div class='col-lg-12 pd_dlg_cr' style="margin-top: 8px; padding-left: 10px;">
+                                                <label class="input">
+                                                    <input id="dlg_inp_hectarea" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" onkeyup="validarvalter(2);" style="text-align: right;width: 85%" placeholder="0.00">
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

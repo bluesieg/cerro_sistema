@@ -125,6 +125,7 @@ class PredioRuralController extends Controller
     {
         $prediovw= DB::table('adm_tri.vw_predi_rustico')->where('id_pred_anio',$id)->get();
         $prediovw[0]->fech_adquis=date("d/m/Y",strtotime(str_replace("/", "-", $prediovw[0]->fech_adquis)));
+        $prediovw[0]->foto=0;
         return $prediovw;
     }
 

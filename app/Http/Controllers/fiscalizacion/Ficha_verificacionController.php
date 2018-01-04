@@ -28,7 +28,8 @@ class Ficha_verificacionController extends Controller
         $pisclasi = DB::select('select * from adm_tri.clas_predio where id_cla_pre>0 order by id_cla_pre');
         $pismat = DB::select('select * from adm_tri.mep order by id_mep');
         $pisecs = DB::select('select * from adm_tri.ecs order by id_ecs');
-        return view('fiscalizacion/vw_ficha_verificacion',compact('anio_tra','condicion','ecc','tpre','fadq','pisclasi','pismat','pisecs','menu','permisos'));
+        $gpoterr = DB::select('select * from adm_tri.gpo_tierras where id_gpo>1 order by id_gpo');
+        return view('fiscalizacion/vw_ficha_verificacion',compact('anio_tra','condicion','ecc','tpre','fadq','pisclasi','pismat','pisecs','menu','permisos','gpoterr'));
     }
 
     public function create(Request $request)
@@ -43,6 +44,7 @@ class Ficha_verificacionController extends Controller
         {
             return -1;
         }
+        
         $ficha=new Ficha_Verificacion;
         $ficha->nro_fic=$request['nro'];
         $ficha->id_puente=$request['puente'];
@@ -53,9 +55,23 @@ class Ficha_verificacionController extends Controller
         $ficha->id_est_const=$request['ecc'];
         $ficha->id_tip_pred=$request['tp'];
         $ficha->arancel=$request['arcancel'];
-        $ficha->are_terr=$request['ater'];
-        $ficha->are_com_terr=$request['acomun'];
-        $ficha->val_ter=($request['ater']+$request['acomun'])*$request['arcancel'];
+        
+        if($request['tip_pre_u_r']=="RUS")
+        {
+            $ficha->tip_pre_u_r=2;
+            $ficha->hectareas=$request['hectareas'];
+            $ficha->id_gpo_tierra=$request['gr_tierra'];
+            $ficha->id_cat_gpo_tierra=$request['cat_tierra'];
+            $ficha->val_ter=($request['hectareas'])*$request['arcancel'];
+        }
+        else
+        {
+            $ficha->tip_pre_u_r=1;
+            $ficha->are_terr=$request['ater'];
+            $ficha->are_com_terr=$request['acomun'];
+            $ficha->val_ter=($request['ater']+$request['acomun'])*$request['arcancel'];
+        }
+        
         $ficha->save();
         return $ficha->id_fic;
     }
@@ -68,7 +84,14 @@ class Ficha_verificacionController extends Controller
     public function show($id)
     {
         $prediovw= DB::table('fiscalizacion.vw_ficha_verificacion')->where('id_fic',$id)->get();
-        $prediovw[0]->foto= $this->getfoto($prediovw[0]->sec,$prediovw[0]->mzna,$prediovw[0]->lote);
+        if(trim($prediovw[0]->tp)=="RUS")
+        {
+            $prediovw[0]->foto=0;
+        }
+        else
+        {
+            $prediovw[0]->foto= $this->getfoto($prediovw[0]->sec,$prediovw[0]->mzna,$prediovw[0]->lote);
+        }
         return $prediovw;
     }
 
@@ -95,9 +118,20 @@ class Ficha_verificacionController extends Controller
             $val->id_est_const=$request['ecc'];
             $val->id_tip_pred=$request['tp'];
             $val->arancel=$request['arcancel'];
-            $val->are_terr=$request['ater'];
-            $val->are_com_terr=$request['acomun'];
-            $val->val_ter=($request['ater']+$request['acomun'])*$request['arcancel'];
+            
+            if($request['tip_pre_u_r']=="RUS")
+            {
+                $val->hectareas=$request['hectareas'];
+                $val->id_gpo_tierra=$request['gr_tierra'];
+                $val->id_cat_gpo_tierra=$request['cat_tierra'];
+                $val->val_ter=($request['hectareas'])*$request['arcancel'];
+            }
+            else
+            {
+                $val->are_terr=$request['ater'];
+                $val->are_com_terr=$request['acomun'];
+                $ficha->val_ter=($request['ater']+$request['acomun'])*$request['arcancel'];
+            }
             $val->save();
         }
         return $id;

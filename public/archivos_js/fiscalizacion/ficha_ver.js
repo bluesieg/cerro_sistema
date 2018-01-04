@@ -142,9 +142,16 @@ function validacond()
 }
 autocompletar=0;
 creadialog=0;
-function limpiarpred()
+function limpiarpred(tp)
 {
-    $("#dlg_img_view").html('<center><img src="img/recursos/Home-icon.png" height="100%" width="65%"/></center>');
+    if(tp=="URB")
+    {
+        $("#dlg_img_view").html('<center><img src="img/recursos/Home-icon.png" height="100%" width="65%"/></center>');
+    }
+    if(tp=="RUS")
+    {
+        $("#dlg_img_view").html('<center><img src="img/recursos/rustico.jpg" height="100%" width="65%"/></center>');
+    }
     autocompletar=1;
     if(creadialog==0)
     {
@@ -162,7 +169,18 @@ function limpiarpred()
 function clickmodgrid(Id)
 {
    $("#dlg_idpre").val(Id);
-   limpiarpred();
+   tp=$('#table_predios_contri').jqGrid('getCell',Id,'tp');
+   if(tp=="URB")
+   {
+       $("#div_rus,#div_rus2").hide();
+       $("#div_urb,#div_urb2").show();
+   }
+   else
+   {
+       $("#div_rus,#div_rus2").show();
+       $("#div_urb,#div_urb2").hide();
+   }
+   limpiarpred(tp);
    $("#dlg_reg_dj").dialog('open');
    MensajeDialogLoadAjax('dlg_reg_dj', '.:: Cargando ...');
    id_fic=$('#table_predios_contri').jqGrid('getCell',Id,'id_fic');
@@ -177,7 +195,14 @@ function clickmodgrid(Id)
    {
        id_fic=0;
         $("#dlg_idfic").val(0);
-        url='predios_urbanos/'+Id;
+        if(tp=="URB")
+        {
+            url='predios_urbanos/'+Id;
+        }
+        else
+        {
+            url='predios_rural/'+Id;
+        }
         $("#btnsaveficha").show();
         $("#btnmodficha").hide();
    }
@@ -194,20 +219,11 @@ function clickmodgrid(Id)
         {
             $("#dlg_img_view").html('<center><img src="data:image/png;base64,'+r[0].foto+'" height="100%" width="90%"/></center>');
         }
+        if(tp=="URB")
+        {
             $("#dlg_sec").val(r[0].sec);
             $("#dlg_mzna").val(r[0].mzna);
             $("#dlg_lot").append($('<option>',{value:0,text: r[0].lote}));
-            $("#dlg_dni_pred").val(r[0].nro_doc);
-            $("#dlg_contri_pred").val(r[0].contribuyente);
-            $("#dlg_sel_condpre").val(r[0].id_cond_prop);
-            $("#dlg_inp_condos").val(r[0].nro_condominios);
-            validacond();
-            $("#dlg_sel_estcon").val(r[0].id_est_const);
-            $("#dlg_sel_tippre").val(r[0].id_tip_pred);
-            $("#dlg_inp_aranc").val(r[0].arancel);
-            $("#dlg_inp_valterr").val(formato_numero(r[0].val_ter,3,".",","));
-            $("#dlg_inp_areter").val(r[0].are_terr);
-            $("#dlg_inp_arecomter").val(r[0].are_com_terr);
             dir=r[0].nom_via;
             if(r[0].nro_mun!=""){
                 dir=dir+" N° "+r[0].nro_mun;
@@ -223,6 +239,34 @@ function clickmodgrid(Id)
             }
             $("#dlg_inp_direcc").val(dir+" "+r[0].habilitacion);
             $("#dlg_inp_direcc").attr('title',dir+" "+r[0].habilitacion);
+            $("#dlg_inp_areter").val(r[0].are_terr);
+            $("#dlg_inp_arecomter").val(r[0].are_com_terr);
+        }
+        else
+        {
+            $("#dlg_inp_direcc").val(r[0].lugar_pr_rust+" "+r[0].ubicac_pr_rus+" "+r[0].klm+" "+r[0].nom_pre_pr_rus);
+            if(id_fic>0)
+            {
+                $("#dlg_inp_hectarea").val(r[0].hectareas);
+            }
+            else
+            {
+                $("#dlg_inp_hectarea").val(r[0].are_terr);
+            }
+            $("#dlg_sel_gpoterr").val(r[0].id_gpo_tierra);
+            auto_select("dlg_sel_gpocatterr","sel_cat_gruterr",r[0].id_gpo_tierra,r[0].id_cat_gpo_tierra);
+        }
+            $("#dlg_dni_pred").val(r[0].nro_doc);
+            $("#dlg_contri_pred").val(r[0].contribuyente);
+            $("#dlg_sel_condpre").val(r[0].id_cond_prop);
+            $("#dlg_inp_condos").val(r[0].nro_condominios);
+            validacond();
+            $("#dlg_sel_estcon").val(r[0].id_est_const);
+            $("#dlg_sel_tippre").val(r[0].id_tip_pred);
+            $("#dlg_inp_aranc").val(r[0].arancel);
+            $("#dlg_inp_valterr").val(formato_numero(r[0].val_ter,3,".",","));
+            
+            
             MensajeDialogLoadAjaxFinish('dlg_reg_dj');
             jQuery("#table_pisos").jqGrid('setGridParam', {url: 'traepisos_fic/'+Id+'/'+id_fic}).trigger('reloadGrid');
             jQuery("#table_instal").jqGrid('setGridParam', {url: 'traeinsta_fic/'+Id+'/'+id_fic}).trigger('reloadGrid');
@@ -236,16 +280,21 @@ function clickmodgrid(Id)
         MensajeDialogLoadAjaxFinish('dlg_reg_dj');
     }
     }); 
-
-
-
 }
 function dlgsave()
 {
     if($("#dlg_nro_ficha").val()==""){mostraralertasconfoco("Ingresar Número de ficha de Verificación","dlg_nro_ficha");return false}
-    if($("#dlg_inp_areter").val()==""){mostraralertasconfoco("Ingresar Area del Terreno","dlg_inp_areter");return false}
-    if($("#dlg_inp_arecomter").val()==""){$("#dlg_inp_arecomter").val(0)};
     Id=$("#dlg_idpre").val();
+    tp_pre=$('#table_predios_contri').jqGrid('getCell',Id,'tp');
+    if(tp_pre=="URB")
+    {
+        if($("#dlg_inp_areter").val()==""){mostraralertasconfoco("Ingresar Area del Terreno","dlg_inp_areter");return false}
+    }
+    if(tp_pre=="RUS")
+    {
+        if($("#dlg_inp_hectarea").val()==""){mostraralertasconfoco("Ingresar Hectareas","dlg_inp_hectarea");return false}
+    }
+    if($("#dlg_inp_arecomter").val()==""){$("#dlg_inp_arecomter").val(0)};
     puente=$('#table_predios_contri').jqGrid('getCell',Id,'id_puente');
     ajustar(6, 'dlg_nro_ficha');
     carta=$('#table_cartas').jqGrid ('getGridParam', 'selrow');
@@ -262,7 +311,11 @@ function dlgsave()
                 arcancel:$("#dlg_inp_aranc").val(),
                 ater:$("#dlg_inp_areter").val(),
                 acomun:$("#dlg_inp_arecomter").val(),
-                carta:carta
+                hectareas:$("#dlg_inp_hectarea").val(),
+                gr_tierra:$("#dlg_sel_gpoterr").val(),
+                cat_tierra:$("#dlg_sel_gpocatterr").val(),
+                carta:carta,
+                tip_pre_u_r:tp_pre
             },
         success: function(r) 
         {
@@ -295,7 +348,16 @@ function dlgsave()
 function dlgupdate()
 {
     if($("#dlg_nro_ficha").val()==""){mostraralertasconfoco("Ingresar Número de ficha de Verificación","dlg_nro_ficha");return false}
-    if($("#dlg_inp_areter").val()==""){mostraralertasconfoco("Ingresar Area del Terreno","dlg_inp_areter");return false}
+    Idpre=$("#dlg_idpre").val();
+    tp_pre=$('#table_predios_contri').jqGrid('getCell',Idpre,'tp');
+    if(tp_pre=="URB")
+    {
+        if($("#dlg_inp_areter").val()==""){mostraralertasconfoco("Ingresar Area del Terreno","dlg_inp_areter");return false}
+    }
+    if(tp_pre=="RUS")
+    {
+        if($("#dlg_inp_hectarea").val()==""){mostraralertasconfoco("Ingresar Hectareas","dlg_inp_hectarea");return false}
+    }
     if($("#dlg_inp_arecomter").val()==""){$("#dlg_inp_arecomter").val(0)};
     id=$("#dlg_idfic").val();
     ajustar(6, 'dlg_nro_ficha');
@@ -313,7 +375,11 @@ function dlgupdate()
             arcancel:$("#dlg_inp_aranc").val(),
             ater:$("#dlg_inp_areter").val(),
             acomun:$("#dlg_inp_arecomter").val(),
-            carta:carta    
+            hectareas:$("#dlg_inp_hectarea").val(),
+            gr_tierra:$("#dlg_sel_gpoterr").val(),
+            cat_tierra:$("#dlg_sel_gpocatterr").val(),
+            carta:carta,
+            tip_pre_u_r:tp_pre
         },
         success: function(r) 
         {
@@ -341,10 +407,24 @@ function dlgupdate()
         });
 }
 
-function validarvalter()
+function validarvalter(tp)
 {
-    if($("#dlg_inp_aranc").val()==""||$("#dlg_inp_areter").val()==""){$("#dlg_inp_valterr").val(0);return false;}
-    $("#dlg_inp_valterr").val( formato_numero($("#dlg_inp_aranc").val()*$("#dlg_inp_areter").val(),2,".",","));
+    if(tp==1)
+    {
+     if($("#dlg_inp_aranc").val()==""||$("#dlg_inp_areter").val()==""){$("#dlg_inp_valterr").val(0);return false;}
+        if($("#dlg_inp_arecomter").val()==""){
+            comun=0;}
+        else{
+            comun=$("#dlg_inp_arecomter").val();}
+        $("#dlg_inp_valterr").val(formato_numero($("#dlg_inp_aranc").val()*(parseFloat($("#dlg_inp_areter").val())+parseFloat(comun)),3,".",","));
+    }
+    if(tp==2)
+    {
+        if($("#dlg_inp_aranc").val()==""||$("#dlg_inp_hectarea").val()==""){$("#dlg_inp_valterr").val(0);return false;}
+        $("#dlg_inp_valterr").val( formato_numero($("#dlg_inp_aranc").val()*$("#dlg_inp_hectarea").val(),2,".",","));
+    
+    }
+   
 }
 
 
@@ -517,8 +597,7 @@ function callchangeoption(input,tip)
     if(tip==1)
     {
         $("#dlg_inp_aranc").val($("#"+input+" option:selected").attr("aran"));
-        validarvalter();
-
+        validarvalter(2);
     }
 }
     
@@ -952,4 +1031,24 @@ function viewlong()
     title: "<div class='widget-header'><h4>.:  Foto del Predio :.</h4></div>",
     }).dialog('open');
     $("#dlg_img_view_big").html($("#dlg_img_view").html());
+}
+
+function auto_select(sel_input,url,consulta,valor)
+    {
+        MensajeDialogLoadAjax(sel_input, '.:: Cargando ...');
+        $("#"+sel_input).html("");
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data:{an:$("#selantra").val(),val:consulta},
+            success: function(data){               
+                for (var i=0; i < data.length; i++)
+                {
+                    $("#"+sel_input).append($('<option>',{value:data[i].id_gpo_cat,text: data[i].categoria,aran:data[i].arancel_rustico}));
+                } 
+                MensajeDialogLoadAjaxFinish(sel_input);
+                $("#"+sel_input).val(valor);
+
+             }
+     });
 }

@@ -1088,6 +1088,11 @@ function fn_confirmar_borrar_predio()
                                             $( "#rinst_inp_largo,#rinst_inp_ancho" ).prop( "disabled", false );
                                             $( "#rinst_inp_canti,#rinst_inp_alto" ).prop( "disabled", true );
                                         }
+                                        if(ui.item.und=="M3")
+                                        {
+                                            $( "#rinst_inp_largo,#rinst_inp_ancho,#rinst_inp_alto" ).prop( "disabled", false );
+                                            $( "#rinst_inp_canti" ).prop( "disabled", true );
+                                        }
                                      }
                                       return false;
                               }   

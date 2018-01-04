@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\fiscalizacion\Resolucion_Determinacion;
 use App\Models\Predios\Predios_Anio;
 use App\Models\Predios\Predios_Contribuyentes;
+use App\Models\Predios\Predios_Rusticos;
 use App\Models\Pisos;
 use App\Models\Instalaciones;
 
@@ -60,7 +61,11 @@ class Res_DeterminacionController extends Controller
             {
                 $predio_anio=$this->descativar_predio_anio($pre->id_pred_anio);
                 $id_pred_anio=$this->predio_anio_create($pre,$predio_anio);
-                $this->predio_contribuyente_create($id_pred_anio,$pre->id_pred_anio);
+                $this->predio_contribuyente_create($id_pred_anio,$pre->id_pred_anio,$pre->tip_pre_u_r);
+                if($pre->tip_pre_u_r==2)
+                {
+                    $this->predio_rus_create($id_pred_anio,$pre);
+                }
                 $this->create_pisos($pre->id_fic,$id_pred_anio);
                 $this->create_instalaciones($pre->id_fic,$id_pred_anio);
                 
@@ -74,9 +79,19 @@ class Res_DeterminacionController extends Controller
         $val->id_pred=$pre->id_pred;
         $val->anio=$predio_anio->anio;
         $val->arancel = $pre->arancel;
-        $val->are_terr = $pre->are_terr;
+        if($pre->tip_pre_u_r==2)
+        {
+            $val->are_terr = $pre->hectareas;
+            $val->are_com_terr = 0;
+            $val->val_ter = $pre->hectareas*$pre->are_terr;
+        }
+        else
+        {
+            $val->are_terr = $pre->are_terr;
+            $val->are_com_terr = $pre->are_com_terr;
+            $val->val_ter = ($pre->are_terr+$pre->are_com_terr)*$pre->are_terr;
+        }
         $val->flg_act = 1;
-        $val->val_ter = ($pre->are_terr+$pre->are_com_terr)*$pre->are_terr;
         $val->id_cond_prop = $pre->id_cond_prop;
         $val->id_est_const = $pre->id_est_const;
         $val->id_tip_pred = $pre->id_tip_pred;
@@ -88,7 +103,7 @@ class Res_DeterminacionController extends Controller
         $val->id_uso_predio = $predio_anio->id_uso_predio;
         $val->conform_obra = $predio_anio->conform_obra;
         $val->declar_fabrica = $predio_anio->declar_fabrica;
-        $val->are_com_terr = $pre->are_com_terr;
+        
         $val->id_usuario = Auth::user()->id;
         $val->fec_reg = date("d/m/Y");
         $val->hora_reg = date("H:i");
@@ -112,6 +127,25 @@ class Res_DeterminacionController extends Controller
             $predio_contribuyentes->save();
         }
         
+    }
+    public function predio_rus_create($id,$pred)
+    {
+        $rus_ant = DB::select('select * from adm_tri.predios_rusticos where id_pred_anio='.$pred->id_pred_anio);
+        $rustico=new Predios_Rusticos;
+        $rustico->id_pred_anio = $id;
+        $rustico->lugar_pr_rust = $rus_ant[0]->lugar_pr_rust;
+        $rustico->ubicac_pr_rus  = $rus_ant[0]->ubicac_pr_rus;
+        $rustico->klm  = $rus_ant[0]->klm;
+        $rustico->nom_pre_pr_rus   = $rus_ant[0]->nom_pre_pr_rus;
+        $rustico->norte   = $rus_ant[0]->norte;
+        $rustico->sur   = $rus_ant[0]->sur;
+        $rustico->este   = $rus_ant[0]->este;
+        $rustico->oeste   = $rus_ant[0]->oeste;
+        $rustico->id_tip_pre_rus = $rus_ant[0]->id_tip_pre_rus;
+        $rustico->id_uso_pre_rust = $rus_ant[0]->id_uso_pre_rust;
+        $rustico->id_gpo_tierra=$pred->id_gpo_tierra;
+        $rustico->id_cat_gpo_tierra=$pred->id_cat_gpo_tierra;
+        $rustico->save();
     }
     public function descativar_predio_anio($id)
     {

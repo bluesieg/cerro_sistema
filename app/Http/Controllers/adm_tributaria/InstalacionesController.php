@@ -44,6 +44,10 @@ class InstalacionesController extends Controller
             {
                 $insta->pro_tot =$request['cant'];
             }
+            if($cat_instal->unid_medida=="M3")
+            {
+                $insta->pro_tot =$request['largo']*$request['ancho']*$request['alto'];
+            }
             $insta->val_obra = $insta->pro_tot*$insta->val_unit;
         }
         $insta->id_instal = $request['inst'];

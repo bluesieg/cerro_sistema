@@ -28,6 +28,7 @@ function dialog_emi_rec_pag_arbitrios() {
         $("#table_Predios_Arbitrios").jqGrid("clearGridData", true);
         $("#table_cta_Arbitrios").jqGrid("clearGridData", true);
     }
+    $("#vw_emision_rec_Arbitrios_tot").val(0);
 }
 function gen_recibo_imp_arbitrios(){
     var Seleccionados = new Array();
