@@ -32,8 +32,10 @@ class PredioController extends Controller
         $pismat = DB::select('select * from adm_tri.mep order by id_mep');
         $pisecs = DB::select('select * from adm_tri.ecs order by id_ecs');
         $condi_pen = DB::select('select * from adm_tri.condi_pensionista order by id_con');
-        return view('adm_tributaria/vw_predio', compact('anio_tra','sectores','manzanas','condicion','ecc','tpre','fadq','pisclasi','pismat','pisecs','condi_pen','menu','permisos'));
+        $upa = DB::select('select * from adm_tri.uso_predio_arbitrios order by id_uso_arb ');
+        return view('adm_tributaria/vw_predio', compact('anio_tra','sectores','manzanas','condicion','ecc','tpre','fadq','pisclasi','pismat','pisecs','condi_pen','menu','permisos','upa'));
     }
+    
     public function calculos_ivpp($id)
     {
         DB::select("select adm_tri.actualiza_base_predio(".$id.")");
@@ -47,17 +49,19 @@ class PredioController extends Controller
     {
         $predio=new Predios;
         $predio->id_lote = $request['lote'];
-        $predio->piso = $request['piso'];
-        $predio->mzna_dist = $request['mz'];
-        $predio->lote_dist = $request['lt'];
-        $predio->nro_mun = $request['n'];
-        $predio->nro_int = $request['int'];
-        $predio->dpto = $request['dpto'];
-        $predio->id_via = $request['cvia'];
+        $predio->piso = strtoupper($request['piso']);
+        $predio->mzna_dist = strtoupper($request['mz']);
+        $predio->lote_dist = strtoupper($request['lt']);
+        $predio->nro_mun = strtoupper($request['n']);
+        $predio->nro_int = strtoupper($request['int']);
+        $predio->dpto = strtoupper($request['dpto']);
+        $predio->id_via = strtoupper($request['cvia']);
         $predio->tip_pre_u_r = 1;
-        $predio->zona = $request['zn'];
-        $predio->secc = $request['secc'];
-        $predio->referencia = $request['ref'];
+        $predio->zona = strtoupper($request['zn']);
+        $predio->secc = strtoupper($request['secc']);
+        $predio->referencia = strtoupper($request['ref']);
+        $predio->sup_mzna = strtoupper($request['supmzna']);
+        $predio->gpo_zonal = strtoupper($request['gpozonal']);
         $predio->save();
         if($predio->id_pred)
         {
@@ -141,6 +145,7 @@ class PredioController extends Controller
             $val->are_terr = $request['areterr'];
             $val->are_com_terr = $request['arecomter'];
             $val->arancel = $request['aranc'];
+            
             $val->val_ter = ($request['areterr']+$request['arecomter'])*$request['aranc'];
             $val->save();
         }
@@ -153,16 +158,18 @@ class PredioController extends Controller
         $val=  $predio::where("id_pred","=",$id )->first();
         if(count($val)>=1)
         {
-            $val->id_via = $request['cvia'];
-            $val->nro_mun = $request['n'];
-            $val->mzna_dist = $request['mz'];
-            $val->lote_dist = $request['lt'];
-            $val->zona = $request['zn'];
-            $val->secc = $request['secc'];
-            $val->piso = $request['piso'];
-            $val->dpto = $request['dpto'];
-            $val->nro_int = $request['int'];
-            $val->referencia = $request['ref'];
+            $val->id_via = strtoupper($request['cvia']);
+            $val->nro_mun = strtoupper($request['n']);
+            $val->mzna_dist = strtoupper($request['mz']);
+            $val->lote_dist = strtoupper($request['lt']);
+            $val->zona = strtoupper($request['zn']);
+            $val->secc = strtoupper($request['secc']);
+            $val->piso = strtoupper($request['piso']);
+            $val->dpto = strtoupper($request['dpto']);
+            $val->nro_int = strtoupper($request['int']);
+            $val->referencia = strtoupper($request['ref']);
+            $val->sup_mzna = strtoupper($request['supmzna']); 
+            $val->gpo_zonal = strtoupper($request['gpozonal']);
             $val->save();
         }
     }

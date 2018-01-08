@@ -121,7 +121,10 @@
           </tr>
           <tr>
               <td colspan="6">
-                  REFERENCIA:{{$sql->referencia}}
+                  REFERENCIA: @if($sql->sup_mzna!=''){{'SUP. MNZA '.$sql->sup_mzna.', '}}@endif
+                              @if($sql->gpo_zonal!=''){{'GPO. ZONAL '.$sql->gpo_zonal.', '}}@endif 
+                              @if($sql->referencia!='-'){{$sql->referencia}}@endif 
+                              
               </td>
           </tr>
           

@@ -9,7 +9,7 @@
             <div class="input-group input-group-md">
                 <span class="input-group-addon">Año de Tramite <i class="fa fa-cogs"></i></span>
                 <div class="icon-addon addon-md">
-                    <select id='selantra' class="form-control col-lg-8" style="height: 32px;">
+                    <select id='selantra' class="form-control col-lg-8" style="height: 32px;" onchange="callfilltab();">
                     @foreach ($anio_tra as $anio)
                     <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
                     @endforeach
@@ -168,7 +168,7 @@
             height: '300px', autowidth: true,
             toolbarfilter: true,
             colNames: ['id_pers','codigo','DNI/RUC','contribuyente'],
-            rowNum: 20, sortname: 'contribuyente', sortorder: 'asc', viewrecords: true, caption: 'Contribuyentes', align: "center",
+            rowNum: 100, sortname: 'contribuyente', sortorder: 'asc', viewrecords: true, caption: 'Contribuyentes', align: "center",
             colModel: [
                 {name: 'id_pers', index: 'id_pers', hidden: true},
                 {name: 'id_per', index: 'id_per', align: 'center',width: 100},

@@ -41,6 +41,9 @@ class Caja_MovimientosController extends Controller {
         $val = $recibo_master::where("id_rec_mtr", "=", $id)->first();
         
         if (count($val) >= 1) {
+            
+                          
+            
             $val->id_tip_pago = $request['id_tip_pago'];
             $val->id_caja = $request['id_caja'];
             $val->fecha = date('d-m-Y');
@@ -57,21 +60,24 @@ class Caja_MovimientosController extends Controller {
                         $prim = $chk[0];
                         $ult = array_pop($chk);
                         $cant = count($chk)+1;
-//                        echo $prim.$ult."<br>";
-                        $value_formato_pred= DB::select('select sum(abo1_cta+abo2_cta+abo3_cta+abo4_cta) from adm_tri.vw_cta_cte2 where id_contrib='.$request['id_pers'].' and id_tribu=104');
-                        $pre_x_trim= DB::table('tesoreria.recibos_detalle')->where('id_rec_master',$val->id_rec_mtr)->where('id_trib',103)->value('p_unit');
-//                        $costo_sol= $val->total;
-//                        dd($costo_sol);
+                        
+//                       
+                        $anio_detalle=DB::table('tesoreria.recibos_detalle')->select('periodo')->where('id_rec_master',$val->id_rec_mtr)->first();
                         for($i=$prim;$i<=$ult;$i++){
-                            $update = DB::table('adm_tri.cta_cte')->where('id_pers',$request['id_pers'])->where('id_tribu',103)->where('ano_cta',date('Y'))
+                            
+                            $recpred = DB::select('select * from presupuesto.vw_impuesto_predial where anio='.$anio_detalle->periodo);  
+                            $pre_x_trim= DB::table('tesoreria.recibos_detalle')->where('id_rec_master',$val->id_rec_mtr)->where('id_trib',$recpred[0]->id_tributo)->value('p_unit');
+
+                            $update = DB::table('adm_tri.cta_cte')->where('id_pers',$request['id_pers'])->where('id_tribu',$recpred[0]->id_tributo)->where('ano_cta',$anio_detalle->periodo)
                                     ->update(['abo'.$i.'_cta'=>$pre_x_trim,'fec_abo'.$i=>date('d-m-Y')]);
                         }
-                        if($value_formato_pred[0]->sum==0){
-                            $value_formato_pred= DB::table('adm_tri.vw_cta_cte2')->where('id_contrib',$request['id_pers'])->where('id_tribu',104)->where('ano_cta',date('Y'))->value('ivpp');
+                        
+                            
+                            $recformato= DB::select('select * from presupuesto.vw_formatos_ivpp where anio='.$anio_detalle->periodo);  
+                            $value_formato_pred= DB::table('adm_tri.vw_cta_cte2')->where('id_contrib',$request['id_pers'])->where('id_tribu',$recformato[0]->id_tributo)->where('ano_cta',$anio_detalle->periodo)->value('ivpp');
                             for($x=1;$x<=4;$x++){
-                                $update = DB::table('adm_tri.cta_cte')->where('id_pers',$request['id_pers'])->where('id_tribu',104)->where('ano_cta',date('Y'))
+                                $update = DB::table('adm_tri.cta_cte')->where('id_pers',$request['id_pers'])->where('id_tribu',$recformato[0]->id_tributo)->where('ano_cta',$anio_detalle->periodo)
                                         ->update(['abo'.$x.'_cta'=>($value_formato_pred/4),'fec_abo'.$x=>date('d-m-Y')]);
-                            }
                         }
                         return $id.'predial';                                                
                     }

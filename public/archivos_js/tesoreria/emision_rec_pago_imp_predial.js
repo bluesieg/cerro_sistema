@@ -28,8 +28,9 @@ function gen_recibo_imp_predial(){
     ss_checks = Seleccionados.join('-');
     
     if($("#vw_emi_rec_imp_pred_glosa").val()==''){
-        mostraralertasconfoco('Ingrese Glosa del recibo.','#vw_emi_rec_imp_pred_glosa');
-        return false;
+        $("#vw_emi_rec_imp_pred_glosa").val("-");
+//        mostraralertasconfoco('Ingrese Glosa del recibo.','#vw_emi_rec_imp_pred_glosa');
+//        return false;
     }
     if($("#vw_emi_rec_imp_pre_contrib").val()==''){
         mostraralertasconfoco('Ingrese un Contribuyente','#vw_emi_rec_imp_pre_contrib');
