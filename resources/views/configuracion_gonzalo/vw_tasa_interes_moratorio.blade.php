@@ -8,7 +8,20 @@
                             <h1 class="txt-color-green"><b>
                                     <h1 class="txt-color-green"><b>TASA DE INTERES MORATORIO</b></h1>
                             <div class="row">
-                                <div class="col-xs-12">
+                                
+                                
+                                <div class="col-xs-2">
+                                    <label>Año:</label>
+                                    <label class="select">
+                                        <select onchange="selecciona_anio();" id="select_anio" class="input-sm">
+                                            @foreach ($anio as $anio_ipm)
+                                                <option value='{{$anio_ipm->anio}}' >{{$anio_ipm->anio}}</option>
+                                            @endforeach
+                                        </select><i></i>
+                                    </label>
+                                </div>
+                                
+                                <div class="col-xs-10">
                                     <div class="text-right">
                                         @if( $permisos[0]->btn_new ==1 )
                                             <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="nuevo_tim();">
@@ -60,18 +73,19 @@
     $(document).ready(function () {
         $("#menu_configuracion").show();
         $("#li_tasa_interes_moratorio").addClass('cr-active');
+        anio = $("#select_anio").val(); 
 
         var pageWidth = $("#tabla_tim").parent().width() - 100;
 
         jQuery("#tabla_tim").jqGrid({
-            url: 'listar_tim',
+            url: 'listar_tim?anio=' + anio,
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
             toolbarfilter: true,
             colNames: ['ID','DOCUMENTO','TIM','AÑO'],
             rowNum: 20,sortname: 'id_tim', viewrecords: true, caption: 'TASA DE INTERES MORATORIO', align: "center",
             colModel: [
-                {name: 'id_tim', index: 'id_tim', align: 'center',width:(pageWidth*(20/100))},
+                {name: 'id_tim', index: 'id_tim', align: 'center', hidden:true,width:(pageWidth*(20/100))},
                 {name: 'documento_aprob', index: 'documento_aprob', align: 'center', width:(pageWidth*(80/100))}, 
                 {name: 'tim', index: 'tim', align: 'center', width:(pageWidth*(50/100))},
                 {name: 'anio', index: 'anio', align: 'center', width:(pageWidth*(20/100))},
@@ -119,6 +133,17 @@
                     </div>
                 </section>
                 <input type="hidden" id="id_tim" value="0">
+                
+                <div class="col-xs-12" style="padding: 0px; margin-bottom: 10px; ">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <input type="hidden" id="id_anio" value="0">
+                        <span class="input-group-addon" style="width: 165px">Año: &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div>
+                            <input id="dlg_anio" type="text"  class="form-control text-center" style="height: 32px;" disabled="">
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="col-xs-12" style="padding: 0px; margin-bottom: 10px; ">
                     <div class="input-group input-group-md" style="width: 100%">
                         <span class="input-group-addon" style="width: 165px">Documento: &nbsp;<i class="fa fa-hashtag"></i></span>
@@ -137,17 +162,7 @@
                         </div>
                     </div>
                 </div>
-                
-                <div class="col-xs-12" style="padding: 0px; margin-bottom: 10px;">
-                    <div class="input-group input-group-md" style="width: 100%">
-                        <span class="input-group-addon" style="width: 165px">Año: &nbsp;<i class="fa fa-hashtag"></i></span>
-                        <div>
-                            <input id="anio" type="text"  class="form-control text-uppercase" style="height: 32px;" onkeypress="return soloNumeroTab(event);" maxlength="4">
-                        </div>
-                    </div>
-                </div>
-                
-                 
+                              
             </div>
           
         </div>

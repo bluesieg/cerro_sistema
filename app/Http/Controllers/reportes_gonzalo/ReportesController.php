@@ -109,6 +109,8 @@ class ReportesController extends Controller
 
         if(count($sql)>0)
         {
+            set_time_limit(0);
+            ini_set('memory_limit', '2G');
             $view =  \View::make('reportes_gonzalo.reportes.reporte_contribuyentes', compact('sql','anio','min','max'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
@@ -127,6 +129,8 @@ class ReportesController extends Controller
 
         if(count($sql)>0)
         {
+            set_time_limit(0);
+            ini_set('memory_limit', '2G');
             $view =  \View::make('reportes_gonzalo.reportes.predios_prueba', compact('sql','anio','sector','manzana'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
@@ -170,6 +174,8 @@ class ReportesController extends Controller
 
         if(count($sql)>0)
         {
+            set_time_limit(0);
+            ini_set('memory_limit', '2G');
             $view =  \View::make('reportes_gonzalo.reportes.listado_contribuyentes', compact('sql','anio','sector'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
@@ -216,6 +222,8 @@ class ReportesController extends Controller
 
         if(count($sql)>0)
         {
+            set_time_limit(0);
+            ini_set('memory_limit', '2G');
             $view =  \View::make('reportes_gonzalo.reportes.listado_contribuyentes_predios', compact('sql','anio','sector'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4','landscape');
@@ -233,6 +241,8 @@ class ReportesController extends Controller
         
         if($sql)
         {
+            set_time_limit(0);
+            ini_set('memory_limit', '2G');
             $view = \View::make('reportes_gonzalo.reportes.reporte_contribuyentes_exonerados', compact('sql'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4','landscape');
@@ -253,6 +263,8 @@ class ReportesController extends Controller
 
         if(count($sql)>0)
         {
+            set_time_limit(0);
+            ini_set('memory_limit', '2G');
             $view =  \View::make('reportes_gonzalo.reportes.reporte_cantidad_contribuyente', compact('sql'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4','landscape');
@@ -326,6 +338,8 @@ class ReportesController extends Controller
         
         if(count($sql)>0)
         {
+            set_time_limit(0);
+            ini_set('memory_limit', '2G');
             $view =  \View::make('reportes_gonzalo.reportes.reporte_get_usuarios', compact('sql','total','fechainicio','fechafin'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4','landscape');
@@ -378,6 +392,8 @@ class ReportesController extends Controller
         
         if(count($sql)>0)
         {
+            set_time_limit(0);
+            ini_set('memory_limit', '2G');
             $view =  \View::make('reportes_gonzalo.reportes.reporte_contribuyentes_predios_zonas', compact('sql','anio','sector','nro_sectores','total'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4','landscape');
@@ -448,6 +464,8 @@ class ReportesController extends Controller
         
         if(count($sql)>0)
         {
+            set_time_limit(0);
+            ini_set('memory_limit', '2G');
             $view =  \View::make('reportes_gonzalo.reportes.reporte_emision_predial', compact('sql','anio','sector','nombre_uso','total'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
@@ -525,6 +543,8 @@ class ReportesController extends Controller
         
         if(count($sql)>0)
         {
+            set_time_limit(0);
+            ini_set('memory_limit', '2G');
             $view =  \View::make('reportes_gonzalo.reportes.reporte_cant_cont_ded_mont_bas_imp', compact('sql','anio','sector','nombre_condicion','total'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
@@ -545,6 +565,8 @@ class ReportesController extends Controller
         
         if(count($sql)>0)
         {
+            set_time_limit(0);
+            ini_set('memory_limit', '2G');
             $view =  \View::make('reportes_gonzalo.reportes.rep_por_zona', compact('sql'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
@@ -564,6 +586,8 @@ class ReportesController extends Controller
         $sql1 = DB::select("select sum(sum) from presupuesto.vw_imp_pre_corr_nocorr where periodo<'$anio' " );
         if(count($sql)>0)
         {
+            set_time_limit(0);
+            ini_set('memory_limit', '2G');
             $view =  \View::make('reportes_gonzalo.reportes.rep_corriente', compact('sql','sql1'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');

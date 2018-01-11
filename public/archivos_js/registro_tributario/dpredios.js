@@ -1,4 +1,4 @@
-function limpiar_dl_tim(tip)
+function limpiar_dl_dpredios(tip)
 {
     if(tip==1)
     {
@@ -8,14 +8,12 @@ function limpiar_dl_tim(tip)
     }
 }
 
-function nuevo_tim()
+function nuevo_dpredios()
 {
-    $("#dlg_anio").val($("#select_anio option:selected").html());
-    $("#id_anio").val($("#select_anio").val());
-    limpiar_dl_tim(1);
-    $("#dlg_nuevo_tim").dialog({
-        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>.:  NUEVA TASA DE INTERES MORATORIO :.</h4></div>",
+    limpiar_dl_dpredios(1);
+    $("#dlg_nuevo_dpredios").dialog({
+        autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.:  DESCARGAR PREDIOS :.</h4></div>",
         buttons: [{
             html: "<i class='fa fa-save'></i>&nbsp; Guardar",
             "class": "btn btn-success bg-color-green",
@@ -31,7 +29,8 @@ function nuevo_tim()
             }
         }],
     });
-    $("#dlg_nuevo_tim").dialog('open');
+    $("#dlg_nuevo_dpredios").dialog('open');
+    tabla()
 }
 
 function actualizar_tim()
@@ -218,4 +217,84 @@ function selecciona_anio(){
          url: 'listar_tim?anio=' + aniox 
     }).trigger('reloadGrid');
 
+}
+
+function tabla(){
+jQuery("#tabla1").jqGrid({
+            url: 'listar_tim?anio=' + anio,
+            datatype: 'json', mtype: 'GET',
+            height: 'auto', autowidth: true,
+            toolbarfilter: true,
+            colNames: ['ID','FECHA','MOTIVO','AÑO'],
+            rowNum: 20,sortname: 'id_tim', viewrecords: true, caption: 'DESCARGA DE PREDIOS', align: "center",
+            colModel: [
+                {name: 'id_tim', index: 'id_tim', align: 'center',width:30},
+                {name: 'documento_aprob', index: 'documento_aprob', align: 'center', width:30}, 
+                {name: 'tim', index: 'tim', align: 'center', width:50},
+                {name: 'anio', index: 'anio', align: 'center', width:40},
+
+            ],
+            pager: '#pager_tabla1',
+            rowList: [10, 20],
+            gridComplete: function () {
+                    var idarray = jQuery('#tabla1').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#tabla1').jqGrid('getDataIDs')[0];
+                            $("#tabla1").setSelection(firstid);
+                        }
+                },
+            onSelectRow: function (Id){
+                $('#current_id').val($("#tabla1").getCell(Id, "id_tim"));
+
+            },
+            ondblClickRow: function (Id){
+                $('#current_id').val($("#tabla1").getCell(Id, "id_tim"));
+                actualizar_tim();}
+        });
+        
+        $(window).on('resize.jqGrid', function () {
+            $("#tabla1").jqGrid('setGridWidth', $("#content").width());
+        });
+        
+    jQuery("#tabla").jqGrid({
+        url: 'grid_detalle_fracc?id_conv=0',
+        datatype: 'json', mtype: 'GET',
+        height: 200, width: 880,
+        toolbarfilter: true,
+        colNames: ['N°', 'Cuota Mensual', 'Estado', 'cod_est', 'Fecha Pago', 'Selec.'],
+        rowNum: 12, sortname: 'nro_cuota', sortorder: 'asc', viewrecords: true, caption: 'DESCARGA DE PREDIOS', align: "center",
+        colModel: [
+            {name: 'nro_cuota', index: 'nro_cuota',width: 20,align:'center'},
+            {name: 'total', index: 'total',width: 60,align:'center'},
+            {name: 'estado', index: 'estado',width: 50, align:'center'},
+            {name: 'cod_est', index: 'cod_est', hidden: true},
+            {name: 'fec_pago', index: 'fec_pago', width: 60, align:'center'},
+            {name: 'seleccione', index: 'seleccione', align: 'center', width: 50}
+        ],
+        pager: '#pager_tabla',
+        rowList: [10, 20],
+        gridComplete: function () {
+            var rows = $("#tabla").getDataIDs();
+            if (rows.length > 0) {
+                var firstid = jQuery('#tabla').jqGrid('getDataIDs')[0];
+                $("#tabla").setSelection(firstid);
+            }            
+            $("#tabla").val('0.00');
+            var verif = jQuery("#tabla").getGridParam('userData').verif_cancela;
+            if(verif==rows.length){
+                $("#tabla").closest(".ui-jqgrid").block({
+                    message:"<div style='font-size:1.5em;text-align:center;font-weight: bold'>Fraccionamiento Cancelado</div>",
+                    theme: true,
+                    themedCSS:{
+                        width: "40%",
+                        left: "30%",
+                        border: "3px solid #a00"
+                    }
+                });
+            }else{ $("#tabla").closest(".ui-jqgrid").unblock(); }
+            
+        },            
+        ondblClickRow: function (Id) {}
+    });  
+        
 }

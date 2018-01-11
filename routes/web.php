@@ -541,4 +541,13 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('modificar_ipm', 'IpmController@modificar_ipm');
         Route::post('eliminar_ipm', 'IpmController@eliminar_ipm');
     });
+    
+    
+    Route::group(['namespace' => 'registro_tributario'], function() {
+       
+        //REGISTRO TRIBUTARIO
+        Route::resource('descarga_predios', 'DprediosController');
+
+    });
+    
 });

@@ -183,7 +183,9 @@ class Caja_Est_CuentasController extends Controller
     
     function print_est_cta_contrib($id_contrib,$desde,$hasta){        
         $fracc="";
-        $contrib=DB::select('select * from adm_tri.vw_contribuyentes where id_contrib='.$id_contrib);
+        $contrib1=DB::select('select * from adm_tri.vw_contribuyentes where id_contrib='.$id_contrib);
+        $total=DB::select('select * from adm_tri.vw_est_cta_sumatorias_2018 where id_pers='.$id_contrib);
+        $contrib=DB::select('select * from adm_tri.vw_est_cta_2018 where id_pers ='.$id_contrib);
         $convenio=DB::select('select * from fraccionamiento.vw_convenios where id_contribuyente='.$id_contrib);
         if(count($convenio) > 1){
             $fracc = DB::select("select * from fraccionamiento.detalle_convenio where id_conv_mtr=".$convenio[0]->id_conv." order by nro_cuota");
@@ -195,14 +197,14 @@ class Caja_Est_CuentasController extends Controller
         $tim=DB::select('select adm_tri.calcula_tim('.$id_contrib.','.$desde.')');
         $tim=DB::select('select adm_tri.calcula_tim('.$id_contrib.','.$hasta.')');
         $pred = DB::select('select * from adm_tri.vw_cta_cte2 where id_contrib='.$id_contrib.' and ano_cta between '.$desde.' and '.$hasta);
-        $view = \View::make('caja.reportes.est_cta_contrib',compact('contrib','fecha_larga','arb','pred','desde','hasta','convenio','fracc'))->render();
+        $view = \View::make('caja.reportes.est_cta_contrib',compact('contrib','contrib1','total','fecha_larga','arb','pred','desde','hasta','convenio','fracc'))->render();
         
 //        $sql=DB::select("select * from adm_tri.cta_cte where id_pers=".$id_contrib."and ano_cta='".$hasta."'");
 //        
 //        $view = \View::make('caja.reportes.est_cta_contrib',compact('contrib','fecha_larga','hasta'))->render();
         
         $pdf = \App::make('dompdf.wrapper');            
-        $pdf->loadHTML($view)->setPaper('a4','landscape');
+        $pdf->loadHTML($view)->setPaper('a5','landscape');
         return $pdf->stream();
     }
     

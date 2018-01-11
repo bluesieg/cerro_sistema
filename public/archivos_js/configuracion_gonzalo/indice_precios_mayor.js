@@ -37,6 +37,12 @@ function nuevo_ipm()
 
 function actualizar_ipm()
 {
+    
+     var idarray = jQuery('#tabla_ipm').jqGrid('getDataIDs');
+        if (idarray.length == '') {
+        mostraralertasconfoco('* No Existen Registros en la Tabla...', 'dlg_anio');
+        }else{
+            
     $("#id_anio").val($("#select_anio").val());
     limpiar_dl_ipm(1);
     $("#dlg_nuevo_ipm").dialog({
@@ -80,6 +86,8 @@ function actualizar_ipm()
             MensajeDialogLoadAjaxFinish('dlg_nuevo_ipm');
         }
     });
+    
+      }
 }
 
 function guardar_editar_ipm(tipo) {
@@ -158,6 +166,12 @@ function guardar_editar_ipm(tipo) {
 }
 
 function eliminar_ipm() {
+    
+    var idarray = jQuery('#tabla_ipm').jqGrid('getDataIDs');
+        if (idarray.length == '') {
+        mostraralertasconfoco('* No Existen Registros en la Tabla...', 'dlg_anio');
+        }else{
+    
     id = $("#current_id").val();
 
     $.confirm({
@@ -185,6 +199,8 @@ function eliminar_ipm() {
 
         }
     });
+    }
+    
 }
 
 function selecciona_anio(){

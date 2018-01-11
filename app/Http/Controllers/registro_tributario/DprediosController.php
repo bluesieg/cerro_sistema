@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\configuracion_gonzalo;
+namespace App\Http\Controllers\registro_tributario;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
-class TimController extends Controller
+class DprediosController extends Controller
 {
 
     public function index()
     {
-        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_tasa_interes_moratorio' and id_usu=".Auth::user()->id);
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_descarga_predios' and id_usu=".Auth::user()->id);
         $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
         
         if(count($permisos)==0)
@@ -20,7 +20,7 @@ class TimController extends Controller
             return view('errors/sin_permiso',compact('menu','permisos'));
         }
         $anio = DB::select('SELECT anio FROM adm_tri.uit order by anio desc');
-        return view('configuracion_gonzalo/vw_tasa_interes_moratorio', compact('menu','permisos','anio'));
+        return view('registro_tributario/vw_descarga_predios', compact('menu','permisos','anio'));
     }
 
     public function create()
