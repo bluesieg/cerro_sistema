@@ -20,7 +20,8 @@ class Caja_Est_CuentasController extends Controller
             return view('errors/sin_permiso',compact('menu','permisos'));
         }
         $anio = DB::select('select anio from adm_tri.uit order by anio desc');
-        return view('caja/vw_caja_est_cuentas',compact('anio','menu','permisos'));
+        $anio1 = DB::select('select anio from adm_tri.uit order by anio asc');
+        return view('caja/vw_caja_est_cuentas',compact('anio','anio1','menu','permisos'));
     }
     function vw_fracc_est_cta(){
         $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_vent_est_cta_fracc' and id_usu=".Auth::user()->id);
@@ -183,25 +184,38 @@ class Caja_Est_CuentasController extends Controller
     
     function print_est_cta_contrib($id_contrib,$desde,$hasta){        
         $fracc="";
+        $foto1=DB::select('select pers_foto from adm_tri.vw_contribuyentes1 where id_contrib='.$id_contrib);
+        $foto=DB::select('select pers_foto from adm_tri.vw_contribuyentes1 where id_contrib='.$id_contrib);
         $contrib1=DB::select('select * from adm_tri.vw_contribuyentes where id_contrib='.$id_contrib);
-        $total=DB::select('select * from adm_tri.vw_est_cta_sumatorias_2018 where id_pers='.$id_contrib);
-        $contrib=DB::select('select * from adm_tri.vw_est_cta_2018 where id_pers ='.$id_contrib);
+        $total=DB::select("select SUM(base_imponible) as base_imponible,SUM(formularios) as formularios,SUM(impuesto_predial) as impuesto_predial,SUM(reajuste) as reajuste,SUM(interes_impuesto) as interes_impuesto,SUM(multa_dj) as multa_dj,SUM(interes_multa) interes_multa,SUM(arbitrios_municipales) as arbitrios_municipales,SUM(descuento_arbitrios) as descuento_arbitrios,SUM(interes_arbitrios) as interes_arbitrios,SUM(total) as total from adm_tri.vw_est_cta_sumatorias_2018 WHERE id_pers = '$id_contrib' AND ano_cta between '$desde' and '$hasta' ");
+        $contrib=DB::select("select * from adm_tri.vw_est_cta_2018 where id_pers ='$id_contrib' and ano_cta between '$desde' and '$hasta' ");
         $convenio=DB::select('select * from fraccionamiento.vw_convenios where id_contribuyente='.$id_contrib);
         if(count($convenio) > 1){
             $fracc = DB::select("select * from fraccionamiento.detalle_convenio where id_conv_mtr=".$convenio[0]->id_conv." order by nro_cuota");
         }        
-        $fecha_larga = mb_strtoupper($this->getCreatedAtAttribute(date('d-m-Y'))->format('l, d \d\e F \d\e\l Y'));
+        $fecha_larga = (date('d-m-Y -- H:i:s'));
         $arb = DB::select('select * from arbitrios.vw_cta_arbi_x_trim where id_contrib='.$id_contrib.' and anio between '.$desde.' and '.$hasta);
         $imp=DB::select('select adm_tri.calcula_reajuste_ipm('.$id_contrib.','.$desde.')');
         $imp=DB::select('select adm_tri.calcula_reajuste_ipm('.$id_contrib.','.$hasta.')');
         $tim=DB::select('select adm_tri.calcula_tim('.$id_contrib.','.$desde.')');
         $tim=DB::select('select adm_tri.calcula_tim('.$id_contrib.','.$hasta.')');
         $pred = DB::select('select * from adm_tri.vw_cta_cte2 where id_contrib='.$id_contrib.' and ano_cta between '.$desde.' and '.$hasta);
-        $view = \View::make('caja.reportes.est_cta_contrib',compact('contrib','contrib1','total','fecha_larga','arb','pred','desde','hasta','convenio','fracc'))->render();
+        
+        $cadena_buscada   = 'http://10';
+       
+        foreach($foto1 as $aux1){
+                $var = $aux1->pers_foto;
+        }
+
+        $aux = strrpos($cadena_buscada,$var);
+        
+        $view = \View::make('caja.reportes.est_cta_contrib',compact('contrib','contrib1','total','fecha_larga','pred','desde','hasta','convenio','fracc','foto','aux'))->render();
         
 //        $sql=DB::select("select * from adm_tri.cta_cte where id_pers=".$id_contrib."and ano_cta='".$hasta."'");
 //        
 //        $view = \View::make('caja.reportes.est_cta_contrib',compact('contrib','fecha_larga','hasta'))->render();
+        
+        
         
         $pdf = \App::make('dompdf.wrapper');            
         $pdf->loadHTML($view)->setPaper('a5','landscape');

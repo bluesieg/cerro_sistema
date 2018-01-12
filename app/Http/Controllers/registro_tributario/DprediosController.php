@@ -20,7 +20,8 @@ class DprediosController extends Controller
             return view('errors/sin_permiso',compact('menu','permisos'));
         }
         $anio = DB::select('SELECT anio FROM adm_tri.uit order by anio desc');
-        return view('registro_tributario/vw_descarga_predios', compact('menu','permisos','anio'));
+        $motivos = DB::select('SELECT * FROM transferencias.motivo order by id_motivo asc');
+        return view('registro_tributario/vw_descarga_predios', compact('menu','permisos','anio','motivos'));
     }
 
     public function create()
@@ -105,8 +106,8 @@ class DprediosController extends Controller
         }else return false;
     }
     
-    function eliminar_tim(Request $request){
-        $delete = DB::table('fraccionamiento.tim')->where('id_tim', $request['id_tim'])->delete();
+    function eliminar_predio(Request $request){
+        $delete = DB::table('adm_tri.predios_contribuyentes')->where('id_pred_contri', $request['id_pred_contri'])->delete();
 
         if ($delete) {
             return response()->json([
@@ -161,6 +162,104 @@ class DprediosController extends Controller
 
         return response()->json($Lista);
 
+    }
+    
+    public function get_contribuyentes(Request $request) 
+    {
+        if($request['dat']=='0')
+        {
+            return 0;
+        }
+        else
+        {
+        header('Content-type: application/json');
+        $totalg = DB::select("select count(id_contrib) as total from transferencias.vw_contirbuyentes where contribuyente like '%".$request['dat']."%'");
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+        if ($start < 0) {
+            $start = 0;
+        }
+
+        $sql = DB::table('transferencias.vw_contirbuyentes')->where('contribuyente','like', '%'.strtoupper($request['dat']).'%')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        
+        
+        foreach ($sql as $Index => $Datos) {
+            $Lista->rows[$Index]['id'] = $Datos->id_contrib;            
+            $Lista->rows[$Index]['cell'] = array(
+                trim($Datos->id_contrib),
+                trim($Datos->pers_nro_doc),
+                trim($Datos->contribuyente)
+            );
+        }
+        return response()->json($Lista);
+        }
+    }
+    
+    function get_predios(Request $request){
+        
+        $id_contrib = $request['id_contrib'];
+        
+        $totalg = DB::select("select count(id_contrib) as total from transferencias.vw_predios where id_contrib='$id_contrib' ");
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $start = ($limit * $page) - $limit;
+        if ($start < 0) {
+            $start = 0;
+        }
+
+        $sql = DB::table('transferencias.vw_predios')->where('id_contrib',$id_contrib)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        
+        foreach ($sql as $Index => $Datos) {
+            $Lista->rows[$Index]['id'] = $Datos->id_contrib;            
+            $Lista->rows[$Index]['cell'] = array(
+                trim($Datos->id_contrib),
+                trim($Datos->id_pred_contri),
+                trim($Datos->cod_via),
+                trim($Datos->sector),
+                trim($Datos->mzna),
+                trim($Datos->lote),
+                trim($Datos->referencia)
+            );
+        }
+        return response()->json($Lista);
     }
     
 }

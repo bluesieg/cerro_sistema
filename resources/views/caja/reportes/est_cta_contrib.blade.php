@@ -8,7 +8,9 @@
                 font-family: SourceSansPro;
                 src: url(SourceSansPro-Regular.ttf);
             }
-            
+            img.alineadoTextoImagenCentro{
+                        vertical-align: middle;
+            }
             footer { position: fixed; bottom: -20px; left: 0px; right: 0px; height: 70px; }
             .t1, .t2 { border-collapse: collapse; }
             .t1 > tbody > tr > td { border: 1px solid #D5D5D5; font-size: 12px}
@@ -39,22 +41,28 @@
         
         <center><div Class="asunto" style="margin-top: 0px;"><b>Reporte: Saldos del Contribuyente
                 </b></div></center>
-        <br>
-        <div class="sub2" style="font-size:0.8em; text-align: right"><b>FECHA: </b>{{ strtoupper($fecha_larga) }}</div>
+            <img style="float: right"  src="{{$foto[0]->pers_foto}}" height="100px" width="95px"/></div>
 
         <br>
-        <div class="sub2" style="font-size:0.8em"><b>PERIODO:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>{{ $desde." al ".$hasta}}</div>
-        <div class="sub2" style="font-size:0.8em"><b>CODIGO:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </b>{{ $contrib1[0]->id_persona}}</div>
-        <div class="sub2" style="font-size:0.8em"><b>CONTRIBUYENTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </b>{{ $contrib1[0]->contribuyente}}</div>
-        <div class="sub2" style="font-size:0.8em"><b>DNI:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </b>{{ $contrib1[0]->nro_doc}}</div>
-        <div class="sub2" style="font-size:0.8em"><b>DOMICILIO FISCAL:&nbsp;&nbsp;&nbsp; </b>{{ strtoUpper($contrib1[0]->dom_fis)}}</div>
+         
+        <div>
+            <br><div>
+                <div class="sub2" style="font-size:0.8em"><b>FECHA:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>{{ $fecha_larga }}</div>                
+                <div class="sub2" style="font-size:0.8em"><b>PERIODO:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>{{ $desde." al ".$hasta}}</div>
+                <div class="sub2" style="font-size:0.8em"><b>CODIGO:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </b>{{ $contrib1[0]->id_persona}}</div>
+                <div class="sub2" style="font-size:0.8em"><b>CONTRIBUYENTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </b>{{ $contrib1[0]->contribuyente}}</div>
+                <div class="sub2" style="font-size:0.8em"><b>DNI:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </b>{{ $contrib1[0]->nro_doc}}</div>
+                <div class="sub2" style="font-size:0.8em"><b>DOMICILIO FISCAL:&nbsp;&nbsp;&nbsp; </b>{{ strtoUpper($contrib1[0]->dom_fis)}}</div>
+             <br>
+             
+             <br>
+             <br>
 
-        <br>
+        </div>
 
-        
-        <div style="margin-top: 10px;"> 
+        <div > 
             <div> <center> ESTADO DE CUENTA</center></div><br>
-            <table style="width: 100%;" class="t1">
+            <table  class="t1">
                 <thead>
                     <tr>
                         

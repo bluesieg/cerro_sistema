@@ -94,9 +94,9 @@
         anio = $("#select_anio").val(); 
 
         var pageWidth = $("#tabla_tim").parent().width() - 100;
-
+        contrib_global=0;
         jQuery("#tabla_tim").jqGrid({
-            url: 'listar_tim?anio=' + anio,
+            url: 'obtener_usuarios?dat=0',
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
             toolbarfilter: true,
@@ -133,6 +133,54 @@
             $("#tabla_tim").jqGrid('setGridWidth', $("#content").width());
         });
         
+        var globalvalidador=0;
+        $("#dlg_contribuyente").keypress(function (e) {
+                    if (e.which == 13) {
+                        if(globalvalidador==0)
+                        {
+                            fn_bus_contrib();
+                            globalvalidador=1;
+                        }
+                        else
+                        {
+                            globalvalidador=0;
+                        }
+                    }
+        });
+        
+        jQuery("#table_contribuyente").jqGrid({
+            url: 'obtener_contribuyentes?dat=0',
+            datatype: 'json', mtype: 'GET',
+            height: 300, width: 480,
+            toolbarfilter: true,
+            colNames: ['ID','DNI','PERSONA'],
+            rowNum: 12,sortname: 'id_contrib', viewrecords: true, caption: 'CONTRIBUYENTES', align: "center",
+            colModel: [
+                {name: 'id_contrib', index: 'id_contrib', align: 'center', hidden:true,width:20},
+                {name: 'pers_nro_doc', index: 'pers_nro_doc', align: 'center', width:10}, 
+                {name: 'contribuyente', index: 'contribuyente', align: 'center', width:30},
+
+            ],
+            pager: '#pager_table_contribuyente',
+            rowList: [10, 20],
+            gridComplete: function () {
+                    var idarray = jQuery('#table_contribuyente').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#table_contribuyente').jqGrid('getDataIDs')[0];
+                            $("#table_contribuyente").setSelection(firstid);
+                        }
+                    jQuery('#table_contribuyente').jqGrid('bindKeys', {"onEnter": function (rowid) { fn_bus_contrib_predio(rowid); }});
+                },
+            onSelectRow: function (Id){
+                $('#current_id').val($("#table_contribuyente").getCell(Id, "id_contrib"));
+
+            },
+            ondblClickRow: function (Id){
+                $('#current_id').val($("#table_contribuyente").getCell(Id, "id_contrib"));
+                actualizar_tim();}
+        });
+        
+         
 
     });
 
@@ -140,99 +188,89 @@
 @stop
 
 <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/registro_tributario/dpredios.js') }}"></script>
-<div id="dlg_nuevo_dpredios" style="display: none;">
-    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
-    <div class="col-xs-12 cr-body" >
-            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
-                
-                <section>
-                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
-                        <header>
-                                <span class="widget-icon"> <i class="fa fa-info"></i> </span>
-                                <h2>LLenado de Información::..</h2>
-                        </header>
-                    </div>
-                </section>
-                
-                <input type="hidden" id="id_tim" value="0">
-                
-                <div class="col-xs-12" style="padding: 0px; margin-bottom: 10px; ">
-                    <div class="input-group input-group-md" style="width: 100%">
-                        <span class="input-group-addon" style="width: 165px">Codigo: &nbsp;<i class="fa fa-hashtag"></i></span>
-                        <div>
-                            <input id="codigo" type="text"  class="form-control text-uppercase" style="height: 32px;" maxlength="100" onkeyup="javascript:this.value=this.value.toUpperCase();">
-                        </div>
-                    </div>
-                </div>
-                
-                
-                <div class="col-xs-12" style="padding: 0px; margin-bottom: 10px;">
-                    <div class="input-group input-group-md" style="width: 100%">
-                        <span class="input-group-addon" style="width: 165px">Contribuyente: &nbsp;<i class="fa fa-hashtag"></i></span>
-                        <div>
-                            <input id="contribuyente" type="text"  class="form-control text-uppercase" style="height: 32px;" maxlength="100" onkeyup="javascript:this.value=this.value.toUpperCase();">
-                        </div>
-                    </div>
-                </div>
-      
-               
-                    
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 0px !important; margin-bottom: 10px !important">
-                        <div>
+
+
+<div id="dlg_nuevo_dpredios" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <div class="panel panel-success">
+                    <div class="panel-heading bg-color-success">.:: Datos del Contribuyente ::.</div>
+                    <div class="panel-body cr-body">
                         <fieldset>
-                                                          
-                                <section class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-right:5px !important;width: 60% !important">                                    
-                                    <!--<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 0px !important">-->
-                                        <table id="tabla"></table>
-                                        <div id="pager_tabla"></div>
-                                    <!--</article>-->               
-                                </section>                             
+                            <div class="row">                                
+                                <section class="col col-3" style="padding-right: 5px;">
+                                    <input type="hidden" id="dlg_id_contribuyente">
+                                    <label class="label">Cod Contrib:</label>
+                                    <label class="input">
+                                        <input id="dlg_codigo" type="text" onkeypress="return soloDNI(event);"  placeholder="00000000" class="input-sm">
+                                    </label>                      
+                                </section>
+                                <section class="col col-9" style="padding-left: 5px;padding-right:5px; ">
+                                    <label class="label">Contribuyente:</label>
+                                    <label class="input">
+                                        <input type="hidden" id="dlg_hidden_contribuyente">
+                                        <input id="dlg_contribuyente" type="text" placeholder="ejm. jose min 4 caracteres" class="input-sm text-uppercase">
+                                    </label>
+                                </section>
+                                
+                            </div>                            
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="panel panel-success">
+                    <div class="panel-heading bg-color-success">.:: Datos de Recibo ::.</div>
+                    <div class="panel-body">                        
+                        <fieldset>
+                            
+                            <section>                                
+                                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; margin-bottom: 10px; padding: 0px !important">
+                                    <input type="hidden" id="current_id_tabla" value="0">
+                                    <table id="tabla"></table>
+                                    <div id="pager_tabla">                                        
+                                    </div>
+                                </article>
+                            </section>
+                            <div class="row">
+                                
+                                <section class="col col-6" >
+                                    <label class="label">Motivo:</label>                                   
+                                    <label class="select">
+                                        <select id="dlg_motivos" class="form-control input-sm">
+                                                @foreach ($motivos as $motivo)
+                                                <option value='{{$motivo->id_motivo}}' >{{$motivo->motivo}}</option>
+                                                @endforeach
+                                            </select><i></i>                       
+                                </section>
+                                <section class="col col-6">                                    
+                                    <label class="label">Fecha:</label>
+                                    <label class="input">
+                                        <input id="dlg_fecha" type="text" placeholder="000000" value="{{date('d-m-Y')}}" class="input-sm" disabled="">
+                                    </label>                        
+                                </section>
+                                                                                        
+                            </div>                            
+                            <section>
+                                <label class="label">Glosa:</label>
+                                <label class="textarea">
+                                    <textarea id="dlg_glosa" rows="2" placeholder="descripcion de recibo" class="input-sm text-uppercase"></textarea>                                    
+                                </label>                                       
+                            </section>
                             
                         </fieldset>
-                        </div>
-                    </div>
-        
-                
-                <div class="col-xs-12" style="padding: 0px; margin-bottom: 10px; ">
-                    <div class="input-group input-group-md" style="width: 80%">
-                        <span class="input-group-addon" style="width: 165px" style="height: 5px;">Motivo: &nbsp;<i class="fa fa-hashtag"></i></span>
-                        <div>
-                            <select id="select_tip_mes" class="input-sm col-xs-8 text-center" style="height: 32px;">
-                                       
-                                        <option value='1' >DJ Parte</option>
-                                        <option value='2' >Automatico</option>
-                                        <option value='3' >Judicial</option>
-                                        <option value='4' >Otros</option>
-          
-                            </select><i></i>
-                        </div>
-                        
-                        <div class="col-xs-4">
-                            <div class="input-group input-group-md" style="width: 100%">
-                            <span class="input-group-addon" style="width: 120px">Fecha de Transferencia &nbsp;<i class="fa fa-calendar"></i></span>
-                            <input id="dlg_fec_transferencia" name="dlg_fec_transferencia" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px" placeholder="--/--/----" value="{{date('01/m/Y')}}">
-                            </div>
-                        </div>
-                    </div>
-                    
-                   
-                </div>
-                
-                
-                <div class="col-xs-12" style="padding: 0px; margin-bottom: 10px;">
-                    <div class="input-group input-group-md" style="width: 100%">
-                        <span class="input-group-addon" style="width: 165px">Glosa: &nbsp;<i class="fa fa-hashtag"></i></span>
-                        <div>
-                            <input id="glosa" type="text"  class="form-control text-uppercase" style="height: 32px;" maxlength="100" onkeyup="javascript:this.value=this.value.toUpperCase();">
-                        </div>
                     </div>
                 </div>
-                              
-            </div>
-          
-        </div>
+            </div>                   
+        </div>        
     </div>
-    </div>
+</div>
+
+<div id="dlg_bus_contribuyente" style="display: none;">
+    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; margin-bottom: 10px; padding: 0px !important">
+        <table id="table_contribuyente"></table>
+        <div id="pager_table_contribuyente"></div>
+    </article>
+</div> 
 @endsection
 
 

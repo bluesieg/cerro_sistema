@@ -1,10 +1,49 @@
+function fn_bus_contrib()
+{
+    if($("#dlg_contribuyente").val()=="")
+    {
+        mostraralertasconfoco("Ingresar Información de busqueda","#dlg_contribuyente"); 
+        return false;
+    }
+    if($("#dlg_contribuyente").val().length<4)
+    {
+        mostraralertasconfoco("Ingresar al menos 4 caracteres de busqueda","#contribuyente"); 
+        return false;
+    }
+
+    jQuery("#table_contribuyente").jqGrid('setGridParam', {url: 'obtener_contribuyentes?dat='+$("#dlg_contribuyente").val()}).trigger('reloadGrid');
+
+    $("#dlg_bus_contribuyente").dialog({
+        autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.:  Busqueda de Contribuyentes :.</h4></div>"       
+        }).dialog('open');
+       
+}
+
+function fn_bus_contrib_predio(per){
+    $("#dlg_id_contribuyente").val(per);
+    
+    $("#dlg_codigo").val($('#table_contribuyente').jqGrid('getCell',per,'pers_nro_doc'));    
+    $("#dlg_contribuyente").val($('#table_contribuyente').jqGrid('getCell',per,'contribuyente'));
+    
+    //tam=($('#table_contrib').jqGrid('getCell',per,'contribuyente')).length;
+    //$("#vw_caja_est_cta_contrib").attr('maxlength',tam);
+    
+    id_pers=$('#table_contribuyente').jqGrid('getCell',per,'id_contrib');
+    fn_actualizar_grilla('tabla','obtener_predios?id_contrib='+id_pers);
+    $("#dlg_bus_contribuyente").dialog("close");    
+}
+
+
+
 function limpiar_dl_dpredios(tip)
 {
     if(tip==1)
     {
-        $('#documento').val("");
-        $('#valor').val("");
-        $('#anio').val("");
+        $('#dlg_glosa').val("");
+        $('#dlg_contribuyente').val("");
+        $('#dlg_codigo').val("");
+        fn_actualizar_grilla('tabla','obtener_predios?id_contrib='+0);
     }
 }
 
@@ -19,7 +58,7 @@ function nuevo_dpredios()
             "class": "btn btn-success bg-color-green",
             click: function () {
 
-                guardar_editar_tim(1);
+                eliminar_predio();
             }
         }, {
             html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
@@ -30,7 +69,6 @@ function nuevo_dpredios()
         }],
     });
     $("#dlg_nuevo_dpredios").dialog('open');
-    tabla()
 }
 
 function actualizar_tim()
@@ -171,14 +209,14 @@ function guardar_editar_tim(tipo) {
     }
 }
 
-function eliminar_tim() {
+function eliminar_predio() {
     
-    var idarray = jQuery('#tabla_tim').jqGrid('getDataIDs');
+    var idarray = jQuery('#tabla').jqGrid('getDataIDs');
         if (idarray.length == '') {
         mostraralertasconfoco('* No Existen Registros en la Tabla...', 'dlg_anio');
         }else{
     
-    id = $("#current_id").val();
+    id = $("#current_id_tabla").val();
 
     $.confirm({
         title: '.:Cuidado... !',
@@ -187,20 +225,20 @@ function eliminar_tim() {
             Confirmar: function () {
                 $.ajax({
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    url: 'eliminar_tim',
+                    url: 'eliminar_predio',
                     type: 'POST',
-                    data: {id_tim: id},
+                    data: {id_pred_contri: id},
                     success: function (data) {
-                        fn_actualizar_grilla('tabla_tim');
-                        MensajeExito('Eliminar TIM', id + ' - Ha sido Eliminado');
+                        fn_actualizar_grilla('tabla');
+                        MensajeExito('Transferencia Exitosa','Se Hizo la Transferencia con Exito');
                     },
                     error: function (data) {
-                        MensajeAlerta('Eliminar TIM', id + ' - No se pudo Eliminar.');
+                        MensajeAlerta('Hubo un problema','No se pudo hacer la Transferencia');
                     }
                 });
             },
             Cancelar: function () {
-                MensajeAlerta('Eliminar TIM','Operacion Cancelada.');
+                MensajeAlerta('Transferir','Operacion Cancelada.');
             }
 
         }
@@ -256,45 +294,43 @@ jQuery("#tabla1").jqGrid({
             $("#tabla1").jqGrid('setGridWidth', $("#content").width());
         });
         
-    jQuery("#tabla").jqGrid({
-        url: 'grid_detalle_fracc?id_conv=0',
+    
+        
+}
+
+
+$(document).ready(function () {
+jQuery("#tabla").jqGrid({
+        url: 'obtener_predios?id_contrib=0',
         datatype: 'json', mtype: 'GET',
-        height: 200, width: 880,
+        height: 200, width: 950,
         toolbarfilter: true,
-        colNames: ['N°', 'Cuota Mensual', 'Estado', 'cod_est', 'Fecha Pago', 'Selec.'],
-        rowNum: 12, sortname: 'nro_cuota', sortorder: 'asc', viewrecords: true, caption: 'DESCARGA DE PREDIOS', align: "center",
+        colNames: ['ID','ID_PRED', 'CODIGO VIA', 'SECTOR', 'MANZANA', 'LOTE', 'REFERENCIA'],
+        rowNum: 12, sortname: 'id_contrib', sortorder: 'asc', viewrecords: true, caption: 'PREDIOS CONTRIBUYENTE', align: "center",
         colModel: [
-            {name: 'nro_cuota', index: 'nro_cuota',width: 20,align:'center'},
-            {name: 'total', index: 'total',width: 60,align:'center'},
-            {name: 'estado', index: 'estado',width: 50, align:'center'},
-            {name: 'cod_est', index: 'cod_est', hidden: true},
-            {name: 'fec_pago', index: 'fec_pago', width: 60, align:'center'},
-            {name: 'seleccione', index: 'seleccione', align: 'center', width: 50}
+            {name: 'id_contrib', index: 'id_contrib',width: 20,align:'center', hidden:true},
+            {name: 'id_pred_contri', index: 'id_pred_contri',width: 20,align:'center', hidden:true},
+            {name: 'cod_via', index: 'cod_via',width: 60,align:'center'},
+            {name: 'sector', index: 'sector',width: 50, align:'center'},
+            {name: 'mzna', index: 'mzna', width: 50},
+            {name: 'lote', index: 'lote', width: 60, align:'center'},
+            {name: 'referencia', index: 'referencia', align: 'center', width: 50}
         ],
         pager: '#pager_tabla',
         rowList: [10, 20],
         gridComplete: function () {
-            var rows = $("#tabla").getDataIDs();
-            if (rows.length > 0) {
-                var firstid = jQuery('#tabla').jqGrid('getDataIDs')[0];
-                $("#tabla").setSelection(firstid);
-            }            
-            $("#tabla").val('0.00');
-            var verif = jQuery("#tabla").getGridParam('userData').verif_cancela;
-            if(verif==rows.length){
-                $("#tabla").closest(".ui-jqgrid").block({
-                    message:"<div style='font-size:1.5em;text-align:center;font-weight: bold'>Fraccionamiento Cancelado</div>",
-                    theme: true,
-                    themedCSS:{
-                        width: "40%",
-                        left: "30%",
-                        border: "3px solid #a00"
-                    }
-                });
-            }else{ $("#tabla").closest(".ui-jqgrid").unblock(); }
-            
+            var idarray = jQuery('#tabla').jqGrid('getDataIDs');
+                    if (idarray.length > 0) {
+                    var firstid = jQuery('#tabla').jqGrid('getDataIDs')[0];
+                            $("#tabla").setSelection(firstid);
+                        }            
+   
         },            
-        ondblClickRow: function (Id) {}
+        onSelectRow: function (Id){
+                $('#current_id_tabla').val($("#tabla").getCell(Id, "id_pred_contri"));
+
+            },
     });  
-        
-}
+       
+       
+});

@@ -547,6 +547,9 @@ Route::group(['middleware' => 'auth'], function() {
        
         //REGISTRO TRIBUTARIO
         Route::resource('descarga_predios', 'DprediosController');
+        Route::get('obtener_contribuyentes', 'DprediosController@get_contribuyentes');
+        Route::get('obtener_predios', 'DprediosController@get_predios');
+        Route::post('eliminar_predio', 'DprediosController@eliminar_predio');
 
     });
     

@@ -21,7 +21,7 @@
                                         <span class="input-group-addon">Año Desde:</span>
                                         <div class="icon-addon addon-md">
                                             <select onchange="selanio_est_cta();" id="vw_caja_ets_cta_anio_desde" class="form-control input-sm">
-                                                @foreach ($anio as $anio1)
+                                                @foreach ($anio1 as $anio1)
                                                 <option value='{{$anio1->anio}}' >{{$anio1->anio}}</option>
                                                 @endforeach
                                             </select><i></i>
