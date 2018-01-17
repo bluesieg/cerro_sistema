@@ -61,6 +61,7 @@ class InstalacionesController extends Controller
         $insta->id_cla = $request['cla'];
         $insta->id_pred_anio = $request['id_pre'];
         $insta->antiguedad = date("Y")-$request['anio'];
+        $insta->glosa = strtoupper($request['glosa']);
         $insta->save();
         $this->calculos_ivpp($insta->id_pred_anio);
         return $insta->id_inst;
@@ -112,6 +113,7 @@ class InstalacionesController extends Controller
             $val->ecc = $request['ecc'];
             $val->id_cla = $request['cla'];
             $val->antiguedad = date("Y")-$request['anio'];
+            $val->glosa = strtoupper($request['glosa']);
             
             $val->save();
             $this->calculos_ivpp($val->id_pred_anio);

@@ -34,7 +34,7 @@
           <div class="lado" style="text-align: left !important; padding-top: 20px;">GERENCIA DE RENTAS</div>
           <div class="lado">
               <div class="sub">IMPUESTO PREDIAL</div>
-              <div class="date">AÑO: {{ date("Y") }}</div>
+              <div class="date">{{ $fecha }}</div>
           </div>
           <div class="lado" style="text-align: right !important"><div class="resaltado" >HR</div>HOJA RESUMEN</div>
           <div Class="asunto" style="margin-top: 5px;">DECLARACION JURADA DE AUTOVALUO</div>
@@ -180,7 +180,7 @@
               <td>{{$pre->tp}}</td>
               <td>{{$pre->cod_cat." - ".$pre->nom_via." ".$pre->nro_mun}}</td>
               <td style="text-align: center">{{$pre->nro_condominios}}</td>
-              <td style="text-align: right; padding-right: 5px;">{{number_format($pre->base_impon_afecto,3,".",",")}}</td>
+              <td style="text-align: right; padding-right: 5px;">{{number_format($pre->base_impon_afecto,2,".",",")}}</td>
             </tr>
             @endforeach
         </tbody>
@@ -193,17 +193,17 @@
                   <td style="width: 50%; border:0px;" rowspan="3"></td>
                   <td class="nro">18</td>
                   <th style="width: 22.5%">BASE IMPONIBLE</th>
-                  <td style="text-align: right; padding-right: 5px;">{{number_format($sql_pre->sum('base_impon_afecto'),3,".",",") }}</td>
+                  <td style="text-align: right; padding-right: 5px;">{{number_format($sql_pre->sum('base_impon_afecto'),2,".",",") }}</td>
               </tr>
               <tr>
                   <td class="nro">19</td>
                   <th>IMPUESTO ANUAL</th>
-                  <td style="text-align: right; padding-right: 5px;">{{number_format($sql->ivpp,3,".",",")}}</td>
+                  <td style="text-align: right; padding-right: 5px;">{{number_format($sql->ivpp,2,".",",")}}</td>
               </tr>
               <tr>
                   <td class="nro">20</td>
                   <th>IMPUESTO TRIMESTRAL</th>
-                  <td style="text-align: right; padding-right: 5px;">{{number_format(($sql->ivpp/4),3,".",",")}}</td>
+                  <td style="text-align: right; padding-right: 5px;">{{number_format(($sql->ivpp/4),2,".",",")}}</td>
               </tr>
             </thead>
         </table>
@@ -230,6 +230,7 @@
               </tr>
               
             </thead>
+            <div style="margin-bottom: 4px; font-size: 0.6em; text-align:right ;">IMPRESO POR : {{$usuario[0]->ape_nom}}</div>
         </table>
         
   </body>

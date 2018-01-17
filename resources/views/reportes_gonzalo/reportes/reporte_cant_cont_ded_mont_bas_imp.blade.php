@@ -32,6 +32,7 @@
     </table>
 
     <center><div Class="asunto" style="margin-top: 10px;"><b>Cantidad de contribuyentes por Condicion(Afecto, Inafecto, Exoneracion Parcial, Pensionista y Adulto mayor)</b></div></center>
+    <h5 class="subasunto" style="font-size:0.8em;  text-align: right; padding-left: 30px;">{{$usuario[0]->ape_nom}} - {{ $fecha }}</h5>
     <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px;">
         <table>
                 <thead>
@@ -82,7 +83,7 @@
                     <td style="text-align: center;">{{ $cont->porctje }}%</td>
                     <td style="text-align: center;">{{ $cont->desc_exon }}</td>
                     <td style="text-align: center;">{{ $cont->sec }}</td>
-                    <td style="text-align: center;">{{ $cont->base_impon }}</td>
+                    <td style="text-align: center;">{{ number_format($cont->base_impon,2,'.',',')}}</td>
                 </tr>
             @endforeach
             </tbody>

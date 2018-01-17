@@ -866,7 +866,7 @@ function fn_confirmar_borrar_predio()
         auto_input("rinst_inp_des","autocompletar_insta",2);
         $( "#rinst_inp_largo,#rinst_inp_ancho,#rinst_inp_alto,#rinst_inp_canti" ).prop( "disabled", true );
         autocompletar=1;
-        $("#rinst_inp_des,#rinst_inp_des_cod,#rinst_inp_undmed,#rinst_inp_anio,#rinst_inp_largo,#rinst_inp_ancho,#rinst_inp_alto,#rinst_inp_canti").val("")
+        $("#rinst_inp_des,#rinst_inp_des_cod,#rinst_inp_undmed,#rinst_inp_anio,#rinst_inp_largo,#rinst_inp_ancho,#rinst_inp_alto,#rinst_inp_canti,#glosa").val("")
         $("#rinst_inp_mat").val($("#rinst_inp_mat option:first").val());
         $("#rinst_inp_econserv").val($("#rinst_inp_econserv option:first").val());
         $("#rinst_inp_econstr").val($("#rinst_inp_econstr option:first").val());
@@ -921,7 +921,8 @@ function fn_confirmar_borrar_predio()
             $("#rinst_inp_largo").val(r[0].dim_lar);
             $("#rinst_inp_ancho").val(r[0].dim_anch);
             $("#rinst_inp_alto").val(r[0].dim_alt);
-            $("#rinst_inp_clasi").val(r[0].id_cla)
+            $("#rinst_inp_clasi").val(r[0].id_cla);
+            $("#glosa").val(r[0].glosa);
             callchangeoption("rinst_inp_mat",0);
             callchangeoption("rinst_inp_econserv",0);
             callchangeoption("rinst_inp_econstr",0);
@@ -953,7 +954,7 @@ function fn_confirmar_borrar_predio()
         data:{inst:$("#hidden_rinst_inp_des").val(),anio:$("#rinst_inp_anio").val(),largo:$("#rinst_inp_largo").val(),
             ancho:$("#rinst_inp_ancho").val(),alto:$("#rinst_inp_alto").val(),mep:$("#rinst_inp_mat").val(),
             ecs:$("#rinst_inp_econserv").val(),ecc:$("#rinst_inp_econstr").val(),id_pre:Id_pre,cla:$("#rinst_inp_clasi").val(),
-            cant:$("#rinst_inp_canti").val()},
+            cant:$("#rinst_inp_canti").val(),glosa:$("#glosa").val()},
         success: function(r) 
         {
             
@@ -989,7 +990,7 @@ function fn_confirmar_borrar_predio()
         data:{inst:$("#hidden_rinst_inp_des").val(),anio:$("#rinst_inp_anio").val(),largo:$("#rinst_inp_largo").val(),
             ancho:$("#rinst_inp_ancho").val(),alto:$("#rinst_inp_alto").val(),mep:$("#rinst_inp_mat").val(),
             ecs:$("#rinst_inp_econserv").val(),ecc:$("#rinst_inp_econstr").val(),cla:$("#rinst_inp_clasi").val(),
-            cant:$("#rinst_inp_canti").val()},
+            cant:$("#rinst_inp_canti").val(),glosa:$("#glosa").val()},
         success: function(r) 
         {
             MensajeExito("Se Modificó Correctamente","Su Registro Fue Insertado con Éxito...",4000);

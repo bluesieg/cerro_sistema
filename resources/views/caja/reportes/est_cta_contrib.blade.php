@@ -47,7 +47,7 @@
          
         <div>
             <br><div>
-                <div class="sub2" style="font-size:0.8em"><b>FECHA:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>{{ $fecha_larga }}</div>                
+                <div class="sub2" style="font-size:0.8em"><b>USUARIO Y FECHA:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>{{$usuario[0]->ape_nom}} {{ $fecha_larga }}</div>                
                 <div class="sub2" style="font-size:0.8em"><b>PERIODO:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>{{ $desde." al ".$hasta}}</div>
                 <div class="sub2" style="font-size:0.8em"><b>CODIGO:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </b>{{ $contrib1[0]->id_persona}}</div>
                 <div class="sub2" style="font-size:0.8em"><b>CONTRIBUYENTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </b>{{ $contrib1[0]->contribuyente}}</div>

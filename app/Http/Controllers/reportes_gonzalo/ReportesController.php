@@ -104,14 +104,22 @@ class ReportesController extends Controller
     
     public function reportes_contribuyentes($anio,$min,$max,$num_reg)
     {
-
+        if($max == 0){
+            
+        $sql=DB::table('reportes.vw_pricos')->where('ano_cta',$anio)->where('ivpp','>',$min)->limit($num_reg)->orderBy('ivpp', 'desc')->get();
+            
+        }else{
+            
         $sql=DB::table('reportes.vw_pricos')->where('ano_cta',$anio)->where('ivpp','>',$min)->where('ivpp','<',$max)->limit($num_reg)->orderBy('ivpp', 'desc')->get();
-
+        
+        }
+        $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
+        $fecha = (date('d/m/Y H:i:s'));
         if(count($sql)>0)
-        {
+        { 
             set_time_limit(0);
             ini_set('memory_limit', '2G');
-            $view =  \View::make('reportes_gonzalo.reportes.reporte_contribuyentes', compact('sql','anio','min','max'))->render();
+            $view =  \View::make('reportes_gonzalo.reportes.reporte_contribuyentes', compact('sql','anio','min','max','usuario','fecha'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("Listado de Contribuyentes".".pdf");
@@ -171,12 +179,13 @@ class ReportesController extends Controller
         $sql=DB::table('adm_tri.vw_contrib_predios_c')->where('ano_cta',$anio)->where('id_sec',$sector)->get();
         
         }
-
+        $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
+        $fecha = (date('d/m/Y H:i:s'));
         if(count($sql)>0)
         {
             set_time_limit(0);
             ini_set('memory_limit', '2G');
-            $view =  \View::make('reportes_gonzalo.reportes.listado_contribuyentes', compact('sql','anio','sector'))->render();
+            $view =  \View::make('reportes_gonzalo.reportes.listado_contribuyentes', compact('sql','anio','sector','usuario','fecha'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("Lista Datos de Contribuyente".".pdf");
@@ -219,12 +228,13 @@ class ReportesController extends Controller
         $sql=DB::table('reportes.vw_02_contri_predios')->where('anio',$anio)->where('id_sec',$sector)->orderBy('id_contrib')->get();
         
         }
-
+        $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
+        $fecha = (date('d/m/Y H:i:s'));
         if(count($sql)>0)
         {
             set_time_limit(0);
             ini_set('memory_limit', '2G');
-            $view =  \View::make('reportes_gonzalo.reportes.listado_contribuyentes_predios', compact('sql','anio','sector'))->render();
+            $view =  \View::make('reportes_gonzalo.reportes.listado_contribuyentes_predios', compact('sql','anio','sector','usuario','fecha'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4','landscape');
             return $pdf->stream("Lista Contribuyentes y Predios".".pdf");
@@ -389,12 +399,13 @@ class ReportesController extends Controller
         $total = DB::select("select count(id_contrib) as total from adm_tri.vw_predi_urba where id_sec = '$sector' ");
         
         }
-        
+        $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
+        $fecha = (date('d/m/Y H:i:s'));
         if(count($sql)>0)
         {
             set_time_limit(0);
             ini_set('memory_limit', '2G');
-            $view =  \View::make('reportes_gonzalo.reportes.reporte_contribuyentes_predios_zonas', compact('sql','anio','sector','nro_sectores','total'))->render();
+            $view =  \View::make('reportes_gonzalo.reportes.reporte_contribuyentes_predios_zonas', compact('sql','anio','sector','nro_sectores','total','usuario','fecha'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4','landscape');
             return $pdf->stream("Reporte Contribuyentes y Predios por Zonas".".pdf");
@@ -462,11 +473,13 @@ class ReportesController extends Controller
         
         }
         
+        $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
+        $fecha = (date('d/m/Y H:i:s'));        
         if(count($sql)>0)
         {
             set_time_limit(0);
             ini_set('memory_limit', '2G');
-            $view =  \View::make('reportes_gonzalo.reportes.reporte_emision_predial', compact('sql','anio','sector','nombre_uso','total'))->render();
+            $view =  \View::make('reportes_gonzalo.reportes.reporte_emision_predial', compact('sql','anio','sector','nombre_uso','total','usuario','fecha'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("Listado de Contribuyentes".".pdf");
@@ -566,11 +579,14 @@ class ReportesController extends Controller
         
         }
         
+        $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
+        $fecha = (date('d/m/Y H:i:s'));
+        
         if(count($sql)>0)
         {
             set_time_limit(0);
             ini_set('memory_limit', '2G');
-            $view =  \View::make('reportes_gonzalo.reportes.reporte_cant_cont_ded_mont_bas_imp', compact('sql','anio','sector','nombre_condicion','total'))->render();
+            $view =  \View::make('reportes_gonzalo.reportes.reporte_cant_cont_ded_mont_bas_imp', compact('sql','anio','sector','nombre_condicion','total','usuario','fecha'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("Listado de Contribuyentes".".pdf");
@@ -609,11 +625,13 @@ class ReportesController extends Controller
        // $sql=DB::table('presupuesto.vw_por_tributo')->where('id_tributo',$id_tributo) ->whereBetween('fecha', [$fechainicio, $fechafin])->orderBy('fecha','asc')->get();
         $sql = DB::select(" select * from presupuesto.vw_imp_pre_corr_nocorr where periodo='$anio' order by periodo desc" );
         $sql1 = DB::select("select sum(sum) from presupuesto.vw_imp_pre_corr_nocorr where periodo<'$anio' " );
+        $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
+        $fecha = (date('d/m/Y H:i:s'));
         if(count($sql)>0)
         {
             set_time_limit(0);
             ini_set('memory_limit', '2G');
-            $view =  \View::make('reportes_gonzalo.reportes.rep_corriente', compact('sql','sql1'))->render();
+            $view =  \View::make('reportes_gonzalo.reportes.rep_corriente', compact('sql','sql1','usuario','fecha'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("PRUEBA".".pdf");

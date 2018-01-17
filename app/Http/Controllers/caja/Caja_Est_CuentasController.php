@@ -192,8 +192,9 @@ class Caja_Est_CuentasController extends Controller
         $convenio=DB::select('select * from fraccionamiento.vw_convenios where id_contribuyente='.$id_contrib);
         if(count($convenio) > 1){
             $fracc = DB::select("select * from fraccionamiento.detalle_convenio where id_conv_mtr=".$convenio[0]->id_conv." order by nro_cuota");
-        }        
-        $fecha_larga = (date('d-m-Y -- H:i:s'));
+        }
+        $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
+        $fecha_larga = (date('d-m-Y - H:i:s'));
         $arb = DB::select('select * from arbitrios.vw_cta_arbi_x_trim where id_contrib='.$id_contrib.' and anio between '.$desde.' and '.$hasta);
         $imp=DB::select('select adm_tri.calcula_reajuste_ipm('.$id_contrib.','.$desde.')');
         $imp=DB::select('select adm_tri.calcula_reajuste_ipm('.$id_contrib.','.$hasta.')');
@@ -209,7 +210,7 @@ class Caja_Est_CuentasController extends Controller
 
         $aux = strrpos($cadena_buscada,$var);
         
-        $view = \View::make('caja.reportes.est_cta_contrib',compact('contrib','contrib1','total','fecha_larga','pred','desde','hasta','convenio','fracc','foto','aux'))->render();
+        $view = \View::make('caja.reportes.est_cta_contrib',compact('contrib','contrib1','total','fecha_larga','pred','desde','hasta','convenio','fracc','foto','aux','usuario'))->render();
         
 //        $sql=DB::select("select * from adm_tri.cta_cte where id_pers=".$id_contrib."and ano_cta='".$hasta."'");
 //        
