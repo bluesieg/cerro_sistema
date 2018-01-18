@@ -551,7 +551,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('descarga_predios', 'DprediosController');
         Route::get('obtener_contribuyentes', 'DprediosController@get_contribuyentes');
         Route::get('obtener_predios', 'DprediosController@get_predios');
-        Route::post('eliminar_predio', 'DprediosController@eliminar_predio');
+        Route::post('eliminar_predio', 'DprediosController@eliminar_predio');frtyryr
 
     });
     
