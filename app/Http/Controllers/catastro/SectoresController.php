@@ -29,8 +29,52 @@ class SectoresController extends Controller
 
     public function getSectores(){
         header('Content-type: application/json');
-        $sectores = DB::select('select * from catastro.sectores order by sector');
-        return response()->json($sectores);
+        //$sectores = DB::select('select * from catastro.sectores order by sector');
+        //return response()->json($sectores);
+        
+        $sectores = DB::select('select count(id_sec) as total from catastro.sectores ');
+
+        //$totalg = DB::select("select count(id_pag) as total from configuracion.vw_fec_venc_ivpp where id_anio='".$request['anio']."'");
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $sectores[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $start = ($limit * $page) - $limit; 
+        if ($start < 0) {
+            $start = 0;
+        }
+
+     
+
+        $sql = DB::table('catastro.sectores')->orderBy($sidx,$sord)->limit($limit)->offset($start)->get();
+        
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+
+        foreach ($sql as $Index => $Datos) {
+            $Lista->rows[$Index]['id'] = $Datos->id_sec;
+            $Lista->rows[$Index]['cell'] = array(
+                trim($Datos->id_sec),
+                trim($Datos->sector),
+
+            );
+        }
+
+        return response()->json($Lista);
     }
 
     public function insert_new_sector(Request $request){

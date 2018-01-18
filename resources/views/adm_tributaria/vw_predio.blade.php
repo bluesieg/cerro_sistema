@@ -590,7 +590,7 @@
                                 <div class="panel-body cr-body">
                                     <div class='col-lg-7 pd_dlg_cr'>
                                         <label class="label">Forma de Adquisición:</label>
-                                        <select id='dlg_sel_foradq' class="form-control" >
+                                        <select id='dlg_sel_foradq' class="form-control" onchange="llamar_otro()">
                                                 @foreach ($fadq as $fadq)
                                                 <option value='{{$fadq->id_for}}' >{{$fadq->des_for_adq}}</option>
                                                 @endforeach
@@ -1470,6 +1470,28 @@
      </div>
     </div>
 </div> 
+ <!-- otros  -->
+ <div id="dialog_otros" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                <div class="row" style="padding: 20px 30px;">
+                <div class="col-xs-12">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Especifique la opción OTROS <i class="fa fa-cogs"></i></span>
+                        <label class="input">
+                            <input id="dlg_inp_otros" type="text"  class="input-sm text-uppercase" maxlength="150">
+                        </label>    
+                    </div>
+                </div>
+                </div> 
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
+ <!-- -->
 @endsection
 
 

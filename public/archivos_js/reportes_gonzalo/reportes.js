@@ -403,6 +403,45 @@ function crear_dialogo_corriente()
         aux1=1;
     }
 }
+function crear_dialogo_fraccionamiento()
+{
+    $("#dialog_fraccionamiento").dialog({
+        autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp.:Reporte Fraccionamientos Realizados y Cancelados :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_reporte_fraccionamiento(); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+    if(aux1==0)
+    {
+        autocompletar_haburb('hab_urb');
+        aux1=1;
+    }
+}
+
+function crear_dialogo_caja()
+{
+    $("#dialog_caja").dialog({
+        autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp.:Reporte General de Caja :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_reporte_cajas(); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+   
+}
 
 function dlg_reporte_cant_cont_ded_mont_bas_imp(tipo)
 {
@@ -410,7 +449,7 @@ function dlg_reporte_cant_cont_ded_mont_bas_imp(tipo)
         crear_dialogo_cant_cont_ded_mont_bas_imp();
     } 
 }
-function dlg_reporte_por_zona(tipo)
+function dlg_reportes_andrea(tipo)
 {
     if (tipo===0) {
         crear_dialogo_por_zona();
@@ -421,6 +460,12 @@ function dlg_reporte_por_zona(tipo)
     if (tipo===1) {
         crear_dialogo_corriente();
     } 
+    if (tipo===2) {
+        crear_dialogo_fraccionamiento();
+    } 
+    if (tipo===3) {
+        crear_dialogo_caja();
+    }
 }
 
 
@@ -439,6 +484,13 @@ function abrir_reporte_por_zona()
 function abrir_reporte_corriente()
 {
     window.open('reporte_corriente/'+$('#anio_corriente').val()+'');
+}
+function abrir_reporte_fraccionamiento()
+{
+    window.open('reporte_corriente/'+$('#anio_corriente').val()+$('#select_estado').val());
+}
+function abrir_reporte_cajas()
+{    window.open('reporte_cajas?ini='+$('#fec_ini_cajas').val()+'&fin='+$('#fec_fin_cajas').val()+'&id_agen='+$('#select_agencia').val()+'');
 }
 
 /********************************REPORTEs andrea************************************************************/

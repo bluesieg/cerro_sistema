@@ -57,8 +57,7 @@
           <tr>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$num++}}</td>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$arc->fecha}}</td>
-              <td style="text-align: right;font-size: 0.7em; padding-right: 10px;">{{$arc->total}}</td>
-              
+              <td style="text-align: right;font-size: 0.7em; padding-right: 10px;">{{ number_format($arc->total,2,".",",")}}</td>
           </tr>
           @endforeach
         </tbody>

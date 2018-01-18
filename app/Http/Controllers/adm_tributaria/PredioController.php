@@ -62,6 +62,7 @@ class PredioController extends Controller
         $predio->referencia = strtoupper($request['ref']);
         $predio->sup_mzna = strtoupper($request['supmzna']);
         $predio->gpo_zonal = strtoupper($request['gpozonal']);
+       
         $predio->save();
         if($predio->id_pred)
         {
@@ -109,7 +110,8 @@ class PredioController extends Controller
         $predio_contribuyentes->porcen_titularidad = 100;
         $predio_contribuyentes->id_form_adq = $request['ifor'];
         $predio_contribuyentes->id_pred_anio = $id_pre_anio;
-        $predio_contribuyentes->save();
+        $predio_contribuyentes->desc_otros = strtoupper($request['otros']);
+        $predio_contribuyentes->save();////////
     }
 
     public function store(Request $request)
@@ -180,6 +182,7 @@ class PredioController extends Controller
         if(count($val)>=1)
         {
             $val->id_form_adq = $request['ifor'];
+            $val->desc_otros = strtoupper($request['otros']);
             $val->save();
         }
     }

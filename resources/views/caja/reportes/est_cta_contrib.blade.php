@@ -41,8 +41,12 @@
         
         <center><div Class="asunto" style="margin-top: 0px;"><b>Reporte: Saldos del Contribuyente
                 </b></div></center>
+    @if(substr($foto[0]->pers_foto, 0,4)=='http')
             <img style="float: right"  src="{{$foto[0]->pers_foto}}" height="100px" width="95px"/></div>
-
+    @else
+           <img style="float: right"  src="data:image/png;base64,{{$foto[0]->pers_foto}}" height="100px" width="95px"/></div>
+           @endif
+          {{$foto[0]->pers_foto}}  
         <br>
          
         <div>

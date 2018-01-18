@@ -319,7 +319,7 @@
                             <section>
                                 <label class="label">Tributo:</label>
                                 <label class="textarea">
-                                    <textarea id="vw_emi_rec_txt_tributo" type="text" rows="2" placeholder="Tributo" class="input-sm text-uppercase"></textarea>
+                                    <textarea id="vw_emi_rec_txt_tributo" type="text" rows="5" placeholder="Tributo" class="input-sm text-uppercase"></textarea>
                                 </label>                      
                             </section>
                             <section>

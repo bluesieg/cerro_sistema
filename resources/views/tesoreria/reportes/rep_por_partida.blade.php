@@ -63,7 +63,7 @@
 
                     <td style="text-align: left; border-left:0px; border-bottom: 0px;border-right: 0px; border-top: 0px;">{{$lista->codigo_1}}</td>
                     <td style="text-align: left; border-left:0px; border-bottom: 0px;border-right: 0px; border-top: 0px;">{{$lista->desc_espec_detalle}}</td>
-                    <td style="text-align: center; border-left:0px; border-bottom: 0px;border-right: 0px; border-top: 0px;">{{number_format($lista->total,3,".",",")}}</td>
+                    <td style="text-align: center; border-left:0px; border-bottom: 0px;border-right: 0px; border-top: 0px;">{{number_format($lista->total,2,".",",")}}</td>
                 </tr>
                 
             @endforeach

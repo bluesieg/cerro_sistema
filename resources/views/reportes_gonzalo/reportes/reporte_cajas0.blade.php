@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Listado Contribuyentes (Pricos,Mecos,Pecos)</title>
+    <title>Example 2</title>
     <link href="{{ asset('css/pdf.css') }}" rel="stylesheet">
     <style>
         .move-ahead { counter-increment: page 2; position: absolute; visibility: hidden; }
@@ -11,11 +11,12 @@
 </head>
 <body>
 <main>
+
     <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 5px;">
         <tr>
             <td style="width: 10%; border: 0px;" >
                 <img src="img/escudo.png" height="70px"/>
-            </td>            
+            </td>
             <td style="width: 80%; padding-top: 10px; border:0px;">
                 <div id="details" class="clearfix">
                     <div id="invoice" >
@@ -27,11 +28,12 @@
             </td>
             <td style="width: 10%;border: 0px;"></td>
         </tr>
+
     </table>
 
-    <center><div Class="asunto" style="margin-top: 10px;"><b>Listado de Contribuyentes(Pricos,Mecos,Pecos)</b></div></center>
+    <center><div Class="asunto" style="margin-top: 10px;"><b>REPORTE GENERAL DE CAJA - TODAS LAS AGENCIAS</b></div></center>
     <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px;">
-        AÑO: {{ $anio }}, MONTO DE: {{$min}} hasta {{$max}}
+
     </div>
 
     <input type="hidden" value=" {{$num= 1}}">
@@ -43,26 +45,23 @@
             <thead>
             <tr >
                 <th style="width: 3%;">N°</th>
-                <th style="width: 5%">DNI/RUC</th>
-                <th style="width: 20%;">CONTRIBUYENTE</th>
-                <th style="width: 35%">DOMICILIO</th>
-                <th style="width: 8%">IMPUESTO</th>
-                <th style="width: 10%">SALDO</th>
-            </tr>
+                <th style="width: 30%;">AGENCIA</th>
+                <th style="width: 10%;">TOTAL</th>
             </thead>
             <tbody>
 
-            @foreach ($sql as $cont)
+            @foreach ($sql as $caj)
                 <tr>
                     <td style="text-align: center;">{{ $num++ }}</td>
-                    <td style="text-align: center;">{{ $cont->nro_doc }}</td>
-                    <td style="text-align: left;">{{$cont->contribuyente}}</td>
-                    <td style="text-align: left;">{{ $cont->dom_fis }}</td>
-                    <td style="text-align: center;">{{  number_format($cont->ivpp,2,".",",") }}</td>
-                    <td style="text-align: center;">{{  number_format($cont->saldo,2,".",",") }}</td>
+                    <td style="text-align: center;">{{ $caj->descrip_caja }}</td>
+                    <td style="text-align: right; padding-right: 3px;">{{ number_format($caj->total,2,".",",") }}</td>
                 </tr>
             @endforeach
             </tbody>
+            <br>
+            
+            <div class="sub2" style="font-size:0.8em; text-align: right; margin-top: 10;"><b>TOTAL:&nbsp;&nbsp;&nbsp; </b>{{number_format($sql->sum('total'),2,".",",")}}</div>
+            
         </table>
     </div>
 </body>

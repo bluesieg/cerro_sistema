@@ -69,6 +69,18 @@
                                             <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
                                         </button>
                                     @endif
+                                     @if( $permisos[0]->btn_imp ==1 )
+                                        <button onclick="enviar_est_cta();" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                                            <span class="btn-label"><i class="glyphicon glyphicon-send"></i></span>Enviar
+                                        </button>
+                                    @else
+                                        <button onclick="sin_permiso();" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                                            <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Enviar
+                                        </button>
+                                    @endif
+                                </section>
+                                 <section class="col-lg-3 text-align-left" style="padding-left: 5px;">
+                                   
                                 </section>
                             </div>
                         </div>
@@ -170,3 +182,12 @@
 </div>
 
 @endsection
+<div id="vw_vista_previa" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <iframe id="print_recibo_pagado" width="820" height="490" frameborder="0" allowfullscreen></iframe> 
+            </div>
+        </div>
+    </div>
+</div>

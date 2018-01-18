@@ -173,6 +173,7 @@ function llamarcambio()
         if($('#dlg_sel_gpocatterr').val()==null){mostraralertasconfoco('Seleccion categoria de Tierras...',"#dlg_sel_gpocatterr");return false}
         if($('#dlg_inp_condos').val()>100){mostraralertasconfoco('Porcentaje de Posesión no puede ser Mayor al 100%...',"#dlg_inp_condos");return false}
         validarcampos();
+        save_otros_pr();
         MensajeDialogLoadAjax('dlg_reg_dj', '.:: Guardando ...');
         $.ajax({url: 'predios_rural/create',
         type: 'GET',
@@ -183,7 +184,7 @@ function llamarcambio()
         valle:$("#dlg_inp_valle").val(),carretera:$("#dlg_inp_carre").val(),km:$("#dlg_inp_km").val(),
         nompre:$("#dlg_inp_nompre").val(),norte:$("#dlg_inp_norte").val(),sur:$("#dlg_inp_sur").val(),
         este:$("#dlg_inp_este").val(),oeste:$("#dlg_inp_oeste").val(),tterr:$("#dlg_sel_tterr").val(),uterr:$("#dlg_sel_uterr").val(),
-        gpt:$("#dlg_sel_gpoterr").val(),cgpt:$("#dlg_sel_gpocatterr").val()},
+        gpt:$("#dlg_sel_gpoterr").val(),cgpt:$("#dlg_sel_gpocatterr").val(),otros:nuevo_otros_pr},
         success: function(r) 
         {
             $('#dlg_idpre').val(r);
@@ -207,6 +208,7 @@ function llamarcambio()
         if($('#dlg_sel_condpre').val()==null){mostraralertasconfoco('Ingresar condicion predio...',"#dlg_sel_condpre");return false}
         if($('#dlg_inp_condos').val()>100){mostraralertasconfoco('Porcentaje de Posesión no puede ser Mayor al 100%...',"#dlg_inp_condos");return false}
         validarcampos();
+        save_otros_pr();
         MensajeDialogLoadAjax('dlg_reg_dj', '.:: CARGANDO ...');
         $.ajax({url: 'predios_rural/'+$('#dlg_idpre').val()+'/edit',
         type: 'GET',
@@ -217,7 +219,7 @@ function llamarcambio()
         valle:$("#dlg_inp_valle").val(),carretera:$("#dlg_inp_carre").val(),km:$("#dlg_inp_km").val(),
         nompre:$("#dlg_inp_nompre").val(),norte:$("#dlg_inp_norte").val(),sur:$("#dlg_inp_sur").val(),
         este:$("#dlg_inp_este").val(),oeste:$("#dlg_inp_oeste").val(),tterr:$("#dlg_sel_tterr").val(),uterr:$("#dlg_sel_uterr").val(),
-        gpt:$("#dlg_sel_gpoterr").val(),cgpt:$("#dlg_sel_gpocatterr").val()},
+        gpt:$("#dlg_sel_gpoterr").val(),cgpt:$("#dlg_sel_gpocatterr").val(),otros:nuevo_otros_pr},
         success: function(r) 
         {
             MensajeExito("Modificó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
@@ -905,4 +907,27 @@ function imppu()
         return false;
     }
     window.open('pre_rep/PR/'+Id+'/0/0');
+}
+//////otro
+function llamar_otro_pr(){
+     if($("#dlg_sel_foradq").val()=="9")
+    {
+       $("#dialog_otros_pr").dialog({
+        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.: Especificar OTROS :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Confirmar"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { save_otros_pr(),$(this).dialog("close"); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+    }
+       
+}
+function save_otros_pr(){
+   nuevo_otros_pr = $("#dlg_inp_otros_pr").val();
 }

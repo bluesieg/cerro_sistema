@@ -337,6 +337,7 @@ function fn_confirmar_predio()
     function dlgSave()
     {
         validarcampos();
+        save_otros();
         MensajeDialogLoadAjax('dlg_reg_dj', '.:: Guardando ...');
         $.ajax({url: 'predios_urbanos/create',
         type: 'GET',
@@ -350,7 +351,9 @@ function fn_confirmar_predio()
         confobr:$('input:radio[name=dlg_rd_confobr]:checked').val(),defra:$('input:radio[name=dlg_rd_defra]:checked').val(),
         areterr:$("#dlg_inp_areter").val(),arecomter:$("#dlg_inp_arecomter").val(),aranc:$("#dlg_inp_aranc").val(),
         an:$("#selantra").val(),id_mzna:$("#selmnza").val(),
-        supmzna:$("#dlg_inp_supMzna").val(),gpozonal:$("#dlg_inp_gpoZonal").val()},
+        supmzna:$("#dlg_inp_supMzna").val(),gpozonal:$("#dlg_inp_gpoZonal").val(),
+        otros:nuevo_otros},//oooootrotoro
+        
         success: function(r) 
         {
             $('#dlg_idpre').val(r);
@@ -375,6 +378,7 @@ function fn_confirmar_predio()
         if($("#dlg_inp_nvia").val()==null){mostraralertasconfoco('La Vía es incorrecta, vuelva a ingresar una vía válida...',"#dlg_inp_nvia_des");return false}
         if($('#dlg_inp_condos').val()>100){mostraralertasconfoco('Porcentaje de Posesión no puede ser Mayor al 100%...',"#dlg_inp_condos");return false}
         validarcampos();
+        save_otros();
         
         MensajeDialogLoadAjax('dlg_reg_dj', '.:: CARGANDO ...');
         $.ajax({url: 'predios_urbanos/'+$('#dlg_idpre').val()+'/edit',
@@ -388,7 +392,7 @@ function fn_confirmar_predio()
         luz:$("#dlg_inp_luz").val(),agua:$("#dlg_inp_agua").val(),liccon:$('input:radio[name=dlg_rd_lcons]:checked').val(),
         confobr:$('input:radio[name=dlg_rd_confobr]:checked').val(),defra:$('input:radio[name=dlg_rd_defra]:checked').val(),
         areterr:$("#dlg_inp_areter").val(),arecomter:$("#dlg_inp_arecomter").val(),aranc:$("#dlg_inp_aranc").val(),
-        supmzna:$("#dlg_inp_supMzna").val(),gpozonal:$("#dlg_inp_gpoZonal").val()},
+        supmzna:$("#dlg_inp_supMzna").val(),gpozonal:$("#dlg_inp_gpoZonal").val(),otros:nuevo_otros},
         success: function(r) 
         {
             MensajeExito("Modificó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
@@ -1444,4 +1448,27 @@ function savearb()
         console.log(data);
     }
     });
+}
+//otrooo
+function llamar_otro(){
+     if($("#dlg_sel_foradq").val()=="9")
+    {
+       $("#dialog_otros").dialog({
+        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.: Especificar OTROS :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Confirmar"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { save_otros(),$(this).dialog("close"); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+    }
+       
+}
+function save_otros(){
+   nuevo_otros = $("#dlg_inp_otros").val();
 }

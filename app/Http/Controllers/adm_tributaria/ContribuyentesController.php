@@ -179,9 +179,9 @@ class ContribuyentesController extends Controller
         $rq->data->dni	= $request['nro_doc'];		// Dato que debe estar acorde al contrato del ws
         $rq->data->cache= 'false';		// Retira informacion del Cache local (true mejora la velocidad de respuesta
 
-//        $url = 'https://ehg.pe/delfos/';		// Endpoint del WS
- //       $url = 'http://ws.ehg.pe/';
-        $url = 'http://10.11.10.104/';
+        //$url = 'https://ehg.pe/delfos/';		// Endpoint del WS
+         //  $url = 'http://ws.ehg.pe/';
+       $url = 'http://10.11.10.104/';
         $options = array(
                 'http' => array(
                 'header'  => "Content-type: application/json\r\n",

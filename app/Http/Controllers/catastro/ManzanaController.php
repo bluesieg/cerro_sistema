@@ -29,8 +29,48 @@ class ManzanaController extends Controller
     public function getManzanaPorSector(Request $request){
         header('Content-type: application/json');
         //dd($request['id_sect']);
-        $manzanas = DB::select("select * from catastro.vw_manzanas where id_sec = '". $request['id_sec'] ."' order by sector asc");
-        return response()->json($manzanas);
+        $manzanas = DB::select("select  count(id_sec) as total from catastro.vw_manzanas where id_sec = '". $request['id_sec'] ."' ");
+
+
+        //$totalg = DB::select("select count(id_pag) as total from configuracion.vw_fec_venc_ivpp where id_anio='".$request['anio']."'");
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $manzanas[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $start = ($limit * $page) - $limit; 
+        if ($start < 0) {
+            $start = 0;
+        }
+        $sql = DB::table('catastro.vw_manzanas')->where('id_sec',$request['id_sec'])->orderBy($sidx,$sord)->limit($limit)->offset($start)->get();
+        
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+
+        foreach ($sql as $Index => $Datos) {
+            $Lista->rows[$Index]['id'] = $Datos->id_mzna;
+            $Lista->rows[$Index]['cell'] = array(
+                trim($Datos->id_mzna),
+                trim($Datos->id_sect),
+                trim($Datos->codi_mzna),
+
+            );
+        }
+
+        return response()->json($Lista);
     }
 
     public function show($id)

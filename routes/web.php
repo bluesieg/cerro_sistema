@@ -280,6 +280,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('estado_de_cta','Caja_Est_CuentasController');
         Route::get('caja_est_cta_contrib','Caja_Est_CuentasController@caja_est_cuentas');
         Route::get('caja_imp_est_cta/{id_contrib}/{desde}/{hasta}','Caja_Est_CuentasController@print_est_cta_contrib');
+        Route::get('caja_env_est_cta/{id_contrib}/{desde}/{hasta}','Caja_Est_CuentasController@env_est_cta_contrib');
         Route::get('est_cta_fracc','Caja_Est_CuentasController@vw_fracc_est_cta');
         Route::get('get_conv_fracc_estcta','Caja_Est_CuentasController@conv_fracc_estcta');
         Route::get('get_det_fracc','Caja_Est_CuentasController@get_det_fracc');
@@ -487,6 +488,7 @@ Route::group(['middleware' => 'auth'], function() {
         //andrea
         Route::get('reporte_por_zona/{anio}/{id_hab_urb}','ReportesController@rep_por_zona');
         Route::get('reporte_corriente/{anio}','ReportesController@rep_corriente');
+        Route::get('reporte_cajas','ReportesController@reporte_cajas');
 
 
           

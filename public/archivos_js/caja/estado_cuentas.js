@@ -48,3 +48,29 @@ function print_est_cta(){
     id_contrib = $("#vw_caja_est_cta_id_contrib").val();
     window.open('caja_imp_est_cta/'+id_contrib+'/'+$("#vw_caja_ets_cta_anio_desde").val()+'/'+$("#vw_caja_ets_cta_anio_hasta").val());
 }
+function enviar_est_cta(){
+    rows = $("#tabla_est_Cuenta").getRowData().length;
+    if(rows==0){
+        mostraralertas('* Ingrese Un Contribuyente con Predios Declarados...');
+        return false;
+    }
+    $("#vw_vista_previa").dialog({
+        autoOpen: false, modal: true, width: 850,height:600, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.:ESTADO DE CUENTA:.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Confirmar y Enviar",
+            "class": "btn btn-primary",
+            click: function (){
+    //                    printTrigger('imp_pago_rec?id_rec='+id_recibo);
+                dialog_close('vw_vista_previa');
+                dialog_close('vw_caja_mov_realizar_pago');
+                MensajeExito('Conforme', 'EL Pago se ha realizado con Exito');
+                $("#print_recibo_pagado").contents().find("body").html('');
+            }
+        }]        
+    }).dialog('open');
+    id_contrib = $("#vw_caja_est_cta_id_contrib").val();
+    //window.open('caja_imp_est_cta/'+id_contrib+'/'+$("#vw_caja_ets_cta_anio_desde").val()+'/'+$("#vw_caja_ets_cta_anio_hasta").val());
+
+        window.open('caja_env_est_cta/'+id_contrib+'/'+$("#vw_caja_ets_cta_anio_desde").val()+'/'+$("#vw_caja_ets_cta_anio_hasta").val());
+}

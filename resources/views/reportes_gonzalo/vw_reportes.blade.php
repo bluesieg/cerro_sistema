@@ -113,7 +113,7 @@
                        <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
-                                <h4><a href="#" onclick="dlg_reporte_por_zona(0);" id="titulo_r1">
+                                <h4><a href="#" onclick="dlg_reportes_andrea(0);" id="titulo_r1">
                                         REPORTE 7: Reporte de Impuesto Predial Por Habilitacion Urbana - Zona. </a>
                                     <small>Descripción reporte 7</small>
                                 </h4>
@@ -124,9 +124,31 @@
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
-                                <h4><a href="#" onclick="dlg_reporte_por_zona(1);" id="titulo_r1">
+                                <h4><a href="#" onclick="dlg_reportes_andrea(1);" id="titulo_r1">
                                         REPORTE 8: Reporte de Impuesto Predial Corriente y no corriente.</a>
                                     <small>Descripción reporte 8</small>
+                                </h4>
+                            </td>
+          
+                         
+                        </tr>
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_reportes_andrea(2);" id="titulo_r1">
+                                        REPORTE 9: Reporte de Fracionamiento Realizados y cancelados.</a>
+                                    <small>Descripción reporte 9</small>
+                                </h4>
+                            </td>
+          
+                         
+                        </tr>
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_reportes_andrea(3);" id="titulo_r1">
+                                        REPORTE 10: Reporte General de Caja.</a>
+                                    <small>Descripción reporte 10</small>
                                 </h4>
                             </td>
           
@@ -678,7 +700,89 @@ function autocompletar_haburb(textbox){
         </div>
     </div>
 </div>
+
+<div id="dialog_fraccionamiento" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                <div class="row">
+                    <section class="col col-6" style="padding-right:5px;">
+                        <label class="label">AÑO:</label>
+                        <label class="select">
+                            <select id='select_anio_ep' class="form-control col-lg-8">
+                                @foreach ($anio_tra as $anio_ep)
+                                    <option value='{{$anio_ep->anio}}' >{{$anio_ep->anio}}</option>
+                                @endforeach
+                            </select><i></i> </label>
+                    </section>
+                    <section class="col col-6" style="padding-left:5px;padding-right:5px;">
+                        <label class="label">ESTADO:</label>
+                        <label class="select">
+                            <select id='select_estado' class="form-control col-lg-8">
+                                <option value='0'>-- TODOS --</option>
+                                @foreach ($sectores as $sector_ep)
+                                    <option value='{{$sector_ep->id_sec}}' >{{$sector_ep->sector}}</option>
+                                @endforeach
+                            </select><i></i> </label>
+                    </section>
+                    
+                   
+                </div>
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dialog_caja" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                <div class="row" style="padding: 10px 30px;">
+                    
+                   
+                    <div class="col-xs-12" style="padding: 0px; margin-top: 10px;">
+                        <div class="input-group input-group-md" style="width: 100%">
+                            <span class="input-group-addon" style="width: 165px">Fecha inicio &nbsp;<i class="fa fa-calendar"></i></span>
+                            <div>
+                            <input id="fec_ini_cajas" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('01/m/Y')}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12" style="padding: 0px; margin-top: 10px; ">
+                        <div class="input-group input-group-md" style="width: 100%">
+                            <span class="input-group-addon" style="width: 165px">Fecha fin &nbsp;<i class="fa fa-calendar"></i></span>
+                            <div>
+                            <input id="fec_fin_cajas" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col-xs-12" style="padding: 0px; margin-top: 10px; ">
+                        <div class="input-group input-group-md" style="width: 100%">
+                            <span class="input-group-addon" style="width: 165px">Agencia &nbsp;<i class="fa fa-users"></i></span>
+                            <div>
+                                <label class="select" >
+                                    <select id='select_agencia' class="form-control col-lg-8" >
+                                <option value='0'>-- TODOS --</option>
+                                @foreach ($agencias as $agencias_caja)
+                                    <option value='{{$agencias_caja->id_caj}}' >{{$agencias_caja->descrip_caja}}</option>
+                                @endforeach
+                            </select><i></i> </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    
+                </div>
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
+
 
 
 

@@ -95,6 +95,7 @@ class PredioRuralController extends Controller
         $predio_contribuyentes->porcen_titularidad = 100;
         $predio_contribuyentes->id_form_adq = $request['ifor'];
         $predio_contribuyentes->id_pred_anio = $id_pre_anio;
+        $predio_contribuyentes->desc_otros = strtoupper($request['otros']);
         $predio_contribuyentes->save();
     }
     public function create_rus($id,Request $request)
@@ -181,6 +182,7 @@ class PredioRuralController extends Controller
         if(count($val)>=1)
         {
             $val->id_form_adq = $request['ifor'];
+            $val->desc_otros = strtoupper($request['otros']);
             $val->save();
         }
     }
