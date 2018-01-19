@@ -43,7 +43,8 @@ class ContribuyentesController extends Controller
         $data = new Contribuyentes();
         $data->tipo_persona=$request['tipo_persona'];
         $data->tlfno_fijo=$request['tlfno_fijo']; 
-        $data->tlfono_celular=$request['tlfono_celular']; 
+        $data->tlfono_celular=$request['tlfono_celular'];
+        $data->num_expediente=$request['num_expediente']; //numero exp
         $data->email=$request['email'];
         $data->est_civil=$request['est_civil'];            
         $data->id_dpto=$request['id_dpto'];
@@ -98,7 +99,8 @@ class ContribuyentesController extends Controller
                        
             $val->tipo_persona=$request['tipo_persona'];
             $val->tlfno_fijo=$request['tlfno_fijo']; 
-            $val->tlfono_celular=$request['tlfono_celular']; 
+            $val->tlfono_celular=$request['tlfono_celular'];
+            $val->num_expediente=$request['num_expediente'];
             $val->email=$request['email'];
             $val->est_civil=$request['est_civil'];            
             $val->id_dpto=$request['id_dpto'];
@@ -305,7 +307,8 @@ class ContribuyentesController extends Controller
                 trim($Datos->cod_via),
                 trim($Datos->nom_via),
                 trim($Datos->tlfno_fijo),
-                trim($Datos->tlfono_celular),                
+                trim($Datos->tlfono_celular),
+                trim($Datos->num_expediente),
                 trim($Datos->tipo_persona),
                 trim($Datos->id_cond_exonerac),                
                 trim($Datos->est_civil),                

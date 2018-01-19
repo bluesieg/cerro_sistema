@@ -320,14 +320,26 @@ function autocompletar_haburb(textbox){
                         </div>
                     </section>
                     
-                    <section class="col col-12" style="padding-left:15px;padding-right:5px;">
+                    <section class="col col-9" style="padding-left:15px;padding-right:5px;">
                         <div class="input-group input-group-md">
                         <span class="input-group-addon" style="width:190px">CANTIDAD DE MAXIMA: &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div>
                             <input id="max" type="max"  class="form-control col-lg-8" value="50000" style="padding-left:15px" onkeypress="return soloNumeroTab(event);">
                         </div>
                         </div>
+                        
+                        
                     </section>
+                    
+                    <section class="col col-3" style="padding-right:15px;padding-right:5px;">
+                    
+                    <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input"  id="mostrar_todo" onclick="cambiar_estado();" name="mostrar_todo">
+                              MOSTRAR TODOS
+                            </label>
+                        </div>
+                     </section>
                     
                     <section class="col col-12" style="padding-left:15px;padding-right:5px;">
                         <div class="input-group input-group-md">

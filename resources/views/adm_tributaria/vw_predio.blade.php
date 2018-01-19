@@ -1141,7 +1141,12 @@
                                 <input id="rinst_inp_anio" type="text"  class="input-sm" maxlength="4" onkeypress="return soloDNI(event);" >
                             </label>
                         </div>
-                        
+                        <div class='col-lg-11 pd_dlg_cr'>
+                            <label class="label">Glosa:</label>
+                            <label class="input">   
+                                <input id="glosa" type="text"  class="input-sm" maxlength="50" >
+                            </label>
+                        </div>
                         <div col="col-xs-12"></div>
                         <div class='col-xs-3 pd_dlg_cr'>
                             <label class="label">Clasificación:</label>

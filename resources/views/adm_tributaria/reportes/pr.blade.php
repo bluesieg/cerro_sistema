@@ -6,7 +6,7 @@
         <link href="{{ asset('css/pdf.css') }}" rel="stylesheet">
   </head>
   <body>
-       <div class="datehead">AÑO: {{ $sql->anio }}</div>
+        <div class="datehead">{{ $fecha }}</div>
 
     <main>
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 5px;">
@@ -311,6 +311,7 @@
                   <td  class="firma" style="width: 30%;"><div class="firma2">firma</div></td>
               </tr>
             </thead>
+            <div style="margin-bottom: 10px; font-size: 0.6em; text-align:right ;">IMPRESO POR : {{$usuario[0]->ape_nom}}</div>
         </table>
   </body>
 </html>

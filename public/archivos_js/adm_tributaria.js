@@ -114,6 +114,7 @@ function modificar_contrib(){
     $("#contrib_est_civil").val($("#table_Contribuyentes").getCell(id_contrib, 'est_civil'));
     $("#contrib_tlfno_fijo").val($("#table_Contribuyentes").getCell(id_contrib, 'tlfno_fijo'));
     $("#contrib_tlfono_celular").val($("#table_Contribuyentes").getCell(id_contrib, 'tlfono_celular'));
+    $("#contrib_num_expediente").val($("#table_Contribuyentes").getCell(id_contrib, 'num_Expediente'));
     $("#contrib_email").val($("#table_Contribuyentes").getCell(id_contrib, 'email'));    
     setTimeout(function(){
         $("#cb_tip_doc_1").val($("#table_Contribuyentes").getCell(id_contrib, 'tip_doc'));
@@ -235,7 +236,8 @@ function update_contrib(){
             tipo_persona:$("#vw_contrib_sel_tip_contrib").val(),
             nro_doc:$("#txt_nro_doc").val(),
             tlfno_fijo:$("#contrib_tlfno_fijo").val() || '0', 
-            tlfono_celular:$("#contrib_tlfono_celular").val() || '0', 
+            tlfono_celular:$("#contrib_tlfono_celular").val() || '0',
+            num_expediente:$("#contrib_num_expediente").val() || '0',
             email:$("#contrib_email").val() || '@',
             est_civil:$("#contrib_est_civil").val() || '0',            
             id_dpto:$("#contrib_dpto").val(),
@@ -382,7 +384,8 @@ function new_contrib() {
             tipo_persona:$("#vw_contrib_sel_tip_contrib").val(),
             nro_doc:$("#txt_nro_doc").val(),
             tlfno_fijo:$("#contrib_tlfno_fijo").val() || '0', 
-            tlfono_celular:$("#contrib_tlfono_celular").val() || '0', 
+            tlfono_celular:$("#contrib_tlfono_celular").val() || '0',
+            num_expediente:$("#contrib_num_expediente").val() || '0',
             email:$("#contrib_email").val() || '@',
             est_civil:$("#contrib_est_civil").val() || '0',            
             id_dpto:$("#contrib_dpto").val(),
@@ -478,7 +481,7 @@ function filtro_tipo_doc_pers(tipo) {
 }
 
 function limpiar_dlg_contrib(){
-    $("#txt_nro_doc,#vw_contrib_contribuyente,#contrib_tlfno_fijo,#contrib_tlfono_celular,#contrib_email,#contrib_nro_mun,#txt_av_jr_calle_psje").val('');
+    $("#txt_nro_doc,#vw_contrib_contribuyente,#contrib_tlfno_fijo,#contrib_tlfono_celular,#contrib_num_expediente,#contrib_email,#contrib_nro_mun,#txt_av_jr_calle_psje").val('');
     $("#contrib_dpto_depa,#contrib_manz,#contrib_lote,#contrib_dom_fiscal,#contrib_nro_doc_conv,#contrib_conviviente_pat,#contrib_conviviente_mat,#contrib_conviviente_nom").val('');
     $("#vw_contrib_id_conv").val('');
     $("#contrib_est_civil").val('select');

@@ -226,13 +226,18 @@
                                     </select><i></i> </label>
                                 </section>
                             </div>
-                            <section>
-                                <label class="label">Contribuyente:</label>
-                                <label class="input">
-                                    <input type="hidden" id="vw_contrib_id_pers">
-                                    <input id="vw_contrib_contribuyente" type="text" class="input-sm" disabled="">
-                                </label>                        
-                            </section>
+                            <div>
+                                <section>
+                                    <label class="col col-4">Contribuyente:</label>
+                                    <label class="input">
+                                        <input type="hidden" id="vw_contrib_id_pers">
+                                        <input id="vw_contrib_contribuyente" type="text" class="input-sm" disabled="">
+                                    </label>                        
+                                </section>
+                                
+                            </div>
+                         
+                            
                             <div class="row">
                                 <section class="col col-2"  style="padding-right:5px;">
                                     <label class="label">Est.Civil:</label>
@@ -258,11 +263,17 @@
                                         <input id="contrib_tlfono_celular" type="text" placeholder="Telefono Celular" class="input-sm">
                                     </label>                      
                                 </section>
-                                <section class="col col-6"  style="padding-left:5px;">
+                                <section class="col col-4"  style="padding-left:5px;">
                                     <label class="label">Correo Electronico:</label>
                                     <label class="input">
                                         <input id="contrib_email" type="text" placeholder="Correo Electronico" class="input-sm">
                                     </label>   
+                                </section>  
+                                <section class="col col-2"  style="padding-left:2px;padding-right:15px;">
+                                    <label class="label">N° de Expediente:</label>
+                                    <label class="input">
+                                        <input id="contrib_num_expediente" type="text" placeholder="Telefono Celular" class="input-sm">
+                                    </label>                      
                                 </section>
                             </div>                           
                         </fieldset>

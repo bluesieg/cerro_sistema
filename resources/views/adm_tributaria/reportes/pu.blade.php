@@ -9,8 +9,7 @@
         </style>
   </head>
   <body>
-       <div class="datehead">AÑO: {{ $sql->anio }}</div>
-
+       <div class="datehead">{{ $fecha }}</div>
     <main>
          <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 5px;">
             <tr>
@@ -328,6 +327,7 @@
               </tr>
               
             </thead>
+            <div style="margin-bottom: 10px; font-size: 0.6em; text-align:right ;">IMPRESO POR : {{$usuario[0]->ape_nom}}</div>
         </table>
   </body>
   

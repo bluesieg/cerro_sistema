@@ -32,7 +32,7 @@
         <center><div Class="asunto" style="margin-top: 0px;"><b>Reporte Impuesto Predial Corriente y No Corriente
                 </b></div></center>
         <br>
-        
+        <h5 class="subasunto" style="font-size:0.8em;  text-align: right; padding-left: 30px;">{{$usuario[0]->ape_nom}} - {{ $fecha }}</h5>
         <div class="sub2" style="font-size:0.8em"><b>Año Seleccionado: </b>{{$sql[0]->periodo}}</div>
          
         <input type="hidden" value=" {{$num=1}}">
@@ -51,7 +51,7 @@
           
           @foreach ($sql as $arc)
           <tr>
-              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{number_format($arc->sum,3,".",",")}}</td>
+              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{number_format($arc->sum,2,".",",")}}</td>
               
 
           @endforeach
@@ -60,7 +60,7 @@
            
             @endif
 
-              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{number_format($arc1->sum,3,".",",")}}</td>
+              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{number_format($arc1->sum,2,".",",")}}</td>
               
           </tr>
           @endforeach

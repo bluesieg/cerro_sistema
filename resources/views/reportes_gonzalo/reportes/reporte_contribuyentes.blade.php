@@ -30,10 +30,11 @@
     </table>
 
     <center><div Class="asunto" style="margin-top: 10px;"><b>Listado de Contribuyentes(Pricos,Mecos,Pecos)</b></div></center>
-    <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px;">
+    <div class="subasunto" style="text-align: left; padding-left: 30px;">
         AÑO: {{ $anio }}, MONTO DE: {{$min}} hasta {{$max}}
+        <h5 class="subasunto" style="font-size:0.8em;  text-align: right; padding-left: 30px;">{{$usuario[0]->ape_nom}} - {{ $fecha }}</h5>
     </div>
-
+    
     <input type="hidden" value=" {{$num= 1}}">
 
     <div class="lado3" style="height: 435px; border-bottom: 1px solid #333">
@@ -58,8 +59,8 @@
                     <td style="text-align: center;">{{ $cont->nro_doc }}</td>
                     <td style="text-align: left;">{{$cont->contribuyente}}</td>
                     <td style="text-align: left;">{{ $cont->dom_fis }}</td>
-                    <td style="text-align: center;">{{  number_format($cont->ivpp,2,".",",") }}</td>
-                    <td style="text-align: center;">{{  number_format($cont->saldo,2,".",",") }}</td>
+                    <td style="text-align: center;">{{ number_format($cont->ivpp,2,'.',',')}}</td>
+                    <td style="text-align: center;">{{ number_format($cont->saldo,2,'.',',') }}</td>
                 </tr>
             @endforeach
             </tbody>

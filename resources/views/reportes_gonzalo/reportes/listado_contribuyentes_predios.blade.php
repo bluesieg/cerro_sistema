@@ -32,7 +32,7 @@
     </table>
 
     <center><div Class="asunto" style="margin-top: 10px;"><b>LISTADO DE CONTRIBUYENTES Y PREDIOS</b></div></center>
-
+    <h5 class="subasunto" style="font-size:0.8em;  text-align: right; padding-left: 30px;">{{$usuario[0]->ape_nom}} - {{ $fecha }}</h5>
     <input type="hidden" value=" {{$num= 1}}">
 
     <div class="lado3" style="height: 435px; border-bottom: 1px solid #333">
@@ -64,8 +64,8 @@
                 <td style="border-right:0px; border-bottom: 0px; text-align: center;"></td>
                 <td style="border-right:0px; border-bottom: 0px; text-align: center;"></td>
                 <td style="text-align: center;">{{$sql[0]->cod_via}} - {{$sql[0]->nom_via}} - {{$sql[0]->nro_mun}} - {{$sql[0]->referencia}}</td>
-                <td style="text-align: center;">{{$sql[0]->are_terr}}</td>
-                <td style="text-align: center;">{{$sql[0]->area_const}}</td>
+                <td style="text-align: center;">{{number_format($sql[0]->are_terr,2,'.',',')}}</td>
+                <td style="text-align: center;">{{number_format($sql[0]->area_const,2,'.',',')}}</td>
             </tr>
             
             @for ($i = 1; $i < count($sql); $i++)
@@ -75,8 +75,8 @@
                         <td style="border-right:0px; border-bottom: 0px;border-top: 0px; text-align: center;"></td>
                         <td style="border-right:0px; border-bottom: 0px;border-top: 0px; text-align: center;"></td>
                         <td style="text-align: center;">{{$sql[$i]->cod_via}} - {{$sql[$i]->nom_via}} - {{$sql[$i]->nro_mun}} - {{$sql[$i]->referencia}}</td>
-                        <td style="text-align: center;">{{$sql[$i]->are_terr}}</td>
-                        <td style="text-align: center;">{{$sql[$i]->area_const}}</td>
+                        <td style="text-align: center;">{{number_format($sql[$i]->are_terr,2,'.',',')}}</td>
+                        <td style="text-align: center;">{{number_format($sql[$i]->area_const,2,'.',',')}}</td>
                     </tr>
                 @else
 
@@ -93,8 +93,8 @@
                         <td style="border-right:0px; border-bottom: 0px;border-top: 0px; text-align: center;"></td>
                         <td style="border-right:0px; border-bottom: 0px;border-top: 0px; text-align: center;"></td>
                         <td style="text-align: center;">{{$sql[$i]->cod_via}} - {{$sql[$i]->nom_via}} - {{$sql[$i]->nro_mun}} - {{$sql[$i]->referencia}}</td>
-                        <td style="text-align: center;">{{$sql[$i]->are_terr}}</td>
-                        <td style="text-align: center;">{{$sql[$i]->area_const}}</td>
+                        <td style="text-align: center;">{{number_format($sql[$i]->are_terr,2,'.',',')}}</td>
+                        <td style="text-align: center;">{{number_format($sql[$i]->area_const,2,'.',',')}}</td>
 
                     </tr>
                 @endif

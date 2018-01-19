@@ -32,6 +32,7 @@
     </table>
 
     <center><div Class="asunto" style="margin-top: 10px;"><b>REPORTE DE EMISION PREDIAL POR USO</b></div></center>
+    <h5 class="subasunto" style="font-size:0.8em;  text-align: right; padding-left: 30px;">{{$usuario[0]->ape_nom}} - {{ $fecha }}</h5>
     <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px;">
             <table>
                 <thead>

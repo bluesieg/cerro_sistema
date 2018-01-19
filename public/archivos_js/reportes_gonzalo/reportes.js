@@ -72,6 +72,16 @@ function crear_dialogo_contribuyentes(){
 
 }
 
+function cambiar_estado(){
+    if( $('#mostrar_todo').is(':checked') ) {
+        $("#max").attr('disabled', 'disabled');  
+        $("#max").attr('value', '1000000000'); 
+    }else{
+        $("#max").removeAttr('disabled');
+        $("#max").attr('value', '50000');
+    }
+}
+
 function dlg_reporte_contribuyentes(tipo)
 {
     if (tipo===0) {
@@ -81,7 +91,11 @@ function dlg_reporte_contribuyentes(tipo)
 
 function abrir_reporte_contribuyente()
 {
+    if( $('#mostrar_todo').is(':checked') ) {  
+    window.open('reporte_contribuyentes/'+ $('#selantra_r0').val()+ '/'+ $('#min').val()+ '/' + $('#max').val() + '/'  +$('#num_reg').val());   
+    }else{
     window.open('reporte_contribuyentes/'+ $('#selantra_r0').val()+ '/'+ $('#min').val()+ '/' + $('#max').val() + '/'  +$('#num_reg').val());
+    }
 }
 
 
@@ -347,7 +361,7 @@ function crear_dialogo_cant_cont_ded_mont_bas_imp()
 {
     $("#dialog_cant_cont_ded_mont_bas_imp").dialog({
         autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>&nbsp&nbsp.: Reporte Predios Por Uso :.</h4></div>",
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.: Reporte Predios Por Condicion :.</h4></div>",
         buttons: [{
             html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
             "class": "btn btn-success bg-color-green",
