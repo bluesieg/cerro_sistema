@@ -40,6 +40,16 @@
                                         </div>
                                     </div>
                                 </section>
+                                
+                                <section class="col lg-3" style="padding-right:175px;">
+                                <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input id="vw_foto" type="hidden" value="0">
+                                            <input type="checkbox" class="form-check-input"  id="mostrar_foto" onclick="cambiar_estado();">
+                                          MOSTRAR FOTO
+                                        </label>
+                            </div>
+                                 </section>
                             </div>
                             <div class="row" style="margin-top: 7px">
                                 <section class="col-lg-3" style="padding-right: 5px;">
@@ -69,18 +79,9 @@
                                             <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
                                         </button>
                                     @endif
-                                     @if( $permisos[0]->btn_imp ==1 )
-                                        <button onclick="enviar_est_cta();" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
-                                            <span class="btn-label"><i class="glyphicon glyphicon-send"></i></span>Enviar
+                                        <button onclick="print_est_cta_correo(0);" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                                            <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Enviar Correo
                                         </button>
-                                    @else
-                                        <button onclick="sin_permiso();" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
-                                            <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Enviar
-                                        </button>
-                                    @endif
-                                </section>
-                                 <section class="col-lg-3 text-align-left" style="padding-left: 5px;">
-                                   
                                 </section>
                             </div>
                         </div>
@@ -181,13 +182,50 @@
     </article>
 </div>
 
-@endsection
-<div id="vw_vista_previa" style="display: none">
-    <div class="widget-body">
-        <div  class="smart-form">
-            <div class="panel-group">
-                <iframe id="print_recibo_pagado" width="820" height="490" frameborder="0" allowfullscreen></iframe> 
+<div id="dlg_enviar_correo" style="display: none;">
+    <div class='cr_content col-xs-5 ' style="margin-bottom: 10px;">
+        <div class="col-xs-12 cr-body" >
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                <section>
+                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                                <h2>LLenado de Información::..</h2>
+                        </header>
             </div>
+                </section>
+    <form id="FormularioFiles" name="FormularioFiles" method="post" enctype="multipart/form-data" action="callpdf"  target="ifrafile">
+        <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}" data-token="{{ csrf_token() }}"> 
+            <input type="hidden" id="id_arch" name="id_arch" value="0"/>
+        <input id="id_contrib_hidden" name="id_contrib_hidden" type="hidden" value="0"/>
+
+                <div class="col-xs-12" style="margin-top: 10px;"></div>
+                <div class="col-xs-12" style="padding: 0px; ">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 100px">Persona &nbsp;<i class="fa fa-eye"></i></span>
+                        <div>
+                            <input id="dlg_persona" name="dlg_obs_exp" type="text"  class="form-control" style="height: 32px; width: 100%" maxlength="250">
         </div>
     </div>
 </div>
+                <div class="col-xs-12" style="margin-top: 10px;"></div>
+                <div class="col-xs-12" style="padding: 0px; ">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 100px">Correo &nbsp;<i class="fa fa-map"></i></span>
+                        <div>
+                            <input id="dlg_correo" name="dlg_direcc" type="text"  class="form-control" style="height: 32px; width: 100%">
+                        </div>
+                    </div>
+                </div>
+    </form>            
+                
+            </div>
+          
+        </div>
+    </div>
+        <div id="dlg_sub_frame" class='cr_content col-xs-7 ' style="margin-bottom: 10px;">
+            <iframe name="ifrafile" id="ifrafile" class="form-control col-xs-12"  style=" height: 400px; padding: 0px"></iframe>
+        </div>
+</div> 
+
+@endsection

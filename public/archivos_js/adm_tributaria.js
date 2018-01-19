@@ -114,7 +114,6 @@ function modificar_contrib(){
     $("#contrib_est_civil").val($("#table_Contribuyentes").getCell(id_contrib, 'est_civil'));
     $("#contrib_tlfno_fijo").val($("#table_Contribuyentes").getCell(id_contrib, 'tlfno_fijo'));
     $("#contrib_tlfono_celular").val($("#table_Contribuyentes").getCell(id_contrib, 'tlfono_celular'));
-    $("#contrib_num_expediente").val($("#table_Contribuyentes").getCell(id_contrib, 'num_Expediente'));
     $("#contrib_email").val($("#table_Contribuyentes").getCell(id_contrib, 'email'));    
     setTimeout(function(){
         $("#cb_tip_doc_1").val($("#table_Contribuyentes").getCell(id_contrib, 'tip_doc'));
@@ -135,7 +134,9 @@ function modificar_contrib(){
     $("#vw_contrib_id_conv").val($("#table_Contribuyentes").getCell(id_contrib, 'id_conv'));
     $("#contrib_conviviente_pat").val($("#table_Contribuyentes").getCell(id_contrib, 'conv_pat')); 
     $("#contrib_conviviente_mat").val($("#table_Contribuyentes").getCell(id_contrib, 'conv_mat')); 
-    $("#contrib_conviviente_nom").val($("#table_Contribuyentes").getCell(id_contrib, 'conv_nombres')); 
+    $("#contrib_conviviente_nom").val($("#table_Contribuyentes").getCell(id_contrib, 'conv_nombres'));
+    $("#contrib_num_expediente").val($("#table_Contribuyentes").getCell(id_contrib, 'num_expediente')); 
+   
     if($("#table_Contribuyentes").getCell(id_contrib, 'tipo_persona')=='3'){
         $("#contrib_nro_doc_conv,#contrib_conviviente_pat,#contrib_conviviente_mat,#contrib_conviviente_nom").attr('disabled',false);
     }else{
@@ -237,7 +238,6 @@ function update_contrib(){
             nro_doc:$("#txt_nro_doc").val(),
             tlfno_fijo:$("#contrib_tlfno_fijo").val() || '0', 
             tlfono_celular:$("#contrib_tlfono_celular").val() || '0',
-            num_expediente:$("#contrib_num_expediente").val() || '0',
             email:$("#contrib_email").val() || '@',
             est_civil:$("#contrib_est_civil").val() || '0',            
             id_dpto:$("#contrib_dpto").val(),
@@ -256,7 +256,8 @@ function update_contrib(){
             pat_conv:$("#contrib_conviviente_pat").val(),
             mat_conv:$("#contrib_conviviente_mat").val(),
             nom_conv:$("#contrib_conviviente_nom").val(),
-            nro_conv:$("#contrib_nro_doc_conv").val()
+            nro_conv:$("#contrib_nro_doc_conv").val(),
+            numero_expediente:$("#contrib_num_expediente").val()
         },
         success: function (data) {
             dialog_close('dialog_new_edit_Contribuyentes');            
@@ -385,7 +386,6 @@ function new_contrib() {
             nro_doc:$("#txt_nro_doc").val(),
             tlfno_fijo:$("#contrib_tlfno_fijo").val() || '0', 
             tlfono_celular:$("#contrib_tlfono_celular").val() || '0',
-            num_expediente:$("#contrib_num_expediente").val() || '0',
             email:$("#contrib_email").val() || '@',
             est_civil:$("#contrib_est_civil").val() || '0',            
             id_dpto:$("#contrib_dpto").val(),
@@ -404,7 +404,8 @@ function new_contrib() {
             mat_conv:$("#contrib_conviviente_mat").val(),
             nom_conv:$("#contrib_conviviente_nom").val(),
             ref_dom_fis:($("#contrib_dom_fiscal").val()).toUpperCase() || '-',
-            nom_via_2:($("#txt_av_jr_calle_psje").val()).toUpperCase() || '-'
+            nom_via_2:($("#txt_av_jr_calle_psje").val()).toUpperCase() || '-',
+            numero_expediente:$("#contrib_num_expediente").val()
         },
         success: function (data) {
             dialog_close('dialog_new_edit_Contribuyentes');            
@@ -481,7 +482,7 @@ function filtro_tipo_doc_pers(tipo) {
 }
 
 function limpiar_dlg_contrib(){
-    $("#txt_nro_doc,#vw_contrib_contribuyente,#contrib_tlfno_fijo,#contrib_tlfono_celular,#contrib_num_expediente,#contrib_email,#contrib_nro_mun,#txt_av_jr_calle_psje").val('');
+    $("#txt_nro_doc,#vw_contrib_contribuyente,#contrib_tlfno_fijo,#contrib_tlfono_celular,#contrib_email,#contrib_nro_mun,#txt_av_jr_calle_psje").val('');
     $("#contrib_dpto_depa,#contrib_manz,#contrib_lote,#contrib_dom_fiscal,#contrib_nro_doc_conv,#contrib_conviviente_pat,#contrib_conviviente_mat,#contrib_conviviente_nom").val('');
     $("#vw_contrib_id_conv").val('');
     $("#contrib_est_civil").val('select');

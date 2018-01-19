@@ -44,7 +44,6 @@ class ContribuyentesController extends Controller
         $data->tipo_persona=$request['tipo_persona'];
         $data->tlfno_fijo=$request['tlfno_fijo']; 
         $data->tlfono_celular=$request['tlfono_celular'];
-        $data->num_expediente=$request['num_expediente']; //numero exp
         $data->email=$request['email'];
         $data->est_civil=$request['est_civil'];            
         $data->id_dpto=$request['id_dpto'];
@@ -66,6 +65,7 @@ class ContribuyentesController extends Controller
         $data->nom_via_2=$request['nom_via_2'];
         $data->id_usu=Auth::user()->id;
         $data->fec_reg=date("d/m/Y");
+        $data->num_expediente=$request['numero_expediente'];
         $data->save();        
         return $data->id_contrib;
       
@@ -100,7 +100,6 @@ class ContribuyentesController extends Controller
             $val->tipo_persona=$request['tipo_persona'];
             $val->tlfno_fijo=$request['tlfno_fijo']; 
             $val->tlfono_celular=$request['tlfono_celular'];
-            $val->num_expediente=$request['num_expediente'];
             $val->email=$request['email'];
             $val->est_civil=$request['est_civil'];            
             $val->id_dpto=$request['id_dpto'];
@@ -115,6 +114,7 @@ class ContribuyentesController extends Controller
             $val->id_pers=$request['id_pers']; 
             $val->ref_dom_fis= strtoupper($request['ref_dom_fis']);
             $val->nom_via_2=$request['nom_via_2'];
+            $val->num_expediente=$request['numero_expediente'];
             $id_persona = $request['tipo_persona'].$request['tipo_doc'].$request['nro_doc'];
             $val->id_persona=$id_persona;   
             $val->id_conv=$conv;
@@ -287,7 +287,7 @@ class ContribuyentesController extends Controller
         if(isset($request['buscar'])){
             $sql = DB::select("select * from adm_tri.vw_contribuyentes where contribuyente||' '||nro_doc like '%".$buscar."%' order by $sidx $sord limit $limit offset $start");
         }else{
-            $sql = DB::table('adm_tri.vw_contribuyentes')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+            $sql = DB::table('adm_tri.vw_contribuyentes_2')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         }
         
         $Lista = new \stdClass();
@@ -308,7 +308,6 @@ class ContribuyentesController extends Controller
                 trim($Datos->nom_via),
                 trim($Datos->tlfno_fijo),
                 trim($Datos->tlfono_celular),
-                trim($Datos->num_expediente),
                 trim($Datos->tipo_persona),
                 trim($Datos->id_cond_exonerac),                
                 trim($Datos->est_civil),                
@@ -327,6 +326,7 @@ class ContribuyentesController extends Controller
                 trim($Datos->conv_pat),
                 trim($Datos->conv_mat),
                 trim($Datos->conv_nombres),
+                trim($Datos->num_expediente),
                 $Datos->id_pers,
                 $Datos->id_conv,
                 $Datos->tip_doc

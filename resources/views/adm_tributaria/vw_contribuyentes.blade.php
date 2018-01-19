@@ -88,7 +88,7 @@
             toolbarfilter: true,
             colNames: ['Codigo','Tipo Persona', ' Tip. Doc', 'N°. Documento', 'Contribuyente o Razon Social', 'Cod. Via', 'Calle / Via', 'Fono. Fijo', 'Celular',
                 'tipo_persona','id_cond_exonerac','est_civil','email','id_dpto','id_prov','id_dist','id_via','nro_mun','dpto','manz','lote',
-                'dom_fis','tip_doc_conv','nro_doc_conv','con_pat','con_mat','con_nombres','id_pers','id_conv','tip_doc'],
+                'dom_fis','tip_doc_conv','nro_doc_conv','con_pat','con_mat','con_nombres','id_pers','id_conv','tip_doc','nro_expediente'],
             rowNum: 20, sortname: 'id_contrib', sortorder: 'desc', viewrecords: true, caption: 'LISTA DE CONTRIBUYENTES REGISTRADOS', align: "center",
             colModel: [                
                 {name: 'id_persona', index: 'id_persona', align: 'left', width: 80},
@@ -118,6 +118,7 @@
                 {name: 'conv_pat', index: 'conv_pat', hidden:true},
                 {name: 'conv_mat', index: 'conv_mat', hidden:true},
                 {name: 'conv_nombres', index: 'conv_nombres', hidden:true},
+                {name: 'num_expediente', index: 'num_expediente', hidden:true},
                 {name: 'id_pers', index: 'tlfono_celular', hidden:true},
                 {name: 'id_conv', index: 'tlfono_celular', hidden:true},
                 {name: 'tip_doc', index: 'tip_doc', hidden:true}
@@ -226,18 +227,13 @@
                                     </select><i></i> </label>
                                 </section>
                             </div>
-                            <div>
                                 <section>
-                                    <label class="col col-4">Contribuyente:</label>
+                                <label class="label">Contribuyente:</label>
                                     <label class="input">
                                         <input type="hidden" id="vw_contrib_id_pers">
                                         <input id="vw_contrib_contribuyente" type="text" class="input-sm" disabled="">
                                     </label>                        
                                 </section>
-                                
-                            </div>
-                         
-                            
                             <div class="row">
                                 <section class="col col-2"  style="padding-right:5px;">
                                     <label class="label">Est.Civil:</label>
@@ -269,10 +265,10 @@
                                         <input id="contrib_email" type="text" placeholder="Correo Electronico" class="input-sm">
                                     </label>   
                                 </section>  
-                                <section class="col col-2"  style="padding-left:2px;padding-right:15px;">
-                                    <label class="label">N° de Expediente:</label>
+                                <section class="col col-2"  style="padding-left:2px; padding-right: 15px;">
+                                    <label class="label">Nº Expediente</label>
                                     <label class="input">
-                                        <input id="contrib_num_expediente" type="text" placeholder="Telefono Celular" class="input-sm">
+                                        <input id="contrib_num_expediente" type="text" placeholder="Numero Expediente" class="input-sm" maxlength="30">
                                     </label>                      
                                 </section>
                             </div>                           

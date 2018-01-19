@@ -1,4 +1,10 @@
-
+function cambiar_estado(){
+    if( $('#mostrar_foto').is(':checked') ) {  
+        $("#vw_foto").attr('value', '1'); 
+    }else{
+        $("#vw_foto").attr('value', '0');
+    }
+}
 
 function fn_bus_contrib(){
     if($("#vw_caja_est_cta_contrib").val()=="")
@@ -46,31 +52,55 @@ function print_est_cta(){
     }
     
     id_contrib = $("#vw_caja_est_cta_id_contrib").val();
-    window.open('caja_imp_est_cta/'+id_contrib+'/'+$("#vw_caja_ets_cta_anio_desde").val()+'/'+$("#vw_caja_ets_cta_anio_hasta").val());
+    window.open('caja_imp_est_cta/'+id_contrib+'/'+$("#vw_caja_ets_cta_anio_desde").val()+'/'+$("#vw_caja_ets_cta_anio_hasta").val()+'?foto='+$('#vw_foto').val()+'');
 }
-function enviar_est_cta(){
-    rows = $("#tabla_est_Cuenta").getRowData().length;
-    if(rows==0){
-        mostraralertas('* Ingrese Un Contribuyente con Predios Declarados...');
-        return false;
-    }
-    $("#vw_vista_previa").dialog({
-        autoOpen: false, modal: true, width: 850,height:600, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>.:ESTADO DE CUENTA:.</h4></div>",
+
+
+
+/********************************ENVIAR_CORREO_ELECTRONICO**************************************************/
+
+function crear_dialogo()
+{
+    anio_desde = $("#vw_caja_ets_cta_anio_desde").val();
+    anio_hasta = $("#vw_caja_ets_cta_anio_hasta").val();
+    id_contrib = $("#vw_caja_est_cta_id_contrib").val();
+    $("#dlg_persona").val($("#vw_caja_est_cta_contrib").val());
+    //alert(anio_desde);
+    //alert(hasta);
+    //alert(id_contrib);
+
+    $("#dlg_enviar_correo").dialog({
+        autoOpen: false, modal: true, width: 1400, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.: Predios Ingresados Por Usuario :.</h4></div>",
         buttons: [{
-            html: "<i class='fa fa-save'></i>&nbsp; Confirmar y Enviar",
-            "class": "btn btn-primary",
-            click: function (){
-    //                    printTrigger('imp_pago_rec?id_rec='+id_recibo);
-                dialog_close('vw_vista_previa');
-                dialog_close('vw_caja_mov_realizar_pago');
-                MensajeExito('Conforme', 'EL Pago se ha realizado con Exito');
-                $("#print_recibo_pagado").contents().find("body").html('');
-            }
+            html: "<i class='fa fa-save'></i>&nbsp; Enviar Correo"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { mail_send(); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
         }]        
     }).dialog('open');
-    id_contrib = $("#vw_caja_est_cta_id_contrib").val();
-    //window.open('caja_imp_est_cta/'+id_contrib+'/'+$("#vw_caja_ets_cta_anio_desde").val()+'/'+$("#vw_caja_ets_cta_anio_hasta").val());
 
-        window.open('caja_env_est_cta/'+id_contrib+'/'+$("#vw_caja_ets_cta_anio_desde").val()+'/'+$("#vw_caja_ets_cta_anio_hasta").val());
+    traer_reporte(anio_desde,anio_hasta,id_contrib);
 }
+
+function traer_reporte(anio_desde,anio_hasta,id_contrib){
+    
+    $('#ifrafile').attr('src','caja_imp_est_cta/'+id_contrib+'/'+anio_desde+'/'+anio_hasta+'?foto='+$('#vw_foto').val()+'');    
+}
+
+function mail_send()
+{
+    //persona=$("#dlg_persona").val();
+    window.open('correo/?persona='+$('#dlg_persona').val()+'');
+}
+
+function print_est_cta_correo(tipo)
+{
+    if (tipo===0) {
+        crear_dialogo();
+    } 
+}
+
