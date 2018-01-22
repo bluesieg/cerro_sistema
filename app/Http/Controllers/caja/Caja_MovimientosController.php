@@ -96,14 +96,18 @@ class Caja_MovimientosController extends Controller {
                                         ->update(['estado' => 1,'fecha_q_pago'=> date('Y-m-d')]);
                             }
                         }
+                        
+                        $anio_detalle=DB::table('tesoreria.recibos_detalle')->select('periodo')->where('id_rec_master',$val->id_rec_mtr)->first();
+                        $recpred = DB::select('select * from presupuesto.vw_impuesto_predial where anio='.$anio_detalle->periodo); 
+                        
                         $nro_cuotas = DB::select('select * from fraccionamiento.vw_trae_cuota_conv where id_conv_mtr='.$val->cod_fracc.' order by nro_cuota desc');
                         $pagados=DB::select("select sum(cod_estado) as pagados from fraccionamiento.vw_trae_cuota_conv where id_conv_mtr=".$val->cod_fracc);
                         if($nro_cuotas[0]->nro_cuota==$pagados[0]->pagados){
                             DB::table('fraccionamiento.convenio')->where('id_conv',trim($val->cod_fracc))
                                         ->update(['estado' => 3]);
-                            $pre_x_trim= DB::table('adm_tri.vw_cta_cte2')->where('id_contrib',$request['id_pers'])->where('id_tribu',103)->where('ano_cta',date('Y'))->value('car1_cta');
+                            $pre_x_trim= DB::table('adm_tri.vw_cta_cte2')->where('id_contrib',$request['id_pers'])->where('id_tribu',$recpred[0]->id_tributo)->where('ano_cta',date('Y'))->value('car1_cta');
                             for($i=1;$i<=4;$i++){                                
-                                $update = DB::table('adm_tri.cta_cte')->where('id_pers',$request['id_pers'])->where('id_tribu',103)
+                                $update = DB::table('adm_tri.cta_cte')->where('id_pers',$request['id_pers'])->where('id_tribu',$recpred[0]->id_tributo)
                                         ->update(['abo'.$i.'_cta'=>$pre_x_trim,'fec_abo'.$i=>date('d-m-Y')]);
                             }
                         }

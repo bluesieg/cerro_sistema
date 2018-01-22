@@ -285,6 +285,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('get_conv_fracc_estcta','Caja_Est_CuentasController@conv_fracc_estcta');
         Route::get('get_det_fracc','Caja_Est_CuentasController@get_det_fracc');
         Route::get('imp_est_cta_fracc/{id_contrib}/{id_conv}','Caja_Est_CuentasController@print_estcta_fracc');
+        
+        Route::get('enviar_correo','Caja_Est_CuentasController@correo');
     });
     Route::group(['namespace' => 'fraccionamiento'], function() {//FRACCIONAMIENTO DE PAGOS PREDIAL
         Route::resource('config_fraccionamiento','configuracion\Fraccionamiento');        
@@ -552,6 +554,24 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('obtener_contribuyentes', 'DprediosController@get_contribuyentes');
         Route::get('obtener_predios', 'DprediosController@get_predios');
         Route::post('eliminar_predio', 'DprediosController@eliminar_predio');
+
+    });
+    
+    Route::get('sendemail', function () {
+
+        $data = array(
+            'name' => "Curso Laravel de gonzalo centeno",
+        );
+
+        Mail::send('caja.reportes.email', $data, function ($message) {
+
+            $message->from('gzlcentenoz@gmail.com', 'Curso Laravel');
+
+            $message->to('burromike75@gmail.com')->subject('test email Curso Laravel');
+
+        });
+
+        return "Tú email ha sido enviado correctamente";
 
     });
     

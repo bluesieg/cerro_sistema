@@ -32,15 +32,21 @@ function fraccionamiento(){
     $('input[type=checkbox][name=chk_2017]:checked').each(function() {
         Seleccionados.push($(this).val());
     });
+    $('input[type=checkbox][name=chk_2018]:checked').each(function() {
+        Seleccionados.push($(this).val());
+    });
     s_ch= Seleccionados.length;
     if(s_ch==2){
         global_tipo=3;
+        //alert(global_tipo);
     }else{
         global_tipo = Seleccionados.join('');
+        //alert(global_tipo);
     }    
     if(global_tipo==''){
         mostraralertasconfoco('Seleccione una Deuda para realizar el Fraccionamiento','#vw_conve_fracc_contrib');
         return false;
+        //alert(global_tipo);
     }
     
     $("#vw_conve_fracc_fraccionar").dialog({

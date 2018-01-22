@@ -222,7 +222,7 @@
         @foreach ($sql_ist as $inst)
           <tr>
               <td>{{$inst->cod_instal}}</td>
-              <td>{{substr($inst->descrip_instal,0,30)}}</td>
+              <td style="font-size:0.6em;">{{substr($inst->descrip_instal,0,30)}} ; {{$inst->glosa}}</td>
               <td style="text-align: center">{{$inst->anio}}</td>
               <td style="text-align: center">{{$inst->mep}}</td>
               <td style="text-align: center">{{$inst->ecs}}</td>

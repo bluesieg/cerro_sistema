@@ -139,13 +139,14 @@
             datatype: 'json', mtype: 'GET',
             height: '300px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_pers', 'codigo', 'DNI/RUC', 'contribuyente'],
+            colNames: ['id_pers', 'codigo', 'DNI/RUC', 'contribuyente','email'],
             rowNum: 20, sortname: 'contribuyente', sortorder: 'asc', viewrecords: true, caption: 'Contribuyentes', align: "center",
             colModel: [
                 {name: 'id_pers', index: 'id_pers', hidden: true},
                 {name: 'id_per', index: 'id_per', align: 'center', width: 100},
                 {name: 'nro_doc', index: 'nro_doc', align: 'center', width: 100},
-                {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 260}
+                {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 260},
+                {name: 'email', index: 'email', align: 'left', width: 260, hidden:true}
             ],
             pager: '#pager_table_contrib',
             rowList: [13, 20],
@@ -204,20 +205,32 @@
                     <div class="input-group input-group-md" style="width: 100%">
                         <span class="input-group-addon" style="width: 100px">Persona &nbsp;<i class="fa fa-eye"></i></span>
                         <div>
-                            <input id="dlg_persona" name="dlg_obs_exp" type="text"  class="form-control" style="height: 32px; width: 100%" maxlength="250">
-        </div>
-    </div>
-</div>
+                            <input id="dlg_persona" name="dlg_obs_exp" type="text"  class="form-control" style="height: 32px; width: 100%" maxlength="250" disabled="disabled">
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="col-xs-12" style="margin-top: 10px;"></div>
                 <div class="col-xs-12" style="padding: 0px; ">
                     <div class="input-group input-group-md" style="width: 100%">
                         <span class="input-group-addon" style="width: 100px">Correo &nbsp;<i class="fa fa-map"></i></span>
                         <div>
-                            <input id="dlg_correo" name="dlg_direcc" type="text"  class="form-control" style="height: 32px; width: 100%">
+                            <input type="hidden" id="email" value="0"/>
+                            <input id="dlg_correo" type="text"  class="form-control" style="height: 32px; width: 100%">
                         </div>
                     </div>
                 </div>
-    </form>            
+                
+                <div class="col-xs-12" style="margin-top: 10px;"></div>
+                <div class="col-xs-12" style="padding: 0px; ">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 100px">Adjunto &nbsp;<i class="fa fa-map"></i></span>
+                        <div>
+                            <input id="archivo_reporte" type="file"  class="form-control" style="height: 32px; width: 100%">
+                        </div>
+                    </div>
+                </div>
+            </form>            
                 
             </div>
           
@@ -225,6 +238,7 @@
     </div>
         <div id="dlg_sub_frame" class='cr_content col-xs-7 ' style="margin-bottom: 10px;">
             <iframe name="ifrafile" id="ifrafile" class="form-control col-xs-12"  style=" height: 400px; padding: 0px"></iframe>
+            <div style="padding-right: 70px;"><img id="imagen" style="float: right;"/></div>
         </div>
 </div> 
 

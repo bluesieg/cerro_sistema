@@ -29,6 +29,7 @@ function fn_bus_contrib_caja_est_cta(per){
     
     $("#vw_caja_est_cta_cod_contrib").val($('#table_contrib').jqGrid('getCell',per,'id_per'));    
     $("#vw_caja_est_cta_contrib").val($('#table_contrib').jqGrid('getCell',per,'contribuyente'));
+    $("#email").val($('#table_contrib').jqGrid('getCell',per,'email'));
     
     tam=($('#table_contrib').jqGrid('getCell',per,'contribuyente')).length;
     $("#vw_caja_est_cta_contrib").attr('maxlength',tam);
@@ -47,7 +48,7 @@ function selanio_est_cta(){
 function print_est_cta(){
     rows = $("#tabla_est_Cuenta").getRowData().length;
     if(rows==0){
-        mostraralertas('* Ingrese Un Contribuyente con Predios Declarados...');
+        mostraralertasconfoco('* Ingrese Un Contribuyente con Predios Declarados...');
         return false;
     }
     
@@ -65,6 +66,7 @@ function crear_dialogo()
     anio_hasta = $("#vw_caja_ets_cta_anio_hasta").val();
     id_contrib = $("#vw_caja_est_cta_id_contrib").val();
     $("#dlg_persona").val($("#vw_caja_est_cta_contrib").val());
+    $("#dlg_correo").val($("#email").val());
     //alert(anio_desde);
     //alert(hasta);
     //alert(id_contrib);
@@ -88,18 +90,22 @@ function crear_dialogo()
 
 function traer_reporte(anio_desde,anio_hasta,id_contrib){
     
-    $('#ifrafile').attr('src','caja_imp_est_cta/'+id_contrib+'/'+anio_desde+'/'+anio_hasta+'?foto='+$('#vw_foto').val()+'');    
+    $('#ifrafile').attr('src','caja_imp_est_cta/'+id_contrib+'/'+anio_desde+'/'+anio_hasta+'?foto='+$('#vw_foto').val()+'');   
 }
 
 function mail_send()
 {
-    //persona=$("#dlg_persona").val();
-    window.open('correo/?persona='+$('#dlg_persona').val()+'');
+    window.open('enviar_correo?persona='+$('#dlg_persona').val()+'&correo='+$('#dlg_correo').val()+'&imagen='+$('#archivo_reporte').val()+'');
 }
 
 function print_est_cta_correo(tipo)
 {
     if (tipo===0) {
+        rows = $("#tabla_est_Cuenta").getRowData().length;
+        if(rows==0){
+            mostraralertasconfoco('* Ingrese Un Contribuyente con Predios Declarados...');
+            return false;
+        }
         crear_dialogo();
     } 
 }

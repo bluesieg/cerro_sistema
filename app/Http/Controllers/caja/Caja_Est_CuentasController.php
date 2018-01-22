@@ -242,14 +242,26 @@ class Caja_Est_CuentasController extends Controller
     
     public function correo(request $request){
 
-            $nombre = $request['persona'];
-             $email = 'gzlcentenoz@gmail.com';
 
+        $persona=$request['persona'];
+        $correo=$request['correo'];
+        //$imagen=$request['imagen'];
+        
+        set_time_limit(0);
+        ini_set('memory_limit', '1G');
+        \Mail::send('caja.reportes.email', compact('persona'), function ($message) use($correo) {
 
-            Mail::send('caja.reportes.email', function ($message) use ($nombre){
-            $message->subject('Aqui va el mensaje del asunto del email ');
-            $message->to('burromike75@gmail.com');
+            $message->from('gzlcentenoz@gmail.com', 'Curso Laravel');
+
+            $message->to($correo)->subject('Correo de Prueba');
+            
+            $message->cc('gzlcentenoz@gmail.com');
+            
+            //$message->attach($imagen);
+
         });
+        
 
-}
+        return "Tú email ha sido enviado correctamente";
+    }
 }

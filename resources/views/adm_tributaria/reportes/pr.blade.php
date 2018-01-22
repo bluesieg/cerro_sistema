@@ -202,7 +202,7 @@
         <thead>
           <tr>
               <th style="width: 3%">COD</th>
-              <th style="width: 22%">DESCIPCION</th>
+              <th style="width: 22%">DESCRIPCION</th>
               <th style="width: 4%">ANTIG.</th>
               <th style="width: 4%">MEP</th>
               <th style="width: 4%">ECS</th>
@@ -218,7 +218,7 @@
         @foreach ($sql_ist as $inst)
           <tr>
               <td>{{$inst->cod_instal}}</td>
-              <td>{{substr($inst->descrip_instal,0,30)}}</td>
+              <td style="font-size: 0.6em;">{{substr($inst->descrip_instal,0,30)}} ; {{$inst->glosa}}</td>
               <td style="text-align: center">{{$inst->anio}}</td>
               <td style="text-align: center">{{$inst->mep}}</td>
               <td style="text-align: center">{{$inst->ecs}}</td>
