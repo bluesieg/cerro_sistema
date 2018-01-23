@@ -33,7 +33,7 @@ function dialog_emi_rec_pag_arbitrios() {
 function gen_recibo_imp_arbitrios(){
     var Seleccionados = new Array();
     $('input[type=checkbox][name=chk_abr]:checked').each(function() {
-        Seleccionados.push($(this).attr( "pago" )+"-"+$(this).attr( "mes" ));
+        Seleccionados.push($(this).attr( "pago" )+"-"+$(this).attr( "mes" )+"-"+$(this).attr( "tributo" ));
     });
     s_checks=Seleccionados.join("and");
     tot_trim = parseFloat($("#vw_emision_rec_Arbitrios_tot").val());
@@ -48,14 +48,12 @@ function gen_recibo_imp_arbitrios(){
     $.ajax({
         url:'insertar_pago_arbitrio',
         type:'GET',
-        data:{check:s_checks,id_contrib:id_contrib,anio:$("#vw_emi_rec_arbitrios_contrib_anio").val()},
+        data:{check:s_checks,id_contrib:id_contrib,anio:$("#vw_emi_rec_arbitrios_contrib_anio").val(),total:$("#vw_emision_rec_Arbitrios_tot").val().replace(',', '')},
         success: function(data){
             MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
             MensajeDialogLoadAjaxFinish('vw_emision_rec_pag_arbitrios');
             $("#vw_emision_rec_pag_arbitrios").dialog('close');
            fn_actualizar_grilla('table_Resumen_Recibos', 'grid_Resumen_recibos?fecha=' + $("#vw_emision_reg_pag_fil_fecha").val());
-//            $("#vw_emision_rec_Arbitrios_tot").val(0);
-//            fn_actualizar_grilla('table_cta_Arbitrios', 'grid_cta_pago_arbitrios?id_contrib='+id_contrib+'&id_pred='+firstid);
         }        
     });
 }
@@ -105,7 +103,7 @@ function grid_predios_arbitrios(){
         datatype: 'json', mtype: 'GET',
         height: '150', autowidth: true,
         colNames: ['id', 'id_contri', 'Uso','Piso','Descripcion', 'Ene', 'abo_ene','Feb', 'abo_feb','Mar', 'abo_mar','Abr', 'abo_abr','May', 'abo_may','Jun', 'abo_jun',
-        'Jul', 'abo_jul','Ago', 'abo_ago','Sep', 'abo_sep','Oct', 'abo_oct','Nov', 'abo_nov','Dic', 'abo_dic','Total Debe'],
+        'Jul', 'abo_jul','Ago', 'abo_ago','Sep', 'abo_sep','Oct', 'abo_oct','Nov', 'abo_nov','Dic', 'abo_dic','Total Debe','tributo'],
         rowNum: 20, sortname: 'id_cta_arb', sortorder: 'asc', viewrecords: true,caption:'Arbitrios del Predio', align: "center",
         colModel: [
             {name: 'id', index: 'id', hidden: true},
@@ -137,26 +135,43 @@ function grid_predios_arbitrios(){
             {name: 'abo11',index: 'abo11', hidden: true},
             {name: 'pgo12',index: 'pgo12', align:'left', width: 35},
             {name: 'abo12',index: 'abo12', hidden: true},            
-            {name: 'deuda_arb',index: 'deuda_arb',align:'right', width: 35}
+            {name: 'deuda_arb',index: 'deuda_arb',align:'right', width: 35},
+            {name: 'tributo', index: 'tributo', hidden: true}
         ],
         pager: '#pager_table_cta_Arbitrios',
         rowList: [10, 20],
         gridComplete: function () {
+            $("#vw_emision_rec_Arbitrios_tot").val(0);
             var rows = $("#table_cta_Arbitrios").getDataIDs();
             for (var i = 0; i < rows.length; i++) {
-                   
+                var deuda = $("#table_cta_Arbitrios").getCell(rows[i], 'deuda_arb');
+                if(deuda>0)
+                {
+                    $("#table_cta_Arbitrios").jqGrid("setCell", rows[i], 'deuda_arb',
+                                    "<input type='checkbox' name='chk_deuda' value='" + deuda + "' pago='"+rows[i]+"' onchange='marcar_todos(this.value,this,"+rows[i]+")'>"+deuda);
+                }
+                        
+                   var trib = $("#table_cta_Arbitrios").getCell(rows[i],'tributo');
                     for (var a = 1; a <= 12; a++) {
                         var val = $("#table_cta_Arbitrios").getCell(rows[i], 'abo'+a);
                         var pag = $("#table_cta_Arbitrios").getCell(rows[i], 'pgo'+a);
+                        
                         var id = rows[i];
                         if (val == 0) {
                             $("#table_cta_Arbitrios").jqGrid("setCell", rows[i], 'pgo'+a,
-                                    "<input type='checkbox' name='chk_abr' value='" + pag + "' pago='"+id+"' mes='"+a+"' onchange='calc_tot_arbitrios(this.value,this,"+id+","+a+")'>"+pag);
+                                    "<input type='checkbox' name='chk_abr' value='" + pag + "' pago='"+id+"' mes='"+a+"' tributo='"+trib+"' onchange='calc_tot_arbitrios(this.value,this,"+id+","+a+")'>"+pag);
                         }
                         else
                         {
-                            $("#table_cta_Arbitrios").jqGrid("setCell", rows[i], 'pgo'+a,
-                            '<a href="javascript:void(0);" class="btn bg-color-green txt-color-white btn-circle" style="font-size: 8px;width: 15px; height: 15px; padding-top: 0px; margin-right: 7px"><i class="glyphicon glyphicon-ok"></i></a>'+val);
+                            if (val > 0)
+                            {
+                                $("#table_cta_Arbitrios").jqGrid("setCell", rows[i], 'pgo'+a,
+                                '<a href="javascript:void(0);" class="btn bg-color-green txt-color-white btn-circle" style="font-size: 8px;width: 15px; height: 15px; padding-top: 0px; margin-right: 7px"><i class="glyphicon glyphicon-ok"></i></a>'+val);
+                            }
+                            else
+                            {
+                                $("#table_cta_Arbitrios").jqGrid("setCell", rows[i], 'pgo'+a,val);
+                            }
                         }
                     }
                 }
@@ -178,10 +193,21 @@ function calc_tot_arbitrios(valor,esto,id,mes){
     } 
     else
     {
+        $('input[type=checkbox][name=chk_deuda][pago='+id+']').prop('checked', false);
         resta=parseFloat(total)-parseFloat(valor);
         $("#vw_emision_rec_Arbitrios_tot").val(redondeo(resta,4));
     }
     
+}
+function marcar_todos(valor,esto,id){
+    if($(esto).is(':checked')){
+        $('input[type=checkbox][name=chk_abr][pago='+id+']').prop('checked', true);
+    }
+    $total=0;
+    $('input[type=checkbox][name=chk_abr]:checked').each(function() {
+        $total=parseFloat(redondeo($total,4))+parseFloat(redondeo($(this).val(),4));
+    });
+    $("#vw_emision_rec_Arbitrios_tot").val(redondeo($total,4));
 }
 deuda_total=0;
 function check_anio(name,source,deuda){ 

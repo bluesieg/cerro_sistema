@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Recibos_Master;
 use App\Models\CtaCte;
 use App\Models\Caja_apert_cierr;
+use App\Models\Pgo_Arbitrios;
 //40204770
 class Caja_MovimientosController extends Controller {
 
@@ -37,13 +38,8 @@ class Caja_MovimientosController extends Controller {
     public function edit(Request $request, $id){
         date_default_timezone_set('America/Lima');
         $recibo_master = new Recibos_Master();
-        
         $val = $recibo_master::where("id_rec_mtr", "=", $id)->first();
-        
         if (count($val) >= 1) {
-            
-                          
-            
             $val->id_tip_pago = $request['id_tip_pago'];
             $val->id_caja = $request['id_caja'];
             $val->fecha = date('d-m-Y');
@@ -56,30 +52,126 @@ class Caja_MovimientosController extends Controller {
                 if($function){                    
                     if($val->clase_recibo==0)
                     {
-                        $chk = str_split(trim($val->pred_check));
-                        $prim = $chk[0];
-                        $ult = array_pop($chk);
-                        $cant = count($chk)+1;
-                        
-//                       
-                        $anio_detalle=DB::table('tesoreria.recibos_detalle')->select('periodo')->where('id_rec_master',$val->id_rec_mtr)->first();
-                        for($i=$prim;$i<=$ult;$i++){
-                            
-                            $recpred = DB::select('select * from presupuesto.vw_impuesto_predial where anio='.$anio_detalle->periodo);  
-                            $pre_x_trim= DB::table('tesoreria.recibos_detalle')->where('id_rec_master',$val->id_rec_mtr)->where('id_trib',$recpred[0]->id_tributo)->value('p_unit');
-
-                            $update = DB::table('adm_tri.cta_cte')->where('id_pers',$request['id_pers'])->where('id_tribu',$recpred[0]->id_tributo)->where('ano_cta',$anio_detalle->periodo)
-                                    ->update(['abo'.$i.'_cta'=>$pre_x_trim,'fec_abo'.$i=>date('d-m-Y')]);
-                        }
-                        
-                            
-                            $recformato= DB::select('select * from presupuesto.vw_formatos_ivpp where anio='.$anio_detalle->periodo);  
-                            $value_formato_pred= DB::table('adm_tri.vw_cta_cte2')->where('id_contrib',$request['id_pers'])->where('id_tribu',$recformato[0]->id_tributo)->where('ano_cta',$anio_detalle->periodo)->value('ivpp');
-                            for($x=1;$x<=4;$x++){
-                                $update = DB::table('adm_tri.cta_cte')->where('id_pers',$request['id_pers'])->where('id_tribu',$recformato[0]->id_tributo)->where('ano_cta',$anio_detalle->periodo)
-                                        ->update(['abo'.$x.'_cta'=>($value_formato_pred/4),'fec_abo'.$x=>date('d-m-Y')]);
+                        $cuentas= DB::select("select * from adm_tri.cta_cte where id_rec_trim1=$id or id_rec_trim2=$id or id_rec_trim3=$id or id_rec_trim4=$id");
+                        foreach($cuentas as $cta)
+                        {
+                            $ctacte=new CtaCte();
+                            $editcta = $ctacte::where("id_cta_cte", "=", $cta->id_cta_cte)->first();
+                            if (count($editcta) >= 1) {
+                                if($editcta->id_rec_trim1==$id)
+                                {
+                                    $editcta->abo1_cta= $editcta->car1_cta;
+                                    $editcta->fec_abo1=date('d-m-Y');
+                                    $editcta->flg_rec_trim1=2;
+                                }
+                                if($editcta->id_rec_trim2==$id)
+                                {
+                                    $editcta->abo2_cta= $editcta->car2_cta;
+                                    $editcta->fec_abo2=date('d-m-Y');
+                                    $editcta->flg_rec_trim2=2;
+                                }
+                                if($editcta->id_rec_trim3==$id)
+                                {
+                                    $editcta->abo3_cta= $editcta->car3_cta;
+                                    $editcta->fec_abo3=date('d-m-Y');
+                                    $editcta->flg_rec_trim3=2;
+                                }
+                                if($editcta->id_rec_trim4==$id)
+                                {
+                                    $editcta->abo4_cta= $editcta->car4_cta;
+                                    $editcta->fec_abo4=date('d-m-Y');
+                                    $editcta->flg_rec_trim4=2;
+                                }
+                                $editcta->save();
+                            }
                         }
                         return $id.'predial';                                                
+                    }
+                    if($val->clase_recibo==2)
+                    {
+                        $cuentas= DB::select("select * from arbitrios.pgo_arbitrios where id_rec_ene=$id or id_rec_feb=$id or id_rec_mar=$id or id_rec_abr=$id or id_rec_may=$id or id_rec_jun=$id or id_rec_jul=$id or id_rec_ago=$id or id_rec_sep=$id or id_rec_oct=$id or id_rec_nov=$id or id_rec_dic=$id");
+                        foreach($cuentas as $cta)
+                        {
+                            $pgoarb=new Pgo_Arbitrios();
+                            $editcta = $pgoarb::where("id_pgo_arb", "=", $cta->id_pgo_arb)->first();
+                            if (count($editcta) >= 1) {
+                                $sql = DB::table('arbitrios.cta_arbitrios')->where('id_cta_arb',$editcta->id_cta_arb)->get();
+                                if($editcta->id_rec_ene==$id)
+                                {
+                                    $editcta->abo_ene= $sql[0]->pgo_ene;
+                                    $editcta->fec_pag_ene=date('d-m-Y');
+                                    $editcta->flg_rec_ene=2;
+                                }
+                                if($editcta->id_rec_feb==$id)
+                                {
+                                    $editcta->abo_feb= $sql[0]->pgo_feb;
+                                    $editcta->fec_pag_feb=date('d-m-Y');
+                                    $editcta->flg_rec_feb=2;
+                                }
+                                if($editcta->id_rec_mar==$id)
+                                {
+                                    $editcta->abo_mar= $sql[0]->pgo_mar;
+                                    $editcta->fec_pag_mar=date('d-m-Y');
+                                    $editcta->flg_rec_mar=2;
+                                }
+                                if($editcta->id_rec_abr==$id)
+                                {
+                                    $editcta->abo_abr= $sql[0]->pgo_abr;
+                                    $editcta->fec_pag_abr=date('d-m-Y');
+                                    $editcta->flg_rec_abr=2;
+                                }
+                                if($editcta->id_rec_may==$id)
+                                {
+                                    $editcta->abo_may= $sql[0]->pgo_may;
+                                    $editcta->fec_pag_may=date('d-m-Y');
+                                    $editcta->flg_rec_may=2;
+                                }
+                                if($editcta->id_rec_jun==$id)
+                                {
+                                    $editcta->abo_jun= $sql[0]->pgo_jun;
+                                    $editcta->fec_pag_jun=date('d-m-Y');
+                                    $editcta->flg_rec_jun=2;
+                                }
+                                if($editcta->id_rec_jul==$id)
+                                {
+                                    $editcta->abo_jul= $sql[0]->pgo_jul;
+                                    $editcta->fec_pag_jul=date('d-m-Y');
+                                    $editcta->flg_rec_jul=2;
+                                }
+                                if($editcta->id_rec_ago==$id)
+                                {
+                                    $editcta->abo_ago= $sql[0]->pgo_ago;
+                                    $editcta->fec_pag_ago=date('d-m-Y');
+                                    $editcta->flg_rec_ago=2;
+                                }
+                                if($editcta->id_rec_sep==$id)
+                                {
+                                    $editcta->abo_sep= $sql[0]->pgo_sep;
+                                    $editcta->fec_pag_sep=date('d-m-Y');
+                                    $editcta->flg_rec_sep=2;
+                                }
+                                if($editcta->id_rec_oct==$id)
+                                {
+                                    $editcta->abo_oct= $sql[0]->pgo_oct;
+                                    $editcta->fec_pag_oct=date('d-m-Y');
+                                    $editcta->flg_rec_oct=2;
+                                }
+                                if($editcta->id_rec_nov==$id)
+                                {
+                                    $editcta->abo_nov= $sql[0]->pgo_nov;
+                                    $editcta->fec_pag_nov=date('d-m-Y');
+                                    $editcta->flg_rec_nov=2;
+                                }
+                                if($editcta->id_rec_dic==$id)
+                                {
+                                    $editcta->abo_dic= $sql[0]->pgo_dic;
+                                    $editcta->fec_pag_dic=date('d-m-Y');
+                                    $editcta->flg_rec_dic=2;
+                                }
+                                $editcta->save();
+                            }
+                        }
+                        return $id.'Arbitrios';                                                
                     }
                     if($val->clase_recibo==3)
                     {

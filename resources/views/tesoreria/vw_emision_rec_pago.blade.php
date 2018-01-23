@@ -146,19 +146,20 @@
             rowNum: 5, sortname: 'descrip_tributo', sortorder: 'asc', viewrecords: true, align: "center",
             colModel: [
                 {name: 'id_tribu', index: 'id_tribu', hidden:true},
-                {name: 'descrip_tributo', index: 'descrip_tributo', width: 292},
-                {name: 'ivpp', index: 'ivpp', align: 'center', width: 90},
-                {name: 'saldo', index: 'saldo', align: 'center', width: 70},
-                {name: 'abo1_cta', index: 'abo1_cta', align: 'right', width: 70},
-                {name: 'abo2_cta', index: 'abo2_cta', align: 'right', width: 70},
-                {name: 'abo3_cta', index: 'abo3_cta', align: 'right', width: 70},
-                {name: 'abo4_cta', index: 'abo4_cta', align: 'right', width: 70},
+                {name: 'descrip_tributo', index: 'descrip_tributo', width: 297},
+                {name: 'ivpp', index: 'ivpp', align: 'center', width: 110},
+                {name: 'saldo', index: 'saldo', align: 'center', width: 110},
+                {name: 'abo1_cta', index: 'abo1_cta', align: 'right', width: 100},
+                {name: 'abo2_cta', index: 'abo2_cta', align: 'right', width: 100},
+                {name: 'abo3_cta', index: 'abo3_cta', align: 'right', width: 100},
+                {name: 'abo4_cta', index: 'abo4_cta', align: 'right', width: 100},
                 {name: 'conv', index: 'conv', hidden: true},
                 {name: 'coa', index: 'coa', hidden: true}
             ],
             pager: '#pager_table_cta_cte2',
             rowList: [5, 10],
             gridComplete: function () {
+                $("#vw_emi_rec_imp_pred_glosa").val("");
                 var predial = ($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("predial"));
                 var formatos = ($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("formatos"));
                 var pre_x_trim = 0;

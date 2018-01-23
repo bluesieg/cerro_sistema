@@ -11,6 +11,7 @@ use App\Models\Personas;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Pgo_Arbitrios;
 use App\Models\Recibos_Detalle;
+use App\Models\CtaCte;
 
 class Recibos_MasterController extends Controller
 {    
@@ -47,26 +48,68 @@ class Recibos_MasterController extends Controller
         $data->cod_fracc  = $request['cod_fracc'] ?? 0 ;
         $data->n_cuot     = 0;
         $data->clase_recibo=$request['clase_recibo'];
-        $data->pred_check = $request['pred_check'] ?? 0;
-        $data->form_pred_check = $request['form_pred_check'] ?? 0;
         $data->fracc_check = $request['fracc_check'] ?? 0;
-//        if(isset($request['pred_check'])){
-//            $data->pred_check = $request['pred_check'];
-//        }else{
-//            $data->pred_check = 0;
-//        }
-//        if(isset($request['form_pred_check'])){
-//            $data->form_pred_check = $request['form_pred_check'];
-//        }else{
-//            $data->form_pred_check = 0;
-//        }
-//        if(isset($request['fracc_check'])){
-//            $data->fracc_check = $request['fracc_check'];
-//        }else{
-//            $data->fracc_check = 0;
-//        }
-        $data->save();        
+        $data->save();
+        if($request['montopre']>0)
+        {
+            $count=$this->edit_cta_cte($request['trimestres'],$data->id_rec_mtr,$request['id_pers'],$request['periodo'],$request['id_trib_pred']);
+            $this->detalle_create($request['periodo'],$data->id_rec_mtr,$request['id_trib_pred'],$request['montopre'],$count);
+        }
+        if($request['montoform']>0)
+        {
+            $count=$this->edit_cta_cte('1-2-3-4',$data->id_rec_mtr,$request['id_pers'],$request['periodo'],$request['id_trib_form']);
+            $this->detalle_create($request['periodo'],$data->id_rec_mtr,$request['id_trib_form'],$request['montoform'],$count);
+        }
         return $data->id_rec_mtr;
+    }
+    function edit_cta_cte($trimestres,$id_rec_mtr,$id_contrib,$anio,$id_tribu){
+        $check=explode("-",$trimestres);
+        $cuenta=new CtaCte();
+        $val = $cuenta::where("id_pers", $id_contrib)->where("id_tribu",$id_tribu)->where("ano_cta",$anio)->first();
+        if (count($val) >= 1) 
+        {   
+            $count=0;
+            foreach($check as $cta)
+            {
+                $count++;
+                if($cta=='1')
+                {
+                    $val->id_rec_trim1=$id_rec_mtr;
+                    $val->flg_rec_trim1=1;
+                }
+                if($cta=='2')
+                {
+                    $val->id_rec_trim2=$id_rec_mtr;
+                    $val->flg_rec_trim2=1;
+                }
+                if($cta=='3')
+                {
+                    $val->id_rec_trim3=$id_rec_mtr;
+                    $val->flg_rec_trim3=1;
+                }
+                if($cta=='4')
+                {
+                    $val->id_rec_trim4=$id_rec_mtr;
+                    $val->flg_rec_trim4=1;
+                }
+            }
+        }
+        $val->save();
+        return $count;
+    }
+    public function detalle_create($periodo,$id_rec_mtr,$id_trib,$monto,$cant)
+    {
+        date_default_timezone_set('America/Lima');
+        $rec_det = new Recibos_Detalle(); 
+        $rec_det->id_rec_master=$id_rec_mtr;
+        $rec_det->periodo=$periodo;
+        $rec_det->id_ofi=0;
+        $rec_det->id_trib=$id_trib;
+        $rec_det->monto=$monto;
+        $rec_det->cant=$cant;
+        $rec_det->p_unit=$monto/$cant;
+        $rec_det->save();
+        return $rec_det->id_rec_det;
     }
    
     public function store(Request $request)
@@ -128,7 +171,15 @@ class Recibos_MasterController extends Controller
         $Lista->total = $total_pages;
         $Lista->records = $count;
         
-        foreach ($sql as $Index => $Datos) {            
+        foreach ($sql as $Index => $Datos) {    
+            if($Datos->flg_rec_trim1==1)
+            {   $Datos->abo1_cta='Recibo Pendiente:'.$Datos->id_rec_trim1; }
+            if($Datos->flg_rec_trim2==1)
+            {   $Datos->abo2_cta='Recibo Pendiente:'.$Datos->id_rec_trim2; }
+            if($Datos->flg_rec_trim3==1)
+            {   $Datos->abo3_cta='Recibo Pendiente:'.$Datos->id_rec_trim3; }
+            if($Datos->flg_rec_trim4==1)
+            {   $Datos->abo4_cta='Recibo Pendiente:'.$Datos->id_rec_trim4; }
             $Lista->rows[$Index]['id'] = $Datos->id_tribu;
             $Lista->rows[$Index]['cell'] = array(
                 $Datos->id_tribu,
@@ -215,7 +266,7 @@ class Recibos_MasterController extends Controller
         {
         $id_pred = $request['id_pred'];
         $anio=$request['anio'];
-            $totalg = DB::select("select count(*) as total from arbitrios.vw_cta_arbitrios where id_contrib='".$id_contrib."' and id_pred_anio='".$id_pred."'");
+        $totalg = DB::select("select count(*) as total from arbitrios.vw_cta_arbitrios where id_contrib='".$id_contrib."' and id_pred_anio='".$id_pred."'");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -237,7 +288,12 @@ class Recibos_MasterController extends Controller
             $start = 0;
         }
 
-            $sql = DB::table('arbitrios.vw_cta_arbitrios')->where('id_contrib',$id_contrib)->where('id_pred_anio',$id_pred)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $sql = DB::table('arbitrios.vw_cta_arbitrios')->where('id_contrib',$id_contrib)->where('id_pred_anio',$id_pred)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $trib_barrido=DB::table('presupuesto.vw_barrido')->select('id_tributo')->where('anio',$sql[0]->anio)->first();
+        $trib_recojo=DB::table('presupuesto.vw_limpieza')->select('id_tributo')->where('anio',$sql[0]->anio)->first();
+        $trib_seguridad=DB::table('presupuesto.vw_serenazgo')->select('id_tributo')->where('anio',$sql[0]->anio)->first();
+        $trib_parques=DB::table('presupuesto.vw_parques')->select('id_tributo')->where('anio',$sql[0]->anio)->first();
+        
         
         $Lista = new \stdClass();
         $Lista->page = $page;
@@ -245,6 +301,46 @@ class Recibos_MasterController extends Controller
         $Lista->records = $count;
         $cont=0;
         foreach ($sql as $Index => $Datos) {
+            if(trim($Datos->descripcion)=='PARQUES Y JARDINES')
+            {
+                $tributo=$trib_parques->id_tributo;
+            }
+            if(trim($Datos->descripcion)=='SEGURIDAD CIUDADANA')
+            {
+                $tributo=$trib_seguridad->id_tributo;
+            }
+            if(trim($Datos->descripcion)=='RECOJO DE RESIDUOS SÓLIDOS')
+            {
+                $tributo=$trib_recojo->id_tributo;
+            }
+            if(trim($Datos->descripcion)=='BARRIDO DE CALLES')
+            {
+                $tributo=$trib_barrido->id_tributo;
+            }
+            if($Datos->flg_rec_ene==1)
+            {   $Datos->abo_ene='Recibo Pendiente:'.$Datos->id_rec_ene; }
+            if($Datos->flg_rec_feb==1)
+            {   $Datos->abo_feb='Recibo Pendiente:'.$Datos->id_rec_feb; }
+            if($Datos->flg_rec_mar==1)
+            {   $Datos->abo_mar='Recibo Pendiente:'.$Datos->id_rec_mar; }
+            if($Datos->flg_rec_abr==1)
+            {   $Datos->abo_abr='Recibo Pendiente:'.$Datos->id_rec_abr; }
+            if($Datos->flg_rec_may==1)
+            {   $Datos->abo_may='Recibo Pendiente:'.$Datos->id_rec_may; }
+            if($Datos->flg_rec_jun==1)
+            {   $Datos->abo_jun='Recibo Pendiente:'.$Datos->id_rec_jun; }
+            if($Datos->flg_rec_jul==1)
+            {   $Datos->abo_jul='Recibo Pendiente:'.$Datos->id_rec_jul; }
+            if($Datos->flg_rec_ago==1)
+            {   $Datos->abo_ago='Recibo Pendiente:'.$Datos->id_rec_ago; }
+            if($Datos->flg_rec_sep==1)
+            {   $Datos->abo_sep='Recibo Pendiente:'.$Datos->id_rec_sep; }
+            if($Datos->flg_rec_oct==1)
+            {   $Datos->abo_oct='Recibo Pendiente:'.$Datos->id_rec_oct; }
+            if($Datos->flg_rec_nov==1)
+            {   $Datos->abo_nov='Recibo Pendiente:'.$Datos->id_rec_nov; }
+            if($Datos->flg_rec_dic==1)
+            {   $Datos->abo_dic='Recibo Pendiente:'.$Datos->id_rec_dic; }
             $cont++;
             $Lista->rows[$Index]['id'] = $Datos->id_cta_arb;
             $Lista->rows[$Index]['cell'] = array(
@@ -277,7 +373,8 @@ class Recibos_MasterController extends Controller
                 trim($Datos->abo_nov), 
                 trim($Datos->pgo_dic),                
                 trim($Datos->abo_dic),
-                    $Datos->deuda_arb
+                    $Datos->deuda_arb,
+                    $tributo
             );
         }        
         return response()->json($Lista);
@@ -379,10 +476,6 @@ class Recibos_MasterController extends Controller
     function verif_est_cta(Request $request){
         $check=str_split($request['check']);
         $id_contrib=$request['id_contrib'];
-        
-//        echo $check[0].',';
-//        echo end($check);
-        
         $array =  array();
         for($i=$check[0];$i<=end($check);$i++){
             $sql = DB::table('adm_tri.vw_cta_cte2')->where('id_contrib',$id_contrib)->where('id_tribu',103)->value('trim'.$i.'_est');
@@ -390,28 +483,61 @@ class Recibos_MasterController extends Controller
                 $array[]=$i;
             }
         }
-
-//        print_r($array);
         return $array;
-//        dd($array);
-        
     }
     function edit_arbitrio(Request $request){
         $check=explode("and",$request['check']);
         $id_contrib=$request['id_contrib'];
         $anio=$request['anio'];
-        $total=0;
-        $array =  array();
+        $idmaster=$this->create_rec_arb($request['total'],$id_contrib,$anio);
+        $trib_barrido=DB::table('presupuesto.vw_barrido')->select('id_tributo')->where('anio',$anio)->first();
+        $trib_recojo=DB::table('presupuesto.vw_limpieza')->select('id_tributo')->where('anio',$anio)->first();
+        $trib_seguridad=DB::table('presupuesto.vw_serenazgo')->select('id_tributo')->where('anio',$anio)->first();
+        $trib_parques=DB::table('presupuesto.vw_parques')->select('id_tributo')->where('anio',$anio)->first();
+        
+        $totalbarrido=0;
+        $totalrecojo=0;
+        $totalseguridad=0;
+        $totalparques=0;
         foreach($check as $arbitrios)
         {
             $pago=explode("-",$arbitrios); 
-            $total+=$this->edit_pgo_arbtrio($pago[0],$pago[1]);
+            if($trib_barrido->id_tributo==$pago[2])
+            {
+                $totalbarrido+=$this->edit_pgo_arbtrio($pago[0],$pago[1],$idmaster);
+            }
+            if($trib_recojo->id_tributo==$pago[2])
+            {
+                $totalrecojo+=$this->edit_pgo_arbtrio($pago[0],$pago[1],$idmaster);
+            }
+            if($trib_seguridad->id_tributo==$pago[2])
+            {
+                $totalseguridad+=$this->edit_pgo_arbtrio($pago[0],$pago[1],$idmaster);
+            }
+            if($trib_parques->id_tributo==$pago[2])
+            {
+                $totalparques+=$this->edit_pgo_arbtrio($pago[0],$pago[1],$idmaster);
+            }
         }
-        $idmaster=$this->create_rec_arb($total,$id_contrib);
-        $this->create_rec_det_arb($idmaster,$anio,$total);
+        if($totalbarrido>0)
+        {
+            $this->create_rec_det_arb($idmaster,$anio,$totalbarrido,$trib_barrido->id_tributo);
+        }
+        if($totalrecojo>0)
+        {
+            $this->create_rec_det_arb($idmaster,$anio,$totalrecojo,$trib_recojo->id_tributo);
+        }
+        if($totalseguridad>0)
+        {
+            $this->create_rec_det_arb($idmaster,$anio,$totalseguridad,$trib_seguridad->id_tributo);
+        }
+        if($totalparques>0)
+        {
+            $this->create_rec_det_arb($idmaster,$anio,$totalparques,$trib_parques->id_tributo);
+        }
         return $idmaster;
     }
-    public function create_rec_arb($total,$id_contrib)
+    public function create_rec_arb($total,$id_contrib,$anio)
     {
         date_default_timezone_set('America/Lima');
         $data = new Recibos_Master();
@@ -423,7 +549,7 @@ class Recibos_MasterController extends Controller
         $data->id_est_rec = 1;
         $data->id_caja    = 1;        
         $data->hora_pago  = "";
-        $data->glosa      = "PAGO ARBITRIOS";
+        $data->glosa      = "PAGO ARBITRIOS ".$anio;
         $data->total      = $total;
         $data->id_tip_pago= 0;
         $data->id_contrib = $id_contrib;
@@ -431,18 +557,16 @@ class Recibos_MasterController extends Controller
         $data->cod_fracc  = 0 ;
         $data->n_cuot     = 0;
         $data->clase_recibo=2;
-        
         $data->save();        
         return $data->id_rec_mtr;
     }
-    public function create_rec_det_arb($id,$anio,$total)
+    public function create_rec_det_arb($id,$anio,$total,$tributo)
     {
-        date_default_timezone_set('America/Lima');
         $rec_det = new Recibos_Detalle(); 
         $rec_det->id_rec_master=$id;
         $rec_det->periodo=$anio;
         $rec_det->id_ofi=0;
-        $rec_det->id_trib=0;
+        $rec_det->id_trib=$tributo;
         $rec_det->monto=$total;
         $rec_det->cant=1;
         $rec_det->p_unit=$total;
@@ -450,7 +574,7 @@ class Recibos_MasterController extends Controller
         return $rec_det->id_rec_det;
     }
     
-    public function edit_pgo_arbtrio($id,$mes)
+    public function edit_pgo_arbtrio($id,$mes,$recibo)
     {
         $pago=new Pgo_Arbitrios();
         $total=0;
@@ -460,74 +584,74 @@ class Recibos_MasterController extends Controller
             $sql = DB::table('arbitrios.cta_arbitrios')->where('id_cta_arb',$id)->get();
             if($mes==1)
             {
-                $val->abo_ene = $sql[0]->pgo_ene;
-                $val->fec_pag_ene = date("d/m/Y");
+                $val->id_rec_ene = $recibo;
+                $val->flg_rec_ene = 1;
                 $total=$sql[0]->pgo_ene;
             }
             if($mes==2)
             {
-                $val->abo_feb = $sql[0]->pgo_feb;
-                $val->fec_pag_feb = date("d/m/Y");
+                $val->id_rec_feb = $recibo;
+                $val->flg_rec_feb = 1;
                 $total=$sql[0]->pgo_feb;
             }
             if($mes==3)
             {
-                $val->abo_mar = $sql[0]->pgo_mar;
-                $val->fec_pag_mar = date("d/m/Y");
+                $val->id_rec_mar = $recibo;
+                $val->flg_rec_mar = 1;
                 $total=$sql[0]->pgo_mar;
             }
             if($mes==4)
             {
-                $val->abo_abr = $sql[0]->pgo_abr;
-                $val->fec_pag_abr = date("d/m/Y");
+                $val->id_rec_abr = $recibo;
+                $val->flg_rec_abr = 1;
                 $total=$sql[0]->pgo_abr;
             }
             if($mes==5)
             {
-                $val->abo_may = $sql[0]->pgo_may;
-                $val->fec_pag_may = date("d/m/Y");
+                $val->id_rec_may = $recibo;
+                $val->flg_rec_may = 1;
                 $total=$sql[0]->pgo_may;
             }
             if($mes==6)
             {
-                $val->abo_jun = $sql[0]->pgo_jun;
-                $val->fec_pag_jun = date("d/m/Y");
+                $val->id_rec_jun = $recibo;
+                $val->flg_rec_jun = 1;
                 $total=$sql[0]->pgo_jun;
             }
             if($mes==7)
             {
-                $val->abo_jul = $sql[0]->pgo_jul;
-                $val->fec_pag_jul = date("d/m/Y");
+                $val->id_rec_jul = $recibo;
+                $val->flg_rec_jul = 1;
                 $total=$sql[0]->pgo_jul;
             }
             if($mes==8)
             {
-                $val->abo_ago = $sql[0]->pgo_ago;
-                $val->fec_pag_ago = date("d/m/Y");
+                $val->id_rec_ago = $recibo;
+                $val->flg_rec_ago = 1;
                 $total=$sql[0]->pgo_ago;
             }
             if($mes==9)
             {
-                $val->abo_sep = $sql[0]->pgo_sep;
-                $val->fec_pag_sep = date("d/m/Y");
+                $val->id_rec_sep = $recibo;
+                $val->flg_rec_sep = 1;
                 $total=$sql[0]->pgo_sep;
             }
             if($mes==10)
             {
-                $val->abo_oct = $sql[0]->pgo_oct;
-                $val->fec_pag_oct = date("d/m/Y");
+                $val->id_rec_oct = $recibo;
+                $val->flg_rec_oct = 1;
                 $total=$sql[0]->pgo_oct;
             }
             if($mes==11)
             {
-                $val->abo_nov = $sql[0]->pgo_nov;
-                $val->fec_pag_nov = date("d/m/Y");
+                $val->id_rec_nov = $recibo;
+                $val->flg_rec_nov = 1;
                 $total=$sql[0]->pgo_nov;
             }
             if($mes==12)
             {
-                $val->abo_dic = $sql[0]->pgo_dic;
-                $val->fec_pag_dic = date("d/m/Y");
+                $val->id_rec_dic = $recibo;
+                $val->flg_rec_dic = 1;
                 $total=$sql[0]->pgo_dic;
             }
             $val->save();
