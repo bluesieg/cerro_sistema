@@ -242,14 +242,22 @@ class Caja_Est_CuentasController extends Controller
     
     public function correo(request $request){
 
-
+        $pathToFile="";
+        $containfile=false; 
+        if($request->hasFile('file') ){
+           $containfile=true; 
+           $file = $request->file('file');
+           $nombre=$file->getClientOriginalName();
+           $pathToFile= storage_path('app') ."/". $nombre;
+        }
+        
         $persona=$request['persona'];
         $correo=$request['correo'];
-        //$imagen=$request['imagen'];
         
         set_time_limit(0);
         ini_set('memory_limit', '1G');
-        \Mail::send('caja.reportes.email', compact('persona'), function ($message) use($correo) {
+        
+        $email = \Mail::send('caja.reportes.email', compact('persona'), function ($message) use($persona,$correo,$containfile,$pathToFile) {
 
             $message->from('gzlcentenoz@gmail.com', 'Curso Laravel');
 
@@ -257,11 +265,46 @@ class Caja_Est_CuentasController extends Controller
             
             $message->cc('gzlcentenoz@gmail.com');
             
-            //$message->attach($imagen);
+            if($containfile){
+                $message->attach($pathToFile);
+            }
 
         });
         
+        if(count($email)>0){          
+            return "Hubo un problema con el correo";   
+        }
+        else
+        {     
+            if($containfile){ \Storage::disk('local')->delete($nombre); } 
+            return "Tú email ha sido enviado correctamente";   
+        }
 
-        return "Tú email ha sido enviado correctamente";
+    }
+    
+    public function cargar_archivo_correo(request $request){
+
+
+        if($request->hasFile('file') ){ 
+         
+        $file = $request->file('file');
+        $extension = $file->getClientOriginalExtension();
+        $nombre=$file->getClientOriginalName();
+        $r= \Storage::disk('local')->put($nombre,  \File::get($file));
+       
+
+         } 
+         else{
+
+            return "no";
+         } 
+
+        if($r){
+            return $nombre ;
+        }
+        else
+        {
+            return "error vuelva a intentarlo";
+        }
     }
 }

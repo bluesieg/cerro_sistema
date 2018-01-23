@@ -75,10 +75,6 @@ function crear_dialogo()
         autoOpen: false, modal: true, width: 1400, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>&nbsp&nbsp.: Predios Ingresados Por Usuario :.</h4></div>",
         buttons: [{
-            html: "<i class='fa fa-save'></i>&nbsp; Enviar Correo"  ,
-            "class": "btn btn-success bg-color-green",
-            click: function () { mail_send(); }
-        }, {
             html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
             "class": "btn btn-danger",
             click: function () { $(this).dialog("close"); }
@@ -93,11 +89,6 @@ function traer_reporte(anio_desde,anio_hasta,id_contrib){
     $('#ifrafile').attr('src','caja_imp_est_cta/'+id_contrib+'/'+anio_desde+'/'+anio_hasta+'?foto='+$('#vw_foto').val()+'');   
 }
 
-function mail_send()
-{
-    window.open('enviar_correo?persona='+$('#dlg_persona').val()+'&correo='+$('#dlg_correo').val()+'&imagen='+$('#archivo_reporte').val()+'');
-}
-
 function print_est_cta_correo(tipo)
 {
     if (tipo===0) {
@@ -110,3 +101,89 @@ function print_est_cta_correo(tipo)
     } 
 }
 
+$(document).on("change","#file",function(e){
+   
+    var miurl="cargar_archivo_correo";
+   // var fileup=$("#file").val();
+    var divresul="texto_notificacion";
+
+    var data = new FormData();
+    data.append('file', $('#file')[0].files[0] );
+    
+  $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('#_token').val()
+        }
+    });
+
+     $.ajax({
+            url: miurl,  
+            type: 'POST',
+     
+            // Form data
+            //datos del formulario
+            data: data,
+            //necesario para subir archivos via ajax
+            cache: false,
+            contentType: false,
+            processData: false,
+            //mientras enviamos el archivo
+            beforeSend: function(){
+              MensajeDialogLoadAjax('dlg_enviar_correo', '.:: Cargando ...');                 
+            },
+            //una vez finalizado correctamente
+            success: function(data){
+              
+              var codigo='<div class="mailbox-attachment-info"><a href="#" class="mailbox-attachment-name"><i class="fa fa-paperclip"></i>'+ data +'</a><span class="mailbox-attachment-size"> </span></div>';
+              $("#"+divresul+"").html(codigo);
+              MensajeDialogLoadAjaxFinish('dlg_enviar_correo');
+                        
+            },
+            //si ha ocurrido un error
+            error: function(data){
+               $("#"+divresul+"").html(data);
+                
+            }
+        });
+
+})
+
+
+$(document).on("submit",".formarchivo",function(e){
+
+        e.preventDefault();
+        var formu=$(this);
+        var divresul="texto_notificacion";
+        var nombreform=$(this).attr("id");
+        var miurl='enviar_correo?persona='+$('#dlg_persona').val()+'&correo='+$('#dlg_correo').val()+'';
+        //información del formulario
+        var formData = new FormData($("#"+nombreform+"")[0]);
+
+        //hacemos la petición ajax   
+        $.ajax({
+            url: miurl,  
+            type: 'POST',
+     
+            // Form data
+            //datos del formulario
+            data: formData,
+            //necesario para subir archivos via ajax
+            cache: false,
+            contentType: false,
+            processData: false,
+            //mientras enviamos el archivo
+            beforeSend: function(){
+              MensajeDialogLoadAjax('dlg_enviar_correo', '.:: Cargando ...');                
+            },
+            //una vez finalizado correctamente
+            success: function(data){ 
+              MensajeExito('Mensaje Email: ', data);
+              MensajeDialogLoadAjaxFinish('dlg_enviar_correo');
+            },
+            //si ha ocurrido un error
+            error: function(data){
+               alert("ha ocurrido un error") ;
+                
+            }
+        });
+});

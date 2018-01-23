@@ -85,14 +85,15 @@
             datatype: 'json', mtype: 'GET',
             height: '300px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_pers','codigo','DNI/RUC','contribuyente','dom_fiscal'],
+            colNames: ['id_pers','codigo','DNI/RUC','contribuyente','email','dom_fiscal'],
             rowNum: 20, sortname: 'contribuyente', sortorder: 'asc', viewrecords: true, caption: 'Contribuyentes', align: "center",
             colModel: [
                 {name: 'id_pers', index: 'id_pers', hidden: true},
                 {name: 'id_per', index: 'id_per', align: 'center',width: 100},
                 {name: 'nro_doc', index: 'nro_doc', align: 'center',width: 100},
                 {name: 'contribuyente', index: 'contribuyente', align: 'left',width: 260},
-                {name: 'dom_fiscal', index: 'dom_fiscal', hidden: true}
+                {name: 'dom_fis', index: 'dom_fis', hidden:true},
+                {name: 'email', index: 'email', hidden: true},
             ],
             pager: '#pager_table_contrib',
             rowList: [13, 20],

@@ -64,6 +64,7 @@
             <th style="width: 20%">NUMERO DE DOCUMENTO</th>
             <td class="nro" >3</td>
             <th style="width: 60%">APELLIDOS y NOMBRES / RAZON SOCIAL</th>
+            <th style="width: 10%; font-size: 0.7em;">Nº EXP.</th>
           </tr>
         </thead>
         <tbody>
@@ -71,6 +72,7 @@
               <td colspan="2" style="text-align: center">{{ $sql->persona }}</td>
               <td colspan="2" style="text-align: center">{{ $sql->nro_doc }}</td>
               <td colspan="2" style="text-align: center">{{ $sql->contribuyente }}</td>
+              <td colspan="1" style="text-align: center">{{ $sql->num_expediente }}</td>
               
             </tr>
         </tbody>

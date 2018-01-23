@@ -298,7 +298,7 @@ function fn_bus_contrib_list(per){
     
     $("#vw_conve_fracc_cod_contrib").val($('#table_contrib').jqGrid('getCell',per,'id_per'));    
     $("#vw_conve_fracc_contrib").val($('#table_contrib').jqGrid('getCell',per,'contribuyente'));
-    $("#vw_conve_fracc_domicilio").val($('#table_contrib').jqGrid('getCell',per,'dom_fiscal'));
+    $("#vw_conve_fracc_domicilio").val($('#table_contrib').jqGrid('getCell',per,'email'));
     tam=($('#table_contrib').jqGrid('getCell',per,'contribuyente')).length;
     anio=$("#vw_emi_rec_imp_pre_anio").val();
     

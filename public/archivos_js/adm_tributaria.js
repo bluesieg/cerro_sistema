@@ -260,9 +260,15 @@ function update_contrib(){
             numero_expediente:$("#contrib_num_expediente").val()
         },
         success: function (data) {
-            dialog_close('dialog_new_edit_Contribuyentes');            
-            MensajeExito('Contribuyente','Se ha Modificado el Contribuyente...');
-            fn_actualizar_grilla('table_Contribuyentes','grid_contribuyentes');
+            if (data.msg === 'si'){
+                fn_actualizar_grilla('table_Contribuyentes','grid_contribuyentes');
+                mostraralertasconfoco('* EL NUMERO DE EXPEDIENTE, ESTA DUPLICADO...');
+            }else{
+                MensajeExito('Contribuyente','Se ha Modificado el Contribuyente...');
+                fn_actualizar_grilla('table_Contribuyentes','grid_contribuyentes');
+                dialog_close('dialog_new_edit_Contribuyentes');
+                MensajeDialogLoadAjaxFinish('dialog_new_edit_Contribuyentes', '.:: CARGANDO ...');
+            }
         },
         error: function (data) {
             MensajeAlerta('* Error de Red...<br>* Contactese con el Administrador...');
@@ -408,9 +414,14 @@ function new_contrib() {
             numero_expediente:$("#contrib_num_expediente").val()
         },
         success: function (data) {
-            dialog_close('dialog_new_edit_Contribuyentes');            
-            MensajeExito('Contribuyente','Se ha Guardado un Nuevo Contribuyente...');
-            fn_actualizar_grilla('table_Contribuyentes','grid_contribuyentes');
+            if (data.msg === 'si'){
+                    fn_actualizar_grilla('table_Contribuyentes','grid_contribuyentes');
+                    mostraralertasconfoco('* EL NUMERO DE EXPEDIENTE, ESTA DUPLICADO...');
+                }else{
+                    dialog_close('dialog_new_edit_Contribuyentes');
+                    fn_actualizar_grilla('table_Contribuyentes','grid_contribuyentes');
+                    MensajeExito('Contribuyente', 'Se ha Guardado un Nuevo Contribuyente...');
+                }
         },
         error: function (data) {
             mostraralertas('* EL CONTRIBUYENTE YA EXISTE ...<br> <p style="font-size:10px">(Si el Problema Persiste Contactese con el Administrador)</p>');
@@ -482,7 +493,7 @@ function filtro_tipo_doc_pers(tipo) {
 }
 
 function limpiar_dlg_contrib(){
-    $("#txt_nro_doc,#vw_contrib_contribuyente,#contrib_tlfno_fijo,#contrib_tlfono_celular,#contrib_email,#contrib_nro_mun,#txt_av_jr_calle_psje").val('');
+    $("#txt_nro_doc,#vw_contrib_contribuyente,#contrib_tlfno_fijo,#contrib_tlfono_celular,#contrib_email,#contrib_nro_mun,#txt_av_jr_calle_psje,#contrib_num_expediente").val('');
     $("#contrib_dpto_depa,#contrib_manz,#contrib_lote,#contrib_dom_fiscal,#contrib_nro_doc_conv,#contrib_conviviente_pat,#contrib_conviviente_mat,#contrib_conviviente_nom").val('');
     $("#vw_contrib_id_conv").val('');
     $("#contrib_est_civil").val('select');

@@ -40,6 +40,15 @@ class ContribuyentesController extends Controller
         {
             $id_conv=$request['id_conv'];
         }
+        
+        $select=DB::table('adm_tri.contribuyentes')->where('num_expediente',$request['numero_expediente'])->get();
+        
+        if (count($select)>0) {
+            return response()->json([
+                'msg' => 'si',
+            ]);
+        }else{
+        
         $data = new Contribuyentes();
         $data->tipo_persona=$request['tipo_persona'];
         $data->tlfno_fijo=$request['tlfno_fijo']; 
@@ -68,7 +77,7 @@ class ContribuyentesController extends Controller
         $data->num_expediente=$request['numero_expediente'];
         $data->save();        
         return $data->id_contrib;
-      
+        }
     }
     function create_persona(Request $request){
         $data = new Personas();
@@ -94,6 +103,14 @@ class ContribuyentesController extends Controller
         {
             $conv=$request['id_conv'];
         }
+        $select=DB::table('adm_tri.contribuyentes')->where('num_expediente',$request['numero_expediente'])->where('id_pers','<>',$request['id_pers'])->get();
+        
+        if (count($select)>0) {
+            return response()->json([
+                'msg' => 'si',
+            ]);
+        }else{
+        
         $val = $contrib::where("id_contrib", "=", $id)->first();
         if (count($val) >= 1) {
                        
@@ -121,6 +138,7 @@ class ContribuyentesController extends Controller
             $val->save();  
             return $conv;
         }
+      }
     }
     
     function desactiva_contrib(){
@@ -285,7 +303,7 @@ class ContribuyentesController extends Controller
             $start = 0;
         }
         if(isset($request['buscar'])){
-            $sql = DB::select("select * from adm_tri.vw_contribuyentes where contribuyente||' '||nro_doc like '%".$buscar."%' order by $sidx $sord limit $limit offset $start");
+            $sql = DB::select("select * from adm_tri.vw_contribuyentes_2 where contribuyente||' '||nro_doc like '%".$buscar."%' order by $sidx $sord limit $limit offset $start");
         }else{
             $sql = DB::table('adm_tri.vw_contribuyentes_2')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         }
@@ -380,9 +398,7 @@ class ContribuyentesController extends Controller
                 trim($Datos->nro_doc),
                 trim(str_replace("-", "",$Datos->contribuyente)),
                 trim($Datos->email),
-                trim($Datos->nro_doc_conv),
-                trim($Datos->conviviente),
-                trim($Datos->dom_fis),                
+                trim($Datos->dom_fis),               
             );
         }
         return response()->json($Lista);

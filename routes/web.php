@@ -286,7 +286,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('get_det_fracc','Caja_Est_CuentasController@get_det_fracc');
         Route::get('imp_est_cta_fracc/{id_contrib}/{id_conv}','Caja_Est_CuentasController@print_estcta_fracc');
         
-        Route::get('enviar_correo','Caja_Est_CuentasController@correo');
+        Route::post('cargar_archivo_correo','Caja_Est_CuentasController@cargar_archivo_correo');
+        Route::post('enviar_correo','Caja_Est_CuentasController@correo');
     });
     Route::group(['namespace' => 'fraccionamiento'], function() {//FRACCIONAMIENTO DE PAGOS PREDIAL
         Route::resource('config_fraccionamiento','configuracion\Fraccionamiento');        

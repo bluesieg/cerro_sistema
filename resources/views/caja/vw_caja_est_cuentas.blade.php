@@ -172,7 +172,12 @@
                 }
             }
         });
+        
+
     });
+    
+    
+    
 </script>
 @stop
 <script src="{{ asset('archivos_js/caja/estado_cuentas.js') }}"></script>
@@ -195,7 +200,7 @@
                         </header>
             </div>
                 </section>
-    <form id="FormularioFiles" name="FormularioFiles" method="post" enctype="multipart/form-data" action="callpdf"  target="ifrafile">
+    <form id="FormularioFiles" name="FormularioFiles" method="post" class="formarchivo" enctype="multipart/form-data" action="callpdf"  target="ifrafile">
         <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}" data-token="{{ csrf_token() }}"> 
             <input type="hidden" id="id_arch" name="id_arch" value="0"/>
         <input id="id_contrib_hidden" name="id_contrib_hidden" type="hidden" value="0"/>
@@ -205,7 +210,7 @@
                     <div class="input-group input-group-md" style="width: 100%">
                         <span class="input-group-addon" style="width: 100px">Persona &nbsp;<i class="fa fa-eye"></i></span>
                         <div>
-                            <input id="dlg_persona" name="dlg_obs_exp" type="text"  class="form-control" style="height: 32px; width: 100%" maxlength="250" disabled="disabled">
+                            <input id="dlg_persona" name="persona" type="text"  class="form-control" style="height: 32px; width: 100%" maxlength="250" disabled="disabled">
                         </div>
                     </div>
                 </div>
@@ -216,7 +221,7 @@
                         <span class="input-group-addon" style="width: 100px">Correo &nbsp;<i class="fa fa-map"></i></span>
                         <div>
                             <input type="hidden" id="email" value="0"/>
-                            <input id="dlg_correo" type="text"  class="form-control" style="height: 32px; width: 100%">
+                            <input id="dlg_correo" type="text" name="correo" class="form-control" style="height: 32px; width: 100%">
                         </div>
                     </div>
                 </div>
@@ -226,10 +231,18 @@
                     <div class="input-group input-group-md" style="width: 100%">
                         <span class="input-group-addon" style="width: 100px">Adjunto &nbsp;<i class="fa fa-map"></i></span>
                         <div>
-                            <input id="archivo_reporte" type="file"  class="form-control" style="height: 32px; width: 100%">
+                            <input id="file" name="file" type="file"  class="form-control" style="height: 32px; width: 100%">
+                        </div>
+                        <div id="texto_notificacion">
+                        
                         </div>
                     </div>
                 </div>
+                
+                <div class="col-xs-12" style="margin-top: 10px;"></div>
+                
+                <button type="submit" class="btn btn-success bg-color-green"><i class='fa fa-save'> ENVIAR CORREO</i></button>
+                    
             </form>            
                 
             </div>
