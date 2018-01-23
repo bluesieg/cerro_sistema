@@ -11,19 +11,18 @@
 </head>
 <body>
 <main>
-
-    <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 5px;">
+    <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px;">
         <tr>
             <td style="width: 10%; border: 0px;" >
-                <img src="img/escudo.png" height="70px"/>
+                <img src="img/escudo.png" height="60px"/>
             </td>
-            <td style="width: 80%; padding-top: 10px; border:0px;">
-                <div id="details" class="clearfix">
-                    <div id="invoice" >
+            <td style="width: 80%; padding-top: 0px; border:0px;">
+                <div id="details" class="sub2">
+                    <div id="invoice" style="font-size:0.7em" >
                         <h1>MUNICIPALIDAD DISTRITAL DE CERRO COLORADO</h1>
                         <div class="sub2">Creado por Ley 12075 el día 26 de Febrero de 1954</div>
                     </div>
-                    <div style="width: 90%; border-top:1px solid #999; margin-top: 10px; margin-left: 25px;"></div>
+                    <div  style="width: 95%; border-top:1px solid #999; margin-top: 5px; margin-left: 25px"></div>
                 </div>
             </td>
             <td style="width: 10%;border: 0px;"></td>
@@ -31,14 +30,14 @@
 
     </table>
 
-    <center><div Class="asunto" style="margin-top: 10px;"><b>REPORTE DE EMISION PREDIAL POR USO</b></div></center>
+    <center><div Class="asunto" style="margin-top: 1px;"><b>REPORTE DE EMISION PREDIAL POR USO</b></div></center>
     <h5 class="subasunto" style="font-size:0.8em;  text-align: right; padding-left: 30px;">{{$usuario[0]->ape_nom}} - {{ $fecha }}</h5>
     <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px;">
             <table>
                 <thead>
                     <tr>
                         <th style="width: 5%; text-align: center;">AÑO</th>
-                        <th style="width: 5%; text-align: center;">SECTOR</th>
+                        <th style="width: 5%; text-align: center;">HAB. URBANA</th>
                         <th style="width: 5%; text-align: center;">TIPO DE USO</th>
                         <th style="width: 5%; text-align: center;">TOTAL</th>
                     </tr>
@@ -46,8 +45,8 @@
                 <tbody>
                     <tr>
                             <td style="text-align: center;">{{ $anio }}</td>
-                            <td style="text-align: center;">{{ $sector }}</td>
-                            <td style="text-align: center;">{{ $nombre_uso[0]->uso_arbitrio }}</td>
+                            <td style="text-align: center;">{{ $sql[0]->nomb_hab_urba }}</td>
+                            <td style="text-align: center;">{{ $sql[0]->uso_arbitrio }}</td>
                             <td style="text-align: center;">{{ $total[0]->usos }}</td>
                     </tr>
                 </tbody>

@@ -1,5 +1,3 @@
-
-
 /********************************REPORTE_SUPERVISORES**************************************************/
 
 function crear_dialogo()
@@ -97,73 +95,6 @@ function abrir_reporte_contribuyente()
     window.open('reporte_contribuyentes/'+ $('#selantra_r0').val()+ '/'+ $('#min').val()+ '/' + $('#max').val() + '/'  +$('#num_reg').val());
     }
 }
-
-
-/********************************REPORTE_LISTADO_DATOS_CONTRIBUYENTES**************************************************/
-
-function crear_dialogo_listado_datos_contribuyentes()
-{
-    $("#dialog_listado_datos_contribuyente").dialog({
-        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>&nbsp&nbsp.: Listado de Datos de los Contribuyentes :.</h4></div>",
-        buttons: [{
-            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
-            "class": "btn btn-success bg-color-green",
-            click: function () { abrir_reporte_listado_contribuyente(); }
-        }, {
-            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
-            "class": "btn btn-danger",
-            click: function () { $(this).dialog("close"); }
-        }]
-    }).dialog('open');
-}
-
-function dlg_listado_datos_contribuyentes(tipo)
-{
-    if (tipo===0) {
-        crear_dialogo_listado_datos_contribuyentes();
-    } 
-}
-
-
-function abrir_reporte_listado_contribuyente()
-{
-    window.open('listado_datos_contribuyentes/'+$('#select_sup_anio_dc').val()+'/'+$('#select_sector_dc').val());
-}
-
-
-/********************************REPORTE_LISTADO_DATOS_CONTRIBUYENTES_PREDIOS**************************************************/
-
-function crear_dialogo_listado_datos_contribuyentes_predios()
-{
-    $("#dialog_listado_datos_contribuyente_predios").dialog({
-        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>&nbsp&nbsp.: Listado de Datos de los Contribuyentes y Predios :.</h4></div>",
-        buttons: [{
-            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
-            "class": "btn btn-success bg-color-green",
-            click: function () { abrir_reporte_listado_contribuyente_predio(); }
-        }, {
-            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
-            "class": "btn btn-danger",
-            click: function () { $(this).dialog("close"); }
-        }]
-    }).dialog('open');
-}
-
-function dlg_listado_datos_contribuyentes_predios(tipo)
-{
-    if (tipo===0) {
-        crear_dialogo_listado_datos_contribuyentes_predios();
-    } 
-}
-
-
-function abrir_reporte_listado_contribuyente_predio()
-{
-    window.open('listado_contribuyentes_predios/'+$('#select_sup_anio_dcp').val()+'/'+$('#select_sect_dcp').val()+'');
-}
-
 /********************************REPORTE_CANTIDAD_CONTRIBUYENTES_EXONERADOS**************************************************/
 
 function crear_dialogo_contribuyentes_exonerados()
@@ -290,89 +221,9 @@ function abrir_reporte_usuarios()
 }
 
 
-/******* NUEVOS
-/********************************REPORTE_DE_CONTRIBUYENTES Y PREDIOS************************************************************/
 
-function crear_dialogo_reporte_contribuyentes_predios()
-{
-    $("#dialog_reporte_contribuyente_predio").dialog({
-        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>&nbsp&nbsp.: Reporte de cantidad de contribuyentes y predios por zonas :.</h4></div>",
-        buttons: [{
-            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
-            "class": "btn btn-success bg-color-green",
-            click: function () { abrir_reporte_contribuyente_predio(); }
-        }, {
-            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
-            "class": "btn btn-danger",
-            click: function () { $(this).dialog("close"); }
-        }]
-    }).dialog('open');
-}
+/*********************************************REPORTES GERENCIALES********************************************/
 
-function dlg_reporte_contribuyentes_predios(tipo)
-{
-    if (tipo===0) {
-        crear_dialogo_reporte_contribuyentes_predios();
-    } 
-}
-
-function abrir_reporte_contribuyente_predio()
-{
-    window.open('reporte_contribuyentes_predios_zonas/'+$('#select_sup_anio_rcp').val()+'/'+$('#select_sector_rcp').val()+'');
-}
-
-
-/********************************REPORTE_EMISION_PREDIAL_POR_USO************************************************************/
-
-function crear_dialogo_reporte_emision_predial()
-{
-    $("#dialog_emision_predial").dialog({
-        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>&nbsp&nbsp.: Reporte Predios Por Uso :.</h4></div>",
-        buttons: [{
-            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
-            "class": "btn btn-success bg-color-green",
-            click: function () { abrir_reporte_emision_predial(); }
-        }, {
-            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
-            "class": "btn btn-danger",
-            click: function () { $(this).dialog("close"); }
-        }]
-    }).dialog('open');
-}
-
-
-function dlg_reporte_emision_predial_uso(tipo)
-{
-    if (tipo===0) {
-        crear_dialogo_reporte_emision_predial();
-    } 
-}
-
-function abrir_reporte_emision_predial()
-{
-    window.open('reporte_emision_predial/'+$('#select_anio_ep').val()+'/'+$('#select_sec_ep').val()+'/'+$('#select_uso_ep').val()+'');
-}
-
-/********************************REPORTE_CANTIDAD_CONTRIBUYENTES_POR_CONDICION Y MONTO DE LA BASE IMPONIBLE************************************************************/
-
-function crear_dialogo_cant_cont_ded_mont_bas_imp()
-{
-    $("#dialog_cant_cont_ded_mont_bas_imp").dialog({
-        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>&nbsp&nbsp.: Reporte Predios Por Condicion :.</h4></div>",
-        buttons: [{
-            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
-            "class": "btn btn-success bg-color-green",
-            click: function () { abrir_reporte_cant_cont_ded_mont_bas_imp(); }
-        }, {
-            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
-            "class": "btn btn-danger",
-            click: function () { $(this).dialog("close"); }
-        }]
-    }).dialog('open');
-}
 var aux1=0;
 
 function crear_dialogo_por_zona()
@@ -384,7 +235,7 @@ function crear_dialogo_por_zona()
             html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
             "class": "btn btn-success bg-color-green",
             click: function () { abrir_reporte_por_zona(); }
-        }, {
+        },  {
             html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
             "class": "btn btn-danger",
             click: function () { $(this).dialog("close"); }
@@ -411,11 +262,7 @@ function crear_dialogo_corriente()
             click: function () { $(this).dialog("close"); }
         }]
     }).dialog('open');
-    if(aux1==0)
-    {
-        autocompletar_haburb('hab_urb');
-        aux1=1;
-    }
+  
 }
 function crear_dialogo_fraccionamiento()
 {
@@ -456,13 +303,138 @@ function crear_dialogo_caja()
     }).dialog('open');
    
 }
-
-function dlg_reporte_cant_cont_ded_mont_bas_imp(tipo)
+auxdc=0;
+function crear_dialogo_datos_contribuyentes()
 {
-    if (tipo===0) {
-        crear_dialogo_cant_cont_ded_mont_bas_imp();
-    } 
+    $("#dialog_datos_contribuyentes").dialog({
+        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.: Listado de Datos de los Contribuyentes :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Hab. Urbana Seleccionada"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_reporte_datos_contribuyentes(0); }
+        }, {
+            html: "<i class='fa fa-file-excel-o'></i>&nbsp; Ver Todas",
+            "class": "btn btn-success bg-color-blue",
+            click: function () { abrir_reporte_datos_contribuyentes(1); }
+        },{
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+    if(auxdc==0)
+    {
+        autocompletar_haburb('habilitacion_urbana');
+        auxdc=1;
+    }
 }
+auxdcp=0;
+function crear_dialogo_datos_contribuyentes_p()
+{
+    $("#dialog_datos_contribuyentes_p").dialog({
+        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.: Listado de Datos de los Contribuyentes y Predios :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Hab. Urbana Seleccionada"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_reporte_datos_contribuyentes_predios(0); }
+        },{
+            html: "<i class='fa fa-file-excel-o'></i>&nbsp; Ver Todas",
+            "class": "btn btn-success bg-color-blue",
+            click: function () { abrir_reporte_datos_contribuyentes_predios(1); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+    if(auxdcp==0)
+    {
+        autocompletar_haburb('habilitacion_urbana1');
+        auxdcp=1;
+    }
+}
+auxcpz=0;
+function crear_dialogo_cantidad_por_zona()
+{
+    $("#dialog_cantidad_por_zona").dialog({
+        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.: Reporte de cantidad de contribuyentes y predios por zonas :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_reporte_cantidad_por_zona(0); }
+        },{
+            html: "<i class='fa fa-file-excel-o'></i>&nbsp; Ver Todas",
+            "class": "btn btn-success bg-color-blue",
+            click: function () { abrir_reporte_cantidad_por_zona(1); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+    if(auxcpz==0)
+    {
+        autocompletar_haburb('habilitacion_urbana2');
+        auxcpz=1;
+    }
+}
+auxuso=0;
+function crear_dialogo_por_uso()
+{
+    $("#dialog_por_uso").dialog({
+        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.: Reporte Predios Por Uso :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_reporte_por_uso(0); }
+        },{
+            html: "<i class='fa fa-file-excel-o'></i>&nbsp; Ver Todas",
+            "class": "btn btn-success bg-color-blue",
+            click: function () { abrir_reporte_por_uso(1); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+    if(auxuso==0)
+    {
+        autocompletar_haburb('habilitacion_urbana3');
+        auxuso=1;
+    }
+}
+auxcon=0;
+function crear_dialogo_por_condicion()
+{
+    $("#dialog_por_condicion").dialog({
+        autoOpen: false, modal: true, width: 630, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.: Reporte Predios Por Condicion :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_reporte_cant_cont_ded_mont_bas_imp(0); }
+        },{
+            html: "<i class='fa fa-file-excel-o'></i>&nbsp; Ver Todas",
+            "class": "btn btn-success bg-color-blue",
+            click: function () { abrir_reporte_cant_cont_ded_mont_bas_imp(1); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+    if(auxcon==0)
+    {
+        autocompletar_haburb('habilitacion_urbana4');
+        auxcon=1;
+    }
+}
+
+
 function dlg_reportes_andrea(tipo)
 {
     if (tipo===0) {
@@ -480,20 +452,41 @@ function dlg_reportes_andrea(tipo)
     if (tipo===3) {
         crear_dialogo_caja();
     }
+    if (tipo===4) {
+        crear_dialogo_datos_contribuyentes();
+         $('#habilitacion_urbana').val("");
+         $('#hidden_habilitacion_urbana').val("");
+    } 
+    if (tipo===5) {
+        crear_dialogo_datos_contribuyentes_p();
+         $('#habilitacion_urbana1').val("");
+         $('#hidden_habilitacion_urbana1').val("");
+    }
+    if (tipo===6) {
+        crear_dialogo_cantidad_por_zona();
+         $('#habilitacion_urbana2').val("");
+         $('#hidden_habilitacion_urbana2').val("");
+    }
+    if (tipo===7) {
+        crear_dialogo_por_uso();
+         $('#habilitacion_urbana3').val("");
+         $('#hidden_habilitacion_urbana3').val("");
+    }
+    if (tipo===8) {
+        crear_dialogo_por_condicion();
+         $('#habilitacion_urbana4').val("");
+         $('#hidden_habilitacion_urbana4').val("");
+    }
 }
 
 
-function abrir_reporte_cant_cont_ded_mont_bas_imp()
-{
-    window.open('reporte_cant_cont_ded_mont_bas_imp/'+$('#select_anio_ccdmbi').val()+'/'+$('#select_sec_ccdmbi').val()+'/'+$('#select_condicion_ccdmbi').val()+'');
-}
 function abrir_reporte_por_zona()
 {
     if ($("#hiddenhab").val() == 0){
             mostraralertasconfoco("Debes Ingresar una Habilitacion Urbana","#hab_urb");
             return false;
     }
-    window.open('reporte_por_zona/'+$('#anio_por_zona').val()+'/'+$('#hiddenhab').val()+'');
+    window.open('listado_datos_contribuyentes/'+$('#select_sup_anio_dc1').val()+'/'+$('#hiddenhab').val()+'');
 }
 function abrir_reporte_corriente()
 {
@@ -506,5 +499,86 @@ function abrir_reporte_fraccionamiento()
 function abrir_reporte_cajas()
 {    window.open('reporte_cajas?ini='+$('#fec_ini_cajas').val()+'&fin='+$('#fec_fin_cajas').val()+'&id_agen='+$('#select_agencia').val()+'');
 }
+function abrir_reporte_datos_contribuyentes(tipo)
+{
+    if(tipo==0)
+    {
+        if ($("#hidden_habilitacion_urbana").val() == 0){
+            mostraralertasconfoco("Debes Ingresar una Habilitacion Urbana","#hidden_habilitacion_urbana");
+            return false;
+        }
+        window.open('listado_datos_contribuyentes/0'+'/'+$('#select_sup_anio_dc1').val()+'/'+$('#hidden_habilitacion_urbana').val()+''); 
+    }
+    if(tipo==1)
+    {
+         $('#habilitacion_urbana').val("");
+         $('#hidden_habilitacion_urbana').val("");
+         window.open('listado_datos_contribuyentes/1'+'/'+$('#select_sup_anio_dc1').val()+'/'+'0');
+    }
+        
+}
+function abrir_reporte_datos_contribuyentes_predios(tipo)
+{   if(tipo==0)
+    {
+        if ($("#hidden_habilitacion_urbana1").val() == 0){
+            mostraralertasconfoco("Debes Ingresar una Habilitacion Urbana","#hidden_habilitacion_urbana1");
+            return false;
+        }
+        window.open('listado_contribuyentes_predios/0'+'/'+$('#select_sup_anio_pred').val()+'/'+$('#hidden_habilitacion_urbana1').val()+'');
+    }
+    if(tipo==1)
+    {
+         $('#habilitacion_urbana1').val("");$('#hidden_habilitacion_urbana1').val("");
+         window.open('listado_contribuyentes_predios/1'+'/'+$('#select_sup_anio_pred').val()+'/'+'0');
+    }
+}
+function abrir_reporte_cantidad_por_zona(tipo)
+{   if(tipo==0)
+    {
+        if ($("#hidden_habilitacion_urbana2").val() == 0){
+            mostraralertasconfoco("Debes Ingresar una Habilitacion Urbana","#hidden_habilitacion_urbana2");
+            return false;
+        }
+        window.open('reporte_contribuyentes_predios_zonas/0'+'/'+$('#select_sup_anio_cpz').val()+'/'+$('#hidden_habilitacion_urbana2').val()+'');
+    }
+    if(tipo==1)
+    {
+         $('#habilitacion_urbana2').val("");$('#hidden_habilitacion_urbana2').val("");
+         window.open('reporte_contribuyentes_predios_zonas/1'+'/'+$('#select_sup_anio_cpz').val()+'/'+'0');
+    }   
+}
+function abrir_reporte_por_uso(tipo)
+{
+    if(tipo==0)
+    {
+        if ($("#hidden_habilitacion_urbana3").val() == 0){
+            mostraralertasconfoco("Debes Ingresar una Habilitacion Urbana","#hidden_habilitacion_urbana3");
+            return false;
+        }
+        window.open('reporte_emision_predial/0'+'/'+$('#select_sup_anio_uso').val()+'/'+$('#hidden_habilitacion_urbana3').val()+'/'+$('#select_uso_ep').val()+'');
+    }
+    if(tipo==1)
+    {
+         $('#habilitacion_urbana3').val("");$('#hidden_habilitacion_urbana3').val("");
+         window.open('reporte_emision_predial/1'+'/'+$('#select_sup_anio_uso').val()+'/'+'0'+'/'+$('#select_uso_ep').val()+'');
+    } 
+    
+}
 
-/********************************REPORTEs andrea************************************************************/
+function abrir_reporte_cant_cont_ded_mont_bas_imp(tipo)
+{
+    if(tipo==0)
+    {
+        if ($("#hidden_habilitacion_urbana4").val() == 0){
+            mostraralertasconfoco("Debes Ingresar una Habilitacion Urbana","#hidden_habilitacion_urbana3");
+            return false;
+        }
+        window.open('reporte_cant_cont_ded_mont_bas_imp/0'+'/'+$('#select_sup_anio_con').val()+'/'+$('#hidden_habilitacion_urbana4').val()+'/'+$('#select_condicion_ccdmbi').val()+'');
+    }
+    if(tipo==1)
+    {
+         $('#habilitacion_urbana4').val("");$('#hidden_habilitacion_urbana4').val("");
+         window.open('reporte_cant_cont_ded_mont_bas_imp/1'+'/'+$('#select_sup_anio_con').val()+'/'+'0'+'/'+$('#select_condicion_ccdmbi').val()+'');
+    }
+    
+}

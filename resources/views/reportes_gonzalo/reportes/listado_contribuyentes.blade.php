@@ -7,23 +7,27 @@
     <style>
         .move-ahead { counter-increment: page 2; position: absolute; visibility: hidden; }
         .pagenum:after { content:' ' counter(page); }
+       .footer {position: fixed }
+
     </style>
 </head>
+    <footer class="footer" style="font-size:0.8em; text-align: left; padding-top: 5px; padding-left: 10px;"><b>Impreso Por:&nbsp; </b>{{$usuario[0]->ape_nom}}</footer>
+
 <body>
 <main>
 
-    <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 5px;">
+    <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px;">
         <tr>
             <td style="width: 10%; border: 0px;" >
-                <img src="img/escudo.png" height="70px"/>
+                <img src="img/escudo.png" height="60px"/>
             </td>
-            <td style="width: 80%; padding-top: 10px; border:0px;">
-                <div id="details" class="clearfix">
-                    <div id="invoice" >
+            <td style="width: 80%; padding-top: 0px; border:0px;">
+                <div id="details" class="sub2">
+                    <div id="invoice" style="font-size:0.7em" >
                         <h1>MUNICIPALIDAD DISTRITAL DE CERRO COLORADO</h1>
                         <div class="sub2">Creado por Ley 12075 el día 26 de Febrero de 1954</div>
                     </div>
-                    <div style="width: 90%; border-top:1px solid #999; margin-top: 10px; margin-left: 25px;"></div>
+                    <div  style="width: 95%; border-top:1px solid #999; margin-top: 5px; margin-left: 25px"></div>
                 </div>
             </td>
             <td style="width: 10%;border: 0px;"></td>
@@ -31,18 +35,19 @@
 
     </table>
 
-    <center><div Class="asunto" style="margin-top: 10px;"><b>REPORTE DE CONTRIBUYENTES</b></div></center>
-    <div class="subasunto" style="text-align: left; padding-left: 30px;">
-            AÑO: {{ $anio }} - Sector: {{$sector}}
-            <h5 class="subasunto" style="font-size:0.8em;  text-align: right; padding-left: 30px;">{{$usuario[0]->ape_nom}} - {{ $fecha }}</h5>
+    <center><div Class="asunto" style="margin-top: 1px;font-size:0.8em;"><b>REPORTE DE CONTRIBUYENTES</b></div></center>
+    <div class="subasunto" style=" margin-bottom:1px; text-align: left; padding-left: 30px;font-size:0.7em;">
+        <h5 class="subasunto" style="font-size:0.8em;  text-align: right; padding-left: 30px;">{{ $fecha }}</h5>  
+        Año: {{ $anio }} - Hab. Urbana: {{$sql[0]->nomb_hab_urba}}
     </div>
     
     <input type="hidden" value=" {{$num= 1}}">
 
-    <div class="lado3" style="height: 435px; border-bottom: 1px solid #333">
+    <div class="lado3" style="height: 435px; margin-top: 0px; border-bottom: 20px solid #333">
 
-        <br>
-        <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px; font-size: 1.0em;">
+        <br>                    
+
+        <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom:20px; margin-top: 0px;  font-size: 1.0em;">
             <thead>
             <tr >
                 <th style="width: 5%;">N°</th>
@@ -62,11 +67,12 @@
                     <td style="text-align: left;">{{$cont->persona}}</td>
                     <td style="text-align: left;">{{$cont->dom_fis}}</td>
                 </tr>
+                
             @endforeach
+
             </tbody>
         </table>
     </div>
-   
 </body>
 
 </html>

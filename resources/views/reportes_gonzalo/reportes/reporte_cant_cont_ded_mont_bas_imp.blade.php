@@ -17,7 +17,7 @@
             <td style="width: 10%; border: 0px;" >
                 <img src="img/escudo.png" height="70px"/>
             </td>
-            <td style="width: 80%; padding-top: 10px; border:0px;">
+            <td style="width: 80%; padding-top: 10px; border:0px; font-size:0.8em;">
                 <div id="details" class="clearfix">
                     <div id="invoice" >
                         <h1>MUNICIPALIDAD DISTRITAL DE CERRO COLORADO</h1>
@@ -31,14 +31,14 @@
 
     </table>
 
-    <center><div Class="asunto" style="margin-top: 10px;"><b>Cantidad de contribuyentes por Condicion(Afecto, Inafecto, Exoneracion Parcial, Pensionista y Adulto mayor)</b></div></center>
-    <h5 class="subasunto" style="font-size:0.8em;  text-align: right; padding-left: 30px;">{{$usuario[0]->ape_nom}} - {{ $fecha }}</h5>
-    <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px;">
+    <center><div Class="asunto" style="margin-top: 10px; font-size:0.8em;"><b>Cantidad de contribuyentes por Condicion(Afecto, Inafecto, Exoneracion Parcial, Pensionista y Adulto mayor)</b></div></center>
+    <h5 class="sub2" style="font-size:0.8em;  text-align: right; padding-left: 30px;">{{$usuario[0]->ape_nom}} - {{ $fecha }}</h5>
+    <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px; font-size:0.8em;">
         <table>
                 <thead>
                     <tr>
                         <th style="width: 5%; text-align: center;">AÑO</th>
-                        <th style="width: 5%; text-align: center;">SECTOR</th>
+                        <th style="width: 5%; text-align: center;">HAB. URBANA</th>
                         <th style="width: 5%; text-align: center;">TIPO CONDICION</th>
                         <th style="width: 5%; text-align: center;">TOTAL</th>
                     </tr>
@@ -46,8 +46,8 @@
                 <tbody>
                     <tr>
                             <td style="text-align: center;">{{ $anio }}</td>
-                            <td style="text-align: center;">{{ $sector }}</td>
-                            <td style="text-align: center;">{{ $nombre_condicion[0]->desc_exon }}</td>
+                            <td style="text-align: center;">{{ $sql[0]->nomb_hab_urba }}</td>
+                            <td style="text-align: center;">{{ $sql[0]->desc_exon }}</td>
                             <td style="text-align: center;">{{ $total[0]->condiciones }}</td>
                     </tr>
                 </tbody>
@@ -56,10 +56,10 @@
    
     <input type="hidden" value=" {{$num= 1}}">
 
-    <div class="lado3" style="height: 435px; border-bottom: 1px solid #333">
+    <div class="lado3" style="font-size:0.8em; height: 435px; border-bottom: 1px solid #333 ">
 
         <br>
-        <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px; font-size: 1.3em;">
+        <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px; font-size: 0.8em;">
             <thead>
             <tr >
                  <th style="width: 5%; text-align: center;">Nº</th>
@@ -68,7 +68,7 @@
                 <th style="width: 25%; text-align: center;">DOMICILIO FISCAL</th>
                 <th style="width: 10%; text-align: center;">DEDUCCION</th>
                 <th style="width: 10%; text-align: center;">CONDICION</th>
-                <th style="width: 7%; text-align: center;">SECTOR</th>
+                <th style="width: 7%; text-align: center;">MZNA</th>
                 <th style="width: 10%; text-align: center;">BASE IMPONIBLE</th>
             </tr>
             </thead>
@@ -82,7 +82,7 @@
                     <td style="text-align: center;">{{ $cont->dom_fis }}</td>
                     <td style="text-align: center;">{{ $cont->porctje }}%</td>
                     <td style="text-align: center;">{{ $cont->desc_exon }}</td>
-                    <td style="text-align: center;">{{ $cont->sec }}</td>
+                    <td style="text-align: center;">{{ $cont->nomb_hab_urba}}</td>
                     <td style="text-align: center;">{{ number_format($cont->base_impon,2,'.',',')}}</td>
                 </tr>
             @endforeach

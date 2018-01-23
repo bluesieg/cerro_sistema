@@ -47,7 +47,7 @@
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
-                                <h4><a href="#" onclick="dlg_listado_datos_contribuyentes(0);" id="titulo_r1">
+                                <h4><a href="#" onclick="dlg_reportes_andrea(4);" id="titulo_r1">
                                         REPORTE 1: Listado de datos de los contribuyentes.
                                     </a>
                                     <small>Descripción reporte 1</small>
@@ -61,7 +61,7 @@
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
-                                <h4><a href="#" onclick="dlg_listado_datos_contribuyentes_predios(0);" id="titulo_r1">
+                                <h4><a href="#" onclick="dlg_reportes_andrea(5);" id="titulo_r1">
                                         REPORTE 2: Listado de datos de los contribuyentes y predios.
                                     </a>
                                     <small>Descripción reporte 2</small>
@@ -75,7 +75,7 @@
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
-                                <h4><a href="#" onclick="dlg_reporte_contribuyentes_predios(0);" id="titulo_r1">
+                                <h4><a href="#" onclick="dlg_reportes_andrea(6);" id="titulo_r1">
                                         REPORTE 4: Reporte de cantidad de contribuyentes y predios por zonas.
                                     </a>
                                     <small>Descripción reporte 4</small>
@@ -88,7 +88,7 @@
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
-                                <h4><a href="#" onclick="dlg_reporte_emision_predial_uso(0);" id="titulo_r1">
+                                <h4><a href="#" onclick="dlg_reportes_andrea(7);" id="titulo_r1">
                                         REPORTE 5: Reporte Emision Predial por Uso.
                                     </a>
                                     <small>Descripción reporte 5</small>
@@ -101,7 +101,7 @@
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
-                                <h4><a href="#" onclick="dlg_reporte_cant_cont_ded_mont_bas_imp(0);" id="titulo_r1">
+                                <h4><a href="#" onclick="dlg_reportes_andrea(8);" id="titulo_r1">
                                         REPORTE 6: Cantidad de contribuyentes por Condicion(Afecto, Inafecto, Exoneracion Parcial, Pensionista y Adulto mayor).
                                     </a>
                                     <small>Descripción reporte 6</small>
@@ -114,7 +114,7 @@
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
                                 <h4><a href="#" onclick="dlg_reportes_andrea(0);" id="titulo_r1">
-                                        REPORTE 7: Reporte de Impuesto Predial Por Habilitacion Urbana - Zona. </a>
+                                        REPORTE 7: Reporte de Impuesto Predial Por Habilitacion Urbana - Zona. ******</a>
                                     <small>Descripción reporte 7</small>
                                 </h4>
                             </td>
@@ -136,7 +136,7 @@
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
                                 <h4><a href="#" onclick="dlg_reportes_andrea(2);" id="titulo_r1">
-                                        REPORTE 9: Reporte de Fracionamiento Realizados y cancelados.</a>
+                                        REPORTE 9: Reporte de Fracionamiento Realizados y cancelados.******</a>
                                     <small>Descripción reporte 9</small>
                                 </h4>
                             </td>
@@ -231,17 +231,17 @@ function autocompletar_haburb(textbox){
         url: 'autocomplete_hab_urba',
         success: function (data) {
             var $datos = data;
-            $("#hab_urb").autocomplete({
+            $("#"+ textbox).autocomplete({
                 source: $datos,
                 focus: function (event, ui) {
                     $("#" + textbox).val(ui.item.label);
-                    $("#hiddenhab").val(ui.item.value);
+                    $("#hidden_"+ textbox).val(ui.item.value);
                     $("#" + textbox).attr('maxlength', ui.item.label.length);
                     return false;
                 },
                 select: function (event, ui) {
                     $("#" + textbox).val(ui.item.label);
-                    $("#hiddenhab").val(ui.item.value);
+                    $("#hidden_"+ textbox).val(ui.item.value);
                     
                     return false;
                 }
@@ -249,6 +249,7 @@ function autocompletar_haburb(textbox){
         }
     });
 }
+
 </script>
 @stop
 <script src="{{ asset('archivos_js/reportes_gonzalo/reportes.js') }}"></script>
@@ -351,40 +352,6 @@ function autocompletar_haburb(textbox){
                     </section>
                        
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div id="dialog_listado_datos_contribuyente" style="display: none">
-    <div class="widget-body">
-        <div  class="smart-form">
-            <div class="panel-group">
-                <!-- widget div-->
-                <div class="row">
-                    <section class="col col-6" style="padding-right:5px;">
-                        <label class="label">AÑO:</label>
-                        <label class="select">
-                            <select id='select_sup_anio_dc' class="form-control col-lg-8">
-                                @foreach ($anio_tra as $anio_dc)
-                                    <option value='{{$anio_dc->anio}}' >{{$anio_dc->anio}}</option>
-                                @endforeach
-                            </select><i></i> </label>
-                    </section>
-                    
-                    <section class="col col-6" style="padding-left:5px;padding-right:5px;">
-                        <label class="label">SECTOR:</label>
-                        <label class="select">
-                            <select id='select_sector_dc' class="form-control col-lg-8">
-                                <option value='0'>-- TODOS --</option>
-                                @foreach ($sectores as $sector_dc)
-                                    <option value='{{$sector_dc->id_sec}}' >{{$sector_dc->sector}}</option>
-                                @endforeach
-                            </select><i></i> </label>
-                    </section>
-                </div>
-                <!-- end widget div -->
             </div>
         </div>
     </div>
@@ -563,131 +530,9 @@ function autocompletar_haburb(textbox){
     </div>
 </div>
 
-<div id="dialog_emision_predial" style="display: none">
-    <div class="widget-body">
-        <div  class="smart-form">
-            <div class="panel-group">
-                <!-- widget div-->
-                <div class="row">
-                    <section class="col col-4" style="padding-right:5px;">
-                        <label class="label">AÑO:</label>
-                        <label class="select">
-                            <select id='select_anio_ep' class="form-control col-lg-8">
-                                @foreach ($anio_tra as $anio_ep)
-                                    <option value='{{$anio_ep->anio}}' >{{$anio_ep->anio}}</option>
-                                @endforeach
-                            </select><i></i> </label>
-                    </section>
-                    <section class="col col-4" style="padding-left:5px;padding-right:5px;">
-                        <label class="label">SECTOR:</label>
-                        <label class="select">
-                            <select id='select_sec_ep' class="form-control col-lg-8">
-                                <option value='0'>-- TODOS --</option>
-                                @foreach ($sectores as $sector_ep)
-                                    <option value='{{$sector_ep->id_sec}}' >{{$sector_ep->sector}}</option>
-                                @endforeach
-                            </select><i></i> </label>
-                    </section>
-                    <section class="col col-4" style="padding-left:5px;padding-right:5px;">
-                        <label class="label">USO:</label>
-                        <label class="select"> 
-                            <select id='select_uso_ep' class="form-control col-lg-8" >
-                                <option value='0'>-- TODOS --</option>
-                                @foreach ($usos_predio_arb as $usos_ep)
-                                    <option value='{{$usos_ep->id_uso_arb}}' >{{$usos_ep->uso_arbitrio}}</option>
-                                @endforeach
-                            </select><i></i> </label>
-                    </section>
-                   
-                </div>
-                <!-- end widget div -->
-            </div>
-        </div>
-    </div>
-</div>
 
-<div id="dialog_cant_cont_ded_mont_bas_imp" style="display: none">
-    <div class="widget-body">
-        <div  class="smart-form">
-            <div class="panel-group">
-                <!-- widget div-->
-                <div class="row">
-                    <section class="col col-4" style="padding-right:5px;">
-                        <label class="label">AÑO:</label>
-                        <label class="select">
-                            <select id='select_anio_ccdmbi' class="form-control col-lg-8">
-                                @foreach ($anio_tra as $anio_ccdmbi)
-                                    <option value='{{$anio_ccdmbi->anio}}' >{{$anio_ccdmbi->anio}}</option>
-                                @endforeach
-                            </select><i></i> </label>
-                    </section>
-                    <section class="col col-4" style="padding-left:5px;padding-right:5px;">
-                        <label class="label">SECTOR:</label>
-                        <label class="select">
-                            <select id='select_sec_ccdmbi' class="form-control col-lg-8">
-                                <option value='0'>-- TODOS --</option>
-                                @foreach ($sectores as $sector_ccdmbi)
-                                    <option value='{{$sector_ccdmbi->id_sec}}' >{{$sector_ccdmbi->sector}}</option>
-                                @endforeach
-                            </select><i></i> </label>
-                    </section>
-                    <section class="col col-4" style="padding-left:5px;padding-right:5px;">
-                        <label class="label">CONDICION:</label>
-                        <label class="select"> 
-                            <select id='select_condicion_ccdmbi' class="form-control col-lg-8" >
-                                <option value='0'>-- TODOS --</option>
-                                @foreach ($condicion as $condicion_ccdmbi)
-                                    <option value='{{$condicion_ccdmbi->id_exo}}' >{{$condicion_ccdmbi->desc_exon}}</option>
-                                @endforeach
-                            </select><i></i> </label>
-                    </section>
-                   
-                </div>
-                <!-- end widget div -->
-            </div>
-        </div>
-    </div>
-</div>
-<div id="dialog_por_zona" style="display: none">
-    <div class="widget-body">
-        <div  class="smart-form">
-            <div class="panel-group">
-                <!-- widget div-->
-                
-                    <div class="row" style="padding: 20px 30px;">
-                        <div class="col-xs-12">
-                            <div class="input-group input-group-md">
-                                <span class="input-group-addon" style="width: 165px">Año de Trabajo <i class="fa fa-cogs"></i></span>
-                                    <div class="icon-addon addon-md">
-                                        <select id='anio_por_zona' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
-                                        @foreach ($anio_tra as $anio)
-                                        <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
-                                        @endforeach
-                                        </select>
-                                    </div>
-                            </div>
-                        </div>
-                    </div> 
-                    
-                    <div class="row" style="padding: 5px 30px;">
-                        <div class="col-xs-12" >
-                            <div class="input-group input-group-md" style="width: 100%">
-                                <span class="input-group-addon" style="width: 165px">Hab. Urbana &nbsp;<i class="fa fa-file-archive-o"></i></span>
-                                <div> 
-                                     <input type="hidden" id="hiddenhab" value="0">
-                                     <textarea rows="3" id="hab_urb" type="text" placeholder="Escriba una Habilitación Urbana" class="form-control" style="height: 32px; padding-left: 10px"  ></textarea>
-                                </div>
-                            </div> 
-                         </div>
-                    </div>
-                    
-                    
-                    
-                <!-- end widget div -->
-            </div>
-        </div>
-    </div>
-</div>
+
+<!-- dialogs andrea----------------------------------------------------->
 <div id="dialog_corriente" style="display: none">
     <div class="widget-body">
         <div  class="smart-form">
@@ -712,7 +557,6 @@ function autocompletar_haburb(textbox){
         </div>
     </div>
 </div>
-
 <div id="dialog_fraccionamiento" style="display: none">
     <div class="widget-body">
         <div  class="smart-form">
@@ -793,9 +637,215 @@ function autocompletar_haburb(textbox){
         </div>
     </div>
 </div>
+<div id="dialog_datos_contribuyentes" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                
+                    <div class="row" style="padding: 20px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                        <select id='select_sup_anio_dc1' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                            @foreach ($anio_tra as $anio_dc)
+                                                <option value='{{$anio_dc->anio}}' >{{$anio_dc->anio}}</option>
+                                            @endforeach
+                                        </select>
+                                        
+                                    </div>
+                            </div>
+                        </div>
+                    </div>                         
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12" >
+                            <div class="input-group input-group-md" style="width: 100%">
+                                <span class="input-group-addon" style="width: 165px">Hab. Urbana &nbsp;<i class="fa fa-file-archive-o"></i></span>
+                                <div> 
+                                     <input type="hidden" id="hidden_habilitacion_urbana" value="0">
+                                     <textarea  id="habilitacion_urbana" type="text" placeholder="Escriba una Habilitación Urbana" class="form-control" style="height: 32px; padding-left: 10px"  ></textarea>
+                                </div>
+                            </div>
+                         </div>
+                    </div>  
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dialog_datos_contribuyentes_p" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                        <select id='select_sup_anio_pred' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                            @foreach ($anio_tra as $anio_pred)
+                                                <option value='{{$anio_pred->anio}}' >{{$anio_pred->anio}}</option>
+                                            @endforeach
+                                        </select> 
+                                    </div>
+                            </div>
+                        </div>                       
+                    </div>
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12" >
+                            <div class="input-group input-group-md" style="width: 100%">
+                                <span class="input-group-addon" style="width: 165px">Hab. Urbana &nbsp;<i class="fa fa-file-archive-o"></i></span>
+                                <div> 
+                                     <input type="hidden" id="hidden_habilitacion_urbana1" value="0">
+                                     <textarea  id="habilitacion_urbana1" type="text" placeholder="Escriba una Habilitación Urbana" class="form-control" style="height: 32px; padding-left: 10px"  ></textarea>
+                                </div>
+                            </div>
+                         </div>
+                    </div>  
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dialog_cantidad_por_zona" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                
+                    <div class="row" style="padding: 20px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                        <select id='select_sup_anio_cpz' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                            @foreach ($anio_tra as $anio_cpz)
+                                                <option value='{{$anio_cpz->anio}}' >{{$anio_cpz->anio}}</option>
+                                            @endforeach
+                                        </select>
+                                        
+                                    </div>
+                            </div>
+                        </div>
+                    </div>                         
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12" >
+                            <div class="input-group input-group-md" style="width: 100%">
+                                <span class="input-group-addon" style="width: 165px">Hab. Urbana &nbsp;<i class="fa fa-file-archive-o"></i></span>
+                                <div> 
+                                     <input type="hidden" id="hidden_habilitacion_urbana2" value="0">
+                                     <textarea  id="habilitacion_urbana2" type="text" placeholder="Escriba una Habilitación Urbana" class="form-control" style="height: 32px; padding-left: 10px"  ></textarea>
+                                </div>
+                            </div>
+                         </div>
+                    </div>  
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dialog_por_uso" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                        <select id='select_sup_anio_uso' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                            @foreach ($anio_tra as $anio_uso)
+                                                <option value='{{$anio_uso->anio}}' >{{$anio_uso->anio}}</option>
+                                            @endforeach
+                                        </select> 
+                                    </div>
+                            </div>
+                        </div>                       
+                    </div>
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">USO <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                         <select id='select_uso_ep' class="form-control col-lg-8" >
+                                            <option value='0'>-- TODOS --</option>
+                                            @foreach ($usos_predio_arb as $usos_ep)
+                                                <option value='{{$usos_ep->id_uso_arb}}' >{{$usos_ep->uso_arbitrio}}</option>
+                                            @endforeach
+                                        </select>                                  
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12" >
+                            <div class="input-group input-group-md" style="width: 100%">
+                                <span class="input-group-addon" style="width: 165px">Hab. Urbana &nbsp;<i class="fa fa-file-archive-o"></i></span>
+                                <div> 
+                                     <input type="hidden" id="hidden_habilitacion_urbana3" value="0">
+                                     <textarea  id="habilitacion_urbana3" type="text" placeholder="Escriba una Habilitación Urbana" class="form-control" style="height: 32px; padding-left: 10px"  ></textarea>
+                                </div>
+                            </div>
+                         </div>
+                    </div>  
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dialog_por_condicion" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                        <select id='select_sup_anio_con' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                            @foreach ($anio_tra as $anio_con)
+                                                <option value='{{$anio_con->anio}}' >{{$anio_con->anio}}</option>
+                                            @endforeach
+                                        </select> 
+                                    </div>
+                            </div>
+                        </div>                       
+                    </div>
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">CONDICION <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                          <select id='select_condicion_ccdmbi' class="form-control col-lg-8" >
+                                            <option value='0'>-- TODOS --</option>
+                                            @foreach ($condicion as $condicion_ccdmbi)
+                                                <option value='{{$condicion_ccdmbi->id_exo}}' >{{$condicion_ccdmbi->desc_exon}}</option>
+                                            @endforeach
+                                          </select>                                 
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12" >
+                            <div class="input-group input-group-md" style="width: 100%">
+                                <span class="input-group-addon" style="width: 165px">Hab. Urbana &nbsp;<i class="fa fa-file-archive-o"></i></span>
+                                <div> 
+                                     <input type="hidden" id="hidden_habilitacion_urbana4" value="0">
+                                     <textarea  id="habilitacion_urbana4" type="text" placeholder="Escriba una Habilitación Urbana" class="form-control" style="height: 32px; padding-left: 10px"  ></textarea>
+                                </div>
+                            </div>
+                         </div>
+                    </div>  
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
-
-
-
-
-

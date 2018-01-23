@@ -471,10 +471,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('reportes_gonza', 'ReportesController');
         Route::get('reporte_contribuyentes/{anio}/{min}/{max}/{num_reg}','ReportesController@reportes_contribuyentes');
         Route::get('reporte_supervisores/{anio}/{sector}/{manzana}', 'ReportesController@reportes'); 
-        Route::get('listado_datos_contribuyentes/{anio}/{sector}', 'ReportesController@listado_contribuyentes'); 
-        Route::get('listado_contribuyentes_predios/{anio}/{sector}','ReportesController@listado_contribuyentes_predios');
-        Route::get('reporte_contribuyentes_exonerados/{anio}/{sector}/{tipo}','ReportesController@reporte_contribuyentes_exonerados');
-        Route::get('reporte_cantidad_contribuyentes/{anio}/{sector}','ReportesController@reporte_cantidad_contribuyentes');
+        Route::get('listado_datos_contribuyentes/{tipo}/{anio}/{hab_urb}', 'ReportesController@listado_contribuyentes'); 
+        Route::get('listado_contribuyentes_predios/{tipo}/{anio}/{hab_urb}','ReportesController@listado_contribuyentes_predios');
+        Route::get('reporte_contribuyentes_exonerados/{anio}/{hab_urb}/{tipo}','ReportesController@reporte_contribuyentes_exonerados');
+        Route::get('reporte_cantidad_contribuyentes/{anio}/{hab_urb}','ReportesController@reporte_cantidad_contribuyentes');
         Route::get('autocomplete_hab_urba', 'ReportesController@autocompletar_haburb');
 
         //TRAER USUARIOS
@@ -482,9 +482,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('obtener_usuarios', 'ReportesController@get_usuarios'); 
         
         //*NUEVOS
-        Route::get('reporte_contribuyentes_predios_zonas/{anio}/{sector}','ReportesController@reporte_contribuyentes_predios_zonas');
-        Route::get('reporte_emision_predial/{anio}/{sector}/{uso}','ReportesController@reporte_emision_predial');
-        Route::get('reporte_cant_cont_ded_mont_bas_imp/{anio}/{sector}/{condicion}','ReportesController@reporte_cant_cont_ded_mont_bas_imp');
+        Route::get('reporte_contribuyentes_predios_zonas/{tipo}/{anio}/{sector}','ReportesController@reporte_contribuyentes_predios_zonas');
+        Route::get('reporte_emision_predial/{tipo}/{anio}/{sector}/{uso}','ReportesController@reporte_emision_predial');
+        Route::get('reporte_cant_cont_ded_mont_bas_imp/{tipo}/{anio}/{sector}/{condicion}','ReportesController@reporte_cant_cont_ded_mont_bas_imp');
          
         //REPORTE SUPERVISORES
         Route::get('reporte_supervisores','ReportesController@index_supervisores');
@@ -492,7 +492,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('reporte_por_zona/{anio}/{id_hab_urb}','ReportesController@rep_por_zona');
         Route::get('reporte_corriente/{anio}','ReportesController@rep_corriente');
         Route::get('reporte_cajas','ReportesController@reporte_cajas');
-
+        
 
           
     });
