@@ -12,34 +12,40 @@
     </style>
     <body>
 
-        <img src="img/recibo_caja.jpg" style="width: 100%;position: absolute;">              
-        <div style="position: absolute;margin-top: 80px;margin-left: 640px; font-size: 20px;">
+        <img src="img/recibo_caja.jpg" style="width: 100%;position: absolute; z-index: 0"> 
+        <div style="z-index: 99; margin-top: 70px;">
+        <div style="margin-top: 5px;margin-right: 70px; font-size: 20px; text-align: right;">
             N°.{{$recibo[0]->serie}}
         </div>
-        <div style="position: absolute;margin-top: 90px;margin-left: 180px; font-size: 12px;">
+        <div style="margin-bottom: 15px;margin-left: 175px; font-size: 12px;">
             {{$recibo[0]->contribuyente}}
         </div>
-        <div style="position: absolute;margin-top: 122px;margin-left: 180px; font-size: 12px;">
+        <div style="margin-top: 5px;margin-left: 175px; font-size: 12px;">
             {{$recibo[0]->usuario}}
         </div>
-        <div style="position: absolute;margin-top: 138px;margin-left: 180px; font-size: 12px;">
-            {{$recibo[0]->id_rec_mtr}}
+        <div style="margin-left: 175px; font-size: 12px;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>{{$recibo[0]->id_rec_mtr}}</th>
+                        <th style="width: 155px; text-align: right;">{{date('M d',strtotime($recibo[0]->fecha))}}</th>
+                        <th style="width: 250px; text-align: right;">{{$recibo[0]->serie}}</th>
+                    </tr>
+                </thead>
+            </table> 
         </div>
-        <div style="position: absolute;margin-top: 138px;margin-left: 310px; font-size: 13px;">
-            {{date('M d',strtotime($recibo[0]->fecha))}}
-        </div>
-        <div style="position: absolute;margin-top: 138px;margin-left: 590px; font-size: 13px;">
-            {{$recibo[0]->serie}}
-        </div>
-        <div style="position: absolute;margin-top: 154px;margin-left: 180px; font-size: 13px;">
+        <div style="margin-top: 0px;margin-left: 175px; font-size: 13px;">
             {{$fecha_larga}}
         </div>
-        <div style="width: 700px;position: absolute;margin-top: 181px;margin-left: 50px; font-size: 13px;">
+        <div style="margin-top: 5px;margin-left: 115px; font-size: 13px;">
+            GLOSA : {{$recibo[0]->glosa}}
+        </div>
+        <div style="width: 700px;margin-top: 5px;margin-left: 70px; font-size: 13px;">
             <table class="table table-sm" style="font-size:14px">
                 <thead>
                     <tr>
                         <th style="width: 20px">Cant.</th>
-                        <th style="width: 70px">Consepto</th>
+                        <th style="width: 70px">Concepto</th>
                         <th style="width: 450px">Descripcion</th>
                         <th style="width: 60px" align="center">Prec.Unit</th>
                         <th style="width: 60px" align="center">Total</th>
@@ -57,10 +63,15 @@
                     @endforeach                    
                 </tbody>
             </table>
+            <div style="border-bottom: 1px solid #333"></div>
+            <div style="margin-top: 5px; font-size: 14px; text-align: right; padding-right: 8px;">
+                {{number_format($soles_numeros,2,".",",")}}
+            </div>
         </div>
-        <div style="position: absolute;margin-top: 249px;margin-left: 110px; font-size: 14px;">
+        <div style="margin-top: 5px;margin-left: 110px; font-size: 14px;">
             Son: &nbsp;{{$soles}}
         </div>
+    </div>
     </body>
 </html>
 

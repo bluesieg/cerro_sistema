@@ -372,10 +372,11 @@ class Caja_MovimientosController extends Controller {
 //        
 //        dd($detalle);
         $soles= $this->num2letras(round($recibo[0]->total,2));
+        $soles_numeros= $recibo[0]->total;
         date_default_timezone_set('America/Lima');
         $fecha_larga = $this->fecha_letras(date('d-m-Y')).' : '.date('h:i A');        
         
-        $view = \View::make('caja.reportes.pago_recibo', compact('recibo','detalle','soles','fecha_larga'))->render();
+        $view = \View::make('caja.reportes.pago_recibo', compact('recibo','detalle','soles','fecha_larga','soles_numeros'))->render();
 //        return $view;
         if (count($recibo) >= 1) {
             $pdf = \App::make('dompdf.wrapper');
