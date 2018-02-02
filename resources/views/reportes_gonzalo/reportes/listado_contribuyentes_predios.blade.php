@@ -10,7 +10,8 @@
         .footer {position: fixed }
     </style>
 </head>
-      <footer class="footer" style="font-size:0.8em; text-align: left; padding-top: 5px; padding-left: 10px;"><b>Impreso Por:&nbsp; </b>{{$usuario[0]->ape_nom}}</footer>
+    <footer class="footer" style="font-size:0.8em; text-align: left; padding-top: 5px; padding-left: 10px;"><b>Impreso Por:&nbsp; </b>{{$usuario[0]->ape_nom}}</footer>
+
 <body>
 <main>
 
@@ -21,7 +22,7 @@
             </td>
             <td style="width: 80%; padding-top: 0px; border:0px;">
                 <div id="details" class="sub2">
-                    <div id="invoice" style="font-size:0.8em" >
+                    <div id="invoice" style="font-size:0.7em" >
                         <h1>MUNICIPALIDAD DISTRITAL DE CERRO COLORADO</h1>
                         <div class="sub2">Creado por Ley 12075 el día 26 de Febrero de 1954</div>
                     </div>
@@ -33,15 +34,17 @@
 
     </table>
 
-    <center><div Class="asunto" style="margin-top: 1px;font-size:0.8em;"><b>REPORTE DE CONTRIBUYENTES</b></div></center>
-       <div class="subasunto" style="text-align: left; padding-left: 30px;font-size:0.8em;">
-           <h5 class="subasunto" style="text-align: right; padding-left: 30px;">{{ $fecha }}</h5>  
-           Año: {{ $anio }} - Hab. Urbana: {{$sql[0]->nomb_hab_urba}}
-       </div>    
-    
+    <center><div Class="asunto" style="margin-top: 1px;font-size:0.8em;"><b>LISTADO DE CONTRIBUYENTES Y PREDIOS</b></div></center>
+    <div class="subasunto" style=" margin-bottom:1px; text-align: left; padding-left: 30px;font-size:0.7em;">
+        <h5 class="subasunto" style="font-size:0.8em;  text-align: right; padding-left: 30px;">{{ $fecha }}</h5>  
+        Año: {{ $anio }} - Hab. Urbana: {{$sql[0]->nomb_hab_urba}}
+    </div>
     <input type="hidden" value=" {{$num= 1}}">
-    <div class="lado3" style="height: 435px;  margin-top: 0px;border-bottom: 0px solid #333">
-        <table border="0" cellspacing="0" cellpadding="0" style="margin-top: 0px;margin-bottom:20px; font-size: 1.3em;">
+    
+    <div class="lado3" style="height: 435px; border-bottom: 1px solid #333">
+
+        <br>
+        <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 30px; font-size: 1.3em;">
             <thead>
             <tr>
                 <th style="width: 10%;">Código</th>
@@ -66,7 +69,7 @@
                 <td style="border-right:0px; border-bottom: 0px; text-align: center;"></td>
                 <td style="border-right:0px; border-bottom: 0px; text-align: center;"></td>
                 <td style="border-right:0px; border-bottom: 0px; text-align: center;"></td>
-                <td style="text-align: left;">{{$sql[0]->cod_via}} - {{$sql[0]->nom_via}} - {{$sql[0]->nro_mun}} - {{$sql[0]->referencia}}</td>
+                <td style="text-align: center;">{{$sql[0]->cod_via}} - {{$sql[0]->nom_via}} - {{$sql[0]->nro_mun}} - {{$sql[0]->referencia}}</td>
                 <td style="text-align: center;">{{number_format($sql[0]->are_terr,2,'.',',')}}</td>
                 <td style="text-align: center;">{{number_format($sql[0]->area_const,2,'.',',')}}</td>
             </tr>
@@ -84,9 +87,9 @@
                 @else
 
                     <tr>
-                        <td style="text-align: left;">{{$sql[$i]->id_persona}}</td>
-                        <td style="text-align: left;">{{$sql[$i]->nro_doc_contri}}</td>
-                        <td style="border-right:0px; text-align: left;">{{$sql[$i]->contribuyente}}</td>
+                        <td style="text-align: center;">{{$sql[$i]->id_persona}}</td>
+                        <td style="text-align: center;">{{$sql[$i]->nro_doc_contri}}</td>
+                        <td style="border-right:0px; text-align: center;">{{$sql[$i]->contribuyente}}</td>
                         <td colspan="3" style="text-align: center;"></td>
    
                     </tr>
@@ -95,7 +98,7 @@
                         <td style="border-right:0px; border-bottom: 0px;border-top: 0px; text-align: center;"></td>
                         <td style="border-right:0px; border-bottom: 0px;border-top: 0px; text-align: center;"></td>
                         <td style="border-right:0px; border-bottom: 0px;border-top: 0px; text-align: center;"></td>
-                        <td style="text-align: left;">{{$sql[$i]->cod_via}} - {{$sql[$i]->nom_via}} - {{$sql[$i]->nro_mun}} - {{$sql[$i]->referencia}}</td>
+                        <td style="text-align: center;">{{$sql[$i]->cod_via}} - {{$sql[$i]->nom_via}} - {{$sql[$i]->nro_mun}} - {{$sql[$i]->referencia}}</td>
                         <td style="text-align: center;">{{number_format($sql[$i]->are_terr,2,'.',',')}}</td>
                         <td style="text-align: center;">{{number_format($sql[$i]->area_const,2,'.',',')}}</td>
 
@@ -108,6 +111,7 @@
             </tbody>
         </table>
     </div>
+  
 </body>
 
 </html>

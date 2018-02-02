@@ -7,8 +7,10 @@
     <style>
         .move-ahead { counter-increment: page 2; position: absolute; visibility: hidden; }
         .pagenum:after { content:' ' counter(page); }
+        .footer {position: fixed }
     </style>
 </head>
+<footer class="footer" style="font-size:0.8em; text-align: left; padding-top: 5px; padding-left: 10px;"><b>Impreso Por:&nbsp; </b>{{$usuario[0]->ape_nom}}</footer>
 <body>
 <main>
     <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px;">
@@ -25,21 +27,20 @@
                     <div  style="width: 95%; border-top:1px solid #999; margin-top: 5px; margin-left: 25px"></div>
                 </div>
             </td>
-            <td style="width: 10%;border: 0px;"></td>
+            <td style="width: 10%;border: 0px;"></td>REPORTE DE EMISION PREDIAL POR USO
         </tr>
 
     </table>
-
-    <center><div Class="asunto" style="margin-top: 1px;"><b>REPORTE DE EMISION PREDIAL POR USO</b></div></center>
-    <h5 class="subasunto" style="font-size:0.8em;  text-align: right; padding-left: 30px;">{{$usuario[0]->ape_nom}} - {{ $fecha }}</h5>
-    <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px;">
+    <center><div Class="asunto" style="margin-top: 1px;font-size:0.8em;"><b>REPORTE DE CONTRIBUYENTES</b></div></center>
+    <div class="subasunto" style=" margin-bottom:1px; text-align: left; padding-left: 30px;font-size:0.7em;">
+    <h5 class="subasunto" style="font-size:0.8em;  text-align: right; padding-left: 30px;">{{ $fecha }}</h5>  
             <table>
                 <thead>
                     <tr>
                         <th style="width: 5%; text-align: center;">AÑO</th>
-                        <th style="width: 5%; text-align: center;">HAB. URBANA</th>
+                        <th style="width: 25%; text-align: center;">HAB. URBANA</th>
                         <th style="width: 5%; text-align: center;">TIPO DE USO</th>
-                        <th style="width: 5%; text-align: center;">TOTAL</th>
+                        <th style="width: 3%; text-align: center;">TOTAL</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,7 +56,7 @@
     
     <input type="hidden" value=" {{$num= 1}}">
 
-    <div class="lado3" style="height: 435px; border-bottom: 1px solid #333">
+    <div class="lado3" style="height: 435px; border-bottom: 0px solid #333">
 
         <br>
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px; font-size: 1.0em;">

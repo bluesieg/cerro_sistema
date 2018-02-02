@@ -491,6 +491,7 @@ Route::group(['middleware' => 'auth'], function() {
         //andrea
         Route::get('reporte_por_zona/{anio}/{id_hab_urb}','ReportesController@rep_por_zona');
         Route::get('reporte_corriente/{anio}','ReportesController@rep_corriente');
+        Route::get('reporte_fraccionamiento/{anio}/{estado}','ReportesController@rep_fraccionamiento');
         Route::get('reporte_cajas','ReportesController@reporte_cajas');
         
 

@@ -65,12 +65,15 @@
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 30px; font-size: 1.3em;">
             <thead>
             <tr >
-                <th style="width: 5%; text-align: center;">N°</th>
-                <th style="width: 7%; text-align: center;">DNI/RUC</th>
-                <th style="width: 25%; text-align: center;">NOMBRE</th>
-                <th style="width: 13%; text-align: center;">TIPO CONTRIBUYENTE</th>
+                <th style="width: 3%; text-align: center;">N°</th>
+                <th style="width: 6%; text-align: center;">DNI/RUC</th>
+                <th style="width: 18%; text-align: center;">NOMBRE</th>
+                <th style="width: 10%; text-align: center;">TIPO CONTRIBUYENTE</th>
                 <th style="width: 25%; text-align: center;">DOMICILIO FISCAL</th>
                 <th style="width: 25%; text-align: center;">LISTA DE PREDIOS</th>
+                <th style="width: 5%; text-align: center;">MZNA</th>
+                <th style="width: 5%; text-align: center;">LOTE</th>
+                
               
             </tr>
             </thead>
@@ -80,10 +83,12 @@
                 <tr>
                     <td style="text-align: center;">{{ $num++ }}</td>
                     <td style="text-align: center;">{{ $cont->nro_doc }}</td>
-                    <td style="text-align: center;">{{$cont->contribuyente}}</td>
+                    <td style="text-align: left;">{{$cont->contribuyente}}</td>
                     <td style="text-align: center;">{{$cont->cond_prop_descripc}}</td>
-                    <td style="text-align: center;">{{$cont->dom_fis}}</td>
-                    <td style="text-align: center;">{{$cont->cod_via}} - {{$cont->nom_via}} - {{$cont->nro_mun}} - {{$cont->referencia}}</td>
+                    <td style="text-align: left;">{{$cont->dom_fis}}</td>
+                    <td style="text-align: left;">{{$cont->cod_via}} - {{$cont->nom_via}} - {{$cont->nro_mun}} - {{$cont->referencia}}</td>
+                    <td style="text-align: center;">{{$cont->mzna}}</td>
+                    <td style="text-align: center;">{{$cont->lote}}</td>
                 </tr>
             @endforeach
             </tbody>

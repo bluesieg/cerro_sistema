@@ -259,9 +259,9 @@ class Caja_Est_CuentasController extends Controller
         
         $email = \Mail::send('caja.reportes.email', compact('persona'), function ($message) use($persona,$correo,$containfile,$pathToFile) {
 
-            $message->from('gzlcentenoz@gmail.com', 'Curso Laravel');
+            $message->from('gzlcentenoz@gmail.com', 'Municipalidad Distrital de Cerro Colorado');
 
-            $message->to($correo)->subject('Correo de Prueba');
+            $message->to($correo)->subject('Reporte de Estado de Cuenta');
             
             $message->cc('gzlcentenoz@gmail.com');
             

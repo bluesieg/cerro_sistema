@@ -47,7 +47,7 @@
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
-                                <h4><a href="#" onclick="dlg_reportes_andrea(4);" id="titulo_r1">
+                                <h4><a href="#" onclick="dlg_reportes_andrea(1);" id="titulo_r1">
                                         REPORTE 1: Listado de datos de los contribuyentes.
                                     </a>
                                     <small>Descripción reporte 1</small>
@@ -61,7 +61,7 @@
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
-                                <h4><a href="#" onclick="dlg_reportes_andrea(5);" id="titulo_r1">
+                                <h4><a href="#" onclick="dlg_reportes_andrea(2);" id="titulo_r1">
                                         REPORTE 2: Listado de datos de los contribuyentes y predios.
                                     </a>
                                     <small>Descripción reporte 2</small>
@@ -75,7 +75,7 @@
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
-                                <h4><a href="#" onclick="dlg_reportes_andrea(6);" id="titulo_r1">
+                                <h4><a href="#" onclick="dlg_reportes_andrea(3);" id="titulo_r1">
                                         REPORTE 4: Reporte de cantidad de contribuyentes y predios por zonas.
                                     </a>
                                     <small>Descripción reporte 4</small>
@@ -88,7 +88,7 @@
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
-                                <h4><a href="#" onclick="dlg_reportes_andrea(7);" id="titulo_r1">
+                                <h4><a href="#" onclick="dlg_reportes_andrea(4);" id="titulo_r1">
                                         REPORTE 5: Reporte Emision Predial por Uso.
                                     </a>
                                     <small>Descripción reporte 5</small>
@@ -101,7 +101,7 @@
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
-                                <h4><a href="#" onclick="dlg_reportes_andrea(8);" id="titulo_r1">
+                                <h4><a href="#" onclick="dlg_reportes_andrea(5);" id="titulo_r1">
                                         REPORTE 6: Cantidad de contribuyentes por Condicion(Afecto, Inafecto, Exoneracion Parcial, Pensionista y Adulto mayor).
                                     </a>
                                     <small>Descripción reporte 6</small>
@@ -110,11 +110,12 @@
           
                          
                         </tr>
-                       <tr>
+                      
+                        <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
-                                <h4><a href="#" onclick="dlg_reportes_andrea(0);" id="titulo_r1">
-                                        REPORTE 7: Reporte de Impuesto Predial Por Habilitacion Urbana - Zona. ******</a>
+                                <h4><a href="#" onclick="dlg_reportes_andrea(6);" id="titulo_r1">
+                                        REPORTE 7: Reporte de Impuesto Predial Corriente y no corriente.</a>
                                     <small>Descripción reporte 7</small>
                                 </h4>
                             </td>
@@ -124,8 +125,8 @@
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
-                                <h4><a href="#" onclick="dlg_reportes_andrea(1);" id="titulo_r1">
-                                        REPORTE 8: Reporte de Impuesto Predial Corriente y no corriente.</a>
+                                <h4><a href="#" onclick="dlg_reportes_andrea(7);" id="titulo_r1">
+                                        REPORTE 8: Reporte de % de Morosidad de impuesto predial</a>
                                     <small>Descripción reporte 8</small>
                                 </h4>
                             </td>
@@ -135,8 +136,8 @@
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
-                                <h4><a href="#" onclick="dlg_reportes_andrea(2);" id="titulo_r1">
-                                        REPORTE 9: Reporte de Fracionamiento Realizados y cancelados.******</a>
+                                <h4><a href="#" onclick="dlg_reportes_andrea(8);" id="titulo_r1">
+                                        REPORTE 9: Reporte de % de Morosidad de Arbitrio Municipal</a>
                                     <small>Descripción reporte 9</small>
                                 </h4>
                             </td>
@@ -146,9 +147,44 @@
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
-                                <h4><a href="#" onclick="dlg_reportes_andrea(3);" id="titulo_r1">
-                                        REPORTE 10: Reporte General de Caja.</a>
+                                <h4><a href="#" onclick="dlg_reportes_andrea(9);" id="titulo_r1">
+                                        REPORTE 10: Reporte de Recaudacion Impuesto Predial por Zona</a>
                                     <small>Descripción reporte 10</small>
+                                </h4>
+                            </td>
+          
+                         
+                        </tr>
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_reportes_andrea(10);" id="titulo_r1">
+                                        REPORTE 11: Reporte de Recaudacion de Arbitrios Municipales por Zona</a>
+                                    <small>Descripción reporte 11</small>
+                                </h4>
+                            </td>
+          
+                         
+                        </tr>
+                        
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_reportes_andrea(11);" id="titulo_r1">
+                                        REPORTE 12: Reporte de Fracionamiento Realizados y cancelados.</a>
+                                    <small>Descripción reporte 12</small>
+                                </h4>
+                            </td>
+          
+                         
+                        </tr>
+                        
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_reportes_andrea(3);" id="titulo_r1">
+                                        REPORTE 13: Reporte General de Caja.</a>
+                                    <small>Descripción reporte 13</small>
                                 </h4>
                             </td>
           
@@ -566,7 +602,7 @@ function autocompletar_haburb(textbox){
                     <section class="col col-6" style="padding-right:5px;">
                         <label class="label">AÑO:</label>
                         <label class="select">
-                            <select id='select_anio_ep' class="form-control col-lg-8">
+                            <select id='anio_fraccionamiento' class="form-control col-lg-8">
                                 @foreach ($anio_tra as $anio_ep)
                                     <option value='{{$anio_ep->anio}}' >{{$anio_ep->anio}}</option>
                                 @endforeach
@@ -577,8 +613,8 @@ function autocompletar_haburb(textbox){
                         <label class="select">
                             <select id='select_estado' class="form-control col-lg-8">
                                 <option value='0'>-- TODOS --</option>
-                                @foreach ($sectores as $sector_ep)
-                                    <option value='{{$sector_ep->id_sec}}' >{{$sector_ep->sector}}</option>
+                                @foreach ($estado_frac as $estado)
+                                    <option value='{{$estado->id_estado}}' >{{$estado->desc_estado}}</option>
                                 @endforeach
                             </select><i></i> </label>
                     </section>

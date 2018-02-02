@@ -38,7 +38,24 @@
     <center><div Class="asunto" style="margin-top: 1px;font-size:0.8em;"><b>REPORTE DE CONTRIBUYENTES</b></div></center>
     <div class="subasunto" style=" margin-bottom:1px; text-align: left; padding-left: 30px;font-size:0.7em;">
         <h5 class="subasunto" style="font-size:0.8em;  text-align: right; padding-left: 30px;">{{ $fecha }}</h5>  
-        Año: {{ $anio }} - Hab. Urbana: {{$sql[0]->nomb_hab_urba}}
+       
+        <div style="padding-left: 160px;">
+            <table style="width: 60%;">
+                <thead>
+                    <tr>
+                        <th style="width: 5%; text-align: center;">AÑO</th>
+                        <th style="width: 15%; text-align: center;">ESTADO</th>
+                        <th style="width: 3%; text-align: center;">TOTAL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                            <td style="text-align: center;">{{ $sql[0]->anio }}</td>
+                            <td style="text-align: center;">{{ $sql[0]->est_actual }}</td>
+                            <td style="text-align: center;">{{ $total[0]->estados }}</td>
+                    </tr>
+                </tbody>
+            </table></div>    
     </div>
     
     <input type="hidden" value=" {{$num= 1}}">
@@ -49,9 +66,9 @@
             <tr >
                 <th style="width: 5%;">N°</th>
                 <th style="width: 10%">DNI/RUC</th>
-                <th style="width: 30%;">CONTRIBUYENTE</th>
-                <th style="width: 15%;">TIPO PERSONA</th>
-                <th style="width: 40%">DOMICILIO</th>
+                <th style="width: 40%;">CONTRIBUYENTE</th>
+                <th style="width: 14%;">EJERCICIOS FRACCIONADO</th>
+                <th style="width: 5%">N° CUOTAS</th>
             </tr>
             </thead>
             <tbody>
@@ -61,8 +78,8 @@
                     <td style="text-align: center;">{{ $num++ }}</td>
                     <td style="text-align: center;">{{$cont->nro_doc}}</td>
                     <td style="text-align: left;">{{ $cont->contribuyente }}</td>
-                    <td style="text-align: left;">{{$cont->persona}}</td>
-                    <td style="text-align: left;">{{$cont->dom_fis}}</td>
+                    <td style="text-align: center;">{{$cont->periodo}}</td>
+                    <td style="text-align: center;">{{$cont->nro_cuotas}}</td>
                 </tr>
                 
             @endforeach

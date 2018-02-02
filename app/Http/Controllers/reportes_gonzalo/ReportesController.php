@@ -23,9 +23,10 @@ class ReportesController extends Controller
         $sectores =  DB::table('catastro.sectores')->orderBy('sector', 'asc')->where('id_sec', '>', 0)->get();
         $hab_urb =  DB::table('catastro.hab_urb')->orderBy('nomb_hab_urba', 'asc')->get();
         $condicion = DB::select('select id_exo,desc_exon from adm_tri.exoneracion order by id_exo asc');
+        $estado_frac = DB::select('select id_estado,desc_estado from fraccionamiento.convenio_estado order by desc_estado asc');
         $usos_predio_arb = DB::table('adm_tri.uso_predio_arbitrios')->orderBy('id_uso_arb', 'asc')->get();
         $agencias = DB::select('select id_caj,descrip_caja from tesoreria.cajas order by descrip_caja desc');
-        return view('reportes_gonzalo/vw_reportes', compact('menu','permisos','anio_tra','sectores','hab_urb','condicion','usos_predio_arb','agencias'));
+        return view('reportes_gonzalo/vw_reportes', compact('menu','permisos','anio_tra','sectores','hab_urb','condicion','usos_predio_arb','agencias','estado_frac'));
     }
     public function index_supervisores()
     {
@@ -194,7 +195,7 @@ class ReportesController extends Controller
             } 
         }
         if($tip==0){
-            $sql=DB::table('adm_tri.vw_contrib_predios_c')->where('ano_cta',$anio)->where('id_hab_urb',$hab_urb)->get();
+            $sql=DB::table('adm_tri.vw_contrib_predios_c')->where('ano_cta',$anio)->where('id_hab_urb',$hab_urb)->orderBy('contribuyente')->get();
             $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
         $fecha = (date('d/m/Y H:i:s'));
         if(count($sql)>0)
@@ -221,26 +222,28 @@ class ReportesController extends Controller
 
                 $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio ) {
 
-                    $sql = DB::select("select id_persona,nro_doc_contri,contribuyente, (coalesce(cod_via, '') || ' ' || coalesce(nom_via, '') || ' ' || coalesce(nro_mun, '') || ' ' || coalesce(referencia, '')) as list_predio,are_terr,area_const from reportes.vw_02_contri_predios where anio = '$anio' order by contribuyente asc" );
+                    $sql = DB::select("select id_persona,nro_doc_contri,contribuyente, (coalesce(cod_via, '') || ' ' || coalesce(nom_via, '') || ' ' || coalesce(nro_mun, '') || ' ' || coalesce(referencia, '')) as list_predio,mzna,lote_cat,are_terr,area_const from reportes.vw_02_contri_predios where anio = '$anio' order by contribuyente asc" );
 
                     $data= json_decode( json_encode($sql), true);
 
                     $sheet->fromArray($data);
-                    $sheet->row(1, array("CODIGO", "DNI/RUC", "NOMBRE O RAZON SOCIAL", "LISTADO DE PREDIOS", "AREA DE TERRENO CONSTRUIDA", "AREA DE TERRENO"))->freezeFirstRow();
+                    $sheet->row(1, array("CODIGO", "DNI/RUC", "NOMBRE O RAZON SOCIAL", "LISTADO DE PREDIOS","MZNA","LOTE", "AREA DE TERRENO CONSTRUIDA", "AREA DE TERRENO"))->freezeFirstRow();
                     $sheet->setWidth(array(
                         'A'     =>  15,
                         'B'     =>  20,
                         'C'     =>  40,
                         'D'     =>  70,
                         'E'     =>  10,
-                        'F'     =>  10
+                        'F'     =>  10,
+                        'G'     =>  10,
+                        'H'     =>  10
                     ));
                 });
                 })->export('xls');
             }
         }
         if($tip==0){
-            $sql=DB::table('reportes.vw_02_contri_predios')->where('anio',$anio)->where('id_hab_urb',$hab_urb1)->orderBy('id_contrib')->get();
+            $sql=DB::table('reportes.vw_02_contri_predios')->where('anio',$anio)->where('id_hab_urb',$hab_urb1)->orderBy('contribuyente')->get();
             $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
             $fecha = (date('d/m/Y H:i:s'));
             if(count($sql)>0)
@@ -386,12 +389,12 @@ class ReportesController extends Controller
 
                 $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio ) {
 
-                    $sql = DB::select("select nro_doc, contribuyente, cond_prop_descripc, dom_fis, (coalesce(cod_via, '') || ' ' || coalesce(nom_via, '') || ' ' || coalesce(nro_mun, '') || ' ' || coalesce(referencia, '')) as predio from adm_tri.vw_predi_urba where anio = '$anio'" );
+                    $sql = DB::select("select nro_doc, contribuyente, cond_prop_descripc, dom_fis,(coalesce(cod_via, '') || ' ' || coalesce(nom_via, '') || ' ' || coalesce(nro_mun, '') || ' ' || coalesce(referencia, '')) as predio, mzna,lote from adm_tri.vw_predi_urba where anio = '$anio'" );
 
                     $data= json_decode( json_encode($sql), true);
 
                     $sheet->fromArray($data);
-                    $sheet->row(1, array("DNI/RUC", "NOMBRE", "TIPO CONTRIBUYENTE", "DOMICILIO FISCAL", "LISTA DE PREDIOS"))->freezeFirstRow();
+                    $sheet->row(1, array("DNI/RUC", "NOMBRE", "TIPO CONTRIBUYENTE", "DOMICILIO FISCAL", "LISTA DE PREDIOS","MZNA","LOTE"))->freezeFirstRow();
                     $sheet->setWidth(array(
                         'A'     =>  15,
                         'B'     =>  50,
@@ -406,7 +409,7 @@ class ReportesController extends Controller
         }
         if($tip==0)
         {
-              $sql=DB::table('adm_tri.vw_predi_urba')->where('anio',$anio)->where('id_hab_urb',$hab_urb)->orderBy('id_contrib')->get();
+              $sql=DB::table('adm_tri.vw_predi_urba')->where('anio',$anio)->where('id_hab_urb',$hab_urb)->orderBy('contribuyente')->get();
               $nro_zonas = DB::select("select count(distinct id_contrib) as total from adm_tri.vw_predi_urba where id_hab_urb = '$hab_urb' ");
               $total = DB::select("select count(id_contrib) as total from adm_tri.vw_predi_urba where id_hab_urb = '$hab_urb' ");
               $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
@@ -521,12 +524,12 @@ class ReportesController extends Controller
 
                 $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio ) {
 
-                    $sql = DB::select("select pers_nro_doc, contribuyente, dom_fis, porctje, desc_exon, sec, base_impon from reportes.vw_por_tipo_exoneracion where anio = '$anio'" );
+                    $sql = DB::select("select pers_nro_doc, contribuyente, dom_fis, porctje, desc_exon, sec,mzna,lote, base_impon from reportes.vw_por_tipo_exoneracion where anio = '$anio'" );
 
                     $data= json_decode( json_encode($sql), true);
 
                     $sheet->fromArray($data);
-                    $sheet->row(1, array("DNI", "NOMBRE", "DOMICILIO FISCAL", "DEDUCCION", "CONDICION", "SECTOR", "BASE IMPONIBLE"))->freezeFirstRow();
+                    $sheet->row(1, array("DNI", "NOMBRE", "DOMICILIO FISCAL", "DEDUCCION", "CONDICION", "SECTOR","MZNA","LOTE", "BASE IMPONIBLE"))->freezeFirstRow();
                     $sheet->setWidth(array(
                         'A'     =>  15,
                         'B'     =>  50,
@@ -534,7 +537,9 @@ class ReportesController extends Controller
                         'D'     =>  30,
                         'E'     =>  30,
                         'F'     =>  20,
-                        'G'     =>  20
+                        'G'     =>  20,
+                        'H'     =>  20,
+                        'I'     =>  20
                     ));
                 });
 
@@ -634,6 +639,27 @@ class ReportesController extends Controller
             set_time_limit(0);
             ini_set('memory_limit', '2G');
             $view =  \View::make('reportes_gonzalo.reportes.rep_corriente', compact('sql','sql1','usuario','fecha'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("PRUEBA".".pdf");
+        }
+        else
+        {
+            return 'NO HAY RESULTADOS';
+        }
+        
+    }
+     public function rep_fraccionamiento($anio, $estado)
+    {
+        $sql=DB::table('fraccionamiento.vw_convenios')->where('estado',$estado)->where('anio',$anio)->orderBy('contribuyente','asc')->get();
+        $total = DB::select("select count(est_actual) as estados from fraccionamiento.vw_convenios where estado = '$estado' and anio = '$anio'");
+        $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
+        $fecha = (date('d/m/Y H:i:s'));
+        if(count($sql)>0)
+        {
+            set_time_limit(0);
+            ini_set('memory_limit', '2G');
+            $view =  \View::make('reportes_gonzalo.reportes.reporte_fraccionamiento', compact('sql','usuario','fecha','total'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("PRUEBA".".pdf");

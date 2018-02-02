@@ -437,45 +437,52 @@ function crear_dialogo_por_condicion()
 
 function dlg_reportes_andrea(tipo)
 {
-    if (tipo===0) {
-        crear_dialogo_por_zona();
-         $('#hab_urb').val("");
-         $('#hiddenhab').val("");
-
-    } 
-    if (tipo===1) {
-        crear_dialogo_corriente();
-    } 
-    if (tipo===2) {
-        crear_dialogo_fraccionamiento();
-    } 
-    if (tipo===3) {
-        crear_dialogo_caja();
-    }
-    if (tipo===4) {
+    if (tipo===1)  {
         crear_dialogo_datos_contribuyentes();
          $('#habilitacion_urbana').val("");
          $('#hidden_habilitacion_urbana').val("");
     } 
-    if (tipo===5) {
+    if (tipo===2) {
         crear_dialogo_datos_contribuyentes_p();
          $('#habilitacion_urbana1').val("");
          $('#hidden_habilitacion_urbana1').val("");
     }
-    if (tipo===6) {
+    if (tipo===3) {
         crear_dialogo_cantidad_por_zona();
          $('#habilitacion_urbana2').val("");
          $('#hidden_habilitacion_urbana2').val("");
     }
-    if (tipo===7) {
+    if (tipo===4) {
         crear_dialogo_por_uso();
          $('#habilitacion_urbana3').val("");
          $('#hidden_habilitacion_urbana3').val("");
     }
-    if (tipo===8) {
+    if (tipo===5) {
         crear_dialogo_por_condicion();
          $('#habilitacion_urbana4').val("");
          $('#hidden_habilitacion_urbana4').val("");
+         
+    }
+    if (tipo===6) {
+        crear_dialogo_corriente();
+    } 
+    if (tipo===7) {
+        crear_dialogo_morosidad_predios();
+    } 
+    if (tipo===8) {
+        crear_dialogo_morosidad_arbitrios();
+    } 
+    if (tipo===9) {
+        crear_dialogo_recaudacion_predial();
+    }
+    if (tipo===10) {
+        crear_dialogo_recaudacion_arbitrios();
+    }    
+    if (tipo===11) {
+        crear_dialogo_fraccionamiento();
+    }
+    if (tipo===12) {
+        crear_dialogo_caja();
     }
 }
 
@@ -494,7 +501,7 @@ function abrir_reporte_corriente()
 }
 function abrir_reporte_fraccionamiento()
 {
-    window.open('reporte_corriente/'+$('#anio_corriente').val()+$('#select_estado').val());
+    window.open('reporte_fraccionamiento/'+$('#anio_fraccionamiento').val()+'/'+$('#select_estado').val());
 }
 function abrir_reporte_cajas()
 {    window.open('reporte_cajas?ini='+$('#fec_ini_cajas').val()+'&fin='+$('#fec_fin_cajas').val()+'&id_agen='+$('#select_agencia').val()+'');

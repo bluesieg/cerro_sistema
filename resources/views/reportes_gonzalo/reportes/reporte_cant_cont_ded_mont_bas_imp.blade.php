@@ -66,9 +66,9 @@
                 <th style="width: 8%; text-align: center;">DNI</th>
                 <th style="width: 25%; text-align: center;">NOMBRE</th>
                 <th style="width: 25%; text-align: center;">DOMICILIO FISCAL</th>
-                <th style="width: 10%; text-align: center;">DEDUCCION</th>
-                <th style="width: 10%; text-align: center;">CONDICION</th>
                 <th style="width: 7%; text-align: center;">MZNA</th>
+                <th style="width: 7%; text-align: center;">LOTE</th>
+                <th style="width: 10%; text-align: center;">DEDUCCION</th>
                 <th style="width: 10%; text-align: center;">BASE IMPONIBLE</th>
             </tr>
             </thead>
@@ -80,9 +80,9 @@
                     <td style="text-align: center;">{{ $cont->pers_nro_doc }}</td>
                     <td style="text-align: center;">{{$cont->contribuyente}}</td>
                     <td style="text-align: center;">{{ $cont->dom_fis }}</td>
+                    <td style="text-align: center;">{{ $cont->mzna }}</td>
+                    <td style="text-align: center;">{{ $cont->lote }}</td>
                     <td style="text-align: center;">{{ $cont->porctje }}%</td>
-                    <td style="text-align: center;">{{ $cont->desc_exon }}</td>
-                    <td style="text-align: center;">{{ $cont->nomb_hab_urba}}</td>
                     <td style="text-align: center;">{{ number_format($cont->base_impon,2,'.',',')}}</td>
                 </tr>
             @endforeach
