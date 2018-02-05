@@ -76,7 +76,7 @@
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
                                 <h4><a href="#" onclick="dlg_reportes_andrea(3);" id="titulo_r1">
-                                        REPORTE 4: Reporte de cantidad de contribuyentes y predios por zonas.
+                                        REPORTE 3: Reporte de cantidad de contribuyentes y predios por zonas.
                                     </a>
                                     <small>Descripción reporte 4</small>
                                 </h4>
@@ -89,9 +89,9 @@
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
                                 <h4><a href="#" onclick="dlg_reportes_andrea(4);" id="titulo_r1">
-                                        REPORTE 5: Reporte Emision Predial por Uso.
+                                        REPORTE 4: Reporte Emision Predial por Uso.
                                     </a>
-                                    <small>Descripción reporte 5</small>
+                                    <small>Descripción reporte 4</small>
                                 </h4>
                             </td>
           
@@ -102,9 +102,9 @@
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
                                 <h4><a href="#" onclick="dlg_reportes_andrea(5);" id="titulo_r1">
-                                        REPORTE 6: Cantidad de contribuyentes por Condicion(Afecto, Inafecto, Exoneracion Parcial, Pensionista y Adulto mayor).
+                                        REPORTE 5: Cantidad de contribuyentes por Condicion(Afecto, Inafecto, Exoneracion Parcial, Pensionista y Adulto mayor).
                                     </a>
-                                    <small>Descripción reporte 6</small>
+                                    <small>Descripción reporte 5</small>
                                 </h4>
                             </td>
           
@@ -115,8 +115,8 @@
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
                                 <h4><a href="#" onclick="dlg_reportes_andrea(6);" id="titulo_r1">
-                                        REPORTE 7: Reporte de Impuesto Predial Corriente y no corriente.</a>
-                                    <small>Descripción reporte 7</small>
+                                        REPORTE 6: Reporte de Impuesto Predial Corriente y no corriente.</a>
+                                    <small>Descripción reporte 6</small>
                                 </h4>
                             </td>
           
@@ -126,8 +126,8 @@
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
                                 <h4><a href="#" onclick="dlg_reportes_andrea(7);" id="titulo_r1">
-                                        REPORTE 8: Reporte de % de Morosidad de impuesto predial</a>
-                                    <small>Descripción reporte 8</small>
+                                        REPORTE 7: Reporte de % de Morosidad de impuesto predial</a>
+                                    <small>Descripción reporte 7</small>
                                 </h4>
                             </td>
           
@@ -137,8 +137,8 @@
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
                                 <h4><a href="#" onclick="dlg_reportes_andrea(8);" id="titulo_r1">
-                                        REPORTE 9: Reporte de % de Morosidad de Arbitrio Municipal</a>
-                                    <small>Descripción reporte 9</small>
+                                        REPORTE 8: Reporte de % de Morosidad de Arbitrio Municipal</a>
+                                    <small>Descripción reporte 8</small>
                                 </h4>
                             </td>
           
@@ -148,8 +148,8 @@
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
                                 <h4><a href="#" onclick="dlg_reportes_andrea(9);" id="titulo_r1">
-                                        REPORTE 10: Reporte de Recaudacion Impuesto Predial por Zona</a>
-                                    <small>Descripción reporte 10</small>
+                                        REPORTE 9: Reporte de Recaudacion Impuesto Predial por Zona</a>
+                                    <small>Descripción reporte 9</small>
                                 </h4>
                             </td>
           
@@ -159,8 +159,8 @@
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
                                 <h4><a href="#" onclick="dlg_reportes_andrea(10);" id="titulo_r1">
-                                        REPORTE 11: Reporte de Recaudacion de Arbitrios Municipales por Zona</a>
-                                    <small>Descripción reporte 11</small>
+                                        REPORTE 10: Reporte de Recaudacion de Arbitrios Municipales por Zona</a>
+                                    <small>Descripción reporte 10</small>
                                 </h4>
                             </td>
           
@@ -171,18 +171,41 @@
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
                                 <h4><a href="#" onclick="dlg_reportes_andrea(11);" id="titulo_r1">
-                                        REPORTE 12: Reporte de Fracionamiento Realizados y cancelados.</a>
+                                        REPORTE 11: Reporte de Fracionamiento Realizados y cancelados.</a>
+                                    <small>Descripción reporte 11</small>
+                                </h4>
+                            </td>
+          
+                         
+                        </tr>
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_reportes_andrea(12);" id="titulo_r1">
+                                        REPORTE 12: Reporte de Cantidad de Contribuyentes según Forma de Adquisición.</a>
                                     <small>Descripción reporte 12</small>
                                 </h4>
                             </td>
           
                          
                         </tr>
+                         <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_reportes_andrea(13);" id="titulo_r1">
+                                        REPORTE 13: Reporte de Cantidad de Contribuyentes Deudores y no Deudores.</a>
+                                    <small>Descripción reporte 13</small>
+                                </h4>
+                            </td>
+          
+                         
+                        </tr>
+                        
                         
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
-                                <h4><a href="#" onclick="dlg_reportes_andrea(3);" id="titulo_r1">
+                                <h4><a href="#" onclick="dlg_reportes_andrea(20);" id="titulo_r1">
                                         REPORTE 13: Reporte General de Caja.</a>
                                     <small>Descripción reporte 13</small>
                                 </h4>

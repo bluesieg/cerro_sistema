@@ -56,6 +56,18 @@
           
                          
                         </tr>
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-money fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_op_reportes(4);" >
+                                        Órdenes de Pago Emitidas
+                                    </a>
+                                    <small>Descripción reporte: Muestra El Número y Lista de O.P. Emitidas</small>
+                                </h4>
+                            </td>
+          
+                         
+                        </tr>
                         <!-- end TR -->
                         </tbody>
                     </table>

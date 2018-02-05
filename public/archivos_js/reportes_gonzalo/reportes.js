@@ -482,6 +482,12 @@ function dlg_reportes_andrea(tipo)
         crear_dialogo_fraccionamiento();
     }
     if (tipo===12) {
+        crear_dialogo_forma_adq();
+    }
+    if (tipo===13) {
+        crear_dialogo_deudores();
+    }
+    if (tipo===20) {
         crear_dialogo_caja();
     }
 }
