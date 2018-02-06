@@ -198,7 +198,7 @@
         jQuery("#table_predios_contri").jqGrid({
             url: 'trae_pred_carta/0',
             datatype: 'json', mtype: 'GET',
-            height: '300px', autowidth: true,
+            height: '300px', width: '500px',
             toolbarfilter: true,
             colNames: ['id_pred_anio','id_fic','id_puente','Tipo','codigo','Ubicación','N° Ficha ver','Fiscalizar'],
             rowNum: 20, sortname: 'id_puente', sortorder: 'asc', viewrecords: true, caption: 'Predios a Fiscalizar', align: "center",

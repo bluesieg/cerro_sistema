@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Example 2</title>
+    <title>Hoja Resumen</title>
         <link href="{{ asset('css/pdf.css') }}" rel="stylesheet">
         <style>
             @page { margin-top: 20px !important;};
@@ -163,7 +163,7 @@
         </tbody>
         
       </table>
-        <div class="lado3" style="height: 425px; border-bottom: 1px solid #333">
+        <div class="lado3" style="height: 420px; border-bottom: 1px solid #333">
             INFORMACION ADICIONAL. 
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px; font-size: 1.3em;">
         <thead>
@@ -232,7 +232,7 @@
               </tr>
               
             </thead>
-            <div style="margin-bottom: 4px; font-size: 0.6em; text-align:right ;">IMPRESO POR : {{$usuario[0]->ape_nom}}</div>
+            <div style="padding-top: 1px; font-size: 0.6em; text-align:right ;">IMPRESO POR : {{$usuario[0]->ape_nom}}</div>
         </table>
         
   </body>

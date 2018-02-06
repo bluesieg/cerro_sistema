@@ -17,7 +17,7 @@
                     <div class="col-xs-12">
                         <div class="col-xs-2 col-sm-12 col-md-12 col-lg-3">
                             <label class="select">Filtro Año:</label>
-                            <select id="vw_conve_fracc_cb_anio" class="input-sm">
+                            <select onchange="selecciona_anio();" id="vw_conve_fracc_cb_anio" class="input-sm">
                                 @foreach ($anio as $anio1)
                                 <option value='{{$anio1->anio}}' >{{$anio1->anio}}</option>
                                 @endforeach
@@ -52,8 +52,9 @@
     $(document).ready(function () {        
         $("#menu_fracc").show();
         $("#li_fraccionamiento").addClass('cr-active');
+        anio = $("#vw_conve_fracc_cb_anio").val(); 
         jQuery("#table_Convenios").jqGrid({
-            url: 'grid_Convenios?anio='+$("#vw_conve_fracc_cb_anio").val(),
+            url: 'grid_Convenios?anio='+ anio,
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
             colNames: ['Nro.Convenio', 'Año','id_contrib','Contribuyente', 'Fecha', 'Interes', 'N° Cuotas', 'Estado', 'Total'],

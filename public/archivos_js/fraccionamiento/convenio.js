@@ -429,3 +429,14 @@ sumaFecha = function(d, fecha){
     var fechaFinal = dia+sep+mes+sep+anno;
     return (fechaFinal);
 };
+
+
+function selecciona_anio(){
+    
+    aniox = $("#vw_conve_fracc_cb_anio").val();
+
+    jQuery("#table_Convenios").jqGrid('setGridParam', {
+         url: 'grid_Convenios?anio=' + aniox 
+    }).trigger('reloadGrid');
+
+}

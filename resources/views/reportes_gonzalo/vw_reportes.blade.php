@@ -76,7 +76,7 @@
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
                                 <h4><a href="#" onclick="dlg_reportes_andrea(3);" id="titulo_r1">
-                                        REPORTE 3: Reporte de cantidad de contribuyentes y predios por zonas.
+                                        REPORTE 4: Reporte de cantidad de contribuyentes y predios por zonas.
                                     </a>
                                     <small>Descripción reporte 4</small>
                                 </h4>
@@ -89,7 +89,7 @@
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
                                 <h4><a href="#" onclick="dlg_reportes_andrea(4);" id="titulo_r1">
-                                        REPORTE 4: Reporte Emision Predial por Uso.
+                                        REPORTE 5: Reporte Numero de Predios de la emision predial por usos.
                                     </a>
                                     <small>Descripción reporte 4</small>
                                 </h4>
@@ -102,7 +102,7 @@
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
                                 <h4><a href="#" onclick="dlg_reportes_andrea(5);" id="titulo_r1">
-                                        REPORTE 5: Cantidad de contribuyentes por Condicion(Afecto, Inafecto, Exoneracion Parcial, Pensionista y Adulto mayor).
+                                        REPORTE 6: Cantidad de contribuyentes por Condicion(Afecto, Inafecto, Exoneracion Parcial, Pensionista y Adulto mayor).
                                     </a>
                                     <small>Descripción reporte 5</small>
                                 </h4>

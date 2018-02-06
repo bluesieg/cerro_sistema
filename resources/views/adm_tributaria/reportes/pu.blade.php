@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Example 2</title>
+    <title>Predio Urbano</title>
         <link href="{{ asset('css/pdf.css') }}" rel="stylesheet">
         <style>
             @page { margin-top: 20px !important;};
@@ -66,7 +66,7 @@
         <thead>
             <tr>
                 <td colspan="2" style="border: 0px; padding: 0px;">
-                    DATOS DEL CONTRIBUYENTE / CONYUGUE:. 
+                    DATOS DEL CONTRIBUYENTE / CÓNYUGUE:. 
                 </td
                 <td rowspan="4" style="width: 20%; padding: 0px !important;">
                   @if (count($foto) >= 1)
@@ -204,7 +204,7 @@
         <thead>
           <tr>
               <th style="width: 3%">COD</th>
-              <th style="width: 22%">DESCIPCION</th>
+              <th style="width: 22%">DESCRIPCION</th>
               <th style="width: 4%">ANTIG.</th>
               <th style="width: 4%">MEP</th>
               <th style="width: 4%">ECS</th>
@@ -285,7 +285,7 @@
                           <tr><td>VALOR DE LA CONSTRUCCION</td><td style="text-align: right;padding-right: 5px; font-size: 1.1em">{{number_format($sql->val_const,2)}}</td></tr>
                           <tr><td>VALOR DE OTRAS INSTALAC.</td><td style="text-align: right;padding-right: 5px;font-size: 1.1em">{{number_format($sql->val_obr_cmp,2)}}</td></tr>
                           <tr><td>VALOR TOTAL DEL TERRENO</td><td style="text-align: right;padding-right: 5px;font-size: 1.1em">{{number_format($sql->val_ter,2)}}</td></tr>
-                          <tr><td>TOTAL AVALUO</td><td style="text-align: right;padding-right: 5px;font-size: 1.1em">{{number_format($sql->base_impon,2)}}</td></tr>
+                          <tr><td>TOTAL AUTOVALUO</td><td style="text-align: right;padding-right: 5px;font-size: 1.1em">{{number_format($sql->base_impon,2)}}</td></tr>
 
                       </table>
                   </td>
@@ -327,7 +327,7 @@
               </tr>
               
             </thead>
-            <div style="margin-bottom: 10px; font-size: 0.6em; text-align:right ;">IMPRESO POR : {{$usuario[0]->ape_nom}}</div>
+            <div style="margin-bottom: 1px; font-size: 0.6em; text-align:right ;">IMPRESO POR : {{$usuario[0]->ape_nom}}</div>
         </table>
   </body>
   
