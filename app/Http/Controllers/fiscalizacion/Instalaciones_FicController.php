@@ -39,6 +39,10 @@ class Instalaciones_FicController extends Controller
             {
                 $insta->pro_tot =$request['largo']+$request['ancho'];
             }
+            if($cat_instal->unid_medida=="M3")
+            {
+                $insta->pro_tot =$request['largo']*$request['ancho']*$request['alto'];
+            }
             if($cat_instal->unid_medida=="UND")
             {
                 $insta->pro_tot =$request['cant'];
@@ -102,6 +106,10 @@ class Instalaciones_FicController extends Controller
                 if($cat_instal->unid_medida=="UND")
                 {
                     $val->pro_tot =$request['cant'];
+                }
+                if($cat_instal->unid_medida=="M3")
+                {
+                    $val->pro_tot =$request['largo']*$request['ancho']*$request['alto'];
                 }
                 $val->val_obra = $val->pro_tot*$val->val_unit;
             }

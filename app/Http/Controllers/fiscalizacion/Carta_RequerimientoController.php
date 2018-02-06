@@ -197,7 +197,14 @@ class Carta_RequerimientoController extends Controller
                 {
                     $anu='<a href="javascript:void(0);" class="btn btn-danger txt-color-white btn-circle"><i class="glyphicon glyphicon-remove"></i></a>';
                     $btnhoj='Anulado';
-
+                }
+                if($Datos->fecha_notificacion==null)
+                {
+                    $btnnotificacion='<button class="btn btn-labeled bg-color-red txt-color-white" type="button" onclick="ponerfechanoti('."'".trim($Datos->nro_car)."'".');"><span class="btn-label"><i class="fa fa-edit"></i></span> Ing. Fecha Notificación</button>';
+                }
+                else
+                {
+                    $btnnotificacion=$this->getCreatedAtAttribute($Datos->fecha_notificacion)->format('d/m/Y');
                 }
                 $Lista->rows[$Index]['id'] = $Datos->id_car;            
                 $Lista->rows[$Index]['cell'] = array(
@@ -206,6 +213,7 @@ class Carta_RequerimientoController extends Controller
                     trim($Datos->contribuyente),
                     trim($this->getCreatedAtAttribute($Datos->fec_reg)->format('d/m/Y')),
                     trim($this->getCreatedAtAttribute($Datos->fec_fis)->format('d/m/Y'))." ".$Datos->hora_fis,
+                    $btnnotificacion,
                     $estado,
                     '<button class="btn btn-labeled btn-warning" type="button" onclick="vercarta('.trim($Datos->id_car).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Ver</button>',
                     $anu,
@@ -341,5 +349,16 @@ class Carta_RequerimientoController extends Controller
         $fisca->id_user_fis=$request['fis'];
         $fisca->save();
         return $fisca->id_fis_env;
+    }
+    public function edit_carta_fec(Request $request)
+    {
+        $carta=new Carta_Requerimiento;
+        $val=  $carta::where("id_car","=",$request['id'] )->first();
+        if(count($val)>=1)
+        {
+            $val->fecha_notificacion=$request['fec'];
+            $val->save();
+        }
+        return $request['id'];
     }
 }

@@ -734,6 +734,11 @@ function auto_input(textbox,url,extra){
                                             $( "#rinst_inp_largo_fis,#rinst_inp_ancho_fis" ).prop( "disabled", false );
                                             $( "#rinst_inp_canti_fis,#rinst_inp_alto_fis" ).prop( "disabled", true );
                                         }
+                                        if(ui.item.und=="M3")
+                                        {
+                                            $( "#rinst_inp_largo_fis,#rinst_inp_ancho_fis,#rinst_inp_alto_fis" ).prop( "disabled", false );
+                                            $( "#rinst_inp_canti_fis" ).prop( "disabled", true );
+                                        }
                                         $("#"+textbox+"_cod").val(ui.item.codi);
                                      }
                                       return false;

@@ -102,14 +102,14 @@ class PredioRuralController extends Controller
     {
         $rustico=new Predios_Rusticos;
         $rustico->id_pred_anio = $id;
-        $rustico->lugar_pr_rust = $request['valle'];
-        $rustico->ubicac_pr_rus  = $request['carretera'];
-        $rustico->klm  = $request['km'];
-        $rustico->nom_pre_pr_rus   = $request['nompre'];
-        $rustico->norte   = $request['norte'];
-        $rustico->sur   = $request['sur'];
-        $rustico->este   = $request['este'];
-        $rustico->oeste   = $request['oeste'];
+        $rustico->lugar_pr_rust = strtoupper($request['valle']);
+        $rustico->ubicac_pr_rus  = strtoupper($request['carretera']);
+        $rustico->klm  = strtoupper($request['km']);
+        $rustico->nom_pre_pr_rus   = strtoupper($request['nompre']);
+        $rustico->norte   = strtoupper($request['norte']);
+        $rustico->sur   = strtoupper($request['sur']);
+        $rustico->este   = strtoupper($request['este']);
+        $rustico->oeste   = strtoupper($request['oeste']);
         $rustico->id_tip_pre_rus = $request['tterr'];
         $rustico->id_uso_pre_rust = $request['uterr'];
         $rustico->id_gpo_tierra=$request['gpt'];
@@ -137,14 +137,14 @@ class PredioRuralController extends Controller
         $val=  $rustico::where("id_pred_anio","=",$id )->first();
         if(count($val)>=1)
         {
-            $val->lugar_pr_rust = $request['valle'];
-            $val->ubicac_pr_rus  = $request['carretera'];
-            $val->klm  = $request['km'];
-            $val->nom_pre_pr_rus   = $request['nompre'];
-            $val->norte   = $request['norte'];
-            $val->sur   = $request['sur'];
-            $val->este   = $request['este'];
-            $val->oeste   = $request['oeste'];
+            $val->lugar_pr_rust = strtoupper($request['valle']);
+            $val->ubicac_pr_rus  = strtoupper($request['carretera']);
+            $val->klm  = strtoupper($request['km']);
+            $val->nom_pre_pr_rus   = strtoupper($request['nompre']);
+            $val->norte   = strtoupper($request['norte']);
+            $val->sur   = strtoupper($request['sur']);
+            $val->este   = strtoupper($request['este']);
+            $val->oeste   = strtoupper($request['oeste']);
             $val->id_tip_pre_rus = $request['tterr'];
             $val->id_uso_pre_rust = $request['uterr'];
             $val->id_gpo_tierra=$request['gpt'];

@@ -450,3 +450,58 @@ function vercarta(id)
     }
     window.open('car_req_rep/'+id);
 }
+function ponerfechanoti(num)
+{
+    $("#input_num_op").val(num);
+    $("#input_fec_notifica").val('');
+    $("#dlg_fec_notificacion").dialog({
+        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.:  Fecha de Notificación O.P.:.</h4></div>",
+        buttons: [
+            {
+                id:"btnsave",
+                html: '<span class="btn-label"><i class="glyphicon glyphicon-new-window"></i></span>Grabar Fecha',
+                "class": "btn btn-labeled bg-color-green txt-color-white",
+                click: function () {save_cr_fec_noti();}
+            },
+            {
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-primary bg-color-red",
+                click: function () {$(this).dialog("close");}
+            }]
+        }).dialog('open');
+}
+function save_cr_fec_noti()
+{
+    if($("#input_fec_notifica").val()=="")
+    {
+        mostraralertasconfoco("Ingresar Fecha de Notificación","#input_fec_notifica");
+        return false;
+    }
+    if($("#per_new").val()==1||$("#per_edit").val()==1)
+    {
+        Id=$('#table_cartas').jqGrid ('getGridParam', 'selrow');
+        MensajeDialogLoadAjax('dlg_fec_notificacion', '.:: CARGANDO ...');
+       $.ajax({url: 'mod_noti_carta',
+       type: 'GET',
+       data:{id:Id,fec:$("#input_fec_notifica").val()},
+       success: function(r) 
+       {
+           $('#table_cartas').trigger( 'reloadGrid' );
+           $("#dlg_fec_notificacion").dialog('close');
+           MensajeExito("Modificó Correctamente","Su Registro Fue Modificado con Éxito...",4000);
+           MensajeDialogLoadAjaxFinish('dlg_fec_notificacion');
+       },
+       error: function(data) {
+           MensajeDialogLoadAjaxFinish('dlg_fec_notificacion');
+           console.log('error');
+           console.log(data);
+       }
+       }); 
+    }
+    else
+    {
+        sin_permiso();
+    }
+
+}

@@ -2,6 +2,7 @@
 @section('content')
 <input type="hidden" id="per_imp" value="{{$permisos[0]->btn_imp}}"/>
 <input type="hidden" id="per_del" value="{{$permisos[0]->btn_del}}"/>
+<input type="hidden" id="per_edit" value="{{$permisos[0]->btn_edit}}"/>
 <section id="widget-grid" class=""> 
     <div class='cr_content col-xs-12 '>
         <div class="col-xs-9">
@@ -154,16 +155,17 @@
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_car', 'Nro', 'contribuyente', 'Registro','Fiscalizacion','Estado','Ver','Anulado'],
+            colNames: ['id_car', 'Nro', 'contribuyente', 'Registro','Fiscalizacion','Notificación','Estado','Ver','Anulado'],
             rowNum: 20, sortname: 'id_car', sortorder: 'desc', viewrecords: true, caption: 'Cartas de Requerimiento', align: "center",
             colModel: [
                 {name: 'id_car', index: 'id_gen_fis', hidden: true},
                 {name: 'nro_car', index: 'nro_car', align: 'center', width: 10},
-                {name: 'contribuyente', index: 'contribuyente', align: 'center', width: 40},
+                {name: 'contribuyente', index: 'contribuyente', align: 'center', width: 30},
                 {name: 'fec_reg', index: 'fec_reg', align: 'center', width: 10},
                 {name: 'fec_fis', index: 'fec_fis', align: 'center', width: 15},
+                {name: 'fecha_notificacion', index: 'fecha_notificacion', align: 'center', width: 20},
                 {name: 'flg_est', index: 'flg_est', align: 'center', width: 10},
-                {name: 'id_car', index: 'id_car', align: 'center', width: 15},
+                {name: 'id_car', index: 'id_car', align: 'center', width: 10},
                 {name: 'flg_anu', index: 'flg_anu', align: 'center', width: 10},
             ],
             pager: '#pager_table_cartas',
@@ -184,13 +186,14 @@
             datatype: 'json', mtype: 'GET',
             height: '300px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_pers','codigo','DNI/RUC','contribuyente','Dom Fiscal'],
+            colNames: ['id_pers','codigo','DNI/RUC','contribuyente','email','Dom Fiscal'],
             rowNum: 20, sortname: 'contribuyente', sortorder: 'asc', viewrecords: true, caption: 'Contribuyentes', align: "center",
             colModel: [
                 {name: 'id_pers', index: 'id_pers', hidden: true},
                 {name: 'id_per', index: 'id_per', align: 'center',width: 100},
                 {name: 'nro_doc', index: 'nro_doc', align: 'center',width: 100},
                 {name: 'contribuyente', index: 'contribuyente', align: 'left',width: 260},
+                {name: 'email', index: 'email', hidden: true},
                 {name: 'dom_fiscal', index: 'dom_fiscal', align: 'left',width: 260},
                 
             ],
@@ -458,7 +461,41 @@
     </div>
 </div> 
 
-
+<div id="dlg_fec_notificacion" style="display: none;">
+    
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
+        <div class="col-xs-12 cr-body" style="padding-left: 0px;padding-right: 10px;" >
+            <div class="col-xs-12" style="padding: 0px; margin-top: 0px;">
+                <section>
+                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                                <h2>Ingresar Fecha de Notificacíon de Carta.::..</h2>
+                        </header>
+                    </div>
+                </section>
+                <div class="col-xs-12" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">N° Carta Req. &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div class=""  >
+                            <input id="input_num_op" type="text"  class="form-control" style="height: 32px; " disabled="" >
+                        </div>
+                    </div>
+                </div>
+                               
+                <div class="col-xs-12" style="padding: 0px; margin-top: 10px ">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Fecha Notificación &nbsp;<i class="fa fa-calendar"></i></span>
+                        <div>
+                            <input id="input_fec_notifica" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div> 
 
 @endsection
 

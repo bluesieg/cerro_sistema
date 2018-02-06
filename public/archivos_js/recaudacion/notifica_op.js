@@ -125,7 +125,7 @@ function save_op_fec_noti()
         mostraralertasconfoco("Ingresar Fecha de Notificación","#input_fec_notifica");
         return false;
     }
-    if($("#per_new").val()==1|$("#per_edit").val()==1)
+    if($("#per_new").val()==1||$("#per_edit").val()==1)
     {
          Id=$('#table_op').jqGrid ('getGridParam', 'selrow');
         MensajeDialogLoadAjax('dlg_fec_notificacion', '.:: CARGANDO ...');

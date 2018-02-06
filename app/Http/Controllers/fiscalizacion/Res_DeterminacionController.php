@@ -311,4 +311,59 @@ class Res_DeterminacionController extends Controller
             return $pdf->stream("rd.pdf");
         }
     }
+    public function reportes()
+    {
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_rep_fisca' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
+        $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
+        return view('fiscalizacion/vw_reportes',compact('anio_tra','menu','permisos'));
+    }
+    public function ver_reportes($tipo,$anio,$contrib)
+    {
+        if($tipo==1)
+        {
+            $sql    =DB::table('fiscalizacion.vw_ficha_verificacion')->where('anio',$anio)->orderBy('nro_fic')->get();
+            $name =Auth::user()->ape_nom;
+            if(count($sql)>=1)
+            {
+                $view =  \View::make('fiscalizacion.reportes.vw_contrib_fiscalizados', compact('sql','name','anio'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4');
+                return $pdf->stream("Fiscalizados.pdf");
+            }
+            else
+            {
+                Return "No hay Datos";
+            }
+        }
+        if($tipo==2)
+        {
+            if($contrib==0)
+            {
+                $sql    =DB::table('fiscalizacion.vw_ficha_verificacion')->where('anio',$anio)->orderBy('nro_fic')->get();
+            }
+            else
+            {
+                $sql    =DB::table('fiscalizacion.vw_ficha_verificacion')->where('anio',$anio)->where('id_contrib',$contrib)->orderBy('nro_fic')->get();
+            }
+            $name =Auth::user()->ape_nom;
+            if(count($sql)>=1)
+            {
+                
+                $view =  \View::make('fiscalizacion.reportes.vw_m2_decla_fisca', compact('sql','name','anio'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4');
+                return $pdf->stream("Fiscalizados.pdf");
+            }
+            else
+            {
+                Return "No hay Datos";
+            }
+        }
+        
+    }
 }
