@@ -23,10 +23,12 @@ class ReportesController extends Controller
         $sectores =  DB::table('catastro.sectores')->orderBy('sector', 'asc')->where('id_sec', '>', 0)->get();
         $hab_urb =  DB::table('catastro.hab_urb')->orderBy('nomb_hab_urba', 'asc')->get();
         $condicion = DB::select('select id_exo,desc_exon from adm_tri.exoneracion order by id_exo asc');
+        $pensionista_adulto = DB::select('select id_exo,desc_exon from adm_tri.exoneracion where id_exo in (4,5) order by id_exo asc');
+        $afecto_exonerado = DB::select('select id_exo,desc_exon from adm_tri.exoneracion where id_exo in (1,2,3) order by id_exo asc');
         $estado_frac = DB::select('select id_estado,desc_estado from fraccionamiento.convenio_estado order by desc_estado asc');
         $usos_predio_arb = DB::table('adm_tri.uso_predio_arbitrios')->orderBy('id_uso_arb', 'asc')->get();
         $agencias = DB::select('select id_caj,descrip_caja from tesoreria.cajas order by descrip_caja desc');
-        return view('reportes_gonzalo/vw_reportes', compact('menu','permisos','anio_tra','sectores','hab_urb','condicion','usos_predio_arb','agencias','estado_frac'));
+        return view('reportes_gonzalo/vw_reportes', compact('menu','permisos','anio_tra','sectores','hab_urb','condicion','usos_predio_arb','agencias','estado_frac','pensionista_adulto','afecto_exonerado'));
     }
     public function index_supervisores()
     {
@@ -604,7 +606,99 @@ class ReportesController extends Controller
 
     }
     //andrea
-    
+    public function reporte_deduccion_50UIT($tip,$anio,$hab_urb,$condicion)
+    {
+        if($tip==1){
+                if($anio != 0 && $hab_urb == 0 && $condicion == 0){
+                set_time_limit(0);
+                ini_set('memory_limit', '1G');
+            \Excel::create('Reporte de cantidad de contribuyentes con deducción de 50 UIT y monto de la Base Imponile.(Pensionista y Adulto mayor)', function($excel) use ( $anio ) {
+
+                $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio ) {
+
+                    $sql = DB::select("select pers_nro_doc, contribuyente, dom_fis,nomb_hab_urba, sec,mzna,lote, porctje, desc_exon, base_impon from reportes.vw_por_tipo_exoneracion where anio = '$anio' and id_cond_exonerac in (4,5) order by contribuyente asc" );
+
+                    $data= json_decode( json_encode($sql), true);
+
+                    $sheet->fromArray($data);
+                    $sheet->row(1, array("DNI", "NOMBRE", "DOMICILIO FISCAL","HABILITACIÓN URBANA","SECTOR","MZNA","LOTE", "DEDUCCION", "CONDICION",  "BASE IMPONIBLE"))->freezeFirstRow();
+                    $sheet->setWidth(array(
+                        'A'     =>  13,
+                        'B'     =>  50,
+                        'C'     =>  100,
+                        'D'     =>  100,
+                        'E'     =>  10,
+                        'F'     =>  10,
+                        'G'     =>  10,
+                        'H'     =>  10,
+                        'I'     =>  15,
+                        'J'     =>  15
+                    ));
+                });
+
+            })->export('xls');
+
+            }          
+            elseif($anio != 0 && $hab_urb == 0 && $condicion != 0){
+                set_time_limit(0);
+                ini_set('memory_limit', '1G');
+                \Excel::create('Reporte de cantidad de contribuyentes con deducción de 50 UIT y monto de la Base Imponile.(Pensionista y Adulto mayor)', function($excel) use ( $anio, $condicion ) {
+
+                $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio, $condicion ) {
+
+                    $sql = DB::select("select pers_nro_doc, contribuyente, dom_fis,nomb_hab_urba, sec,mzna,lote, porctje, desc_exon, base_impon from reportes.vw_por_tipo_exoneracion where anio = '$anio' and id_cond_exonerac = '$condicion' order by contribuyente asc" );
+
+                    $data= json_decode( json_encode($sql), true);
+
+                    $sheet->fromArray($data);
+                    $sheet->row(1, array("DNI", "NOMBRE", "DOMICILIO FISCAL","HABILITACIÓN URBANA","SECTOR","MZNA","LOTE", "DEDUCCION", "CONDICION",  "BASE IMPONIBLE"))->freezeFirstRow();
+                    $sheet->setWidth(array(
+                        'A'     =>  13,
+                        'B'     =>  50,
+                        'C'     =>  100,
+                        'D'     =>  100,
+                        'E'     =>  10,
+                        'F'     =>  10,
+                        'G'     =>  10,
+                        'H'     =>  10,
+                        'I'     =>  15,
+                        'J'     =>  15
+                    ));
+                });
+            })->export('xls');
+            }
+        }
+        if($tip==0){
+            $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
+            $fecha = (date('d/m/Y H:i:s'));
+            if($anio != 0 && $hab_urb != 0 && $condicion != 0){
+            $sql = DB::table('reportes.vw_por_tipo_exoneracion')->where('anio',$anio)->where('id_hab_urb',$hab_urb)->where('id_cond_exonerac',$condicion)->get();
+            $nombre_condicion = DB::select("select desc_exon from reportes.vw_por_tipo_exoneracion where id_cond_exonerac = '$condicion' ");
+            $total = DB::select("select count(desc_exon) as condiciones from reportes.vw_por_tipo_exoneracion where id_cond_exonerac = '$condicion' and id_hab_urb = '$hab_urb'");
+             
+            }
+            else{
+            $sql = DB::table('reportes.vw_por_tipo_exoneracion')->where('anio',$anio)->where('id_hab_urb',$hab_urb)->where('id_cond_exonerac',4,5)->get();
+            $nombre_condicion = ("Pensionista , Adulto Mayor");
+            $total = DB::select("select count(desc_exon) as condiciones from reportes.vw_por_tipo_exoneracion where  id_hab_urb = '$hab_urb' and id_cond_exonerac in (4,5)");
+             
+            }
+            
+            if(count($sql)>0)
+            {
+                set_time_limit(0);
+                ini_set('memory_limit', '2G');
+                $view =  \View::make('reportes_gonzalo.reportes.reporte_cant_cont_ded_mont_bas_imp', compact('sql','anio','hab_urb','nombre_condicion','total','usuario','fecha'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4');
+                return $pdf->stream("Listado de Contribuyentes".".pdf");
+            }
+            else
+            {   return 'No hay datos';  }
+        
+        }
+
+    }
      public function rep_por_zona($anio,$id)
     {
         $sql=DB::table('')->where('',$anio) ->where('', $id)->orderBy('','asc')->get();

@@ -48,7 +48,7 @@
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
                                 <h4><a href="#" onclick="dlg_reportes_andrea(1);" id="titulo_r1">
-                                        REPORTE 1: Listado de datos de los contribuyentes.
+                                        REPORTE 1: Listado de datos de los Contribuyentes.
                                     </a>
                                     <small>Descripción reporte 1</small>
                                 </h4>
@@ -62,7 +62,7 @@
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
                                 <h4><a href="#" onclick="dlg_reportes_andrea(2);" id="titulo_r1">
-                                        REPORTE 2: Listado de datos de los contribuyentes y predios.
+                                        REPORTE 2: Listado de datos de los Contribuyentes y Predios.
                                     </a>
                                     <small>Descripción reporte 2</small>
                                 </h4>
@@ -75,7 +75,7 @@
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
-                                <h4><a href="#" onclick="dlg_reportes_andrea(3);" id="titulo_r1">
+                                <h4><a href="#" onclick="dlg_reportes_andrea(4);" id="titulo_r1">
                                         REPORTE 4: Reporte de cantidad de contribuyentes y predios por zonas.
                                     </a>
                                     <small>Descripción reporte 4</small>
@@ -88,21 +88,8 @@
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
-                                <h4><a href="#" onclick="dlg_reportes_andrea(4);" id="titulo_r1">
-                                        REPORTE 5: Reporte Numero de Predios de la emision predial por usos.
-                                    </a>
-                                    <small>Descripción reporte 4</small>
-                                </h4>
-                            </td>
-          
-                         
-                        </tr>
-                        
-                        <tr>
-                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
-                            <td>
                                 <h4><a href="#" onclick="dlg_reportes_andrea(5);" id="titulo_r1">
-                                        REPORTE 6: Cantidad de contribuyentes por Condicion(Afecto, Inafecto, Exoneracion Parcial, Pensionista y Adulto mayor).
+                                        REPORTE 5: Reporte Número de Predios de la emisión predial por usos.
                                     </a>
                                     <small>Descripción reporte 5</small>
                                 </h4>
@@ -110,12 +97,12 @@
           
                          
                         </tr>
-                      
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
                                 <h4><a href="#" onclick="dlg_reportes_andrea(6);" id="titulo_r1">
-                                        REPORTE 6: Reporte de Impuesto Predial Corriente y no corriente.</a>
+                                        REPORTE 6: Reporte del Monto de la Base Imponible Afecto y Exonerado.
+                                    </a>
                                     <small>Descripción reporte 6</small>
                                 </h4>
                             </td>
@@ -125,31 +112,10 @@
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
-                                <h4><a href="#" onclick="dlg_reportes_andrea(7);" id="titulo_r1">
-                                        REPORTE 7: Reporte de % de Morosidad de impuesto predial</a>
-                                    <small>Descripción reporte 7</small>
-                                </h4>
-                            </td>
-          
-                         
-                        </tr>
-                        <tr>
-                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
-                            <td>
                                 <h4><a href="#" onclick="dlg_reportes_andrea(8);" id="titulo_r1">
-                                        REPORTE 8: Reporte de % de Morosidad de Arbitrio Municipal</a>
-                                    <small>Descripción reporte 8</small>
-                                </h4>
-                            </td>
-          
-                         
-                        </tr>
-                        <tr>
-                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
-                            <td>
-                                <h4><a href="#" onclick="dlg_reportes_andrea(9);" id="titulo_r1">
-                                        REPORTE 9: Reporte de Recaudacion Impuesto Predial por Zona</a>
-                                    <small>Descripción reporte 9</small>
+                                        REPORTE 8: Reporte Número de  Contribuyentes de la emision predial Afecto y Exonerado.
+                                    </a>
+                                    <small>Descripción reporte 6</small>
                                 </h4>
                             </td>
           
@@ -159,7 +125,8 @@
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
                                 <h4><a href="#" onclick="dlg_reportes_andrea(10);" id="titulo_r1">
-                                        REPORTE 10: Reporte de Recaudacion de Arbitrios Municipales por Zona</a>
+                                        REPORTE 10: Reporte de cantidad de contribuyentes con deducción de 50 UIT y monto de la Base Imponile.
+                                    </a>
                                     <small>Descripción reporte 10</small>
                                 </h4>
                             </td>
@@ -171,8 +138,33 @@
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
                                 <h4><a href="#" onclick="dlg_reportes_andrea(11);" id="titulo_r1">
-                                        REPORTE 11: Reporte de Fracionamiento Realizados y cancelados.</a>
-                                    <small>Descripción reporte 11</small>
+                                        REPORTE 11: Reporte de Cantidad de Contribuyentes exonerados.
+                                    </a>
+                                    <small>Descripción reporte 5</small>
+                                </h4>
+                            </td>
+          
+                         
+                        </tr>
+                      
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_reportes_andrea(13);" id="titulo_r1">
+                                        REPORTE 13: Reporte de Impuesto Predial Corriente y no corriente.</a>
+                                    <small>Descripción reporte 13</small>
+                                </h4>
+                            </td>
+          
+                         
+                        </tr>
+                        
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_reportes_andrea(18);" id="titulo_r1">
+                                        REPORTE 18: Reporte de Fracionamiento Realizados y cancelados.</a>
+                                    <small>Descripción reporte 18</small>
                                 </h4>
                             </td>
           
@@ -181,7 +173,7 @@
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
-                                <h4><a href="#" onclick="dlg_reportes_andrea(12);" id="titulo_r1">
+                                <h4><a href="#" onclick="dlg_reportes_andrea(101);" id="titulo_r1">
                                         REPORTE 12: Reporte de Cantidad de Contribuyentes según Forma de Adquisición.</a>
                                     <small>Descripción reporte 12</small>
                                 </h4>
@@ -192,7 +184,7 @@
                          <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
-                                <h4><a href="#" onclick="dlg_reportes_andrea(13);" id="titulo_r1">
+                                <h4><a href="#" onclick="dlg_reportes_andrea(102);" id="titulo_r1">
                                         REPORTE 13: Reporte de Cantidad de Contribuyentes Deudores y no Deudores.</a>
                                     <small>Descripción reporte 13</small>
                                 </h4>
@@ -205,7 +197,7 @@
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
-                                <h4><a href="#" onclick="dlg_reportes_andrea(20);" id="titulo_r1">
+                                <h4><a href="#" onclick="dlg_reportes_andrea(103);" id="titulo_r1">
                                         REPORTE 13: Reporte General de Caja.</a>
                                     <small>Descripción reporte 13</small>
                                 </h4>
@@ -907,4 +899,132 @@ function autocompletar_haburb(textbox){
         </div>
     </div>
 </div>
-@endsection
+<div id="dialog_por_deduccion_50UIT" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                        <select id='select_sup_anio_ded' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                            @foreach ($anio_tra as $anio_con)
+                                                <option value='{{$anio_con->anio}}' >{{$anio_con->anio}}</option>
+                                            @endforeach
+                                        </select> 
+                                    </div>
+                            </div>
+                        </div>                       
+                    </div>
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">CONDICION <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                          <select id='select_condicion_ded' class="form-control col-lg-8" >
+                                            <option value='0'>-- TODOS --</option>
+                                            @foreach ($pensionista_adulto as $pens_adul)
+                                                <option value='{{$pens_adul->id_exo}}' >{{$pens_adul->desc_exon}}</option>
+                                            @endforeach
+                                          </select>                                 
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12" >
+                            <div class="input-group input-group-md" style="width: 100%">
+                                <span class="input-group-addon" style="width: 165px">Hab. Urbana &nbsp;<i class="fa fa-file-archive-o"></i></span>
+                                <div> 
+                                     <input type="hidden" id="hidden_habilitacion_urbana10" value="0">
+                                     <textarea  id="habilitacion_urbana10" type="text" placeholder="Escriba una Habilitación Urbana" class="form-control" style="height: 32px; padding-left: 10px"  ></textarea>
+                                </div>
+                            </div>
+                         </div>
+                    </div>  
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dialog_por_exonerados" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                        <select id='select_sup_anio_exo' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                            @foreach ($anio_tra as $anio_con)
+                                                <option value='{{$anio_con->anio}}' >{{$anio_con->anio}}</option>
+                                            @endforeach
+                                        </select> 
+                                    </div>
+                            </div>
+                        </div>                       
+                    </div>                    
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12" >
+                            <div class="input-group input-group-md" style="width: 100%">
+                                <span class="input-group-addon" style="width: 165px">Hab. Urbana &nbsp;<i class="fa fa-file-archive-o"></i></span>
+                                <div> 
+                                     <input type="hidden" id="hidden_habilitacion_urbana11" value="0">
+                                     <textarea  id="habilitacion_urbana11" type="text" placeholder="Escriba una Habilitación Urbana" class="form-control" style="height: 32px; padding-left: 10px"  ></textarea>
+                                </div>
+                            </div>
+                         </div>
+                    </div>  
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dialog_por_ep_afecto_exonerado" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                        <select id='select_sup_anio_ded' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                            @foreach ($anio_tra as $anio_con)
+                                                <option value='{{$anio_con->anio}}' >{{$anio_con->anio}}</option>
+                                            @endforeach
+                                        </select> 
+                                    </div>
+                            </div>
+                        </div>                       
+                    </div>
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">CONDICION <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                          <select id='select_condicion_ded' class="form-control col-lg-8" >
+                                            <option value='0'>-- TODOS --</option>
+                                            @foreach ($afecto_exonerado as $afec_exo)
+                                                <option value='{{$afec_exo->id_exo}}' >{{$afec_exo->desc_exon}}</option>
+                                            @endforeach
+                                          </select>                                 
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
+@endsection 

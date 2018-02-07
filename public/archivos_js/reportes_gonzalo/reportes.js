@@ -433,6 +433,84 @@ function crear_dialogo_por_condicion()
         auxcon=1;
     }
 }
+auxded=0;
+function crear_dialogo_deduccion_50UIT()
+{
+    $("#dialog_por_deduccion_50UIT").dialog({
+        autoOpen: false, modal: true, width: 630, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.: Reporte de cantidad de contribuyentes con deduccion de 50 UIT :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_reporte_deduccion_50UIT(0); }
+        },{
+            html: "<i class='fa fa-file-excel-o'></i>&nbsp; Ver Todas",
+            "class": "btn btn-success bg-color-blue",
+            click: function () { abrir_reporte_deduccion_50UIT(1); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+    if(auxded==0)
+    {
+        autocompletar_haburb('habilitacion_urbana10');
+        auxded=1;
+    }
+}
+auxded=0;
+function crear_dialogo_cantidad_exonerados()
+{
+    $("#dialog_por_exonerados").dialog({
+        autoOpen: false, modal: true, width: 630, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.:Reporte de Cantidad de Contribuyentes exonerados. :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_reporte_exonerados(0); }
+        },{
+            html: "<i class='fa fa-file-excel-o'></i>&nbsp; Ver Todas",
+            "class": "btn btn-success bg-color-blue",
+            click: function () { abrir_reporte_exonerados(1); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+    if(auxded==0)
+    {
+        autocompletar_haburb('habilitacion_urbana10');
+        auxded=1;
+    }
+}
+auxep=0;
+function crear_dialogo_ep_afecto_exonerado()
+{
+    $("#dialog_por_ep_afecto_exonerado").dialog({
+        autoOpen: false, modal: true, width: 630, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.:  Reporte Número de  Contribuyentes de la emision predial Afecto y Exonerado :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_reporte_deduccion_50UIT(0); }
+        },{
+            html: "<i class='fa fa-file-excel-o'></i>&nbsp; Ver Todas",
+            "class": "btn btn-success bg-color-blue",
+            click: function () { abrir_reporte_deduccion_50UIT(1); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+    if(auxep==0)
+    {
+        autocompletar_haburb('habilitacion_urbana10');
+        auxep=1;
+    }
+}
 
 
 function dlg_reportes_andrea(tipo)
@@ -447,47 +525,55 @@ function dlg_reportes_andrea(tipo)
          $('#habilitacion_urbana1').val("");
          $('#hidden_habilitacion_urbana1').val("");
     }
-    if (tipo===3) {
+    if (tipo===4) {
         crear_dialogo_cantidad_por_zona();
          $('#habilitacion_urbana2').val("");
          $('#hidden_habilitacion_urbana2').val("");
     }
-    if (tipo===4) {
+    if (tipo===5) {
         crear_dialogo_por_uso();
          $('#habilitacion_urbana3').val("");
          $('#hidden_habilitacion_urbana3').val("");
     }
-    if (tipo===5) {
+    if (tipo===6) {
+        crear_dialogo_bi_afecto_exonerado();
+         $('#habilitacion_urbana3').val("");
+         $('#hidden_habilitacion_urbana3').val("");
+    }
+    if (tipo===8) {
+        crear_dialogo_ep_afecto_exonerado();
+    }
+    if (tipo===10) {
+        crear_dialogo_deduccion_50UIT();
+         $('#habilitacion_urbana10').val("");
+         $('#hidden_habilitacion_urbana10').val("");
+    }
+    if (tipo===11) {
+        crear_dialogo_cantidad_exonerados();
+         $('#habilitacion_urbana11').val("");
+         $('#hidden_habilitacion_urbana11').val("");
+         
+    }
+    if (tipo===7) {
         crear_dialogo_por_condicion();
          $('#habilitacion_urbana4').val("");
          $('#hidden_habilitacion_urbana4').val("");
          
     }
-    if (tipo===6) {
+    if (tipo===13) {
         crear_dialogo_corriente();
     } 
-    if (tipo===7) {
-        crear_dialogo_morosidad_predios();
-    } 
-    if (tipo===8) {
-        crear_dialogo_morosidad_arbitrios();
-    } 
-    if (tipo===9) {
-        crear_dialogo_recaudacion_predial();
-    }
-    if (tipo===10) {
-        crear_dialogo_recaudacion_arbitrios();
-    }    
-    if (tipo===11) {
+    
+    if (tipo===18) {
         crear_dialogo_fraccionamiento();
     }
-    if (tipo===12) {
+    if (tipo===101) {
         crear_dialogo_forma_adq();
     }
-    if (tipo===13) {
+    if (tipo===102) {
         crear_dialogo_deudores();
     }
-    if (tipo===20) {
+    if (tipo===103) {
         crear_dialogo_caja();
     }
 }
@@ -583,7 +669,7 @@ function abrir_reporte_cant_cont_ded_mont_bas_imp(tipo)
     if(tipo==0)
     {
         if ($("#hidden_habilitacion_urbana4").val() == 0){
-            mostraralertasconfoco("Debes Ingresar una Habilitacion Urbana","#hidden_habilitacion_urbana3");
+            mostraralertasconfoco("Debes Ingresar una Habilitacion Urbana","#hidden_habilitacion_urbana4");
             return false;
         }
         window.open('reporte_cant_cont_ded_mont_bas_imp/0'+'/'+$('#select_sup_anio_con').val()+'/'+$('#hidden_habilitacion_urbana4').val()+'/'+$('#select_condicion_ccdmbi').val()+'');
@@ -592,6 +678,57 @@ function abrir_reporte_cant_cont_ded_mont_bas_imp(tipo)
     {
          $('#habilitacion_urbana4').val("");$('#hidden_habilitacion_urbana4').val("");
          window.open('reporte_cant_cont_ded_mont_bas_imp/1'+'/'+$('#select_sup_anio_con').val()+'/'+'0'+'/'+$('#select_condicion_ccdmbi').val()+'');
+    }
+    
+}
+function abrir_reporte_deduccion_50UIT(tipo)
+{
+    if(tipo==0)
+    {
+        if ($("#hidden_habilitacion_urbana10").val() == 0){
+            mostraralertasconfoco("Debes Ingresar una Habilitacion Urbana","#hidden_habilitacion_urbana10");
+            return false;
+        }
+        window.open('reporte_deduccion_50UIT/0'+'/'+$('#select_sup_anio_ded').val()+'/'+$('#hidden_habilitacion_urbana10').val()+'/'+$('#select_condicion_ded').val()+'');
+    }
+    if(tipo==1)
+    {
+         $('#habilitacion_urbana10').val("");$('#hidden_habilitacion_urbana10').val("");
+         window.open('reporte_deduccion_50UIT/1'+'/'+$('#select_sup_anio_ded').val()+'/'+'0'+'/'+$('#select_condicion_ded').val()+'');
+    }
+    
+}
+function abrir_reporte_exonerados(tipo)
+{
+    if(tipo==0)
+    {
+        if ($("#hidden_habilitacion_urbana11").val() == 0){
+            mostraralertasconfoco("Debes Ingresar una Habilitacion Urbana","#hidden_habilitacion_urbana11");
+            return false;
+        }
+        window.open('reporte_exonerados/0'+'/'+$('#select_sup_anio_exo').val()+'/'+$('#hidden_habilitacion_urbana11').val()+'/'+''+'');
+    }
+    if(tipo==1)
+    {
+         $('#habilitacion_urbana11').val("");$('#hidden_habilitacion_urbana11').val("");
+         window.open('reporte_exonerados/1'+'/'+$('#select_sup_anio_exo').val()+'/'+'0'+'/'+$('#select_condicion_ccdmbi').val()+'');
+    }
+    
+}
+function abrir_reporte_ep_afecto_exonerado(tipo)
+{
+    if(tipo==0)
+    {
+        if ($("#hidden_habilitacion_urbana10").val() == 0){
+            mostraralertasconfoco("Debes Ingresar una Habilitacion Urbana","#hidden_habilitacion_urbana10");
+            return false;
+        }
+        window.open('reporte_deduccion_50UIT/0'+'/'+$('#select_sup_anio_ded').val()+'/'+$('#hidden_habilitacion_urbana10').val()+'/'+$('#select_condicion_ded').val()+'');
+    }
+    if(tipo==1)
+    {
+         $('#habilitacion_urbana4').val("");$('#hidden_habilitacion_urbana10').val("");
+         window.open('reporte_deduccion_50UIT/1'+'/'+$('#select_sup_anio_ded').val()+'/'+'0'+'/'+$('#select_condicion_ded').val()+'');
     }
     
 }

@@ -485,7 +485,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('reporte_contribuyentes_predios_zonas/{tipo}/{anio}/{sector}','ReportesController@reporte_contribuyentes_predios_zonas');
         Route::get('reporte_emision_predial/{tipo}/{anio}/{sector}/{uso}','ReportesController@reporte_emision_predial');
         Route::get('reporte_cant_cont_ded_mont_bas_imp/{tipo}/{anio}/{sector}/{condicion}','ReportesController@reporte_cant_cont_ded_mont_bas_imp');
-         
+        
+        
+        Route::get('reporte_deduccion_50UIT/{tipo}/{anio}/{hab_urb}/{condicion}','ReportesController@reporte_deduccion_50UIT');
+        Route::get('reporte_exonerados/{tipo}/{anio}/{hab_urb}','ReportesController@reporte_exonerados');
         //REPORTE SUPERVISORES
         Route::get('reporte_supervisores','ReportesController@index_supervisores');
         //andrea
@@ -546,6 +549,12 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('insertar_nuevo_ipm', 'IpmController@insertar_nuevo_ipm');
         Route::post('modificar_ipm', 'IpmController@modificar_ipm');
         Route::post('eliminar_ipm', 'IpmController@eliminar_ipm');
+        
+        //CONFIGURACION DEPRECIACIÓN
+        Route::resource('depreciacion', 'DepreciacionController');
+        Route::get('listar_depreciacion','DepreciacionController@getDepreciacion');  
+        Route::post('modificar_depreciacion', 'DepreciacionController@modificar_depreciacion');
+  
     });
     
     
