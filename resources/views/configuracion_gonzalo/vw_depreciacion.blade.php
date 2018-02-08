@@ -34,16 +34,7 @@
                                                 <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
                                             </button>
                                         @endif
-                                        @if( $permisos[0]->btn_del ==1 )
-                                        <button  type="button" class="btn btn-labeled btn-danger" onclick="eliminar_tim();">
-                                            <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
-                                        </button>
-                                        @else
-                                            <button  type="button" class="btn btn-labeled btn-danger" onclick="sin_permiso();">
-                                                <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
-                                            </button>
-                                        @endif
-                                      
+
                                     </div>
                                 </div>
                             </div>

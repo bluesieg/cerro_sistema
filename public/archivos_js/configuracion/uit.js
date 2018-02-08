@@ -95,6 +95,7 @@ function open_dialog_nuevo_uit(tipe, Id)
 
 
 function open_dialog_new_edit_Oficinas(tipe, id) {
+    limpiar_oficinas(1);
     id=$('#table_vw_oficinas').jqGrid ('getGridParam', 'selrow');
     $("#dialog_open_list_oficinas").dialog({
         autoOpen: false, modal: true, height: 250, width: 440, show: {effect: "fade", duration: 300}, resizable: false,
@@ -119,6 +120,14 @@ function open_dialog_new_edit_Oficinas(tipe, id) {
         $("#ofi_txt_nombre_textarea").val($.trim($("#table_vw_oficinas").getCell(id, "nombre")));
     }
 
+}
+
+function limpiar_oficinas(tip)
+{
+    if(tip==1)
+    {
+        $('#ofi_txt_nombre_textarea').val("");
+    }
 }
 
 function guardar_uit() {

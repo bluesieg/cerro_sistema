@@ -808,6 +808,183 @@ class ReportesController extends Controller
        } 
         
     }
+    
+    public function reporte_bi_afecto_exonerado($tip,$anio,$condicion)
+    {
+        if($tip==1){
+                if($anio != 0 && $condicion != 0){
+                set_time_limit(0);
+                ini_set('memory_limit', '1G');
+                \Excel::create('Reporte del Monto de la Base Imponible Afecto y Exonerado', function($excel) use ( $anio, $condicion ) {
+
+                $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio, $condicion ) {
+
+                    $sql = DB::select("select nro_doc, contribuyente, domic_fiscal,base_imponible, impuesto from reportes.vw_report_06_and_08 where anio = '$anio' and id_cond_exonerac = '$condicion' order by contribuyente asc" );
+
+                    $data= json_decode( json_encode($sql), true);
+
+                    $sheet->fromArray($data);
+                    $sheet->row(1, array("DNI", "CONTRIBUYENTE", "DOMICILIO FISCAL","BASE IMPONIBLE","IMPUESTO"))->freezeFirstRow();
+                    $sheet->setWidth(array(
+                        'A'     =>  20,
+                        'B'     =>  80,
+                        'C'     =>  100,
+                        'D'     =>  15,
+                        'E'     =>  15
+                    ));
+                });
+
+            })->export('xls');
+
+            }elseif($anio != 0 && $condicion == 0){
+                set_time_limit(0);
+                ini_set('memory_limit', '1G');
+                \Excel::create('Reporte del Monto de la Base Imponible Afecto y Exonerado', function($excel) use ( $anio ) {
+
+                $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio ) {
+
+                    $sql = DB::select("select nro_doc, contribuyente, domic_fiscal,base_imponible, impuesto from reportes.vw_report_06_and_08 where anio = '$anio' order by contribuyente asc" );
+
+                    $data= json_decode( json_encode($sql), true);
+
+                    $sheet->fromArray($data);
+                    $sheet->row(1, array("DNI", "CONTRIBUYENTE", "DOMICILIO FISCAL","BASE IMPONIBLE","IMPUESTO"))->freezeFirstRow();
+                    $sheet->setWidth(array(
+                        'A'     =>  20,
+                        'B'     =>  80,
+                        'C'     =>  100,
+                        'D'     =>  15,
+                        'E'     =>  15
+                    ));
+                });
+
+            })->export('xls');
+
+            }          
+        }
+        if($tip==0){
+            $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
+            $fecha = (date('d/m/Y H:i:s'));
+            
+            if($anio != 0 && $condicion != 0){
+            $sql = DB::select("select SUM(base_imponible) as base_imponible, SUM(impuesto) as impuesto from reportes.vw_report_06_and_08 where id_cond_exonerac = '$condicion' and anio = '$anio'");
+            $base_imponible = DB::select("select SUM(base_imponible) as base_imponible from reportes.vw_report_06_and_08 where id_cond_exonerac = '$condicion' and anio = '$anio'");
+            $impuesto = DB::select("select SUM(impuesto) as impuesto from reportes.vw_report_06_and_08 where id_cond_exonerac = '$condicion' and anio = '$anio'");
+            $nombre_condicion = DB::select("select desc_exon from reportes.vw_report_06_and_08 where id_cond_exonerac = '$condicion' ");
+            
+             
+            }else{
+            $sql = DB::select("select SUM(base_imponible) as base_imponible, SUM(impuesto) as impuesto from reportes.vw_report_06_and_08 where id_cond_exonerac = '$condicion' and anio = '$anio'");
+            $base_imponible = DB::select("select SUM(base_imponible) as base_imponible from reportes.vw_report_06_and_08 where anio = '$anio'");
+            $impuesto = DB::select("select SUM(impuesto) as impuesto from reportes.vw_report_06_and_08 where anio = '$anio'");
+            $nombre_condicion1 = 'TODOS';
+            $nombre_condicion = DB::select("select desc_exon from reportes.vw_report_06_and_08 where id_cond_exonerac = '$condicion' ");
+            }
+
+            if(count($sql)>0)
+            {
+                set_time_limit(0);
+                ini_set('memory_limit', '2G');
+                $view =  \View::make('reportes_gonzalo.reportes.reporte_bi_afecto_exonerado', compact('sql','base_imponible','impuesto','nombre_condicion','nombre_condicion1','anio','usuario','fecha'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4');
+                return $pdf->stream("Reporte del Monto de la Base Imponible Afecto y Exonerado".".pdf");
+            }
+            else
+            {   return 'No hay datos';  }
+        
+        }
+
+    }
+    
+    public function reporte_ep_afecto_exonerado($tip,$anio,$condicion)
+    {
+        if($tip==1){
+                if($anio != 0 && $condicion != 0){
+                set_time_limit(0);
+                ini_set('memory_limit', '1G');
+                \Excel::create('Reporte Número de Contribuyentes de la emision predial Afecto y Exonerado', function($excel) use ( $anio, $condicion ) {
+
+                $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio, $condicion ) {
+
+                    $sql = DB::select("select nro_doc, contribuyente, domic_fiscal,base_imponible, impuesto from reportes.vw_report_06_and_08 where anio = '$anio' and id_cond_exonerac = '$condicion' order by contribuyente asc" );
+
+                    $data= json_decode( json_encode($sql), true);
+
+                    $sheet->fromArray($data);
+                    $sheet->row(1, array("DNI", "CONTRIBUYENTE", "DOMICILIO FISCAL","BASE IMPONIBLE","IMPUESTO"))->freezeFirstRow();
+                    $sheet->setWidth(array(
+                        'A'     =>  20,
+                        'B'     =>  80,
+                        'C'     =>  100,
+                        'D'     =>  15,
+                        'E'     =>  15
+                    ));
+                });
+
+            })->export('xls');
+
+            }elseif($anio != 0 && $condicion == 0){
+                set_time_limit(0);
+                ini_set('memory_limit', '1G');
+                \Excel::create('Reporte Número de Contribuyentes de la emision predial Afecto y Exonerado', function($excel) use ( $anio ) {
+
+                $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio ) {
+
+                    $sql = DB::select("select nro_doc, contribuyente, domic_fiscal,base_imponible, impuesto from reportes.vw_report_06_and_08 where anio = '$anio' order by contribuyente asc" );
+
+                    $data= json_decode( json_encode($sql), true);
+
+                    $sheet->fromArray($data);
+                    $sheet->row(1, array("DNI", "CONTRIBUYENTE", "DOMICILIO FISCAL","BASE IMPONIBLE","IMPUESTO"))->freezeFirstRow();
+                    $sheet->setWidth(array(
+                        'A'     =>  20,
+                        'B'     =>  80,
+                        'C'     =>  100,
+                        'D'     =>  15,
+                        'E'     =>  15
+                    ));
+                });
+
+            })->export('xls');
+
+            }          
+        }
+        if($tip==0){
+            $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
+            $fecha = (date('d/m/Y H:i:s'));
+            
+            if($anio != 0 && $condicion != 0){
+            $sql = DB::select("select SUM(base_imponible) as base_imponible, SUM(impuesto) as impuesto from reportes.vw_report_06_and_08 where id_cond_exonerac = '$condicion' and anio = '$anio'");
+            $base_imponible = DB::select("select SUM(base_imponible) as base_imponible from reportes.vw_report_06_and_08 where id_cond_exonerac = '$condicion' and anio = '$anio'");
+            $impuesto = DB::select("select SUM(impuesto) as impuesto from reportes.vw_report_06_and_08 where id_cond_exonerac = '$condicion' and anio = '$anio'");
+            $nombre_condicion = DB::select("select desc_exon from reportes.vw_report_06_and_08 where id_cond_exonerac = '$condicion' ");
+            
+             
+            }else{
+            $sql = DB::select("select SUM(base_imponible) as base_imponible, SUM(impuesto) as impuesto from reportes.vw_report_06_and_08 where id_cond_exonerac = '$condicion' and anio = '$anio'");
+            $base_imponible = DB::select("select SUM(base_imponible) as base_imponible from reportes.vw_report_06_and_08 where anio = '$anio'");
+            $impuesto = DB::select("select SUM(impuesto) as impuesto from reportes.vw_report_06_and_08 where anio = '$anio'");
+            $nombre_condicion1 = 'TODOS';
+            $nombre_condicion = DB::select("select desc_exon from reportes.vw_report_06_and_08 where id_cond_exonerac = '$condicion' ");
+            }
+
+            if(count($sql)>0)
+            {
+                set_time_limit(0);
+                ini_set('memory_limit', '2G');
+                $view =  \View::make('reportes_gonzalo.reportes.reporte_ep_afecto_exonerado', compact('sql','base_imponible','impuesto','nombre_condicion','nombre_condicion1','anio','usuario','fecha'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4');
+                return $pdf->stream("Reporte Número de Contribuyentes de la emision predial Afecto y Exonerado".".pdf");
+            }
+            else
+            {   return 'No hay datos';  }
+        
+        }
+
+    }
+    
     function autocompletar_haburb() {
         $Consulta = DB::table('catastro.hab_urb')->get();
         $todo = array();

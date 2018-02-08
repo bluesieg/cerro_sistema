@@ -497,8 +497,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('reporte_fraccionamiento/{anio}/{estado}','ReportesController@rep_fraccionamiento');
         Route::get('reporte_cajas','ReportesController@reporte_cajas');
         
-
-          
+        //NUEVOS
+        Route::get('reporte_bi_afecto_exonerado/{tipo}/{anio}/{condicion}','ReportesController@reporte_bi_afecto_exonerado');
+        Route::get('reporte_ep_afecto_exonerado/{tipo}/{anio}/{condicion}','ReportesController@reporte_ep_afecto_exonerado');
+ 
     });
     Route::group(['namespace' => 'catastro_gonzalo'], function() {
        
@@ -550,10 +552,21 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('modificar_ipm', 'IpmController@modificar_ipm');
         Route::post('eliminar_ipm', 'IpmController@eliminar_ipm');
         
+        //FECHA DE VENCIMIENTO
+        Route::resource('fecha_vencimiento', 'FechaVencimientoController');
+        Route::get('listar_fecha_vencimiento','FechaVencimientoController@getFechaVencimiento');
+        Route::post('insertar_nuevo_fv', 'FechaVencimientoController@insertar_nuevo_fv');
+        Route::post('modificar_fv', 'FechaVencimientoController@modificar_fv');
+        Route::post('eliminar_fv', 'FechaVencimientoController@eliminar_fv');
+        
         //CONFIGURACION DEPRECIACIÓN
         Route::resource('depreciacion', 'DepreciacionController');
         Route::get('listar_depreciacion','DepreciacionController@getDepreciacion');  
         Route::post('modificar_depreciacion', 'DepreciacionController@modificar_depreciacion');
+        
+        //USOS CATASTRALES
+        Route::resource('usos_catastrales', 'UsosController');
+        Route::get('listar_usos_catastrales','UsosController@getUsosCatastrales');
   
     });
     

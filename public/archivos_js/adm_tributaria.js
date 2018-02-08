@@ -369,15 +369,21 @@ function limpiar_personas(){
     $("#pers_foto").attr("src", "img/avatars/male.png");
 }
 
-function new_contrib() { 
+function new_contrib() {
+    
     if ($("#txt_nro_doc").val() == '') {
         mostraralertasconfoco('Ingrese un Numero de Documento...', '#txt_nro_doc');
+        return false;
+    }
+    if ($("#contrib_num_expediente").val() == '') {
+        mostraralertasconfoco('Ingrese un Numero de Expediente...', '#contrib_num_expediente');
         return false;
     }
     if ($("#vw_contrib_id_pers").val() == '') {
         mostraralertasconfoco('Ingrese un Numero de Documento...', '#txt_nro_doc');
         return false;
     }
+    
     if($("#contrib_dist").val()!='040104'){
         $("#hiddentxt_av_jr_calle_psje").val('0');
     }

@@ -485,7 +485,29 @@ function crear_dialogo_cantidad_exonerados()
         auxded=1;
     }
 }
-auxep=0;
+
+function crear_dialogo_bi_afecto_exonerado()
+{
+    $("#dialog_bi_afecto_exonerado").dialog({
+        autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp.:Reporte del Monto de la Base Imponible Afecto y Exonerado. :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_reporte_bi_afecto_exonerado(1); }
+        },{
+            html: "<i class='fa fa-file-excel-o'></i>&nbsp; Ver Resumen",
+            "class": "btn btn-success bg-color-blue",
+            click: function () { abrir_reporte_bi_afecto_exonerado(0); }
+        },{
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+   
+}
+
 function crear_dialogo_ep_afecto_exonerado()
 {
     $("#dialog_por_ep_afecto_exonerado").dialog({
@@ -494,22 +516,17 @@ function crear_dialogo_ep_afecto_exonerado()
         buttons: [{
             html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
             "class": "btn btn-success bg-color-green",
-            click: function () { abrir_reporte_deduccion_50UIT(0); }
+            click: function () { abrir_reporte_ep_afecto_exonerado(1); }
         },{
-            html: "<i class='fa fa-file-excel-o'></i>&nbsp; Ver Todas",
+            html: "<i class='fa fa-file-excel-o'></i>&nbsp; Ver Resumen",
             "class": "btn btn-success bg-color-blue",
-            click: function () { abrir_reporte_deduccion_50UIT(1); }
+            click: function () { abrir_reporte_ep_afecto_exonerado(0); }
         }, {
             html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
             "class": "btn btn-danger",
             click: function () { $(this).dialog("close"); }
         }]
     }).dialog('open');
-    if(auxep==0)
-    {
-        autocompletar_haburb('habilitacion_urbana10');
-        auxep=1;
-    }
 }
 
 
@@ -537,8 +554,7 @@ function dlg_reportes_andrea(tipo)
     }
     if (tipo===6) {
         crear_dialogo_bi_afecto_exonerado();
-         $('#habilitacion_urbana3').val("");
-         $('#hidden_habilitacion_urbana3').val("");
+     
     }
     if (tipo===8) {
         crear_dialogo_ep_afecto_exonerado();
@@ -715,20 +731,29 @@ function abrir_reporte_exonerados(tipo)
     }
     
 }
+
+function abrir_reporte_bi_afecto_exonerado(tipo)
+{
+    if(tipo==0)
+    {
+        window.open('reporte_bi_afecto_exonerado/0'+'/'+$('#select_bi_afec_exon').val()+'/'+$('#select_condicion_bi_afec_exon').val()+'');
+    }
+    if(tipo==1)
+    {
+        window.open('reporte_bi_afecto_exonerado/1'+'/'+$('#select_bi_afec_exon').val()+'/'+$('#select_condicion_bi_afec_exon').val()+'');
+    }
+    
+}
+
 function abrir_reporte_ep_afecto_exonerado(tipo)
 {
     if(tipo==0)
     {
-        if ($("#hidden_habilitacion_urbana10").val() == 0){
-            mostraralertasconfoco("Debes Ingresar una Habilitacion Urbana","#hidden_habilitacion_urbana10");
-            return false;
-        }
-        window.open('reporte_deduccion_50UIT/0'+'/'+$('#select_sup_anio_ded').val()+'/'+$('#hidden_habilitacion_urbana10').val()+'/'+$('#select_condicion_ded').val()+'');
+       window.open('reporte_ep_afecto_exonerado/0'+'/'+$('#select_ep_afec_exon').val()+'/'+$('#select_condicion_ep_afec_exon').val()+'');
     }
     if(tipo==1)
     {
-         $('#habilitacion_urbana4').val("");$('#hidden_habilitacion_urbana10').val("");
-         window.open('reporte_deduccion_50UIT/1'+'/'+$('#select_sup_anio_ded').val()+'/'+'0'+'/'+$('#select_condicion_ded').val()+'');
+        window.open('reporte_ep_afecto_exonerado/1'+'/'+$('#select_ep_afec_exon').val()+'/'+$('#select_condicion_ep_afec_exon').val()+'');
     }
     
 }

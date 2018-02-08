@@ -986,7 +986,8 @@ function autocompletar_haburb(textbox){
         </div>
     </div>
 </div>
-<div id="dialog_por_ep_afecto_exonerado" style="display: none">
+
+<div id="dialog_por_exonerados" style="display: none">
     <div class="widget-body">
         <div  class="smart-form">
             <div class="panel-group">
@@ -997,7 +998,44 @@ function autocompletar_haburb(textbox){
                             <div class="input-group input-group-md">
                                 <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
                                     <div class="icon-addon addon-md">
-                                        <select id='select_sup_anio_ded' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                        <select id='select_sup_anio_exo' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                            @foreach ($anio_tra as $anio_con)
+                                                <option value='{{$anio_con->anio}}' >{{$anio_con->anio}}</option>
+                                            @endforeach
+                                        </select> 
+                                    </div>
+                            </div>
+                        </div>                       
+                    </div>                    
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12" >
+                            <div class="input-group input-group-md" style="width: 100%">
+                                <span class="input-group-addon" style="width: 165px">Hab. Urbana &nbsp;<i class="fa fa-file-archive-o"></i></span>
+                                <div> 
+                                     <input type="hidden" id="hidden_habilitacion_urbana11" value="0">
+                                     <textarea  id="habilitacion_urbana11" type="text" placeholder="Escriba una Habilitación Urbana" class="form-control" style="height: 32px; padding-left: 10px"  ></textarea>
+                                </div>
+                            </div>
+                         </div>
+                    </div>  
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dialog_bi_afecto_exonerado" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                        <select id='select_bi_afec_exon' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
                                             @foreach ($anio_tra as $anio_con)
                                                 <option value='{{$anio_con->anio}}' >{{$anio_con->anio}}</option>
                                             @endforeach
@@ -1011,9 +1049,51 @@ function autocompletar_haburb(textbox){
                             <div class="input-group input-group-md">
                                 <span class="input-group-addon" style="width: 165px">CONDICION <i class="fa fa-cogs"></i></span>
                                     <div class="icon-addon addon-md">
-                                          <select id='select_condicion_ded' class="form-control col-lg-8" >
+                                          <select id='select_condicion_bi_afec_exon' class="form-control col-lg-8" >
                                             <option value='0'>-- TODOS --</option>
-                                            @foreach ($afecto_exonerado as $afec_exo)
+                                            @foreach ($condicion as $afec_exo)
+                                                <option value='{{$afec_exo->id_exo}}' >{{$afec_exo->desc_exon}}</option>
+                                            @endforeach
+                                          </select>                                 
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dialog_por_ep_afecto_exonerado" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                        <select id='select_ep_afec_exon' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                            @foreach ($anio_tra as $anio_con)
+                                                <option value='{{$anio_con->anio}}' >{{$anio_con->anio}}</option>
+                                            @endforeach
+                                        </select> 
+                                    </div>
+                            </div>
+                        </div>                       
+                    </div>
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">CONDICION <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                          <select id='select_condicion_ep_afec_exon' class="form-control col-lg-8" >
+                                            <option value='0'>-- TODOS --</option>
+                                            @foreach ($condicion as $afec_exo)
                                                 <option value='{{$afec_exo->id_exo}}' >{{$afec_exo->desc_exon}}</option>
                                             @endforeach
                                           </select>                                 
