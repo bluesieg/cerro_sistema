@@ -488,7 +488,10 @@ Route::group(['middleware' => 'auth'], function() {
         
         
         Route::get('reporte_deduccion_50UIT/{tipo}/{anio}/{hab_urb}/{condicion}','ReportesController@reporte_deduccion_50UIT');
-        Route::get('reporte_exonerados/{tipo}/{anio}/{hab_urb}','ReportesController@reporte_exonerados');
+        Route::get('reporte_exonerados/{tipo}/{anio}/{hab_urb}/{condicion}','ReportesController@reporte_exonerados');
+        Route::get('reporte_morosidad_arbitrios/{tipo}/{anio}/{hab_urb}','ReportesController@reporte_morosidad_arbitrios');
+        Route::get('reporte_recaudacion_arbitrios/{tipo}/{anio}/{hab_urb}','ReportesController@reporte_recaudacion_arbitrios');
+        
         //REPORTE SUPERVISORES
         Route::get('reporte_supervisores','ReportesController@index_supervisores');
         //andrea

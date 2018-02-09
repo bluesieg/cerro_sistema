@@ -23,12 +23,12 @@ class ReportesController extends Controller
         $sectores =  DB::table('catastro.sectores')->orderBy('sector', 'asc')->where('id_sec', '>', 0)->get();
         $hab_urb =  DB::table('catastro.hab_urb')->orderBy('nomb_hab_urba', 'asc')->get();
         $condicion = DB::select('select id_exo,desc_exon from adm_tri.exoneracion order by id_exo asc');
-        $pensionista_adulto = DB::select('select id_exo,desc_exon from adm_tri.exoneracion where id_exo in (4,5) order by id_exo asc');
-        $afecto_exonerado = DB::select('select id_exo,desc_exon from adm_tri.exoneracion where id_exo in (1,2,3) order by id_exo asc');
+        $adulto_pensionista = DB::select("select id_exo,desc_exon from adm_tri.exoneracion where desc_exon  ilike '%PENSIONISTA%' OR desc_exon  ilike '%ADULTO MAYOR%'");
+        $exonerados = DB::select("select id_exo,desc_exon from adm_tri.exoneracion where desc_exon  ilike '%Exone%'");
         $estado_frac = DB::select('select id_estado,desc_estado from fraccionamiento.convenio_estado order by desc_estado asc');
         $usos_predio_arb = DB::table('adm_tri.uso_predio_arbitrios')->orderBy('id_uso_arb', 'asc')->get();
         $agencias = DB::select('select id_caj,descrip_caja from tesoreria.cajas order by descrip_caja desc');
-        return view('reportes_gonzalo/vw_reportes', compact('menu','permisos','anio_tra','sectores','hab_urb','condicion','usos_predio_arb','agencias','estado_frac','pensionista_adulto','afecto_exonerado'));
+        return view('reportes_gonzalo/vw_reportes', compact('menu','permisos','anio_tra','sectores','hab_urb','condicion','usos_predio_arb','agencias','estado_frac','adulto_pensionista','exonerados'));
     }
     public function index_supervisores()
     {
@@ -516,32 +516,33 @@ class ReportesController extends Controller
           
     }
     
-    public function reporte_cant_cont_ded_mont_bas_imp($tip,$anio,$hab_urb,$condicion)
+    public function reporte_deduccion_50UIT($tip,$anio,$hab_urb,$condicion)
     {
         if($tip==1){
                 if($anio != 0 && $hab_urb == 0 && $condicion == 0){
                 set_time_limit(0);
                 ini_set('memory_limit', '1G');
-            \Excel::create('Cantidad de contribuyentes por Condicion(Afecto, Inafecto, Exoneracion Parcial, Pensionista y Adulto mayor)', function($excel) use ( $anio ) {
+            \Excel::create('Reporte de cantidad de contribuyentes con deducción de 50 UIT y monto de la Base Imponible - Pensionista y Adulto mayor)', function($excel) use ( $anio ) {
 
                 $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio ) {
 
-                    $sql = DB::select("select pers_nro_doc, contribuyente, dom_fis, porctje, desc_exon, sec,mzna,lote, base_impon from reportes.vw_por_tipo_exoneracion where anio = '$anio'" );
+                    $sql = DB::select("select pers_nro_doc, contribuyente, dom_fis, porctje, desc_exon,nomb_hab_urba, sec,mzna,lote, base_impon from reportes.vw_por_tipo_exoneracion where  anio = '$anio' and desc_exon  ilike '%PENSIONISTA%' OR desc_exon  ilike '%ADULTO MAYOR%' order by contribuyente asc" );
 
                     $data= json_decode( json_encode($sql), true);
 
                     $sheet->fromArray($data);
-                    $sheet->row(1, array("DNI", "NOMBRE", "DOMICILIO FISCAL", "DEDUCCION", "CONDICION", "SECTOR","MZNA","LOTE", "BASE IMPONIBLE"))->freezeFirstRow();
+                    $sheet->row(1, array("DNI", "NOMBRE", "DOMICILIO FISCAL", "DEDUCCION", "CONDICION", "HAB. URBANA", "SECTOR","MZNA","LOTE", "BASE IMPONIBLE"))->freezeFirstRow();
                     $sheet->setWidth(array(
                         'A'     =>  15,
                         'B'     =>  50,
                         'C'     =>  100,
                         'D'     =>  30,
                         'E'     =>  30,
-                        'F'     =>  20,
+                        'F'     =>  100,
                         'G'     =>  20,
                         'H'     =>  20,
-                        'I'     =>  20
+                        'I'     =>  20,
+                        'J'     =>  20
                     ));
                 });
 
@@ -555,20 +556,23 @@ class ReportesController extends Controller
 
                 $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio, $condicion ) {
 
-                    $sql = DB::select("select pers_nro_doc, contribuyente, dom_fis, porctje, desc_exon, sec, base_impon from reportes.vw_por_tipo_exoneracion where anio = '$anio' and id_cond_exonerac = '$condicion' ");
+                    $sql = DB::select("select pers_nro_doc, contribuyente, dom_fis, porctje, desc_exon,nomb_hab_urba, sec,mzna,lote, base_impon from reportes.vw_por_tipo_exoneracion where anio = '$anio' and id_cond_exonerac = '$condicion' order by contribuyente ");
 
                     $data= json_decode( json_encode($sql), true);
 
                     $sheet->fromArray($data);
-                    $sheet->row(1, array("DNI", "NOMBRE", "DOMICILIO FISCAL", "DEDUCCION", "CONDICION", "SECTOR", "BASE IMPONIBLE"))->freezeFirstRow();
+                    $sheet->row(1, array("DNI", "NOMBRE", "DOMICILIO FISCAL", "DEDUCCION", "CONDICION", "HAB. URBANA", "SECTOR","MZNA","LOTE", "BASE IMPONIBLE"))->freezeFirstRow();
                     $sheet->setWidth(array(
                         'A'     =>  15,
                         'B'     =>  50,
                         'C'     =>  100,
                         'D'     =>  30,
                         'E'     =>  30,
-                        'F'     =>  20,
-                        'G'     =>  20
+                        'F'     =>  100,
+                        'G'     =>  20,
+                        'H'     =>  20,
+                        'I'     =>  20,
+                        'J'     =>  20
                     ));
                 });
             })->export('xls');
@@ -580,13 +584,13 @@ class ReportesController extends Controller
             if($anio != 0 && $hab_urb != 0 && $condicion != 0){
             $sql = DB::table('reportes.vw_por_tipo_exoneracion')->where('anio',$anio)->where('id_hab_urb',$hab_urb)->where('id_cond_exonerac',$condicion)->get();
             $nombre_condicion = DB::select("select desc_exon from reportes.vw_por_tipo_exoneracion where id_cond_exonerac = '$condicion' ");
-            $total = DB::select("select count(desc_exon) as condiciones from reportes.vw_por_tipo_exoneracion where id_cond_exonerac = '$condicion' and id_hab_urb = '$hab_urb'");
+            $total = DB::select("select count(*) as condiciones from reportes.vw_por_tipo_exoneracion where id_cond_exonerac = '$condicion' and id_hab_urb = '$hab_urb'");
              
             }
             else{
-                $sql = DB::table('reportes.vw_por_tipo_exoneracion')->where('anio',$anio)->where('id_hab_urb',$hab_urb)->get();
-            $nombre_condicion = DB::select("select desc_exon from reportes.vw_por_tipo_exoneracion where id_cond_exonerac = '$condicion' ");
-            $total = DB::select("select count(desc_exon) as condiciones from reportes.vw_por_tipo_exoneracion where  id_hab_urb = '$hab_urb'");
+            $sql = DB::table('reportes.vw_por_tipo_exoneracion')->where('anio',$anio)->where('id_hab_urb',$hab_urb)->whereIn('desc_exon', array('Adulto Mayor', 'Pensionista'))->get();
+            $nombre_condicion = DB::select("select id_exo,desc_exon from adm_tri.exoneracion where desc_exon  ilike '%PENSIONISTA%' OR desc_exon  ilike '%ADULTO MAYOR%' ");
+            $total = DB::select("select count(*) as condiciones from reportes.vw_por_tipo_exoneracion where  id_hab_urb = '$hab_urb'");
              
             }
             
@@ -605,34 +609,33 @@ class ReportesController extends Controller
         }
 
     }
-    //andrea
-    public function reporte_deduccion_50UIT($tip,$anio,$hab_urb,$condicion)
+    public function reporte_exonerados($tip,$anio,$hab_urb,$condicion)
     {
         if($tip==1){
                 if($anio != 0 && $hab_urb == 0 && $condicion == 0){
                 set_time_limit(0);
                 ini_set('memory_limit', '1G');
-            \Excel::create('Reporte de cantidad de contribuyentes con deducción de 50 UIT y monto de la Base Imponile.(Pensionista y Adulto mayor)', function($excel) use ( $anio ) {
+            \Excel::create('Reporte de cantidad de contribuyentes con deducción de 50 UIT y monto de la Base Imponible - Pensionista y Adulto mayor)', function($excel) use ( $anio ) {
 
                 $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio ) {
 
-                    $sql = DB::select("select pers_nro_doc, contribuyente, dom_fis,nomb_hab_urba, sec,mzna,lote, porctje, desc_exon, base_impon from reportes.vw_por_tipo_exoneracion where anio = '$anio' and id_cond_exonerac in (4,5) order by contribuyente asc" );
+                    $sql = DB::select("select pers_nro_doc, contribuyente, dom_fis, porctje, desc_exon,nomb_hab_urba, sec,mzna,lote, base_impon from reportes.vw_por_tipo_exoneracion where  anio = '$anio' and desc_exon  ilike '%PENSIONISTA%' OR desc_exon  ilike '%ADULTO MAYOR%' order by contribuyente asc" );
 
                     $data= json_decode( json_encode($sql), true);
 
                     $sheet->fromArray($data);
-                    $sheet->row(1, array("DNI", "NOMBRE", "DOMICILIO FISCAL","HABILITACIÓN URBANA","SECTOR","MZNA","LOTE", "DEDUCCION", "CONDICION",  "BASE IMPONIBLE"))->freezeFirstRow();
+                    $sheet->row(1, array("DNI", "NOMBRE", "DOMICILIO FISCAL", "DEDUCCION", "CONDICION", "HAB. URBANA", "SECTOR","MZNA","LOTE", "BASE IMPONIBLE"))->freezeFirstRow();
                     $sheet->setWidth(array(
-                        'A'     =>  13,
+                        'A'     =>  15,
                         'B'     =>  50,
                         'C'     =>  100,
-                        'D'     =>  100,
-                        'E'     =>  10,
-                        'F'     =>  10,
-                        'G'     =>  10,
-                        'H'     =>  10,
-                        'I'     =>  15,
-                        'J'     =>  15
+                        'D'     =>  30,
+                        'E'     =>  30,
+                        'F'     =>  100,
+                        'G'     =>  20,
+                        'H'     =>  20,
+                        'I'     =>  20,
+                        'J'     =>  20
                     ));
                 });
 
@@ -642,27 +645,27 @@ class ReportesController extends Controller
             elseif($anio != 0 && $hab_urb == 0 && $condicion != 0){
                 set_time_limit(0);
                 ini_set('memory_limit', '1G');
-                \Excel::create('Reporte de cantidad de contribuyentes con deducción de 50 UIT y monto de la Base Imponile.(Pensionista y Adulto mayor)', function($excel) use ( $anio, $condicion ) {
+                \Excel::create('Cantidad de contribuyentes por Condicion(Afecto, Inafecto, Exoneracion Parcial, Pensionista y Adulto mayor)', function($excel) use ( $anio, $condicion ) {
 
                 $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio, $condicion ) {
 
-                    $sql = DB::select("select pers_nro_doc, contribuyente, dom_fis,nomb_hab_urba, sec,mzna,lote, porctje, desc_exon, base_impon from reportes.vw_por_tipo_exoneracion where anio = '$anio' and id_cond_exonerac = '$condicion' order by contribuyente asc" );
+                    $sql = DB::select("select pers_nro_doc, contribuyente, dom_fis, porctje, desc_exon,nomb_hab_urba, sec,mzna,lote, base_impon from reportes.vw_por_tipo_exoneracion where anio = '$anio' and id_cond_exonerac = '$condicion' order by contribuyente ");
 
                     $data= json_decode( json_encode($sql), true);
 
                     $sheet->fromArray($data);
-                    $sheet->row(1, array("DNI", "NOMBRE", "DOMICILIO FISCAL","HABILITACIÓN URBANA","SECTOR","MZNA","LOTE", "DEDUCCION", "CONDICION",  "BASE IMPONIBLE"))->freezeFirstRow();
+                    $sheet->row(1, array("DNI", "NOMBRE", "DOMICILIO FISCAL", "DEDUCCION", "CONDICION", "HAB. URBANA", "SECTOR","MZNA","LOTE", "BASE IMPONIBLE"))->freezeFirstRow();
                     $sheet->setWidth(array(
-                        'A'     =>  13,
+                        'A'     =>  15,
                         'B'     =>  50,
                         'C'     =>  100,
-                        'D'     =>  100,
-                        'E'     =>  10,
-                        'F'     =>  10,
-                        'G'     =>  10,
-                        'H'     =>  10,
-                        'I'     =>  15,
-                        'J'     =>  15
+                        'D'     =>  30,
+                        'E'     =>  30,
+                        'F'     =>  100,
+                        'G'     =>  20,
+                        'H'     =>  20,
+                        'I'     =>  20,
+                        'J'     =>  20
                     ));
                 });
             })->export('xls');
@@ -674,13 +677,13 @@ class ReportesController extends Controller
             if($anio != 0 && $hab_urb != 0 && $condicion != 0){
             $sql = DB::table('reportes.vw_por_tipo_exoneracion')->where('anio',$anio)->where('id_hab_urb',$hab_urb)->where('id_cond_exonerac',$condicion)->get();
             $nombre_condicion = DB::select("select desc_exon from reportes.vw_por_tipo_exoneracion where id_cond_exonerac = '$condicion' ");
-            $total = DB::select("select count(desc_exon) as condiciones from reportes.vw_por_tipo_exoneracion where id_cond_exonerac = '$condicion' and id_hab_urb = '$hab_urb'");
+            $total = DB::select("select count(*) as condiciones from reportes.vw_por_tipo_exoneracion where id_cond_exonerac = '$condicion' and id_hab_urb = '$hab_urb'");
              
             }
             else{
-            $sql = DB::table('reportes.vw_por_tipo_exoneracion')->where('anio',$anio)->where('id_hab_urb',$hab_urb)->where('id_cond_exonerac',4,5)->get();
-            $nombre_condicion = ("Pensionista , Adulto Mayor");
-            $total = DB::select("select count(desc_exon) as condiciones from reportes.vw_por_tipo_exoneracion where  id_hab_urb = '$hab_urb' and id_cond_exonerac in (4,5)");
+            $sql = DB::table('reportes.vw_por_tipo_exoneracion')->where('anio',$anio)->where('id_hab_urb',$hab_urb)->whereIn('desc_exon', array('Adulto Mayor', 'Pensionista'))->get();
+            $nombre_condicion = DB::select("select id_exo,desc_exon from adm_tri.exoneracion where desc_exon  ilike '%PENSIONISTA%' OR desc_exon  ilike '%ADULTO MAYOR%' ");
+            $total = DB::select("select count(*) as condiciones from reportes.vw_por_tipo_exoneracion where  id_hab_urb = '$hab_urb'");
              
             }
             
@@ -983,6 +986,87 @@ class ReportesController extends Controller
         
         }
 
+    }
+    
+    public function reporte_morosidad_arbitrios($tip,$anio,$hab_urb)
+    {
+       $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
+       $fecha = (date('d/m/Y H:i:s'));
+        if($tip==1){
+            if($anio != 0 && $hab_urb == 0){  
+            $sql = DB::table('reportes.vw_reporte_15')->where('anio',$anio)->orderBy('tot_pagar','desc')->get();       
+            if(count($sql)>0)
+            {
+                set_time_limit(0);
+                ini_set('memory_limit', '2G');
+                $view =  \View::make('reportes_gonzalo.reportes.reporte_morosidad_arbitrios', compact('sql','anio','hab_urb','usuario','fecha'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4');
+                return $pdf->stream("Listado de Contribuyentes".".pdf");
+            }
+            else
+            {   return 'No hay datos';  }
+        
+            }
+        }
+        if($tip==0){
+            
+            if($anio != 0 && $hab_urb != 0){
+            $sql = DB::table('reportes.vw_reporte_15')->where('anio',$anio)->where('id_hab_urb',$hab_urb)->orderBy('tot_pagar','desc')->get();             
+            if(count($sql)>0)
+            {
+                set_time_limit(0);
+                ini_set('memory_limit', '2G');
+                $view =  \View::make('reportes_gonzalo.reportes.reporte_morosidad_arbitrios', compact('sql','anio','hab_urb','usuario','fecha'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4');
+                return $pdf->stream("Listado de Contribuyentes".".pdf");
+            }
+            else
+            {   return 'No hay datos';  }
+        
+            }
+        }
+    }
+    public function reporte_recaudacion_arbitrios($tip,$anio,$hab_urb)
+    {
+       $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
+       $fecha = (date('d/m/Y H:i:s'));
+        if($tip==1){
+            if($anio != 0 && $hab_urb == 0){  
+            $sql = DB::table('reportes.vw_reporte_15')->where('anio',$anio)->orderBy('tot_pagar','desc')->get();       
+            if(count($sql)>0)
+            {
+                set_time_limit(0);
+                ini_set('memory_limit', '2G');
+                $view =  \View::make('reportes_gonzalo.reportes.reporte_morosidad_arbitrios', compact('sql','anio','hab_urb','usuario','fecha'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4');
+                return $pdf->stream("Listado de Contribuyentes".".pdf");
+            }
+            else
+            {   return 'No hay datos';  }
+        
+            }
+        }
+        if($tip==0){
+            
+            if($anio != 0 && $hab_urb != 0){
+            $sql = DB::table('reportes.vw_reporte_15')->where('anio',$anio)->where('id_hab_urb',$hab_urb)->orderBy('tot_pagar','desc')->get();             
+            if(count($sql)>0)
+            {
+                set_time_limit(0);
+                ini_set('memory_limit', '2G');
+                $view =  \View::make('reportes_gonzalo.reportes.reporte_recaudacionss_arbitrios', compact('sql','anio','hab_urb','usuario','fecha'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4');
+                return $pdf->stream("Listado de Contribuyentes".".pdf");
+            }
+            else
+            {   return 'No hay datos';  }
+        
+            }
+        }
     }
     
     function autocompletar_haburb() {

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Reporte de cantidad de contribuyentes con deduccion de 50 UIT - Pensionista y Adulto mayor</title>
+    <title>Reporte de Cantidad de Contribuyentes exonerados</title>
     <link href="{{ asset('css/pdf.css') }}" rel="stylesheet">
     <style>
         .move-ahead { counter-increment: page 2; position: absolute; visibility: hidden; }
@@ -34,7 +34,7 @@
 
     </table>
 
-    <center><div Class="asunto" style="margin-top: 10px; font-size:0.8em;"><b>Reporte de cantidad de contribuyentes con deduccion de 50 UIT - Pensionista y Adulto mayor</b></div></center>
+    <center><div Class="asunto" style="margin-top: 10px; font-size:0.8em;"><b>Reporte de Cantidad de Contribuyentes exonerados</b></div></center>
     <div class="subasunto" style=" margin-bottom:1px; text-align: left; padding-left: 30px;font-size:0.7em;">
         <h5 class="subasunto" style="font-size:0.8em;  text-align: right; padding-left: 30px;">{{ $fecha }}</h5>  
     </div>

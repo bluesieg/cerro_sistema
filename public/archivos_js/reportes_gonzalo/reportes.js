@@ -95,69 +95,6 @@ function abrir_reporte_contribuyente()
     window.open('reporte_contribuyentes/'+ $('#selantra_r0').val()+ '/'+ $('#min').val()+ '/' + $('#max').val() + '/'  +$('#num_reg').val());
     }
 }
-/********************************REPORTE_CANTIDAD_CONTRIBUYENTES_EXONERADOS**************************************************/
-
-function crear_dialogo_contribuyentes_exonerados()
-{
-    $("#dialog_reporte_contribuyentes_exonerados").dialog({
-        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>&nbsp&nbsp.: Listado de Datos de los Contribuyentes y Predios :.</h4></div>",
-        buttons: [{
-            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
-            "class": "btn btn-success bg-color-green",
-            click: function () { abrir_reporte_contribuyentes_exonerados(); }
-        }, {
-            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
-            "class": "btn btn-danger",
-            click: function () { $(this).dialog("close"); }
-        }]
-    }).dialog('open');
-}
-
-function dlg_reporte_contribuyentes_exonerados(tipo)
-{
-    if (tipo===0) {
-        crear_dialogo_contribuyentes_exonerados();
-    } 
-}
-
-function abrir_reporte_contribuyentes_exonerados()
-{
-    window.open('reporte_contribuyentes_exonerados/'+$('#selantra_5').val()+'/'+$('#selsec_5').val()+'/'+$('#selcond_5').val()+'');
-}
-
-/********************************REPORTE_CANTIDAD_CONTRIBUYENTES_DEDUCCION_50UIT**************************************************/
-
-
-function crear_dialogo_reporte_cantidad_contribuyentes()
-{
-    $("#dialog_reporte_cantidad_contribuyentes").dialog({
-        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>&nbsp&nbsp.: Listado de Datos de los Contribuyentes y Predios :.</h4></div>",
-        buttons: [{
-            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
-            "class": "btn btn-success bg-color-green",
-            click: function () { abrir_reporte_cantidad_contribuyentes(); }
-        }, {
-            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
-            "class": "btn btn-danger",
-            click: function () { $(this).dialog("close"); }
-        }]
-    }).dialog('open');
-}
-
-function dlg_reporte_cantidad_contribuyentes(tipo)
-{
-    if (tipo===0) {
-        crear_dialogo_reporte_cantidad_contribuyentes();
-    } 
-}
-
-function abrir_reporte_cantidad_contribuyentes()
-{
-    window.open('reporte_cantidad_contribuyentes/'+$('#selantra_7').val()+'/'+$('#selsec_7').val()+'');
-}
-
 
 /********************************REPORTE_DE_USUARIOS************************************************************/
 
@@ -224,85 +161,6 @@ function abrir_reporte_usuarios()
 
 /*********************************************REPORTES GERENCIALES********************************************/
 
-var aux1=0;
-
-function crear_dialogo_por_zona()
-{
-    $("#dialog_por_zona").dialog({
-        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>&nbsp&nbsp.: Reporte impuesto Predial por Hab. Urbana - Zona :.</h4></div>",
-        buttons: [{
-            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
-            "class": "btn btn-success bg-color-green",
-            click: function () { abrir_reporte_por_zona(); }
-        },  {
-            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
-            "class": "btn btn-danger",
-            click: function () { $(this).dialog("close"); }
-        }]
-    }).dialog('open');
-    if(aux1==0)
-    {
-        autocompletar_haburb('hab_urb');
-        aux1=1;
-    }
-}
-function crear_dialogo_corriente()
-{
-    $("#dialog_corriente").dialog({
-        autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>&nbsp.:Reporte impuesto Predial Corriente y No Corriente :.</h4></div>",
-        buttons: [{
-            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
-            "class": "btn btn-success bg-color-green",
-            click: function () { abrir_reporte_corriente(); }
-        }, {
-            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
-            "class": "btn btn-danger",
-            click: function () { $(this).dialog("close"); }
-        }]
-    }).dialog('open');
-  
-}
-function crear_dialogo_fraccionamiento()
-{
-    $("#dialog_fraccionamiento").dialog({
-        autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>&nbsp.:Reporte Fraccionamientos Realizados y Cancelados :.</h4></div>",
-        buttons: [{
-            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
-            "class": "btn btn-success bg-color-green",
-            click: function () { abrir_reporte_fraccionamiento(); }
-        }, {
-            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
-            "class": "btn btn-danger",
-            click: function () { $(this).dialog("close"); }
-        }]
-    }).dialog('open');
-    if(aux1==0)
-    {
-        autocompletar_haburb('hab_urb');
-        aux1=1;
-    }
-}
-
-function crear_dialogo_caja()
-{
-    $("#dialog_caja").dialog({
-        autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>&nbsp.:Reporte General de Caja :.</h4></div>",
-        buttons: [{
-            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
-            "class": "btn btn-success bg-color-green",
-            click: function () { abrir_reporte_cajas(); }
-        }, {
-            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
-            "class": "btn btn-danger",
-            click: function () { $(this).dialog("close"); }
-        }]
-    }).dialog('open');
-   
-}
 auxdc=0;
 function crear_dialogo_datos_contribuyentes()
 {
@@ -407,33 +265,31 @@ function crear_dialogo_por_uso()
         auxuso=1;
     }
 }
-auxcon=0;
-function crear_dialogo_por_condicion()
+
+
+function crear_dialogo_ep_afecto_exonerado()
 {
-    $("#dialog_por_condicion").dialog({
+    $("#dialog_por_ep_afecto_exonerado").dialog({
         autoOpen: false, modal: true, width: 630, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>&nbsp&nbsp.: Reporte Predios Por Condicion :.</h4></div>",
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.:  Reporte Número de  Contribuyentes de la emision predial Afecto y Exonerado :.</h4></div>",
         buttons: [{
             html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
             "class": "btn btn-success bg-color-green",
-            click: function () { abrir_reporte_cant_cont_ded_mont_bas_imp(0); }
+            click: function () { abrir_reporte_ep_afecto_exonerado(1); }
         },{
-            html: "<i class='fa fa-file-excel-o'></i>&nbsp; Ver Todas",
+            html: "<i class='fa fa-file-excel-o'></i>&nbsp; Ver Resumen",
             "class": "btn btn-success bg-color-blue",
-            click: function () { abrir_reporte_cant_cont_ded_mont_bas_imp(1); }
+            click: function () { abrir_reporte_ep_afecto_exonerado(0); }
         }, {
             html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
             "class": "btn btn-danger",
             click: function () { $(this).dialog("close"); }
         }]
     }).dialog('open');
-    if(auxcon==0)
-    {
-        autocompletar_haburb('habilitacion_urbana4');
-        auxcon=1;
-    }
 }
+
 auxded=0;
+
 function crear_dialogo_deduccion_50UIT()
 {
     $("#dialog_por_deduccion_50UIT").dialog({
@@ -459,33 +315,6 @@ function crear_dialogo_deduccion_50UIT()
         auxded=1;
     }
 }
-auxded=0;
-function crear_dialogo_cantidad_exonerados()
-{
-    $("#dialog_por_exonerados").dialog({
-        autoOpen: false, modal: true, width: 630, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>&nbsp&nbsp.:Reporte de Cantidad de Contribuyentes exonerados. :.</h4></div>",
-        buttons: [{
-            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
-            "class": "btn btn-success bg-color-green",
-            click: function () { abrir_reporte_exonerados(0); }
-        },{
-            html: "<i class='fa fa-file-excel-o'></i>&nbsp; Ver Todas",
-            "class": "btn btn-success bg-color-blue",
-            click: function () { abrir_reporte_exonerados(1); }
-        }, {
-            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
-            "class": "btn btn-danger",
-            click: function () { $(this).dialog("close"); }
-        }]
-    }).dialog('open');
-    if(auxded==0)
-    {
-        autocompletar_haburb('habilitacion_urbana10');
-        auxded=1;
-    }
-}
-
 function crear_dialogo_bi_afecto_exonerado()
 {
     $("#dialog_bi_afecto_exonerado").dialog({
@@ -507,29 +336,164 @@ function crear_dialogo_bi_afecto_exonerado()
     }).dialog('open');
    
 }
-
-function crear_dialogo_ep_afecto_exonerado()
+auxexo=0;
+function crear_dialogo_cantidad_exonerados()
 {
-    $("#dialog_por_ep_afecto_exonerado").dialog({
+    $("#dialog_por_exonerados").dialog({
         autoOpen: false, modal: true, width: 630, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>&nbsp&nbsp.:  Reporte Número de  Contribuyentes de la emision predial Afecto y Exonerado :.</h4></div>",
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.: Reporte de cantidad de contribuyentes exonerados :.</h4></div>",
         buttons: [{
             html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
             "class": "btn btn-success bg-color-green",
-            click: function () { abrir_reporte_ep_afecto_exonerado(1); }
+            click: function () { abrir_reporte_exonerados(0); }
         },{
-            html: "<i class='fa fa-file-excel-o'></i>&nbsp; Ver Resumen",
+            html: "<i class='fa fa-file-excel-o'></i>&nbsp; Ver Todas",
             "class": "btn btn-success bg-color-blue",
-            click: function () { abrir_reporte_ep_afecto_exonerado(0); }
+            click: function () { abrir_reporte_exonerados(1); }
         }, {
             html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
             "class": "btn btn-danger",
             click: function () { $(this).dialog("close"); }
         }]
     }).dialog('open');
+    if(auxexo==0)
+    {
+        autocompletar_haburb('habilitacion_urbana11');
+        auxexo=1;
+    }
+}
+
+function crear_dialogo_corriente()
+{
+    $("#dialog_corriente").dialog({
+        autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp.:Reporte impuesto Predial Corriente y No Corriente :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_reporte_corriente(); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+  
+}
+function crear_dialogo_fraccionamiento()
+{
+    $("#dialog_fraccionamiento").dialog({
+        autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp.:Reporte Fraccionamientos Realizados y Cancelados :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_reporte_fraccionamiento(); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+    if(aux1==0)
+    {
+        autocompletar_haburb('hab_urb');
+        aux1=1;
+    }
+}
+
+function crear_dialogo_caja()
+{
+    $("#dialog_caja").dialog({
+        autoOpen: false, modal: true, width: 500, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp.:Reporte General de Caja :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_reporte_cajas(); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+   
+}
+auxma=0;
+
+function crear_dialogo_morosidad_arbitrios()
+{
+    $("#dialog_por_morosidad_arbitrios").dialog({
+        autoOpen: false, modal: true, width: 630, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.: Reporte de % de Morosidad de Arbitrios Municipales :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_reporte_morosidad_arbititros(0); }
+        },{
+            html: "<i class='fa fa-file-excel-o'></i>&nbsp; Ver Todas",
+            "class": "btn btn-success bg-color-blue",
+            click: function () { abrir_reporte_morosidad_arbititros(1); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+    if(auxma==0)
+    {
+        autocompletar_haburb('habilitacion_urbana15');
+        auxma=1;
+    }
+}
+auxra=0;
+function crear_dialogo_recaudacion_arbitrios()
+{    
+    $("#dialog_por_recaudacion_arbitrios").dialog({
+        autoOpen: false, modal: true, width: 630, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.:Reporte de la Recaudación de Abitrios Municipales por Zona :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_reporte_recaudacion_arbititros(0); }
+        },{
+            html: "<i class='fa fa-file-excel-o'></i>&nbsp; Ver Todas",
+            "class": "btn btn-success bg-color-blue",
+            click: function () { abrir_reporte_recaudacion_arbititros(1); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+    if(auxra==0)
+    {
+        autocompletar_haburb('habilitacion_urbana17');
+        auxra=1;
+    }
 }
 
 
+function crear_dialogo_immporte_insoluto()
+{
+    $("#dialog_importe_insoluto").dialog({
+        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header' ><h5>&nbsp&nbsp.: Reporte de Importe Insoluto total de la deuda por impuesto predial transferida a Coactiva:.</h5></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Hab. Urbana Seleccionada"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_reporte_datos_contribuyentes(0); }
+        }, {
+            html: "<i class='fa fa-file-excel-o'></i>&nbsp; Ver Todas",
+            "class": "btn btn-success bg-color-blue",
+            click: function () { abrir_reporte_datos_contribuyentes(1); }
+        },{
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+}
 function dlg_reportes_andrea(tipo)
 {
     if (tipo===1)  {
@@ -554,10 +518,9 @@ function dlg_reportes_andrea(tipo)
     }
     if (tipo===6) {
         crear_dialogo_bi_afecto_exonerado();
-     
     }
     if (tipo===8) {
-        crear_dialogo_ep_afecto_exonerado();
+         crear_dialogo_ep_afecto_exonerado();
     }
     if (tipo===10) {
         crear_dialogo_deduccion_50UIT();
@@ -570,16 +533,24 @@ function dlg_reportes_andrea(tipo)
          $('#hidden_habilitacion_urbana11').val("");
          
     }
-    if (tipo===7) {
-        crear_dialogo_por_condicion();
-         $('#habilitacion_urbana4').val("");
-         $('#hidden_habilitacion_urbana4').val("");
-         
-    }
     if (tipo===13) {
         crear_dialogo_corriente();
     } 
-    
+    if (tipo===15) {
+        crear_dialogo_morosidad_arbitrios();
+         $('#habilitacion_urbana15').val("");
+         $('#hidden_habilitacion_urbana15').val("");
+         
+    }
+    if (tipo===17) {
+        crear_dialogo_recaudacion_arbitrios();
+         $('#habilitacion_urbana17').val("");
+         $('#hidden_habilitacion_urbana17').val("");
+         
+    }
+    if (tipo===23) {
+        crear_dialogo_immporte_insoluto();        
+    }
     if (tipo===18) {
         crear_dialogo_fraccionamiento();
     }
@@ -595,14 +566,7 @@ function dlg_reportes_andrea(tipo)
 }
 
 
-function abrir_reporte_por_zona()
-{
-    if ($("#hiddenhab").val() == 0){
-            mostraralertasconfoco("Debes Ingresar una Habilitacion Urbana","#hab_urb");
-            return false;
-    }
-    window.open('listado_datos_contribuyentes/'+$('#select_sup_anio_dc1').val()+'/'+$('#hiddenhab').val()+'');
-}
+
 function abrir_reporte_corriente()
 {
     window.open('reporte_corriente/'+$('#anio_corriente').val()+'');
@@ -679,24 +643,6 @@ function abrir_reporte_por_uso(tipo)
     } 
     
 }
-
-function abrir_reporte_cant_cont_ded_mont_bas_imp(tipo)
-{
-    if(tipo==0)
-    {
-        if ($("#hidden_habilitacion_urbana4").val() == 0){
-            mostraralertasconfoco("Debes Ingresar una Habilitacion Urbana","#hidden_habilitacion_urbana4");
-            return false;
-        }
-        window.open('reporte_cant_cont_ded_mont_bas_imp/0'+'/'+$('#select_sup_anio_con').val()+'/'+$('#hidden_habilitacion_urbana4').val()+'/'+$('#select_condicion_ccdmbi').val()+'');
-    }
-    if(tipo==1)
-    {
-         $('#habilitacion_urbana4').val("");$('#hidden_habilitacion_urbana4').val("");
-         window.open('reporte_cant_cont_ded_mont_bas_imp/1'+'/'+$('#select_sup_anio_con').val()+'/'+'0'+'/'+$('#select_condicion_ccdmbi').val()+'');
-    }
-    
-}
 function abrir_reporte_deduccion_50UIT(tipo)
 {
     if(tipo==0)
@@ -714,24 +660,6 @@ function abrir_reporte_deduccion_50UIT(tipo)
     }
     
 }
-function abrir_reporte_exonerados(tipo)
-{
-    if(tipo==0)
-    {
-        if ($("#hidden_habilitacion_urbana11").val() == 0){
-            mostraralertasconfoco("Debes Ingresar una Habilitacion Urbana","#hidden_habilitacion_urbana11");
-            return false;
-        }
-        window.open('reporte_exonerados/0'+'/'+$('#select_sup_anio_exo').val()+'/'+$('#hidden_habilitacion_urbana11').val()+'/'+''+'');
-    }
-    if(tipo==1)
-    {
-         $('#habilitacion_urbana11').val("");$('#hidden_habilitacion_urbana11').val("");
-         window.open('reporte_exonerados/1'+'/'+$('#select_sup_anio_exo').val()+'/'+'0'+'/'+$('#select_condicion_ccdmbi').val()+'');
-    }
-    
-}
-
 function abrir_reporte_bi_afecto_exonerado(tipo)
 {
     if(tipo==0)
@@ -756,4 +684,55 @@ function abrir_reporte_ep_afecto_exonerado(tipo)
         window.open('reporte_ep_afecto_exonerado/1'+'/'+$('#select_ep_afec_exon').val()+'/'+$('#select_condicion_ep_afec_exon').val()+'');
     }
     
+}
+function abrir_reporte_exonerados(tipo)
+{
+    if(tipo==0)
+    {
+        if ($("#hidden_habilitacion_urbana11").val() == 0){
+            mostraralertasconfoco("Debes Ingresar una Habilitacion Urbana","#hidden_habilitacion_urbana11");
+            return false;
+        }
+        window.open('reporte_exonerados/0'+'/'+$('#select_sup_anio_exo').val()+'/'+$('#hidden_habilitacion_urbana11').val()+'/'+$('#select_condicion_exo').val()+'');
+    }
+    if(tipo==1)
+    {
+         $('#habilitacion_urbana11').val("");$('#hidden_habilitacion_urbana11').val("");
+         window.open('reporte_exonerados/1'+'/'+$('#select_sup_anio_exo').val()+'/'+'0'+'/'+$('#select_condicion_exo').val()+'');
+    }
+    
+}
+function abrir_reporte_morosidad_arbititros(tipo)
+{
+    if(tipo==0)
+    {
+        if ($("#hidden_habilitacion_urbana15").val() == 0){
+            mostraralertasconfoco("Debes Ingresar una Habilitacion Urbana","#hidden_habilitacion_urbana15");
+            return false;
+        }
+        window.open('reporte_morosidad_arbitrios/0'+'/'+$('#select_sup_anio_ma').val()+'/'+$('#hidden_habilitacion_urbana15').val()+'');
+    }
+    if(tipo==1)
+    {
+         $('#habilitacion_urbana15').val("");$('#hidden_habilitacion_urbana15').val("");
+         window.open('reporte_morosidad_arbitrios/1'+'/'+$('#select_sup_anio_ma').val()+'/'+'0'+'');
+    }
+      
+}
+function abrir_reporte_recaudacion_arbititros(tipo)
+{
+    if(tipo==0)
+    {
+        if ($("#hidden_habilitacion_urbana17").val() == 0){
+            mostraralertasconfoco("Debes Ingresar una Habilitacion Urbana","#hidden_habilitacion_urbana17");
+            return false;
+        }
+        window.open('reporte_recaudacion_arbitrios/0'+'/'+$('#select_sup_anio_ra').val()+'/'+$('#hidden_habilitacion_urbana17').val()+'');   
+    }
+    if(tipo==1)
+        {
+             $('#habilitacion_urbana17').val("");$('#hidden_habilitacion_urbana17').val("");
+             window.open('reporte_recaudacion_arbitrios/1'+'/'+$('#select_sup_anio_ra').val()+'/'+'0'+'');
+        }
+      
 }

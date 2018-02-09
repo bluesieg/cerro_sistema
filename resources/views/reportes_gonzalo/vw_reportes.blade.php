@@ -158,6 +158,28 @@
           
                          
                         </tr>
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_reportes_andrea(15);" id="titulo_r1">
+                                        REPORTE 15: Reporte de % de Morosidad de Arbitrios Municipales por Zona.</a>
+                                    <small>Descripción reporte 15</small>
+                                </h4>
+                            </td>
+          
+                         
+                        </tr>
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_reportes_andrea(17);" id="titulo_r1">
+                                        REPORTE 17: Reporte de la Recaudación de Abitrios Municipales por Zona.</a>
+                                    <small>Descripción reporte 17</small>
+                                </h4>
+                            </td>
+          
+                         
+                        </tr>
                         
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
@@ -165,6 +187,17 @@
                                 <h4><a href="#" onclick="dlg_reportes_andrea(18);" id="titulo_r1">
                                         REPORTE 18: Reporte de Fracionamiento Realizados y cancelados.</a>
                                     <small>Descripción reporte 18</small>
+                                </h4>
+                            </td>
+          
+                         
+                        </tr>
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_reportes_andrea(23);" id="titulo_r1">
+                                        REPORTE 23: Reporte de Importe Insoluto total de la deuda por impuesto predial transferida a Ejecución Coactiva.</a>
+                                    <small>Descripción reporte 23</small>
                                 </h4>
                             </td>
           
@@ -926,8 +959,8 @@ function autocompletar_haburb(textbox){
                                     <div class="icon-addon addon-md">
                                           <select id='select_condicion_ded' class="form-control col-lg-8" >
                                             <option value='0'>-- TODOS --</option>
-                                            @foreach ($pensionista_adulto as $pens_adul)
-                                                <option value='{{$pens_adul->id_exo}}' >{{$pens_adul->desc_exon}}</option>
+                                            @foreach ($adulto_pensionista as $adul_pen)
+                                                <option value='{{$adul_pen->id_exo}}' >{{$adul_pen->desc_exon}}</option>
                                             @endforeach
                                           </select>                                 
                                     </div>
@@ -941,42 +974,6 @@ function autocompletar_haburb(textbox){
                                 <div> 
                                      <input type="hidden" id="hidden_habilitacion_urbana10" value="0">
                                      <textarea  id="habilitacion_urbana10" type="text" placeholder="Escriba una Habilitación Urbana" class="form-control" style="height: 32px; padding-left: 10px"  ></textarea>
-                                </div>
-                            </div>
-                         </div>
-                    </div>  
-                <!-- end widget div -->
-            </div>
-        </div>
-    </div>
-</div>
-<div id="dialog_por_exonerados" style="display: none">
-    <div class="widget-body">
-        <div  class="smart-form">
-            <div class="panel-group">
-                <!-- widget div-->
-                
-                    <div class="row" style="padding: 5px 30px;">
-                        <div class="col-xs-12">
-                            <div class="input-group input-group-md">
-                                <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
-                                    <div class="icon-addon addon-md">
-                                        <select id='select_sup_anio_exo' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
-                                            @foreach ($anio_tra as $anio_con)
-                                                <option value='{{$anio_con->anio}}' >{{$anio_con->anio}}</option>
-                                            @endforeach
-                                        </select> 
-                                    </div>
-                            </div>
-                        </div>                       
-                    </div>                    
-                    <div class="row" style="padding: 5px 30px;">
-                        <div class="col-xs-12" >
-                            <div class="input-group input-group-md" style="width: 100%">
-                                <span class="input-group-addon" style="width: 165px">Hab. Urbana &nbsp;<i class="fa fa-file-archive-o"></i></span>
-                                <div> 
-                                     <input type="hidden" id="hidden_habilitacion_urbana11" value="0">
-                                     <textarea  id="habilitacion_urbana11" type="text" placeholder="Escriba una Habilitación Urbana" class="form-control" style="height: 32px; padding-left: 10px"  ></textarea>
                                 </div>
                             </div>
                          </div>
@@ -1006,7 +1003,22 @@ function autocompletar_haburb(textbox){
                                     </div>
                             </div>
                         </div>                       
-                    </div>                    
+                    </div>    
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">CONDICION <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                          <select id='select_condicion_exo' class="form-control col-lg-8" >
+                                            <option value='0'>-- TODOS --</option>
+                                            @foreach ($exonerados as $exon)
+                                                <option value='{{$exon->id_exo}}' >{{$exon->desc_exon}}</option>
+                                            @endforeach
+                                          </select>                                 
+                                    </div>
+                            </div>
+                        </div>
+                    </div>                
                     <div class="row" style="padding: 5px 30px;">
                         <div class="col-xs-12" >
                             <div class="input-group input-group-md" style="width: 100%">
@@ -1102,6 +1114,115 @@ function autocompletar_haburb(textbox){
                         </div>
                     </div>
                     
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dialog_por_morosidad_arbitrios" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                        <select id='select_sup_anio_ma' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                            @foreach ($anio_tra as $anio_con)
+                                                <option value='{{$anio_con->anio}}' >{{$anio_con->anio}}</option>
+                                            @endforeach
+                                        </select> 
+                                    </div>
+                            </div>
+                        </div>                       
+                    </div>
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12" >
+                            <div class="input-group input-group-md" style="width: 100%">
+                                <span class="input-group-addon" style="width: 165px">Hab. Urbana &nbsp;<i class="fa fa-file-archive-o"></i></span>
+                                <div> 
+                                     <input type="hidden" id="hidden_habilitacion_urbana15" value="0">
+                                     <textarea  id="habilitacion_urbana15" type="text" placeholder="Escriba una Habilitación Urbana" class="form-control" style="height: 32px; padding-left: 10px"  ></textarea>
+                                </div>
+                            </div>
+                         </div>
+                    </div>  
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dialog_por_recaudacion_arbitrios" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                        <select id='select_sup_anio_ra' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                            @foreach ($anio_tra as $anio_con)
+                                                <option value='{{$anio_con->anio}}' >{{$anio_con->anio}}</option>
+                                            @endforeach
+                                        </select> 
+                                    </div>
+                            </div>
+                        </div>                       
+                    </div>
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12" >
+                            <div class="input-group input-group-md" style="width: 100%">
+                                <span class="input-group-addon" style="width: 165px">Hab. Urbana &nbsp;<i class="fa fa-file-archive-o"></i></span>
+                                <div> 
+                                     <input type="hidden" id="hidden_habilitacion_urbana17" value="0">
+                                     <textarea  id="habilitacion_urbana17" type="text" placeholder="Escriba una Habilitación Urbana" class="form-control" style="height: 32px; padding-left: 10px"  ></textarea>
+                                </div>
+                            </div>
+                         </div>
+                    </div>  
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dialog_importe_insoluto" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                
+                    <div class="row" style="padding: 20px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                        <select id='select_sup_anio_dc1' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                            @foreach ($anio_tra as $anio_dc)
+                                                <option value='{{$anio_dc->anio}}' >{{$anio_dc->anio}}</option>
+                                            @endforeach
+                                        </select>
+                                        
+                                    </div>
+                            </div>
+                        </div>
+                    </div>                         
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12" >
+                            <div class="input-group input-group-md" style="width: 100%">
+                                <span class="input-group-addon" style="width: 280px">Monto transferido a Ejecución Coactiva &nbsp;<i class="fa fa-file-archive-o"></i></span>
+                                <div> 
+                                     <input type="hidden" id="hidden_habilitacion_urbana" value="0">
+                                     <input  id="habilitacion_urbana" type="text" placeholder="c" class="form-control" style="height: 32px;  width: 90% ;"  ></input>
+                                </div>
+                            </div>
+                         </div>
+                    </div>  
                 <!-- end widget div -->
             </div>
         </div>
