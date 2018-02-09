@@ -63,13 +63,13 @@
         $("#menu_tesoreria").show();
         $("#li_rep_teso").addClass('cr-active');
         
-       
+       anio = $("#select_anio_tributo").val();
     });
     
     function autocompletar_tributo(textbox){
     $.ajax({
         type: 'GET',
-        url: 'autocomplete_tributos',
+        url: 'autocomplete_tributos?anio=' + anio,
         success: function (data) {
             var $datos = data;
             $("#tributo").autocomplete({
@@ -137,10 +137,25 @@
                     
                     <div class="col-xs-12" style="padding: 0px; margin-top: 10px;">
                         <div class="input-group input-group-md" style="width: 100%">
+                            <span class="input-group-addon" style="width: 165px">Año &nbsp;<i class="fa fa-file-calendar"></i></span>
+                            <div>     
+                               
+                                <select id='select_anio_tributo' onchange="selecciona_anio();" class="form-control col-lg-8" style="height: 32px; padding-left: 10px">
+                                    @foreach ($anio_tra as $anio_tributo)
+                                        <option value='{{$anio_tributo->anio}}' >{{$anio_tributo->anio}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div> 
+                        
+                    </div>
+                    
+                    <div class="col-xs-12" style="padding: 0px; margin-top: 10px;">
+                        <div class="input-group input-group-md" style="width: 100%">
                             <span class="input-group-addon" style="width: 165px">Tributo &nbsp;<i class="fa fa-file-archive-o"></i></span>
                             <div> 
                                  <input type="hidden" id="hiddentributo" value="0">
-                                 <input id="tributo" type="text" placeholder="Escriba un tributo" class="form-control" style="height: 32px; padding-left: 10px" >
+                                 <input id="tributo" type="text" placeholder="Escriba un tributo" class="form-control text-center text-uppercase" style="height: 32px; padding-left: 10px; width: 100%;" >
                             </div>
                         </div> 
                         

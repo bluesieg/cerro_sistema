@@ -49,6 +49,11 @@ class Recibos_MasterController extends Controller
         $data->n_cuot     = 0;
         $data->clase_recibo=$request['clase_recibo'];
         $data->fracc_check = $request['fracc_check'] ?? 0;
+        if($request->recibo == null){
+            $data->id_alcab=0;
+        }else{
+            $data->id_alcab = $request['recibo'];
+        }
         $data->save();
         if($request['montopre']>0)
         {

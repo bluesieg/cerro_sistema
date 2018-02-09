@@ -131,8 +131,10 @@
             <div class="sub2" style="font-size:0.8em; text-align: right;"><b>TOTAL:&nbsp;&nbsp;&nbsp; </b>{{ number_format($suma_total->total,2,'.',',')  }}</div>
             
             @if(isset($convenio[0]))
-                @if($convenio[0]->tipo==1 || $convenio[0]->tipo==3)
+                @if($convenio[0]->estado==1)
                     <div class="contenedor" style="left: 0px;top: 280px;height: 43px;"><center><h2 style="margin-top:6px">En Fraccionamiento</h2></center></div>
+                @else
+                    <div class="contenedor" style="left: 0px;top: 280px;height: 43px;"><center><h2 style="margin-top:6px"></h2></center></div>
                 @endif
             @endif
             

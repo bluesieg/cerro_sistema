@@ -82,8 +82,8 @@ class Reportes_TesoreriaController extends Controller
         
     }
     
-    function autocompletar_tributos() {
-        $Consulta = DB::table('presupuesto.sub_proced_tributos')->get();
+    function autocompletar_tributos(Request $request) {
+        $Consulta = DB::table('presupuesto.vw_tributo_por_anio')->where('anio',$request['anio'])->get();
         $todo = array();
         foreach ($Consulta as $Datos) {
             $Lista = new \stdClass();

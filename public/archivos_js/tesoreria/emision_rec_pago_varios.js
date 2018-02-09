@@ -116,6 +116,7 @@ function insert_Recibos_Master() {
             id_est_rec: 1,
             glosa: ($("#vw_emi_rec_txt_glosa").val()).toUpperCase(),
             total: $("#vw_em_rec_txt_detalle_total").val().replace(',', ''),
+            recibo: $("#vw_emi_rec_txt_nrecibo").val(),
             id_pers:$("#vw_emi_rec_txt_id_pers").val(),
             clase_recibo:1
         },
@@ -299,6 +300,7 @@ function limpiar_form_rec_varios() {
     $("#hiddenvw_emi_rec_txt_tributo").val('');
     $("#vw_emi_rec_txt_cantidad").val('');
     $("#vw_emi_rec_txt_valor").val('');
+    $("#vw_emi_rec_txt_nrecibo").val('');
     $("#vw_emi_rec_txt_glosa").val('');
     $("#vw_em_rec_txt_detalle_total").val('000.000');
     cont = 0;

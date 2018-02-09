@@ -61,6 +61,37 @@ function crear_dialogo_por_tributo()
     
 }
 
+function selecciona_anio(){
+    
+    aniox = $("#select_anio_tributo").val();
+    $("#hiddentributo").val("");
+    $("#tributo").val("");
+    
+    $.ajax({
+            type: 'GET',
+            url: 'autocomplete_tributos?anio=' + aniox,
+            success: function (data) {
+                var $datos = data;
+                $("#tributo").autocomplete({
+                    source: $datos,
+                    focus: function (event, ui) {
+                        $("#tributo").val(ui.item.label);
+                        $("#hiddentributo").val(ui.item.value);
+                        $("#tributo").attr('maxlength', ui.item.label.length);
+                        return false;
+                    },
+                    select: function (event, ui) {
+                        $("#tributo").val(ui.item.label);
+                        $("#hidden").val(ui.item.value);
+
+                        return false;
+                    }
+                });
+            }
+        });
+
+}
+
 function abrir_reporte(tipo)
 {
     if(tipo==1)

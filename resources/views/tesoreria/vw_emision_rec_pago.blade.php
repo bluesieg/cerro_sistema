@@ -336,17 +336,23 @@
                                         <input id="hiddenvw_emi_rec_txt_tributo" type="text" placeholder="000000" class="input-sm" disabled="">
                                     </label>                        
                                 </section>
-                                <section class="col col-3" style="padding-left: 5px;padding-right: 5px">
+                                <section class="col col-2" style="padding-left: 5px;padding-right: 5px">
                                     <input type="hidden">
                                     <label class="label">Cantidad:</label>
                                     <label class="input">
                                         <input id="vw_emi_rec_txt_cantidad" onkeypress="return soloDNI(event);" type="text" placeholder="00" class="input-sm">
                                     </label>                        
                                 </section>
-                                <section class="col col-3" style="padding-left: 5px;padding-right: 5px">
+                                <section class="col col-2" style="padding-left: 5px;padding-right: 5px">
                                     <label class="label">Valor S/.:</label>
                                     <label class="input">
-                                        <input id="vw_emi_rec_txt_valor" type="text" placeholder="000.00" class="input-sm" disabled="">
+                                        <input id="vw_emi_rec_txt_valor" type="text" placeholder="000.00" class="input-sm">
+                                    </label>                      
+                                </section>
+                                <section class="col col-2" style="padding-left: 5px;padding-right: 5px">
+                                    <label class="label">Nº Recibo.:</label>
+                                    <label class="input">
+                                        <input id="vw_emi_rec_txt_nrecibo" type="text" placeholder="0" class="input-sm">
                                     </label>                      
                                 </section>
                                 <section class="col col-3 text-center" style="padding-left: 5px">
