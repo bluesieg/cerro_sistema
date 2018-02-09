@@ -180,7 +180,7 @@
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_hoja_liq', 'N° Hoja Liq.', 'contribuyente', 'Carta Req. Relacionada','Registro','Días Plazo','Días Trasncurridos','Ver','N° R.D.','Generar R.D.'],
+            colNames: ['id_hoja_liq', 'N° Hoja Liq.', 'contribuyente', 'Carta Req. Relacionada','Registro','Notificacion','Días Plazo','Días Trasncurridos','Ver','N° R.D.','Generar R.D.'],
             rowNum: 20, sortname: 'id_hoja_liq', sortorder: 'desc', viewrecords: true, caption: 'Hojas de Liquidación', align: "center",
             colModel: [
                 {name: 'id_hoja_liq', index: 'id_hoja_liq', hidden: true},
@@ -188,6 +188,7 @@
                 {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 330},
                 {name: 'nro_car', index: 'nro_car', align: 'center', width: 100},
                 {name: 'fec_reg', index: 'fec_reg', align: 'center', width: 100},
+                {name: 'fecha_notificacion', index: 'fecha_notificacion', hidden: true},
                 {name: 'dia_plazo', index: 'dia_plazo', align: 'center', width: 80},
                 {name: 'dias', index: 'dias', align: 'center', width: 80},
                 {name: '', index: '', align: 'center', width: 100,hidden: true},

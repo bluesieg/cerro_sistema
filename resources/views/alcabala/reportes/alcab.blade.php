@@ -24,7 +24,11 @@
                     <div style="width: 90%; border-top:1px solid #999; margin-top: 10px; margin-left: 25px;"></div>
                 </div>
             </td>
-            <td style="width: 10%;border: 0px;"></td>
+            <td style="width: 10%;border: 0px; padding: 0px">
+                <div class="cabdiv text-center" style="width: 100%;font-size: 0.9em !important" ><center>COD OPERACIÓN</center></div>
+                <div class="cuerdiv text-center" style="width: 100%;font-size: 0.9em !important"><center>{{$sql->id_alcab}}</center></div>
+            </td>
+                
             </tr>
             
         </table>
@@ -98,7 +102,7 @@
             <thead>
               <tr>
                   <td class="nro">9</td>
-                  <th style="width: 60%" >Sector-Manzana-Lote: Vía - Número - Interior -Letra/Manzana - Lote - Bloque</th>
+                  <th style="width: 60%" >Sector-Manzana-Lote:Habilitación  Vía - Número - Interior -Letra/Manzana - Lote - Bloque</th>
                   <td class="nro">10</td>
                   <th style="width: 40%" >DISTRITO</th>
               

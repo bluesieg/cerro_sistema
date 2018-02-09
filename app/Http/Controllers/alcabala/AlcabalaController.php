@@ -491,7 +491,7 @@ class AlcabalaController extends Controller
         $sql    =DB::table('alcabala.vw_alcabala')->where('id_alcab',$id)->get()->first();
         if(count($sql)>=1)
         {
-            $dir=$sql->sec."-".$sql->mzna."-".$sql->lote."-".$sql->nom_via;
+            $dir=$sql->sec."-".$sql->mzna."-".$sql->lote."-".$sql->nomb_hab_urba." ".$sql->nom_via;
             if($sql->nro_mun!=""){
                 $dir=$dir." -N° ".$sql->nro_mun;
             }

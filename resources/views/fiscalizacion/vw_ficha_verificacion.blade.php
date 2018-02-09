@@ -138,7 +138,7 @@
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_car', 'Nro', 'contribuyente', 'Registro','Fiscalizacion','Estado','Ver','Anulado','Ingresar Ficha'],
+            colNames: ['id_car', 'Nro', 'contribuyente', 'Registro','Fiscalizacion','Notificacion','Estado','Ver','Anulado','Ingresar Ficha'],
             rowNum: 20, sortname: 'id_car', sortorder: 'desc', viewrecords: true, caption: 'Cartas de Requerimiento', align: "center",
             colModel: [
                 {name: 'id_car', index: 'id_gen_fis', hidden: true},
@@ -146,6 +146,7 @@
                 {name: 'contribuyente', index: 'contribuyente', align: 'center', width: 30},
                 {name: 'fec_reg', index: 'fec_reg', align: 'center', width: 8},
                 {name: 'fec_fis', index: 'fec_fis', align: 'center', width: 15},
+                {name: 'fecha_notificacion', index: 'fecha_notificacion', hidden: true},
                 {name: 'flg_est', index: 'flg_est', align: 'center', width: 10},
                 {name: 'ver', index: 'ver', align: 'center', width: 8},
                 {name: 'flg_anu', index: 'flg_anu', align: 'center', width: 8},

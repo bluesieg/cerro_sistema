@@ -141,6 +141,17 @@ class Hoja_liquidacionController extends Controller
                     $estado=$Datos->nro_rd;
                     $btnrd='<button class="btn btn-labeled bg-color-redDark txt-color-white" type="button"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> R.D. creada</button>';
                 }
+                if($Datos->fecha_notificacion==null)
+                {
+                    $btnnotificacion='<button class="btn btn-labeled bg-color-red txt-color-white" type="button" onclick="ponerfechanoti('."'".trim($Datos->nro_hoja)."'".');"><span class="btn-label"><i class="fa fa-edit"></i></span> Ing. Fecha Notificación</button>';
+                    $btnrd='Hoja sin Notificar';
+                    $diastrans=0;
+                }
+                else
+                {
+                    $btnnotificacion=$this->getCreatedAtAttribute($Datos->fecha_notificacion)->format('d/m/Y');
+                    $diastrans=$this->dias_transcurridos($Datos->fecha_notificacion,date("Y-m-d"));
+                }
                 $Lista->rows[$Index]['id'] = $Datos->id_hoja_liq;            
                 $Lista->rows[$Index]['cell'] = array(
                     trim($Datos->id_hoja_liq),
@@ -148,8 +159,9 @@ class Hoja_liquidacionController extends Controller
                     trim($Datos->contribuyente),
                     trim($Datos->nro_car),
                     trim($this->getCreatedAtAttribute($Datos->fec_reg)->format('d/m/Y')),
+                    $btnnotificacion,
                     $Datos->dia_plazo,
-                    $this->dias_transcurridos($Datos->fec_reg,date("Y-m-d")),
+                    $diastrans,
                     '<button class="btn btn-labeled btn-warning" type="button" onclick="verhoja('.trim($Datos->id_hoja_liq).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Ver</button>',
                     $estado,
                     $btnrd
@@ -170,5 +182,16 @@ class Hoja_liquidacionController extends Controller
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("hoja_liquidacion.pdf");
         }
+    }
+    public function edit_hoja_fec(Request $request)
+    {
+        $hoja=new Hoja_Liquidacion;
+        $val=  $hoja::where("id_hoja_liq","=",$request['id'] )->first();
+        if(count($val)>=1)
+        {
+            $val->fecha_notificacion=$request['fec'];
+            $val->save();
+        }
+        return $request['id'];
     }
 }

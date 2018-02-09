@@ -410,6 +410,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('hoja_liquidacion', 'Hoja_liquidacionController');
         Route::get('hoja_liq_rep/{id}', 'Hoja_liquidacionController@hoja_repo'); //
         Route::get('trae_hojas_liq/{an}/{contr}/{ini}/{fin}/{num}', 'Hoja_liquidacionController@get_hojas_liq'); //
+        Route::get('mod_noti_hoja','Hoja_liquidacionController@edit_hoja_fec');
+
         /////// resolucion de determinación
         Route::resource('reso_deter', 'Res_DeterminacionController');
         Route::get('rd_rep/{id}', 'Res_DeterminacionController@rd_repo');
@@ -418,6 +420,11 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('env_rd_coactiva','EnvRD_CoactivaController@vw_env_rd_coa');
         Route::get('fisca_get_rd','EnvRD_CoactivaController@fis_get_RD');
         Route::get('update_env_rd','EnvRD_CoactivaController@fis_env_rd');
+        Route::get('mod_noti_carta','Carta_RequerimientoController@edit_carta_fec');
+        ////
+        Route::get('reportes_fisca','Res_DeterminacionController@reportes');
+        Route::get('ver_rep_fisca','Res_DeterminacionController@reportes');
+        
         
     });  
     Route::get('$',function(){ echo 0;});//url auxiliar

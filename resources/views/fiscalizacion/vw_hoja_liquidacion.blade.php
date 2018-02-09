@@ -2,6 +2,7 @@
 @section('content')
 <input type="hidden" id="per_imp" value="{{$permisos[0]->btn_imp}}"/>
 <input type="hidden" id="per_edit" value="{{$permisos[0]->btn_edit}}"/>
+<input type="hidden" id="per_new" value="{{$permisos[0]->btn_new}}"/>
 <section id="widget-grid" class=""> 
     <div class='cr_content col-xs-12 '>
         <div class="col-xs-9">
@@ -154,16 +155,17 @@
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_hoja_liq', 'N° Hoja Liq.', 'contribuyente', 'Carta Req. Relacionada','Registro','Días Plazo','Días Trasncurridos','Ver'],
+            colNames: ['id_hoja_liq', 'N° Hoja Liq.', 'contribuyente', 'Carta Req. Relacionada','Registro','Notificación','Días Plazo','Días Trasncurridos','Ver'],
             rowNum: 20, sortname: 'id_hoja_liq', sortorder: 'desc', viewrecords: true, caption: 'Hojas de Liquidación', align: "center",
             colModel: [
                 {name: 'id_hoja_liq', index: 'id_hoja_liq', hidden: true},
-                {name: 'nro_hoja', index: 'nro_hoja', align: 'center', width: 10},
-                {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 35},
-                {name: 'nro_car', index: 'nro_car', align: 'center', width: 15},
-                {name: 'fec_reg', index: 'fec_reg', align: 'center', width: 10},
-                {name: 'dia_plazo', index: 'dia_plazo', align: 'center', width: 10},
-                {name: 'dias', index: 'dias', align: 'center', width: 10},
+                {name: 'nro_hoja', index: 'nro_hoja', align: 'center', width: 8},
+                {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 30},
+                {name: 'nro_car', index: 'nro_car', align: 'center', width: 10},
+                {name: 'fec_reg', index: 'fec_reg', align: 'center', width: 8},
+                {name: 'fecha_notificacion', index: 'fecha_notificacion', align: 'center', width: 18},
+                {name: 'dia_plazo', index: 'dia_plazo', align: 'center', width: 8},
+                {name: 'dias', index: 'dias', align: 'center', width: 8},
                 {name: '', index: '', align: 'center', width: 10},
             ],
             pager: '#pager_table_hojas',
@@ -246,7 +248,7 @@
         jQuery("#table_predios_contri").jqGrid({
             url: 'trae_pred_carta/0',
             datatype: 'json', mtype: 'GET',
-            height: '300px', autowidth: true,
+            height: '300px',
             toolbarfilter: true,
             colNames: ['id_pred_anio','id_fic','id_puente','Tipo','codigo','Ubicación','N° Ficha ver','Fiscalizar','Fiscalizado'],
             rowNum: 20, sortname: 'id_puente', sortorder: 'asc', viewrecords: true, caption: 'Predios Correspondientes', align: "center",
@@ -455,6 +457,40 @@
                     </button>
                 </div>
                 
+            </div>
+        </div>
+    </div>
+</div> 
+<div id="dlg_fec_notificacion" style="display: none;">
+    
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
+        <div class="col-xs-12 cr-body" style="padding-left: 0px;padding-right: 10px;" >
+            <div class="col-xs-12" style="padding: 0px; margin-top: 0px;">
+                <section>
+                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                                <h2>Ingresar Fecha de Notificacíon de Carta.::..</h2>
+                        </header>
+                    </div>
+                </section>
+                <div class="col-xs-12" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">N° Hoja de Liq. &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div class=""  >
+                            <input id="input_num_op" type="text"  class="form-control" style="height: 32px; " disabled="" >
+                        </div>
+                    </div>
+                </div>
+                               
+                <div class="col-xs-12" style="padding: 0px; margin-top: 10px ">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Fecha Notificación &nbsp;<i class="fa fa-calendar"></i></span>
+                        <div>
+                            <input id="input_fec_notifica" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

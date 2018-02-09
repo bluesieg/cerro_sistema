@@ -456,7 +456,7 @@ function ponerfechanoti(num)
     $("#input_fec_notifica").val('');
     $("#dlg_fec_notificacion").dialog({
         autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>.:  Fecha de Notificación O.P.:.</h4></div>",
+        title: "<div class='widget-header'><h4>.:  Fecha de Notificación Carta de Requerimiento:.</h4></div>",
         buttons: [
             {
                 id:"btnsave",
@@ -493,6 +493,7 @@ function save_cr_fec_noti()
            MensajeDialogLoadAjaxFinish('dlg_fec_notificacion');
        },
        error: function(data) {
+            MensajeAlerta("No Modificó Correctamente","Contacte con el Administrador..",4000);
            MensajeDialogLoadAjaxFinish('dlg_fec_notificacion');
            console.log('error');
            console.log(data);

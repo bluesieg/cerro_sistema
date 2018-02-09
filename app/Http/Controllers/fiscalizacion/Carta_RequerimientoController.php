@@ -201,6 +201,7 @@ class Carta_RequerimientoController extends Controller
                 if($Datos->fecha_notificacion==null)
                 {
                     $btnnotificacion='<button class="btn btn-labeled bg-color-red txt-color-white" type="button" onclick="ponerfechanoti('."'".trim($Datos->nro_car)."'".');"><span class="btn-label"><i class="fa fa-edit"></i></span> Ing. Fecha Notificación</button>';
+                    $btnhoj='Carta sin Notificar';
                 }
                 else
                 {
