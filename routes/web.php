@@ -265,6 +265,12 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('ver_rep_tesoreria/{tipo}', 'Reportes_TesoreriaController@ver_reporte_teso');
 
         Route::get('autocomplete_tributos', 'Reportes_TesoreriaController@autocompletar_tributos');
+        
+        Route::get('traer_alcabala', 'Recibos_MasterController@traer_alcabala');
+        Route::get('validar_alcabala', 'Recibos_MasterController@validar_alcabala');
+        Route::get('traer_glosa', 'Recibos_MasterController@traer_glosa');
+        Route::get('traer_tributos_sin_valor', 'Recibos_MasterController@traer_tributos_sin_valor');
+        
 
     });
     Route::group(['namespace' => 'caja'], function() {
@@ -361,6 +367,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('traefoto_lote/{sec}/{mzna}/{lote}','PredioController@getfoto');
         Route::get('traefoto_lote_id/{lote}','PredioController@getfotoid');
         Route::get('validar_predio','PredioController@validar');
+        
+        Route::resource('replicar_predio','Rep_predioController');
+        Route::get('obtener_predios_contribuyente', 'Rep_predioController@get_predios');
+        Route::get('replicar_predios', 'Rep_predioController@replicar_predios');
         
     });
     Route::group(['namespace' => 'recaudacion'], function() {//modulo de fiscalizacion

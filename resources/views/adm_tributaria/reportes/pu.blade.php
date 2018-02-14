@@ -37,7 +37,7 @@
               <td style=" font-size: 0.7em; width: 20%; border: 0px; text-align: center;">
                   MUNICIPALIDAD DISTRITAL DE CERRO COLORADO
               </td>
-              <td style="width: 40%;  border: 0px; padding: 10px 0px 0px 80px;"><div class="resaltado" style="font-size: 4.5em">PU</div>(Predio Urbano)</td>
+              <td style="width: 40%;  border: 0px; padding: 10px 0px 0px 80px;"><div class="resaltado" style="font-size: 3em">PU - {{ $sql->anio }}</div>(Predio Urbano)</td>
                 <td style="width: 15%; padding: 0px; border: 0px;text-align: center;font-size: 0.9em; " >
                 <div class="cabdiv" style="width: 100%; font-size: 0.9em !important">código contribuyente</div>
                 <div class="cuerdiv" style="width: 100%;font-size: 0.9em !important">{{ $sql->id_persona }}</div>
@@ -327,7 +327,7 @@
               </tr>
               
             </thead>
-            <div style="margin-bottom: 1px; font-size: 0.6em; text-align:right ;">IMPRESO POR : {{$usuario[0]->ape_nom}}</div>
+            <div style="margin-bottom: 1px; font-size: 0.6em; text-align:right ;">IMPRESO POR : {{$usuario[0]->usuario}}</div>
         </table>
   </body>
   

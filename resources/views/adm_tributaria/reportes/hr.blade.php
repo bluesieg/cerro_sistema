@@ -9,6 +9,7 @@
         </style>
   </head>
   <body>
+      <div class="datehead">{{ $fecha }}</div>
     <main>
         <table border="0" cellspacing="0" cellpadding="0" style="margin: 0px;">
             <tr>
@@ -34,9 +35,8 @@
           <div class="lado" style="text-align: left !important; padding-top: 20px;">GERENCIA DE RENTAS</div>
           <div class="lado">
               <div class="sub">IMPUESTO PREDIAL</div>
-              <div class="date">{{ $fecha }}</div>
           </div>
-          <div class="lado" style="text-align: right !important"><div class="resaltado" >HR</div>HOJA RESUMEN</div>
+          <div class="lado" style="text-align: right !important"><div class="resaltado" >HR - {{ $an }}</div>HOJA RESUMEN</div>
           <div Class="asunto" style="margin-top: 5px;">DECLARACION JURADA DE AUTOVALUO</div>
           <div class="subasunto">LEY TRIBUTARIA MUNICIPAL/DECRETO LEGISLATIVO 776</div>
           <table border="0" cellspacing="0" cellpadding="0" style="margin: 0px;">
@@ -232,7 +232,7 @@
               </tr>
               
             </thead>
-            <div style="padding-top: 1px; font-size: 0.6em; text-align:right ;">IMPRESO POR : {{$usuario[0]->ape_nom}}</div>
+            <div style="padding-top: 1px; font-size: 0.6em; text-align:right ;">IMPRESO POR : {{$usuario[0]->usuario}}</div>
         </table>
         
   </body>

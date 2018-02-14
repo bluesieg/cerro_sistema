@@ -198,7 +198,9 @@
                     $("#table_cta_cte2").setSelection(firstid);
                 }
             },
-            onSelectRow: function (Id) {},
+            onSelectRow: function (Id) {
+           
+            },
             ondblClickRow: function (Id) {}
         });
         $(window).on('resize.jqGrid', function () {
@@ -212,7 +214,15 @@
         $("#vw_emi_rec_txt_tributo").keypress(function (e) {
             if (e.which == 13 && !e.shiftKey) {
                 event.preventDefault();
-                autocomplete_tributo('vw_emi_rec_txt_tributo', 'vw_emi_rec_txt_valor');
+                //autocomplete_tributo('vw_emi_rec_txt_tributo', 'vw_emi_rec_txt_valor');
+            }
+        });
+        $("#vw_emi_rec_txt_nrecibo").keypress(function (e) {
+            if (e.which == 13 && !e.shiftKey) {
+                event.preventDefault();
+                traer_glosa();
+                validacion_alcabala();
+                
             }
         });
         $("#vw_emi_rec_txt_cantidad").keypress(function (e) {
@@ -346,18 +356,18 @@
                                 <section class="col col-2" style="padding-left: 5px;padding-right: 5px">
                                     <label class="label">Valor S/.:</label>
                                     <label class="input">
-                                        <input id="vw_emi_rec_txt_valor" type="text" placeholder="000.00" class="input-sm">
+                                        <input id="vw_emi_rec_txt_valor" type="text" placeholder="000.00" class="input-sm" disabled="">
                                     </label>                      
                                 </section>
                                 <section class="col col-2" style="padding-left: 5px;padding-right: 5px">
                                     <label class="label">Nº Recibo.:</label>
                                     <label class="input">
-                                        <input id="vw_emi_rec_txt_nrecibo" type="text" placeholder="0" class="input-sm">
+                                        <input id="vw_emi_rec_txt_nrecibo" type="text" placeholder="0" class="input-sm" onkeypress="return soloNumeroTab(event);" disabled="">
                                     </label>                      
                                 </section>
                                 <section class="col col-3 text-center" style="padding-left: 5px">
                                     <label class="label">&nbsp;</label>
-                                    <a onclick="detalle_recibo();" class="btn btn-primary btn-sm">Agregar / Insertar</a>                    
+                                    <button onclick="detalle_recibo();" class="btn btn-primary btn-sm" id="btn_agregar_insertar">Agregar / Insertar</button>                    
                                 </section>                                
                             </div> 
                             <section>

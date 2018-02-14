@@ -22,6 +22,7 @@ function dialog_emi_rec_pag_varios() {
     }).dialog('open');
     $("#vw_emi_rec_txt_selec_tip_doc").val('02');
     $("#vw_emi_rec_txt_nro_doc").attr('maxlength',8);
+    autocomplete_tributo('vw_emi_rec_txt_tributo', 'vw_emi_rec_txt_valor');
 }
 
 function emi_rec_select_tipo_recibo(tipo){
@@ -46,18 +47,135 @@ function autocomplete_tributo(textbox, soles) {
                     $("#hidden" + textbox).val(ui.item.value);
                     $("#" + textbox).attr('maxlength', ui.item.label.length);
                     $("#" + soles).val(ui.item.soles);
+                    $("#" + textbox).val(ui.item.p_recibo);
+                    $("#hidden" + textbox).val(ui.item.value);
                     return false;
                 },
                 select: function (event, ui) {
                     $("#" + textbox).val(ui.item.p_recibo);
                     $("#hidden" + textbox).val(ui.item.value);
-
+                    $("#vw_emi_rec_txt_nrecibo").val('0');
+                    $("#vw_emi_rec_txt_glosa").val('');
+                    traer_tributos_sin_valor();
+                    traer_alcabala();
                     return false;
                 }
             });
         }
     });
 }
+
+function traer_tributos_sin_valor(){
+    
+    valor = $('#hiddenvw_emi_rec_txt_tributo').val();
+    
+    $.ajax({
+        url: 'traer_tributos_sin_valor?valor=' + valor,
+        type: 'GET',
+        success: function (data) {
+            if (data.msg == 'si'){
+                    $("#vw_emi_rec_txt_valor").removeAttr('disabled');            
+                }else{
+                    $("#vw_emi_rec_txt_valor").attr('disabled', 'disabled');  
+                }
+        },
+        error: function (data) {
+            mostraralertas('* Error al Generar Recibo.<br>* Contactese con el Administrador.');
+            MensajeDialogLoadAjaxFinish('vw_emision_rec_pag_varios');
+        }
+    }); 
+}
+
+
+function traer_alcabala(){
+    
+    alcabala = $('#hiddenvw_emi_rec_txt_tributo').val();
+    
+    $.ajax({
+        url: 'traer_alcabala?alcabala=' + alcabala,
+        type: 'GET',
+        success: function (data) {
+            if (data.msg == 'si'){
+                    $("#vw_emi_rec_txt_valor").removeAttr('disabled');
+                    $("#vw_emi_rec_txt_nrecibo").removeAttr('disabled');
+                    $("#btn_agregar_insertar").attr('disabled', 'disabled'); 
+                    
+                }else{
+                    $("#vw_emi_rec_txt_valor").attr('disabled', 'disabled');  
+                    $("#vw_emi_rec_txt_nrecibo").attr('disabled', 'disabled');
+                    $("#btn_agregar_insertar").removeAttr('disabled');
+                }
+        },
+        error: function (data) {
+            mostraralertas('* Error al Generar Recibo.<br>* Contactese con el Administrador.');
+            MensajeDialogLoadAjaxFinish('vw_emision_rec_pag_varios');
+        }
+    }); 
+}
+
+function validacion_alcabala(){
+    
+    nro_recibo = $('#vw_emi_rec_txt_nrecibo').val();
+    
+    $.ajax({
+        url: 'validar_alcabala?nro_recibo=' + nro_recibo,
+        type: 'GET',
+        beforeSend: function(){
+              MensajeDialogLoadAjax('vw_emision_rec_pag_varios', '.:: Cargando ...');                 
+        },
+        success: function (data) {
+         
+            if (data.msg === 'PAGADO'){
+                    mostraralertasconfoco("EL RECIBO ESTA PAGADO","#vw_emi_rec_txt_nrecibo"); 
+                    MensajeDialogLoadAjaxFinish('vw_emision_rec_pag_varios');
+                    $("#btn_agregar_insertar").attr('disabled', 'disabled');          
+                }else if (data.msg === 'VIGENTE'){
+                    MensajeExito('Estado del Recibo: ', data.msg);
+                    MensajeDialogLoadAjaxFinish('vw_emision_rec_pag_varios');
+                    $("#btn_agregar_insertar").removeAttr('disabled');
+                }else if(data.msg === 'no-existe'){
+                    mostraralertasconfoco("EL NUMERO DE RECIBO NO EXISTE","#vw_emi_rec_txt_nrecibo");
+                    $("#vw_emi_rec_txt_glosa").val('EL NUMERO DE RECIBO NO EXISTE');
+                    MensajeDialogLoadAjaxFinish('vw_emision_rec_pag_varios');
+                    $("#btn_agregar_insertar").attr('disabled', 'disabled');    
+                }else{
+                    mostraralertasconfoco("EL NUMERO DE RECIBO NO EXISTE","#vw_emi_rec_txt_nrecibo");
+                    $("#vw_emi_rec_txt_glosa").val('EL NUMERO DE RECIBO NO EXISTE');
+                    MensajeDialogLoadAjaxFinish('vw_emision_rec_pag_varios');
+                    $("#btn_agregar_insertar").attr('disabled', 'disabled');
+                }
+        },
+        error: function (data) {
+            mostraralertas('* Error al Generar Recibo.<br>* Contactese con el Administrador.');
+            MensajeDialogLoadAjaxFinish('vw_emision_rec_pag_varios');
+        }
+    }); 
+}
+
+function traer_glosa(){
+    
+    nro_recibo = $('#vw_emi_rec_txt_nrecibo').val();
+    
+    $.ajax({
+        url: 'traer_glosa?nro_recibo=' + nro_recibo,
+        type: 'GET',
+        success: function (data) {
+            
+            if (data){
+                    $("#vw_emi_rec_txt_glosa").val("IMPUESTO DE ALCABALA N° " + data); 
+                }else if(data === 'no-existe'){
+                    $("#vw_emi_rec_txt_glosa").val('EL NUMERO DE RECIBO NO EXISTE'); 
+                }else{
+                    $("#vw_emi_rec_txt_glosa").val('EL NUMERO DE RECIBO NO EXISTE'); 
+                }
+        },
+        error: function (data) {
+            mostraralertas('* Error al Generar Recibo.<br>* Contactese con el Administrador.');
+            MensajeDialogLoadAjaxFinish('vw_emision_rec_pag_varios');
+        }
+    }); 
+}
+
 cont = 0;
 detalle_total = 0;
 function detalle_recibo() {
@@ -66,6 +184,8 @@ function detalle_recibo() {
     tributo = $("#vw_emi_rec_txt_tributo").val();
     id_tributo = $("#hiddenvw_emi_rec_txt_tributo").val();
     glosa = $("#vw_emi_rec_txt_glosa").val();
+    $("#vw_emi_rec_txt_valor").attr('disabled', 'disabled');  
+    $("#vw_emi_rec_txt_nrecibo").attr('disabled', 'disabled');
     if (tributo == '') {
         mostraralertasconfoco('Ingrese Tributo...', '#vw_emi_rec_txt_tributo');
         return false;
