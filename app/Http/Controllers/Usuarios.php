@@ -26,7 +26,7 @@ class Usuarios extends Controller {
         
 //        dd($table);
         return view('configuracion/vw_usuarios')->with([
-                    'Usuarios' => $table]
+                    'Usuarios1' => $table]
         );
     }
     function insert_persona_user(Request $request){

@@ -269,8 +269,8 @@ class Caja_MovimientosController extends Controller {
 
     function get_grid_Caja_Mov(Request $request) {
         date_default_timezone_set('America/Lima');
-        $est_recibo = $request['est_recibo'];
-        $id_recib = $request['id_recib'];
+        $est_recibo = $request['est_recibo']; //1
+        $id_recib = $request['id_recib']; //367
         if(isset($id_recib)){
             $totalg = DB::select("select count(id_rec_mtr) as total from tesoreria.vw_caja_mov"
                         . " where id_rec_mtr=".$id_recib);
@@ -380,8 +380,7 @@ class Caja_MovimientosController extends Controller {
 //        return $view;
         if (count($recibo) >= 1) {
             $pdf = \App::make('dompdf.wrapper');
-            $paper_size = array(0, 0, 638, 397);
-            $pdf->loadHTML($view)->setPaper($paper_size);
+            $pdf->loadHTML($view)->setPaper('a4','landscape');
             return $pdf->stream();
         }
     }

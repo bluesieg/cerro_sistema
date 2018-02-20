@@ -8,11 +8,12 @@
         @page {
             margin:0;
             padding: 0;
+            font-family: Verdana, Arial, Helvetica, sans-serif;
         }
     </style>
     <body>
 
-        <img src="img/recibo_caja.jpg" style="width: 100%;position: absolute; z-index: 0"> 
+        
         <div style="z-index: 99; margin-top: 70px;">
         <div style="margin-top: 5px;margin-right: 70px; font-size: 20px; text-align: right;">
             N°.{{$recibo[0]->serie}}

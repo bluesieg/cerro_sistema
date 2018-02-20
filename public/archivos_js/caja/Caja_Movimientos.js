@@ -34,9 +34,10 @@ function dialog_caja_mov_realizar_pago(){
         }
     }).dialog('open');   
     
-    $("#vw_caja_mov_txt_nro_recibo").val($("#tabla_Caja_Movimientos").getCell(id_recibo, "nro_recibo_mtr"));
-    $("#vw_caja_mov_txt_descripcion").val($("#tabla_Caja_Movimientos").getCell(id_recibo, "glosa"));
-    $("#vw_caja_mov_txt_tot_pagar").val($("#tabla_Caja_Movimientos").getCell(id_recibo, "total"));
+    nro_recibo =  $("#vw_caja_mov_txt_nro_recibo").val($("#tabla_Caja_Movimientos").getCell(id_recibo, "nro_recibo_mtr"));
+    glosa = $("#vw_caja_mov_txt_descripcion").val($("#tabla_Caja_Movimientos").getCell(id_recibo, "glosa"));
+    total = $("#vw_caja_mov_txt_tot_pagar").val($("#tabla_Caja_Movimientos").getCell(id_recibo, "total"));
+    
 }
 function select_id_caja(caja){
     id_caja = caja;
@@ -46,6 +47,8 @@ function confirmar_Pago(id_recibo){
 //    clase_recibo=$("#tabla_Caja_Movimientos").getCell(rowId, 'clase_recibo');
     
     id_caja = $("#vw_caja_id_cajero").val();
+   id_tipo_pago = $("#vw_caja_mov_txt_tip_pago").val();
+   id_pers = $("#tabla_Caja_Movimientos").getCell(id_recibo, "id_contrib");
    
     $.ajax({
         url: 'caja_movimient/'+id_recibo+'/edit',
@@ -73,6 +76,7 @@ function confirmar_Pago(id_recibo){
 function imp_pago_rec(id_recibo){
 //    window.open('imp_pago_rec');
     id_recibo = $('#tabla_Caja_Movimientos').jqGrid ('getGridParam', 'selrow');
+    alert(id_recibo);
     if(id_recibo==null){
         return false;
     }

@@ -587,6 +587,11 @@ Route::group(['middleware' => 'auth'], function() {
         //USOS CATASTRALES
         Route::resource('usos_catastrales', 'UsosController');
         Route::get('listar_usos_catastrales','UsosController@getUsosCatastrales');
+        
+        Route::resource('usuarios_web', 'UsuariosWebController');
+        Route::get('obtener_contribuyente', 'UsuariosWebController@get_contribuyente');
+        Route::post('insertar_nuevo_usuario', 'UsuariosWebController@insertar_nuevo_usuario');
+        Route::get('listar_usuarios_web','UsuariosWebController@get_usuarios_web');
   
     });
     
@@ -598,6 +603,13 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('obtener_contribuyentes', 'DprediosController@get_contribuyentes');
         Route::get('obtener_predios', 'DprediosController@get_predios');
         Route::post('eliminar_predio', 'DprediosController@eliminar_predio');
+        
+        //BUSQUEDA DE PREDIOS
+        Route::resource('buscar_predios', 'BprediosController');
+        Route::get('autocompletar_hab_urb', 'BprediosController@autocompletar_hab_urb');
+        Route::get('autocompletar_via', 'BprediosController@autocompletar_via');
+        Route::get('buscar_predios', 'BprediosController@buscar_predios');
+        
 
     });
     
