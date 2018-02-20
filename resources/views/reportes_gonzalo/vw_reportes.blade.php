@@ -1197,8 +1197,8 @@ function autocompletar_haburb(textbox){
             <div class="panel-group">
                 <!-- widget div-->
                 
-                    <div class="row" style="padding: 20px 30px;">
-                        <div class="col-xs-12">
+                    <div class="row" >
+                        <div class="col-xs-12" style="padding: 10px 40px;">
                             <div class="input-group input-group-md">
                                 <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
                                     <div class="icon-addon addon-md">
@@ -1211,18 +1211,23 @@ function autocompletar_haburb(textbox){
                                     </div>
                             </div>
                         </div>
-                    </div>                         
-                    <div class="row" style="padding: 5px 30px;">
-                        <div class="col-xs-12" >
-                            <div class="input-group input-group-md" style="width: 100%">
-                                <span class="input-group-addon" style="width: 280px">Monto transferido a Ejecución Coactiva &nbsp;<i class="fa fa-file-archive-o"></i></span>
-                                <div> 
-                                     <input type="hidden" id="hidden_habilitacion_urbana" value="0">
-                                     <input  id="habilitacion_urbana" type="text" placeholder="c" class="form-control" style="height: 32px;  width: 90% ;"  ></input>
+                    </div> 
+                    
+                <div class="row" style="padding: 10px 40px;">
+                        <div class="col-xs-12">
+                                <div class="input-group input-group-md">
+                                    <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
+                                        <div class="icon-addon addon-md">
+                                            <select id='select_tip_doc' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                                    <option value='1' >OP</option>
+                                                    <option value='2' >RD</option>                                                    
+                                            </select>
+
+                                        </div>
                                 </div>
-                            </div>
-                         </div>
-                    </div>  
+                     </div>
+                    </div> 
+                    
                 <!-- end widget div -->
             </div>
         </div>

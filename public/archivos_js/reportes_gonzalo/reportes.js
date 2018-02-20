@@ -474,19 +474,15 @@ function crear_dialogo_recaudacion_arbitrios()
 }
 
 
-function crear_dialogo_immporte_insoluto()
+function crear_dialogo_importe_insoluto()
 {
     $("#dialog_importe_insoluto").dialog({
-        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header' ><h5>&nbsp&nbsp.: Reporte de Importe Insoluto total de la deuda por impuesto predial transferida a Coactiva:.</h5></div>",
+        autoOpen: false, modal: true, width: 380, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header' ><h5>&nbsp&nbsp.: Monto de deuda transferida a Coactiva:.</h5></div>",
         buttons: [{
-            html: "<i class='fa fa-save'></i>&nbsp; Ver Hab. Urbana Seleccionada"  ,
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
             "class": "btn btn-success bg-color-green",
-            click: function () { abrir_reporte_datos_contribuyentes(0); }
-        }, {
-            html: "<i class='fa fa-file-excel-o'></i>&nbsp; Ver Todas",
-            "class": "btn btn-success bg-color-blue",
-            click: function () { abrir_reporte_datos_contribuyentes(1); }
+            click: function () { abrir_reporte_transferido_a_coactivo(0); }
         },{
             html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
             "class": "btn btn-danger",
@@ -549,7 +545,7 @@ function dlg_reportes_andrea(tipo)
          
     }
     if (tipo===23) {
-        crear_dialogo_immporte_insoluto();        
+        crear_dialogo_importe_insoluto();        
     }
     if (tipo===18) {
         crear_dialogo_fraccionamiento();
