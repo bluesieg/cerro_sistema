@@ -24,34 +24,6 @@ class BprediosController extends Controller
         return view('registro_tributario/vw_buscar_predios', compact('menu','permisos','anio','motivos'));
     }
     
-    function autocompletar_hab_urb() {
-
-        $Consulta = DB::table('catastro.hab_urb')->get();
-        $todo = array();
-        foreach ($Consulta as $Datos) {
-            $Lista = new \stdClass();
-            $Lista->value = $Datos->id_hab_urb;
-            $Lista->label = trim($Datos->nomb_hab_urba);
-            array_push($todo, $Lista);
-        }
-        return response()->json($todo);
-
-    }
-    
-    function autocompletar_via() {
-
-        $Consulta = DB::table('catastro.vias')->get();
-        $todo = array();
-        foreach ($Consulta as $Datos) {
-            $Lista = new \stdClass();
-            $Lista->value = $Datos->id_via;
-            $Lista->label = trim($Datos->nom_via);
-            array_push($todo, $Lista);
-        }
-        return response()->json($todo);
-
-    }
-    
     public function get_contribuyentes(Request $request) 
     {
         if($request['dat']=='0')
@@ -102,11 +74,38 @@ class BprediosController extends Controller
         }
     }
     
-    function buscar_predios(Request $request){
+    public function get_predios(Request $request){
+        $direccion = $request['direccion'];
         
-        $id_hab_urb = $request['direccion'];
+       if($direccion=='0')
+        {
+            return 0;
+        }
+        else
+        { 
+        header('Content-type: application/json');
         
-        $totalg = DB::select("select count(*) as total from reg_tributario.vw_buscar_pred where id_hab_urb=".$id_hab_urb);
+        
+        $consulta="";$iniciador=0;
+        $direcs = explode(" ", strtoupper($direccion));
+        foreach($direcs as $dirs)
+        {
+            if($iniciador==1)
+            {
+                $consulta.=" AND ";
+            }
+            if($dirs!="")
+            {
+                $consulta.="todo like '%$dirs%'";
+            }
+            if($iniciador==0)
+            {
+                $iniciador=1;
+            }
+        }
+        $totalg = DB::select("select count(*) as total from reg_tributario.vw_buscar_pred where $consulta ");
+
+        //$totalg = DB::select("select count(*) as total from reg_tributario.vw_buscar_pred where todo like '%".$direccion."%'");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -123,27 +122,80 @@ class BprediosController extends Controller
         if ($page > $total_pages) {
             $page = $total_pages;
         }
-        $start = ($limit * $page) - $limit;
+        $start = ($limit * $page) - $limit; 
         if ($start < 0) {
             $start = 0;
         }
 
-        $sql = DB::table('reg_tributario.vw_buscar_pred')->where('id_hab_urb',$id_hab_urb)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+     
+
+        //$sql = DB::table('reg_tributario.vw_buscar_pred')->where('todo','like', '%'.strtoupper($direccion).'%')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $sql = DB::select("select * from reg_tributario.vw_buscar_pred where $consulta order by $sidx $sord limit $limit offset $start");
         
         $Lista = new \stdClass();
         $Lista->page = $page;
         $Lista->total = $total_pages;
         $Lista->records = $count;
+
+        foreach ($sql as $Index => $Datos) {
+            $Lista->rows[$Index]['id'] = $Datos->cod_catastral;
+            $Lista->rows[$Index]['cell'] = array(
+                trim($Datos->cod_catastral),
+                trim($Datos->todo),
+                trim($Datos->contribuyente)
+            );
+        }
+
+        return response()->json($Lista);
+        }
+        
+    }
+    
+    
+    public function get_predios_contribuyente(Request $request) 
+    {
+        $id_contrib = $request['id_contrib'];
+        header('Content-type: application/json');
+        $totalg = DB::select("select count(*) as total from reg_tributario.vw_buscar_pred where id_contrib = '$id_contrib'");
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+        if ($start < 0) {
+            $start = 0;
+        }
+
+        $sql = DB::table('reg_tributario.vw_buscar_pred')->where('id_contrib',$id_contrib)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+        
         
         foreach ($sql as $Index => $Datos) {
             $Lista->rows[$Index]['id'] = $Datos->cod_catastral;            
             $Lista->rows[$Index]['cell'] = array(
                 trim($Datos->cod_catastral),
-                trim($Datos->direccion),
+                trim($Datos->todo),
                 trim($Datos->contribuyente)
             );
         }
         return response()->json($Lista);
+       
     }
+    
     
 }

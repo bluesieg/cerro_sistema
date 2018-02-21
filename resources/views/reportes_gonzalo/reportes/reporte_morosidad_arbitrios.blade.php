@@ -10,9 +10,10 @@
         .footer {position: fixed }
     </style>
 </head>
-    <footer class="footer" style="font-size:0.8em; text-align: left; padding-top: 5px; padding-left: 10px;"><b>Impreso Por:&nbsp; </b>{{$usuario[0]->ape_nom}}</footer>
+    <footer class="footer" style="font-size:0.8em; text-align: left; padding-top: 5px; padding-left: 10px;"><b>Impreso Por:&nbsp; </b>{{$usuario[0]->usuario}}</footer>
 
 <body>
+    <div class="datehead">{{ $fecha }}</div>
 <main>
 
      <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px;">
@@ -36,7 +37,6 @@
 
     <center><div Class="asunto" style="margin-top: 10px; font-size:0.8em;"><b>Reporte % de Morosidad Arbtrios Municipales por Zona</b></div></center>
     <div class="subasunto" style=" margin-bottom:1px; text-align: left; padding-left: 30px;font-size:0.7em;">
-        <h5 class="subasunto" style="font-size:0.8em;  text-align: right; padding-left: 30px;">{{ $fecha }}</h5> 
         <h4 class="subasunto" style="font-size:1em;  text-align: left; ">Año : {{ $anio }}</h5>  
     </div>
    

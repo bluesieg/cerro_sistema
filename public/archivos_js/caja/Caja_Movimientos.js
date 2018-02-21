@@ -76,7 +76,7 @@ function confirmar_Pago(id_recibo){
 function imp_pago_rec(id_recibo){
 //    window.open('imp_pago_rec');
     id_recibo = $('#tabla_Caja_Movimientos').jqGrid ('getGridParam', 'selrow');
-    alert(id_recibo);
+
     if(id_recibo==null){
         return false;
     }

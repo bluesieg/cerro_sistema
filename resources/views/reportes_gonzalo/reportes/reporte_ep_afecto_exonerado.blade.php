@@ -11,6 +11,7 @@
 </head>
  <footer class="footer" style="font-size:0.8em; text-align: left; padding-top: 5px; padding-left: 10px;"><b>Impreso Por:&nbsp; </b>{{$usuario[0]->usuario}}</footer>
 <body>
+    <div class="datehead">{{ $fecha }}</div>
 <main>
 
     <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 5px;">
@@ -32,9 +33,8 @@
 
     </table>
 
-    <center><div Class="asunto" style="margin-top: 10px;"><b>Reporte del Monto de la Base Imponible Afecto y Exonerado</b></div></center>
-    <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px;">
-        <h5 class="subasunto" style="font-size:0.8em;  text-align: right; padding-left: 30px;">{{ $fecha }}</h5> 
+    <center><div Class="asunto" style="margin-top: 10px;"><b>Reporte Número de Contribuyentes de la emision predial Afecto y Exonerado</b></div></center>
+    <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px;"> 
     </div>
 
     <input type="hidden" value=" {{$num= 1}}">

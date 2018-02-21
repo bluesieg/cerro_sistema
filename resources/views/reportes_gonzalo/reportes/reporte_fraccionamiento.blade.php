@@ -11,9 +11,10 @@
 
     </style>
 </head>
-    <footer class="footer" style="font-size:0.8em; text-align: left; padding-top: 5px; padding-left: 10px;"><b>Impreso Por:&nbsp; </b>{{$usuario[0]->ape_nom}}</footer>
+    <footer class="footer" style="font-size:0.8em; text-align: left; padding-top: 5px; padding-left: 10px;"><b>Impreso Por:&nbsp; </b>{{$usuario[0]->usuario}}</footer>
 
 <body>
+    <div class="datehead">{{ $fecha }}</div>
 <main>
 
     <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px;">
@@ -36,8 +37,7 @@
     </table>
 
     <center><div Class="asunto" style="margin-top: 1px;font-size:0.8em;"><b>REPORTE DE CONTRIBUYENTES</b></div></center>
-    <div class="subasunto" style=" margin-bottom:1px; text-align: left; padding-left: 30px;font-size:0.7em;">
-        <h5 class="subasunto" style="font-size:0.8em;  text-align: right; padding-left: 30px;">{{ $fecha }}</h5>  
+    <div class="subasunto" style=" margin-bottom:1px; text-align: left; padding-left: 30px;font-size:0.7em;"> 
        
         <div style="padding-left: 160px;">
             <table style="width: 60%;">

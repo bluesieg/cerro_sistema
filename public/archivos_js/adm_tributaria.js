@@ -375,10 +375,6 @@ function new_contrib() {
         mostraralertasconfoco('Ingrese un Numero de Documento...', '#txt_nro_doc');
         return false;
     }
-    if ($("#contrib_num_expediente").val() == '') {
-        mostraralertasconfoco('Ingrese un Numero de Expediente...', '#contrib_num_expediente');
-        return false;
-    }
     if ($("#vw_contrib_id_pers").val() == '') {
         mostraralertasconfoco('Ingrese un Numero de Documento...', '#txt_nro_doc');
         return false;

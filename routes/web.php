@@ -485,7 +485,7 @@ Route::group(['middleware' => 'auth'], function() {
     
      /*************************************** - GONZALO - *************************************** */
     Route::group(['namespace' => 'reportes_gonzalo'], function() {
-        Route::resource('reportes_gonza', 'ReportesController');
+        Route::resource('reportes_gerenciales', 'ReportesController');
         Route::get('reporte_contribuyentes/{anio}/{min}/{max}/{num_reg}','ReportesController@reportes_contribuyentes');
         Route::get('reporte_supervisores/{anio}/{sector}/{manzana}', 'ReportesController@reportes'); 
         Route::get('listado_datos_contribuyentes/{tipo}/{anio}/{hab_urb}', 'ReportesController@listado_contribuyentes'); 
@@ -606,9 +606,8 @@ Route::group(['middleware' => 'auth'], function() {
         
         //BUSQUEDA DE PREDIOS
         Route::resource('buscar_predios', 'BprediosController');
-        Route::get('autocompletar_hab_urb', 'BprediosController@autocompletar_hab_urb');
-        Route::get('autocompletar_via', 'BprediosController@autocompletar_via');
-        Route::get('buscar_predios', 'BprediosController@buscar_predios');
+        Route::get('get_predios', 'BprediosController@get_predios');
+        Route::get('get_predios_contribuyente', 'BprediosController@get_predios_contribuyente');
         
 
     });

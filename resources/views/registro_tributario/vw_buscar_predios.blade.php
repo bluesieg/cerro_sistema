@@ -8,38 +8,7 @@
         <input id="current_id_tabla" type="hidden" value="0">
         
          <div class="col-xs-10 cr-body" >
-             
-           <div class="col-xs-4" style="padding: 0px; margin-top: 5px">
-                <section>
-                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 0px;"  >
-                        <header>
-                                <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
-                                <h2>Patron de Busqueda</h2>
-                        </header>
-                    </div>
-                </section>
-            </div>
-            <div class="col-xs-8" style="padding: 0px; margin-top: 5px">
-                
-                <div class="col-xs-12" style="padding: 0px;">
-                    <div class="input-group input-group-md">
-                        <span class="input-group-addon">Busquedas &nbsp;<i class="fa fa-tasks" style="width: 67px"></i></span>
-                        <div>
-                            <select id="select_filtro" onchange="seleccionar_filtro()" class="input-sm col-xs-12 text-center" style="height: 35px;font-size: 0.9em;width: 102% !important;">
-                                       
-                                        <option value='0' >.:: SELECCIONE UNA OPCION ::.</option>
-                                        <option value='1' >CALLE</option>
-                                        <option value='2' >HABILITACION URBANA</option>
-                                       <!-- <option value='3' >REFERENCIA</option>
-                                        <option value='4' >UBICACION</option> -->
-                                     
-                            </select>
-                        </div>     
-                    </div>
-                </div>
-                
-            </div>  
-             
+ 
            <div class="col-xs-12"></div>
            
            <div class="col-xs-4" style="padding: 0px; margin-top: 5px">
@@ -47,7 +16,7 @@
                     <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 0px;"  >
                         <header>
                                 <span class="widget-icon"> <i class="fa fa-align-justify"></i> </span>
-                                <h2>Filtro de Busqueda</h2>
+                                <h2>Busqueda por Direccion</h2>
                         </header>
                     </div>
                 </section>
@@ -56,10 +25,9 @@
                 
                 <div class="col-xs-12" style="padding: 0px;">
                     <div class="input-group input-group-md">
-                        <span class="input-group-addon" id="dlg_direccion_span">- &nbsp;<i class="fa fa-map-marker" style="width: 130px"></i></span>
+                        <span class="input-group-addon" id="dlg_direccion_span">Direccion &nbsp;<i class="fa fa-map-marker" style="width: 78px;"></i></span>
                         <div>
-                            <input type="hidden" id="hidden_dlg_direccion" value="0">
-                            <input id="dlg_direccion" type="text"  class="form-control" style="height: 36px;font-size: 0.9em;width: 102% !important" placeholder="ESCRIBIR POR TIPO DE PATRON DE BUSQUEDA" disabled="">
+                            <input id="dlg_direccion" type="text"  class="form-control" style="height: 35px;font-size: 0.9em;width: 102% !important" placeholder="ESCRIBIR LA DIRECCION DEL PREDIO">
                         </div>     
                     </div>
                 </div>
@@ -84,8 +52,8 @@
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Contribuyente &nbsp;<i class="fa fa-user-plus" style="width: 46px"></i></span>
                         <div>
-                            <input id="dlg_contribuyente_hidden" type="hidden" value="0">
-                            <input id="dlg_contribuyente" type="text"  class="form-control" style="height: 35px;font-size: 0.9em;width: 102% !important" placeholder="ESCRIBIR EL NOMBRE DEL CONTRIBUYENTE">
+                            <input id="dlg_id_contribuyente" type="hidden" value="0">
+                            <input id="dlg_contribuyente" type="text"  class="form-control" style="height: 36px;font-size: 0.9em;width: 102% !important" placeholder="ESCRIBIR EL NOMBRE DEL CONTRIBUYENTE">
                         </div>     
                     </div>
                 </div>
@@ -97,7 +65,7 @@
         </div>
         
         <div class="col-lg-2 text-center" style="padding-right: 0px;">
-            <br>
+            
             @if( $permisos[0]->btn_new ==1 )
                 <button class="btn bg-color-green txt-color-white btn-circle btn-xl" onclick="fn_buscar_predios();" >
                     <span  >
@@ -135,40 +103,38 @@
 
     $(document).ready(function () {
         $("#menu_registro_tributario").show();
-        $("#li_buscar_predios").addClass('cr-active');
-        anio = $("#select_anio").val(); 
+        $("#li_buscar_predios").addClass('cr-active'); 
 
-        var pageWidth = $("#tabla_tim").parent().width() - 100;
+        var pageWidth = $("#tabla_predio").parent().width() - 100;
         contrib_global=0;
-        jQuery("#tabla_tim").jqGrid({
-            url: 'obtener_usuarios?dat=0',
+       
+       jQuery("#tabla_predio").jqGrid({
+            url: 'get_predios?direccion=0',
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
             toolbarfilter: true,
-            colNames: ['ID','FECHA','MOTIVO','AÑO'],
-            rowNum: 20,sortname: 'id_tim', viewrecords: true, caption: 'DESCARGA DE PREDIOS', align: "center",
+            colNames: ['CODIGO CATASTRAL','DIRECCION','PROPIETARIO'],
+            rowNum: 10,sortname: 'cod_catastral', viewrecords: true, caption: 'BUSCAR PREDIOS', align: "center",
             colModel: [
-                {name: 'id_tim', index: 'id_tim', align: 'center', hidden:true,width:(pageWidth*(20/100))},
-                {name: 'documento_aprob', index: 'documento_aprob', align: 'center', width:(pageWidth*(80/100))}, 
-                {name: 'tim', index: 'tim', align: 'center', width:(pageWidth*(50/100))},
-                {name: 'anio', index: 'anio', align: 'center', hidden:true, width:(pageWidth*(20/100))},
-
+                {name: 'cod_catastral', index: 'cod_catastral', align: 'center',width:(pageWidth*(20/100))},
+                {name: 'todo', index: 'todo', align: 'left', width:(pageWidth*(80/100))}, 
+                {name: 'contribuyente', index: 'contribuyente', align: 'left', width:(pageWidth*(50/100))},
             ],
-            pager: '#pager_tabla_tim',
-            rowList: [10, 20],
+            pager: '#pager_tabla_predio',
+            rowList: [10, 20, 30],
             gridComplete: function () {
-                    var idarray = jQuery('#tabla_tim').jqGrid('getDataIDs');
+                    var idarray = jQuery('#tabla_predio').jqGrid('getDataIDs');
                     if (idarray.length > 0) {
-                    var firstid = jQuery('#tabla_tim').jqGrid('getDataIDs')[0];
-                            $("#tabla_tim").setSelection(firstid);
+                    var firstid = jQuery('#tabla_predio').jqGrid('getDataIDs')[0];
+                            $("#tabla_predio").setSelection(firstid);
                         }
                 },
             onSelectRow: function (Id){
-                $('#current_id').val($("#tabla_tim").getCell(Id, "id_tim"));
+                $('#current_id').val($("#tabla_predio").getCell(Id, "cod_catastral"));
 
             },
             ondblClickRow: function (Id){
-                $('#current_id').val($("#tabla_tim").getCell(Id, "id_tim"));
+                $('#current_id').val($("#tabla_predio").getCell(Id, "cod_catastral"));
                 actualizar_tim();}
         });
         
@@ -222,56 +188,6 @@
          
 
     });
-    
-        function autocompletar_hab_urb(textbox){
-            $.ajax({
-                type: 'GET',
-                url: 'autocompletar_hab_urb',
-                success: function (data) {
-                    var $datos = data;
-                    $("#"+ textbox).autocomplete({
-                        source: $datos,
-                        focus: function (event, ui) {
-                            $("#" + textbox).val(ui.item.label);
-                            $("#hidden_"+ textbox).val(ui.item.value);
-                            $("#" + textbox).attr('maxlength', ui.item.label.length);
-                            return false;
-                        },
-                        select: function (event, ui) {
-                            $("#" + textbox).val(ui.item.label);
-                            $("#hidden_"+ textbox).val(ui.item.value);
-
-                            return false;
-                        }
-                    });
-                }
-            });
-        }
-        
-        function autocompletar_via(textbox){
-            $.ajax({
-                type: 'GET',
-                url: 'autocompletar_via',
-                success: function (data) {
-                    var $datos = data;
-                    $("#"+ textbox).autocomplete({
-                        source: $datos,
-                        focus: function (event, ui) {
-                            $("#" + textbox).val(ui.item.label);
-                            $("#hidden_"+ textbox).val(ui.item.value);
-                            $("#" + textbox).attr('maxlength', ui.item.label.length);
-                            return false;
-                        },
-                        select: function (event, ui) {
-                            $("#" + textbox).val(ui.item.label);
-                            $("#hidden_"+ textbox).val(ui.item.value);
-
-                            return false;
-                        }
-                    });
-                }
-            });
-        }
         
        
 
