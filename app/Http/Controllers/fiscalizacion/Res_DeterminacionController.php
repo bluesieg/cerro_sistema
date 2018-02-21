@@ -365,5 +365,63 @@ class Res_DeterminacionController extends Controller
             }
         }
         
+        
+    }
+     public function ver_reporte_estado_hl($tipo,$anio,$estado)
+    {
+        if($tipo==3) 
+        {
+            $name =Auth::user()->ape_nom;
+            if($estado==0)
+            {
+                $sql=DB::table('fiscalizacion.vw_hoja_liquidacion')->where('anio',$anio)->where('flg_est',0)->where('fecha_notificacion',NULL)->orderBy('nro_hoja')->get(); 
+                if(count($sql)>=1)
+                {
+                    $view =  \View::make('fiscalizacion.reportes.vw_reporte_Estado_hl', compact('sql','name','anio','estado'))->render();
+                    $pdf = \App::make('dompdf.wrapper');
+                    $pdf->loadHTML($view)->setPaper('a4');
+                    return $pdf->stream("Fiscalizados.pdf");
+                }
+                else
+                {
+                    Return "No hay Datos";
+                }
+            }
+            if($estado==1)
+            {
+                $sql=DB::table('fiscalizacion.vw_hoja_liquidacion')->where('anio',$anio)->where('flg_est','<>',0)->where('fecha_notificacion','<>',NULL)->orderBy('nro_hoja')->get(); 
+                if(count($sql)>=1)
+                {
+                    $view =  \View::make('fiscalizacion.reportes.vw_reporte_estado_hl', compact('sql','name','anio','estado'))->render();
+                    $pdf = \App::make('dompdf.wrapper');
+                    $pdf->loadHTML($view)->setPaper('a4');
+                    return $pdf->stream("Fiscalizados.pdf");
+                }
+                else
+                {
+                    Return "No hay Datos";
+                }
+            }
+            if($estado==2)
+            {
+                $sql=DB::table('fiscalizacion.vw_hoja_liquidacion')->where('anio',$anio)->where('flg_est',1)->orderBy('nro_hoja')->get(); 
+                if(count($sql)>=1)
+                {
+                    $view =  \View::make('fiscalizacion.reportes.vw_reporte_Estado_hl', compact('sql','name','anio','estado'))->render();
+                    $pdf = \App::make('dompdf.wrapper');
+                    $pdf->loadHTML($view)->setPaper('a4');
+                    return $pdf->stream("Fiscalizados.pdf");
+                }
+                else
+                {
+                    Return "No hay Datos";
+                }
+            }
+            
+            
+        }
+       
+        
+        
     }
 }

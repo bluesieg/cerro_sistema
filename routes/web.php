@@ -434,6 +434,8 @@ Route::group(['middleware' => 'auth'], function() {
         ////
         Route::get('reportes_fisca','Res_DeterminacionController@reportes');
         Route::get('ver_rep_fisca','Res_DeterminacionController@reportes');
+        Route::get('ver_rep_estado_hoja_liq/{id}/{anio}/{estado}','Res_DeterminacionController@ver_reporte_estado_hl');
+
         
         
     });  

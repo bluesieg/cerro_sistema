@@ -34,7 +34,13 @@ function dlg_rep_fisca(tipo)
     if (tipo===2) {
         $("#dlg_contri_hidden").val(0);
         crear_dlg('dialog_m2',600,'M2 Determinados x Fiscalizados',tipo);
-    } 
+    }
+    if (tipo===3) {
+        crear_dlg('dialog_estado_hoja_liq',600,'Estado de Hoja de Liquidación',tipo);
+    }
+     if (tipo===4) {
+        crear_dlg('dialog_estado_resolucion_det',500,'Estado de Resolución de Determinación',tipo);
+    }
    
 }
 function crear_dlg(id,ancho,titulo,tipo)
@@ -71,6 +77,12 @@ function abrir_reporte(tip)
         }
         window.open('ver_rep_fisca/'+tip+'/'+$("#selantra_r0").val()+"/"+contri);
     }
+    if(tip==3)
+    {
+        window.open('ver_rep_estado_hoja_liq/'+tip+'/'+$("#select_anio_hoja_liq").val()+"/"+$("#select_estado_hl").val());
+    }
+    
+    
 }
 
 

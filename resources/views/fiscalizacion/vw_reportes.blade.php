@@ -42,7 +42,7 @@
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-file-archive-o fa-2x text-muted"></i></td>
                             <td>
-                                <h4><a href="#" onclick="" id="titulo_r3">
+                                <h4><a href="#" onclick="dlg_rep_fisca(3);" id="titulo_r3">
                                         REPORTE 3: Estado de Hoja de Liquidación.
                                     </a>
                                     <small>Muestra el estado en el que se encuentra una hoja de liquidacion.</small>
@@ -54,8 +54,8 @@
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-file-archive-o fa-2x text-muted"></i></td>
                             <td>
-                                <h4><a href="#" onclick="" id="titulo_r4">
-                                        REPORTE 4: Estado de Resolucion de Determinación.
+                                <h4><a href="#" onclick="dlg_rep_fisca(4);" id="titulo_r4">
+                                        REPORTE 4: Estado de Resolución de Determinación.
                                     </a>
                                     <small>Muestra el estado en el que se encuentra una Resolución de Determinación.</small>
                                 </h4>
@@ -187,5 +187,47 @@
         </div>
     </div>
 </div>
+<div id="dialog_estado_hoja_liq" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <div class="row" style="padding-left: 15px;padding-right: 35px">
+                    
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                        <select id='select_anio_hoja_liq' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                            @foreach ($anio_tra as $anio_con)
+                                                <option value='{{$anio_con->anio}}' >{{$anio_con->anio}}</option>
+                                            @endforeach
+                                        </select> 
+                                    </div>
+                            </div>
+                        </div>                       
+                    </div>
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">ESTADO <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                          <select id='select_estado_hl' class="form-control col-lg-8" >
+                                            <option value='0'>GENERADO </option>
+                                            <option value='1'> NOTIFICADO </option>
+                                            <option value='2'> VENCIDO </option>
+                                                                             
+                                          </select>                                 
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
 
 @endsection
