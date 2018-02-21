@@ -1202,7 +1202,7 @@ function autocompletar_haburb(textbox){
                             <div class="input-group input-group-md">
                                 <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
                                     <div class="icon-addon addon-md">
-                                        <select id='select_sup_anio_dc1' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                        <select id='select_sup_anio_imp_insol' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
                                             @foreach ($anio_tra as $anio_dc)
                                                 <option value='{{$anio_dc->anio}}' >{{$anio_dc->anio}}</option>
                                             @endforeach
@@ -1218,7 +1218,7 @@ function autocompletar_haburb(textbox){
                                 <div class="input-group input-group-md">
                                     <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
                                         <div class="icon-addon addon-md">
-                                            <select id='select_tip_doc' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                            <select id='select_doc' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
                                                     <option value='1' >OP</option>
                                                     <option value='2' >RD</option>                                                    
                                             </select>

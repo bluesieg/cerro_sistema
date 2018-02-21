@@ -13,25 +13,26 @@
 <body>
     <div class="datehead">{{ $fecha }}</div>
 <main>
-    <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 5px;">
+   <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px;">
         <tr>
             <td style="width: 10%; border: 0px;" >
-                <img src="img/escudo.png" height="70px"/>
-            </td>            
-            <td style="width: 80%; padding-top: 10px; border:0px;">
-                <div id="details" class="clearfix">
-                    <div id="invoice" >
+                <img src="img/escudo.png" height="60px"/>
+            </td>
+            <td style="width: 80%; padding-top: 0px; border:0px;">
+                <div id="details" class="sub2">
+                    <div id="invoice" style="font-size:0.7em" >
                         <h1>MUNICIPALIDAD DISTRITAL DE CERRO COLORADO</h1>
                         <div class="sub2">Creado por Ley 12075 el día 26 de Febrero de 1954</div>
                     </div>
-                    <div style="width: 90%; border-top:1px solid #999; margin-top: 10px; margin-left: 25px;"></div>
+                    <div  style="width: 95%; border-top:1px solid #999; margin-top: 5px; margin-left: 25px"></div>
                 </div>
             </td>
             <td style="width: 10%;border: 0px;"></td>
         </tr>
+
     </table>
 
-    <center><div Class="asunto" style="margin-top: 10px;"><b>Listado de Contribuyentes(Pricos,Mecos,Pecos)</b></div></center>
+    <center><div Class="asunto" style="margin-top: 1px;font-size:0.8em;"><b>REPORTE LISTADO DE CONTRIBUYENTES (Pricos,Mecos,Pecos)</b></div></center>
     <div class="subasunto" style="text-align: left; padding-left: 30px;">
         AÑO: {{ $anio }}, MONTO DE: {{$min}} hasta {{$max}}
   

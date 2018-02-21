@@ -1069,6 +1069,46 @@ class ReportesController extends Controller
         }
     }
     
+    
+    public function reporte_monto_trans_a_coactivo($anio,$doc)
+    {
+       $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
+       $fecha = (date('d/m/Y H:i:s'));
+        if($anio != 0 && $doc==1){
+            $sql = DB::table('recaudacion.vw_op_detalle')->where('anio',$anio)->orderBy('nro_fis','desc')->get();       
+            if(count($sql)>0)
+            {
+                set_time_limit(0);
+                ini_set('memory_limit', '2G');
+                $view =  \View::make('reportes_gonzalo.reportes.reporte_monto_trans_a_coactivo', compact('sql','anio','usuario','fecha'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4');
+                return $pdf->stream("Listado de Contribuyentes".".pdf");
+            }
+            else
+            {   return 'No hay datos';  }
+        
+            
+        }
+        if($anio != 0 && $doc==2){
+            $sql = DB::table('fiscalizacion.vw_resolucion_determinacion')->where('anio',$anio)->orderBy('nro_rd','desc')->get();       
+            if(count($sql)>0)
+            {
+                set_time_limit(0);
+                ini_set('memory_limit', '2G');
+                $view =  \View::make('reportes_gonzalo.reportes.reporte_monto_trans_a_coactivo_rd', compact('sql','anio','usuario','fecha'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4');
+                return $pdf->stream("Listado de Contribuyentes".".pdf");
+            }
+            else
+            {   return 'No hay datos';  }
+        
+            
+        }
+       
+    }
+    
     function autocompletar_haburb() {
         $Consulta = DB::table('catastro.hab_urb')->get();
         $todo = array();

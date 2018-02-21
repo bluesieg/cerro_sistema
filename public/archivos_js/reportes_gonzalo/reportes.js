@@ -482,7 +482,7 @@ function crear_dialogo_importe_insoluto()
         buttons: [{
             html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
             "class": "btn btn-success bg-color-green",
-            click: function () { abrir_reporte_transferido_a_coactivo(0); }
+            click: function () { abrir_reporte_monto_trans_a_coactivo(); }
         },{
             html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
             "class": "btn btn-danger",
@@ -731,4 +731,8 @@ function abrir_reporte_recaudacion_arbititros(tipo)
              window.open('reporte_recaudacion_arbitrios/1'+'/'+$('#select_sup_anio_ra').val()+'/'+'0'+'');
         }
       
+}
+function abrir_reporte_monto_trans_a_coactivo()
+{   
+        window.open('reporte_monto_trans_a_coactivo/'+$('#select_sup_anio_imp_insol').val()+'/'+$('#select_doc').val()+'');   
 }
