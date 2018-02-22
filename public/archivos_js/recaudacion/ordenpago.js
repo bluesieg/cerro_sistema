@@ -145,7 +145,7 @@ function verop(idop)
     //MensajeDialogLoadAjax('widget-grid', '.:: Generando ...');
     sec=$("#selsec option:selected").text();
     man=$("#selmnza option:selected").text();
-    window.open('fis_rep/1/'+idop+'/'+sec+'/'+man);
+    window.open('fis_rep/1/'+idop+'/'+0+'/'+0);
 }
 
 
@@ -197,7 +197,7 @@ function grabar_op(tip)
             }
             else
             {
-                window.open('fis_rep/'+tip+'/'+r+'/'+sec+'/'+man);
+                window.open('fis_rep/'+tip+'/'+r+'/'+0+'/'+0);
                 MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
                 call_list_contrib(tip);
             }
