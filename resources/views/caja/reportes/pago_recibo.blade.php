@@ -8,23 +8,24 @@
         @page {
             margin:0;
             padding: 0;
-            font-family: Verdana, Arial, Helvetica, sans-serif;
+            font-family: sans-serif;
         }
+
     </style>
     <body>
 
         
         <div style="z-index: 99; margin-top: 70px;">
-        <div style="margin-top: 5px;margin-right: 70px; font-size: 20px; text-align: right;">
+        <div style="margin-top: 5px;margin-right: 70px; font-size: 25px; text-align: right;">
             N°.{{$recibo[0]->serie}}
         </div>
-        <div style="margin-bottom: 15px;margin-left: 175px; font-size: 12px;">
+        <div style="margin-bottom: 15px;margin-left: 175px; font-size: 16px;">
             {{$recibo[0]->contribuyente}}
         </div>
-        <div style="margin-top: 5px;margin-left: 175px; font-size: 12px;">
+        <div style="margin-top: 5px;margin-left: 175px; font-size: 16px;">
             {{$recibo[0]->usuario}}
         </div>
-        <div style="margin-left: 175px; font-size: 12px;">
+        <div style="margin-left: 175px; font-size: 16px;">
             <table>
                 <thead>
                     <tr>
@@ -35,14 +36,14 @@
                 </thead>
             </table> 
         </div>
-        <div style="margin-top: 0px;margin-left: 175px; font-size: 13px;">
+        <div style="margin-top: 0px;margin-left: 175px; font-size: 16px;">
             {{$fecha_larga}}
         </div>
-        <div style="margin-top: 5px;margin-left: 115px; font-size: 13px;">
+        <div style="margin-top: 5px;margin-left: 115px; font-size: 16px;">
             GLOSA : {{$recibo[0]->glosa}}
         </div>
-        <div style="width: 700px;margin-top: 5px;margin-left: 70px; font-size: 13px;">
-            <table class="table table-sm" style="font-size:14px">
+        <div style="width: 700px;margin-top: 5px;margin-left: 70px; font-size: 16px;">
+            <table class="table table-sm" style="font-size:16px">
                 <thead>
                     <tr>
                         <th style="width: 20px">Cant.</th>
@@ -65,11 +66,11 @@
                 </tbody>
             </table>
             <div style="border-bottom: 1px solid #333"></div>
-            <div style="margin-top: 5px; font-size: 14px; text-align: right; padding-right: 8px;">
+            <div style="margin-top: 5px; font-size: 16px; text-align: right; padding-right: 8px;">
                 {{number_format($soles_numeros,2,".",",")}}
             </div>
         </div>
-        <div style="margin-top: 5px;margin-left: 110px; font-size: 14px;">
+        <div style="margin-top: 5px;margin-left: 110px; font-size: 18px;">
             Son: &nbsp;{{$soles}}
         </div>
     </div>

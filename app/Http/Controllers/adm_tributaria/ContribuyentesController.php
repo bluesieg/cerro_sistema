@@ -44,39 +44,70 @@ class ContribuyentesController extends Controller
         $select=DB::table('adm_tri.contribuyentes')->where('num_expediente',$request['numero_expediente'])->get();
         
         if (count($select)>0) {
-            return response()->json([
+            
+            if ($request['numero_expediente'] == '') {
+                $data = new Contribuyentes();
+                $data->tipo_persona=$request['tipo_persona'];
+                $data->tlfno_fijo=$request['tlfno_fijo']; 
+                $data->tlfono_celular=$request['tlfono_celular'];
+                $data->email=$request['email'];
+                $data->est_civil=$request['est_civil'];            
+                $data->id_dpto=$request['id_dpto'];
+                $data->id_prov=$request['id_prov']; 
+                $data->id_dist=$request['id_dist'];            
+                $data->nro_mun=$request['nro_mun'];
+                $data->dpto=$request['dpto'];
+                $data->manz=$request['manz'];
+                $data->lote=$request['lote'];
+                $data->id_cond_exonerac=$request['id_cond_exonerac']; 
+                $data->id_via=$request['id_via'];        
+                $data->id_pers=$request['id_pers']; 
+                $data->id_conv=$id_conv;
+                $data->ref_dom_fis= strtoupper($request['ref_dom_fis']);
+                $id_persona = $request['tipo_persona'].$request['tipo_doc'].$request['nro_doc'];
+                $data->id_persona=$id_persona;
+                $data->activo=1;
+                $data->fch_inscripcion=date('Y-m-d');
+                $data->nom_via_2=$request['nom_via_2'];
+                $data->id_usu=Auth::user()->id;
+                $data->fec_reg=date("d/m/Y");
+                $data->num_expediente=$request['numero_expediente'];
+                $data->save();        
+                return $data->id_contrib;
+            }else{
+                return response()->json([
                 'msg' => 'si',
-            ]);
+                ]);
+            }
         }else{
-        
-        $data = new Contribuyentes();
-        $data->tipo_persona=$request['tipo_persona'];
-        $data->tlfno_fijo=$request['tlfno_fijo']; 
-        $data->tlfono_celular=$request['tlfono_celular'];
-        $data->email=$request['email'];
-        $data->est_civil=$request['est_civil'];            
-        $data->id_dpto=$request['id_dpto'];
-        $data->id_prov=$request['id_prov']; 
-        $data->id_dist=$request['id_dist'];            
-        $data->nro_mun=$request['nro_mun'];
-        $data->dpto=$request['dpto'];
-        $data->manz=$request['manz'];
-        $data->lote=$request['lote'];
-        $data->id_cond_exonerac=$request['id_cond_exonerac']; 
-        $data->id_via=$request['id_via'];        
-        $data->id_pers=$request['id_pers']; 
-        $data->id_conv=$id_conv;
-        $data->ref_dom_fis= strtoupper($request['ref_dom_fis']);
-        $id_persona = $request['tipo_persona'].$request['tipo_doc'].$request['nro_doc'];
-        $data->id_persona=$id_persona;
-        $data->activo=1;
-        $data->fch_inscripcion=date('Y-m-d');
-        $data->nom_via_2=$request['nom_via_2'];
-        $data->id_usu=Auth::user()->id;
-        $data->fec_reg=date("d/m/Y");
-        $data->num_expediente=$request['numero_expediente'];
-        $data->save();        
-        return $data->id_contrib;
+                $data = new Contribuyentes();
+                $data->tipo_persona=$request['tipo_persona'];
+                $data->tlfno_fijo=$request['tlfno_fijo']; 
+                $data->tlfono_celular=$request['tlfono_celular'];
+                $data->email=$request['email'];
+                $data->est_civil=$request['est_civil'];            
+                $data->id_dpto=$request['id_dpto'];
+                $data->id_prov=$request['id_prov']; 
+                $data->id_dist=$request['id_dist'];            
+                $data->nro_mun=$request['nro_mun'];
+                $data->dpto=$request['dpto'];
+                $data->manz=$request['manz'];
+                $data->lote=$request['lote'];
+                $data->id_cond_exonerac=$request['id_cond_exonerac']; 
+                $data->id_via=$request['id_via'];        
+                $data->id_pers=$request['id_pers']; 
+                $data->id_conv=$id_conv;
+                $data->ref_dom_fis= strtoupper($request['ref_dom_fis']);
+                $id_persona = $request['tipo_persona'].$request['tipo_doc'].$request['nro_doc'];
+                $data->id_persona=$id_persona;
+                $data->activo=1;
+                $data->fch_inscripcion=date('Y-m-d');
+                $data->nom_via_2=$request['nom_via_2'];
+                $data->id_usu=Auth::user()->id;
+                $data->fec_reg=date("d/m/Y");
+                $data->num_expediente=$request['numero_expediente'];
+                $data->save();        
+                return $data->id_contrib;
         }
     }
     function create_persona(Request $request){

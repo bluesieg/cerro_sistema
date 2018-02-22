@@ -258,6 +258,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('grid_pred_arbitrios','Recibos_MasterController@tabla_cta_arbitrios');
         Route::get('grid_cta_pago_arbitrios','Recibos_MasterController@cta_pago_arbitrios');
         Route::get('verif_est_cta_coactiva','Recibos_MasterController@verif_est_cta');
+        Route::get('verif_est_cta_fraccionamiento','Recibos_MasterController@verif_est_cta_fraccionamiento');
         Route::get('insertar_pago_arbitrio','Recibos_MasterController@edit_arbitrio');
         
         Route::resource('rep_tesoreria', 'Reportes_TesoreriaController'); 

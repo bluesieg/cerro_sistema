@@ -7,7 +7,7 @@ function dialog_emi_rec_pag_imp_predial() {
                 html: "<i class='fa fa-fax'></i>&nbsp; Generar Recibo",
                 "class": "btn btn-primary",
                 click: function () {
-                    gen_recibo_imp_predial();
+                    verificar_fraccionamiento();
                 }
             }, {
                 html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
@@ -21,6 +21,7 @@ function dialog_emi_rec_pag_imp_predial() {
 interrup=0;
 function gen_recibo_imp_predial(){
     var Seleccionados = new Array();
+    anio = $('#vw_emi_rec_imp_pre_contrib_anio').val();
     $('input[type=checkbox][name=chk_trim]:checked').each(function() {
         Seleccionados.push($(this).val());
     });
@@ -48,7 +49,7 @@ function gen_recibo_imp_predial(){
     }
     
     $.ajax({
-        url:'verif_est_cta_coactiva',
+        url:'verif_est_cta_coactiva?anio=' + anio,
         type:'GET',
         data:{check:s_checks,id_contrib:$("#vw_emi_rec_imp_pre_contrib_hidden").val()},
         success: function(data){
@@ -59,7 +60,27 @@ function gen_recibo_imp_predial(){
             }
         }        
     });
+    
 }
+
+
+function verificar_fraccionamiento(){
+    $.ajax({
+        url:'verif_est_cta_fraccionamiento',
+        type:'GET',
+        data:{id_contrib:$("#vw_emi_rec_imp_pre_contrib_hidden").val()},
+        success: function(data){
+            if (data.msg == 'si'){
+                
+                    mostraralertas('No se Puede Generar El Recibo<br>, La Deuda esta en Fraccionamiento'); 
+                    
+                }else{
+                    gen_recibo_imp_predial();
+                }
+        }        
+    });
+}
+
 function gen_rec_imp_pred(ss_checks){
     
     $.confirm({
