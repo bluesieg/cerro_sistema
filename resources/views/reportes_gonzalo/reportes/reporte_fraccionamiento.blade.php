@@ -51,7 +51,13 @@
                 <tbody>
                     <tr>
                             <td style="text-align: center;">{{ $sql[0]->anio }}</td>
+                              @if ($estado == 0)
+                            <td style="text-align: center;">TODOS</td>
+
+                               @else
                             <td style="text-align: center;">{{ $sql[0]->est_actual }}</td>
+
+                               @endif
                             <td style="text-align: center;">{{ $total[0]->estados }}</td>
                     </tr>
                 </tbody>

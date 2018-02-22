@@ -75,6 +75,7 @@
                 <th style="width: 7%; text-align: center;">LOTE</th>
                 <th style="width: 10%; text-align: center;">DEDUCCION</th>
                 <th style="width: 10%; text-align: center;">BASE IMPONIBLE</th>
+                <th style="width: 10%; text-align: center;">B. IMPONIBLE AFECTO</th>
             </tr>
             </thead>
             <tbody>
@@ -83,12 +84,14 @@
                 <tr>
                     <td style="text-align: center;">{{ $num++ }}</td>
                     <td style="text-align: center;">{{ $cont->pers_nro_doc }}</td>
-                    <td style="text-align: center;">{{$cont->contribuyente}}</td>
-                    <td style="text-align: center;">{{ $cont->dom_fis }}</td>
+                    <td style="text-align: left;">{{$cont->contribuyente}}</td>
+                    <td style="text-align: left;">{{ $cont->dom_fis }}</td>
                     <td style="text-align: center;">{{ $cont->mzna }}</td>
                     <td style="text-align: center;">{{ $cont->lote }}</td>
                     <td style="text-align: center;">{{ $cont->porctje }}%</td>
                     <td style="text-align: center;">{{ number_format($cont->base_impon,2,'.',',')}}</td>
+                    <td style="text-align: center;">{{ number_format($cont->base_impon_afecto,2,'.',',')}}</td>
+
                 </tr>
             @endforeach
             </tbody>

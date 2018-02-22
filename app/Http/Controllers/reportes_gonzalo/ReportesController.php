@@ -526,12 +526,12 @@ class ReportesController extends Controller
 
                 $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio ) {
 
-                    $sql = DB::select("select pers_nro_doc, contribuyente, dom_fis, porctje, desc_exon,nomb_hab_urba, sec,mzna,lote, base_impon from reportes.vw_por_tipo_exoneracion where  anio = '$anio' and desc_exon  ilike '%PENSIONISTA%' OR desc_exon  ilike '%ADULTO MAYOR%' order by contribuyente asc" );
+                    $sql = DB::select("select pers_nro_doc, contribuyente, dom_fis, porctje, desc_exon,nomb_hab_urba, sec,mzna,lote, base_impon,base_impon_afecto from reportes.vw_por_tipo_exoneracion where  anio = '$anio' and desc_exon  ilike '%PENSIONISTA%' OR desc_exon  ilike '%ADULTO MAYOR%' order by contribuyente asc" );
 
                     $data= json_decode( json_encode($sql), true);
 
                     $sheet->fromArray($data);
-                    $sheet->row(1, array("DNI", "NOMBRE", "DOMICILIO FISCAL", "DEDUCCION", "CONDICION", "HAB. URBANA", "SECTOR","MZNA","LOTE", "BASE IMPONIBLE"))->freezeFirstRow();
+                    $sheet->row(1, array("DNI", "NOMBRE", "DOMICILIO FISCAL", "DEDUCCION", "CONDICION", "HAB. URBANA", "SECTOR","MZNA","LOTE", "BASE IMPONIBLE","BASE IMPONIBLE AFECTO"))->freezeFirstRow();
                     $sheet->setWidth(array(
                         'A'     =>  15,
                         'B'     =>  50,
@@ -542,7 +542,8 @@ class ReportesController extends Controller
                         'G'     =>  20,
                         'H'     =>  20,
                         'I'     =>  20,
-                        'J'     =>  20
+                        'J'     =>  20,
+                        'K'     =>  20
                     ));
                 });
 
@@ -556,12 +557,12 @@ class ReportesController extends Controller
 
                 $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio, $condicion ) {
 
-                    $sql = DB::select("select pers_nro_doc, contribuyente, dom_fis, porctje, desc_exon,nomb_hab_urba, sec,mzna,lote, base_impon from reportes.vw_por_tipo_exoneracion where anio = '$anio' and id_cond_exonerac = '$condicion' order by contribuyente ");
+                    $sql = DB::select("select pers_nro_doc, contribuyente, dom_fis, porctje, desc_exon,nomb_hab_urba, sec,mzna,lote, base_impon,base_impon_afecto from reportes.vw_por_tipo_exoneracion where anio = '$anio' and id_cond_exonerac = '$condicion' order by contribuyente ");
 
                     $data= json_decode( json_encode($sql), true);
 
                     $sheet->fromArray($data);
-                    $sheet->row(1, array("DNI", "NOMBRE", "DOMICILIO FISCAL", "DEDUCCION", "CONDICION", "HAB. URBANA", "SECTOR","MZNA","LOTE", "BASE IMPONIBLE"))->freezeFirstRow();
+                     $sheet->row(1, array("DNI", "NOMBRE", "DOMICILIO FISCAL", "DEDUCCION", "CONDICION", "HAB. URBANA", "SECTOR","MZNA","LOTE", "BASE IMPONIBLE","BASE IMPONIBLE AFECTO"))->freezeFirstRow();
                     $sheet->setWidth(array(
                         'A'     =>  15,
                         'B'     =>  50,
@@ -572,7 +573,8 @@ class ReportesController extends Controller
                         'G'     =>  20,
                         'H'     =>  20,
                         'I'     =>  20,
-                        'J'     =>  20
+                        'J'     =>  20,
+                        'K'     =>  20
                     ));
                 });
             })->export('xls');
@@ -748,7 +750,9 @@ class ReportesController extends Controller
     }
      public function rep_fraccionamiento($anio, $estado)
     {
-        $sql=DB::table('fraccionamiento.vw_convenios')->where('estado',$estado)->where('anio',$anio)->orderBy('contribuyente','asc')->get();
+        if($anio != 0 && $estado == 0)
+        {
+             $sql=DB::table('fraccionamiento.vw_convenios')->where('anio',$anio)->orderBy('contribuyente','asc')->get();
         $total = DB::select("select count(est_actual) as estados from fraccionamiento.vw_convenios where estado = '$estado' and anio = '$anio'");
         $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
         $fecha = (date('d/m/Y H:i:s'));
@@ -756,7 +760,7 @@ class ReportesController extends Controller
         {
             set_time_limit(0);
             ini_set('memory_limit', '2G');
-            $view =  \View::make('reportes_gonzalo.reportes.reporte_fraccionamiento', compact('sql','usuario','fecha','total'))->render();
+            $view =  \View::make('reportes_gonzalo.reportes.reporte_fraccionamiento', compact('sql','usuario','fecha','total','estado'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("PRUEBA".".pdf");
@@ -765,6 +769,27 @@ class ReportesController extends Controller
         {
             return 'NO HAY RESULTADOS';
         }
+        }
+        else {
+        $sql=DB::table('fraccionamiento.vw_convenios')->where('estado',$estado)->where('anio',$anio)->orderBy('contribuyente','asc')->get();
+        $total = DB::select("select count(est_actual) as estados from fraccionamiento.vw_convenios where estado = '$estado' and anio = '$anio'");
+        $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
+        $fecha = (date('d/m/Y H:i:s'));
+        if(count($sql)>0)
+        {
+            set_time_limit(0);
+            ini_set('memory_limit', '2G');
+            $view =  \View::make('reportes_gonzalo.reportes.reporte_fraccionamiento', compact('sql','usuario','fecha','total','estado'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("PRUEBA".".pdf");
+        }
+        else
+        {
+            return 'NO HAY RESULTADOS';
+        }
+        }
+        
         
     }
     public function reporte_cajas( Request $request)
