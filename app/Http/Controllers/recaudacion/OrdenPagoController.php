@@ -29,7 +29,14 @@ class OrdenPagoController extends Controller
     {
         if($request['tip']=='1'||$request['tip']=='3')
         {
-            return $this->create_by_user($request['per'],$request['an']);
+            $sql = DB::select("select id_contrib from adm_tri.vw_predi_urba where pred_contrib_activo=1 and pred_anio_activo=1 and id_contrib=".$request['per']." and anio=".$request['an']);
+            if(count($sql)>=1){
+                return $this->create_by_user($request['per'],$request['an'],$request['tri']);
+            }
+            else{
+                return 0;
+            }
+            
         }
         if($request['tip']=='4')
         {
@@ -46,7 +53,7 @@ class OrdenPagoController extends Controller
             return $orden."-".$valor;
         }
     }
-    public function create_by_user($per,$anio)
+    public function create_by_user($per,$anio,$trimestre)
     {
         $ivpp= DB::table('adm_tri.base_ivpp_op')->where('ano_cta',$anio)->where('id_pers',$per)->get()->first();
         $fisca= new orden_pago_master;
@@ -56,6 +63,7 @@ class OrdenPagoController extends Controller
         $fisca->id_contrib=$per;
         $fisca->ivpp_afecto=$ivpp->ivpp_afecto;
         $fisca->ivpp=$ivpp->ivpp;
+        $fisca->num_trimestres=$trimestre;
         $fisca->save();
         return $fisca->id_gen_fis;
     }
@@ -146,11 +154,13 @@ class OrdenPagoController extends Controller
                 {
                     $Datos->fec_notifica='<a href="javascript:void(0);" class="btn btn-danger txt-color-white btn-circle"><i class="glyphicon glyphicon-remove"></i></a>';
                     $envio="";
+                    $diastrasns=0;
                 }
                 else
                 {
                     $Datos->fec_notifica=trim($this->getCreatedAtAttribute($Datos->fec_notifica)->format('d/m/Y'));
                     $envio=$Datos->fec_notifica;
+                    $diastrasns=$this->dias_transcurridos($Datos->fec_notifica,date("Y-m-d"));
                 }
                 $Lista->rows[$Index]['id'] = $Datos->id_gen_fis;            
                 $Lista->rows[$Index]['cell'] = array(
@@ -163,6 +173,8 @@ class OrdenPagoController extends Controller
                     '<button class="btn btn-labeled bg-color-blueDark txt-color-white" type="button" onclick="verop('.trim($Datos->id_gen_fis).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Ver OP</button>',
                     trim($Datos->fec_notifica),
                     '<button class="btn btn-labeled bg-color-blueDark txt-color-white" type="button" onclick="ing_fec_noti('.trim($Datos->id_gen_fis).','."'".trim($Datos->nro_fis)."' , '".$envio."'".')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Ing Fecha Notificación</button>',
+                    $diastrasns
+                    
 
                 );
             }

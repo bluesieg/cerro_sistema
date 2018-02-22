@@ -98,51 +98,21 @@ function call_list_contrib(tip)
 }
 function generar_op(tip,ctb)
 {
-    Id_contrib=$("#dlg_contri_hidden").val();
-    if(Id_contrib==0&&tip==1)
-    {
-        mostraralertas("No hay Contribuyente seleccionado para generar");
-        return false;
-    }
-    if(tip==3||tip==4)
-    {
-       Id_contrib=ctb;
-    }
     
-    sec=$("#selsec option:selected").text();
-    man=$("#selmnza option:selected").text();
     if(tip==1||tip==3||tip==4)
     {
         if(tip==1)
         {
-            $("body").block({
-            message: "<p class='ClassMsgBlock'><img src='"+getServidorUrl()+"img/cargando.gif' style='width: 18px;position: relative;top: -1px;'/>Generando</p>",
-            css: { border: '2px solid #006000',background:'white',width: '62%'}
-            });
+            crear_dialogo_trimestres(tip);
+            
         }
         if(tip==3||tip==4)
         {
             MensajeDialogLoadAjax("dlg_ctrb_sector", '.:: Cargando ...');
+            grabar_op(tip);
 
         }
-        $.ajax({url: 'ordenpago/create',
-        type: 'GET',
-        data:{per:Id_contrib,sec:sec,man:man,tip:tip,an:$("#selantra").val()},
-        success: function(r) 
-        {
-            window.open('fis_rep/'+tip+'/'+r+'/'+sec+'/'+man);
-            MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
-            $('body').unblock();
-            MensajeDialogLoadAjaxFinish("dlg_ctrb_sector");
-            call_list_contrib(tip);
-        },
-        error: function(data) {
-            MensajeAlerta("hubo un error, Comunicar al Administrador","",4000);
-            $('body').unblock();
-            console.log('error');
-            console.log(data);
-        }
-        });
+       
     }
     if(tip==2)
     {
@@ -176,4 +146,71 @@ function verop(idop)
     sec=$("#selsec option:selected").text();
     man=$("#selmnza option:selected").text();
     window.open('fis_rep/1/'+idop+'/'+sec+'/'+man);
+}
+
+
+function crear_dialogo_trimestres(tip)
+{
+    $("#dialog_sel_trimestre").dialog({
+        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4 id='h4_dlg'>Seleccione Trimestre</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
+            "class": "btn btn-success bg-color-green",
+            id:"ver_rep1",
+            click: function () { grabar_op(tip); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+}
+function grabar_op(tip)
+{
+    Id_contrib=$("#dlg_contri_hidden").val();
+    if(Id_contrib==0&&tip==1)
+    {
+        mostraralertas("No hay Contribuyente seleccionado para generar");
+        return false;
+    }
+    if(tip==3||tip==4)
+    {
+       Id_contrib=ctb;
+    }
+    
+    sec=$("#selsec option:selected").text();
+    man=$("#selmnza option:selected").text();
+    trimestre=$("#seltrimestre").val()
+    $("body").block({
+            message: "<p class='ClassMsgBlock'><img src='"+getServidorUrl()+"img/cargando.gif' style='width: 18px;position: relative;top: -1px;'/>Generando</p>",
+            css: { border: '2px solid #006000',background:'white',width: '62%'}
+            });
+     $.ajax({url: 'ordenpago/create',
+        type: 'GET',
+        data:{per:Id_contrib,sec:sec,man:man,tip:tip,an:$("#selantra").val(),tri:trimestre},
+        success: function(r) 
+        {
+            if(r==0)
+            {
+                MensajeAlerta("El contribuyente no tiene Predios para el año "+$("#selantra").val(),"",4000);
+            }
+            else
+            {
+                window.open('fis_rep/'+tip+'/'+r+'/'+sec+'/'+man);
+                MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
+                call_list_contrib(tip);
+            }
+            $('body').unblock();
+            MensajeDialogLoadAjaxFinish("dlg_ctrb_sector");
+            $("#dialog_sel_trimestre").dialog("close")
+            
+        },
+        error: function(data) {
+            MensajeAlerta("hubo un error, Comunicar al Administrador","",4000);
+            $('body').unblock();
+            console.log('error');
+            console.log(data);
+        }
+        });
 }

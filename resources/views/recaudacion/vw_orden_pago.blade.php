@@ -58,7 +58,7 @@
                     </button>
                 </div>
             </div>
-            <div class="col-xs-12"></div>
+<!--            <div class="col-xs-12"></div>
             <div class="col-xs-3" style="padding: 0px; margin-top: 5px">
                 <section>
                     <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 0px;"  >
@@ -108,7 +108,7 @@
                     <span class="btn-label"><i class="fa fa-file-text-o"></i></span>Generar OP por Sector
                 </button>
             </div>
-            </div>
+            </div>-->
             
             
             <div class="col-xs-12"></div>
@@ -174,7 +174,7 @@
             datatype: 'json', mtype: 'GET',
             height: '260px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_gen_fis', 'Nro', 'Fec. Emi', 'Año','N° Documento', 'Contribuyente o Razon Social','OP'],
+            colNames: ['id_gen_fis', 'Nro', 'Fec. Emi', 'Año','N° Documento', 'Contribuyente o Razon Social','OP','fec_notificacion','btn','Dias Transcurridos'],
             rowNum: 20, sortname: 'id_gen_fis', sortorder: 'desc', viewrecords: true, caption: 'Lista de Ordenes', align: "center",
             colModel: [
                 {name: 'id_gen_fis', index: 'id_gen_fis', hidden: true},
@@ -184,6 +184,9 @@
                 {name: 'nro_doc', index: 'nro_doc', align: 'center', width: 150},
                 {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 250},
                 {name: 'op', index: 'op', align: 'center', width: 100},
+                {name: 'fec_notifica', index: 'fec_notifica', align: 'center', width: 100},
+                {name: 'btn', index: 'btn', hidden: true},
+                {name: 'dias', index: 'dias', align: 'center', width: 100},
             ],
             pager: '#pager_table_op',
             rowList: [13, 20],
@@ -297,7 +300,31 @@
         <div id="pager_table_contrib_bysec"></div>
     </article>
 </div> 
-
+<div id="dialog_sel_trimestre" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                <div class="row" style="padding: 10px 30px;">
+                    <div class="col-xs-11">
+                        <div class="input-group input-group-md">
+                            <span class="input-group-addon">Hasta que Trimestre se Cobrará &nbsp;<i class="fa fa-cogs"></i></span>
+                            <div class="icon-addon addon-md">
+                                <select id='seltrimestre' class="form-control col-lg-5" style="height: 32px;" >
+                                <option value='1' >Trimestre 1</option>
+                                <option value='2' >Trimestre 2</option>
+                                <option value='3' >Trimestre 3</option>
+                                <option value='4' >Trimestre 4</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
 
 
 @endsection

@@ -90,10 +90,11 @@
           
         </thead>
         <tbody>
+          @if($sql->trimestre1>0)
           <tr>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">Imp.<br>Predial</td>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$sql->nro_fis}}</td>
-              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$sql->anio}}-1</td>
+              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$sql->periodo1}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp_afecto,2)}}</td>
               <td style="text-align: right; font-size: 0.6em;padding-right: 2px;">Hasta 15 UIT<br>De 15 a 60 UIT<br>Más de 60 UIT</td>
               <td style="text-align: right; font-size: 0.6em; padding-right: 2px;">0.2%<br>0.6%<br>1.0%</td>
@@ -104,11 +105,12 @@
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->interes1,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->sub_total1,2)}}</td>
           </tr>
-          @if($sql->trimestre>1)
+          @endif
+          @if($sql->trimestre2>0)
           <tr>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">Imp.<br>Predial</td>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$sql->nro_fis}}</td>
-              <td style="text-align: center;font-size: 0.7em; padding: 0px;">2017-2</td>
+              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$sql->periodo2}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp_afecto,2)}}</td>
               <td style="text-align: right; font-size: 0.6em;padding-right: 2px;">Hasta 15 UIT<br>De 15 a 60 UIT<br>Más de 60 UIT</td>
               <td style="text-align: right; font-size: 0.6em; padding-right: 2px;">0.2%<br>0.6%<br>1.0%</td>
@@ -120,11 +122,11 @@
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->sub_total2,2)}}</td>
           </tr>
           @endif
-          @if($sql->trimestre>2)
+          @if($sql->trimestre3>0)
           <tr>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">Imp.<br>Predial</td>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$sql->nro_fis}}</td>
-              <td style="text-align: center;font-size: 0.7em; padding: 0px;">2017-3</td>
+              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$sql->periodo3}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp_afecto,2)}}</td>
               <td style="text-align: right; font-size: 0.6em;padding-right: 2px;">Hasta 15 UIT<br>De 15 a 60 UIT<br>Más de 60 UIT</td>
               <td style="text-align: right; font-size: 0.6em; padding-right: 2px;">0.2%<br>0.6%<br>1.0%</td>
@@ -136,11 +138,11 @@
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->sub_total3,2)}}</td>
           </tr>
           @endif
-          @if($sql->trimestre>3)
+          @if($sql->trimestre4>0)
           <tr>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">Imp.<br>Predial</td>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$sql->nro_fis}}</td>
-              <td style="text-align: center;font-size: 0.7em; padding: 0px;">2017-4</td>
+              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$sql->periodo4}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp_afecto,2)}}</td>
               <td style="text-align: right; font-size: 0.6em;padding-right: 2px;">Hasta 15 UIT<br>De 15 a 60 UIT<br>Más de 60 UIT</td>
               <td style="text-align: right; font-size: 0.6em; padding-right: 2px;">0.2%<br>0.6%<br>1.0%</td>
@@ -154,7 +156,7 @@
           @endif
           <tr>
               <td colspan="6">Total Insoluto</td>
-              <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format(($sql->ivpp/4)*$sql->trimestre,2)}}</td>
+              <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format(($sql->total),2)}}</td>
               <td colspan="4" style="text-align: right; padding-right: 2px; ">Total</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->sub_total1+$sql->sub_total2+$sql->sub_total3+$sql->sub_total4,2)}}</td>
           </tr>

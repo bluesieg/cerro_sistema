@@ -162,7 +162,7 @@
               <th style="width: 4%">CLAS</th>
               <th style="width: 4%">MAT</th>
               <th style="width: 4%">EST</th>
-              <th style="width: 4%">ANT.</th>
+              <th style="width: 4%">AÑO CONS.</th>
               <th style="width: 8%">CATEGORIAS</th>
               <th style="width: 10%">VALOR UNIT M2</th>
               <th style="width: 6%">INCRE.</th>

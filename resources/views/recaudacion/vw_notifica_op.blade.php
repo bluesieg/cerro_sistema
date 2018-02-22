@@ -163,7 +163,7 @@
             datatype: 'json', mtype: 'GET',
             height: '260px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_gen_fis', 'Nro', 'Fec. Emi', 'Año','N° Documento', 'Contribuyente o Razon Social','OP','Fecha Notificación','Btn'],
+            colNames: ['id_gen_fis', 'Nro', 'Fec. Emi', 'Año','N° Documento', 'Contribuyente o Razon Social','OP','Fecha Notificación','Btn','Dias Transcurridos'],
             rowNum: 20, sortname: 'id_gen_fis', sortorder: 'desc', viewrecords: true, caption: 'Lista de Ordenes', align: "center",
             colModel: [
                 {name: 'id_gen_fis', index: 'id_gen_fis', hidden: true},
@@ -175,6 +175,7 @@
                 {name: 'op', index: 'op',hidden: true},
                 {name: 'fec_notifica', index: 'fec_notifica', align: 'center', width: 70},
                 {name: 'op', index: 'op', align: 'left', width: 140},
+                {name: 'dias', index: 'dias', align: 'center', width: 80},
             ],
             pager: '#pager_table_op',
             rowList: [13, 20],

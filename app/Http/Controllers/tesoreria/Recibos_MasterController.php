@@ -272,6 +272,7 @@ class Recibos_MasterController extends Controller
         $id_pred = $request['id_pred'];
         $anio=$request['anio'];
         $totalg = DB::select("select count(*) as total from arbitrios.vw_cta_arbitrios where id_contrib='".$id_contrib."' and id_pred_anio='".$id_pred."'");
+        
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -292,12 +293,16 @@ class Recibos_MasterController extends Controller
         if ($start < 0) {
             $start = 0;
         }
-
+        
         $sql = DB::table('arbitrios.vw_cta_arbitrios')->where('id_contrib',$id_contrib)->where('id_pred_anio',$id_pred)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
-        $trib_barrido=DB::table('presupuesto.vw_barrido')->select('id_tributo')->where('anio',$sql[0]->anio)->first();
-        $trib_recojo=DB::table('presupuesto.vw_limpieza')->select('id_tributo')->where('anio',$sql[0]->anio)->first();
-        $trib_seguridad=DB::table('presupuesto.vw_serenazgo')->select('id_tributo')->where('anio',$sql[0]->anio)->first();
-        $trib_parques=DB::table('presupuesto.vw_parques')->select('id_tributo')->where('anio',$sql[0]->anio)->first();
+        if($totalg[0]->total>0)
+        {
+            $trib_barrido=DB::table('presupuesto.vw_barrido')->select('id_tributo')->where('anio',$sql[0]->anio)->first();
+            $trib_recojo=DB::table('presupuesto.vw_limpieza')->select('id_tributo')->where('anio',$sql[0]->anio)->first();
+            $trib_seguridad=DB::table('presupuesto.vw_serenazgo')->select('id_tributo')->where('anio',$sql[0]->anio)->first();
+            $trib_parques=DB::table('presupuesto.vw_parques')->select('id_tributo')->where('anio',$sql[0]->anio)->first();
+        
+        }
         
         
         $Lista = new \stdClass();
@@ -481,36 +486,15 @@ class Recibos_MasterController extends Controller
     function verif_est_cta(Request $request){
         $check=str_split($request['check']);
         $id_contrib=$request['id_contrib'];
-        $anio=$request['anio'];
-        //$recpred = DB::select("select * from presupuesto.vw_impuesto_predial where anio='$anio'");
-        $recpred = DB::table('presupuesto.vw_impuesto_predial')->where('anio',$anio)->first();
         $array =  array();
         for($i=$check[0];$i<=end($check);$i++){
-            $sql = DB::table('adm_tri.vw_cta_cte2')->where('id_contrib',$id_contrib)->where('id_tribu',$recpred->id_tributo)->value('trim'.$i.'_est');
+            $sql = DB::table('adm_tri.vw_cta_cte2')->where('id_contrib',$id_contrib)->where('id_tribu',103)->value('trim'.$i.'_est');
             if($sql==2){ 
                 $array[]=$i;
             }
         }
         return $array;
     }
-    
-    function verif_est_cta_fraccionamiento(Request $request){
-        $id_contrib=$request['id_contrib'];
-       
-        $sql = DB::table('fraccionamiento.convenio')->where('id_contribuyente',$id_contrib)->first();
-        
-        if (count($sql) > 0 && $sql->estado == 1) {
-              return response()->json([
-              'msg' => 'si',
-              ]);
-            
-        }else{
-            return response()->json([
-                'msg' => 'no',
-            ]);
-        } 
-    }
-    
     function edit_arbitrio(Request $request){
         $check=explode("and",$request['check']);
         $id_contrib=$request['id_contrib'];
