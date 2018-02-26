@@ -22,7 +22,8 @@ class Reportes_TesoreriaController extends Controller
             return view('errors/sin_permiso',compact('menu','permisos'));
         }
         $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
-        return view('tesoreria/vw_reportes_tesoreria', compact('menu','permisos','anio_tra'));
+        $agencias = DB::select('select id_caj,descrip_caja from tesoreria.cajas order by descrip_caja desc');
+        return view('tesoreria/vw_reportes_tesoreria', compact('menu','permisos','anio_tra','agencias'));
     }
      /////////// reportes ///////////
     
@@ -41,23 +42,46 @@ class Reportes_TesoreriaController extends Controller
     
     public function rep_por_partida(Request $request)
     {
-        //gonzalo
+        $caja = $request['caja'];
         $fechainicio = $request['ini'];
         $fechafin = $request['fin'];
-        $sql = DB::select("SELECT codigo_2,det_especifica,codigo_1,desc_espec_detalle,SUM(monto) as total  FROM presupuesto.vw_partida_presupuestal_3 where fecha between '$fechainicio' and '$fechafin' GROUP BY codigo_2,det_especifica,codigo_1,desc_espec_detalle order by codigo_2" );
-        
-        if(count($sql)>0)
-        {
-            $aux='0';
-            $view =  \View::make('tesoreria.reportes.rep_por_partida', compact('sql','fechainicio','fechafin','aux'))->render();
-            $pdf = \App::make('dompdf.wrapper');
-            $pdf->loadHTML($view)->setPaper('a4');
-            return $pdf->stream("PRUEBA".".pdf");
-        }
+        if($fechainicio != 0 && $fechafin != 0 && $caja == 0)
+            {
+                $sql = DB::select("SELECT codigo_2,det_especifica,codigo_1,desc_espec_detalle,id_caj,descrip_caja,SUM(monto) as total  FROM presupuesto.vw_partida_presupuestal_3 where fecha between '$fechainicio' and '$fechafin' GROUP BY codigo_2,det_especifica,codigo_1,desc_espec_detalle,id_caj,descrip_caja order by codigo_2" );
+                if(count($sql)>0)
+                {
+                    $aux='0';
+                    $view =  \View::make('tesoreria.reportes.rep_por_partida', compact('sql','fechainicio','fechafin','aux','caja'))->render();
+                    $pdf = \App::make('dompdf.wrapper');
+                    $pdf->loadHTML($view)->setPaper('a4');
+                    return $pdf->stream("PRUEBA".".pdf");
+                }
+                else
+                {
+                    return 'NO HAY RESULTADOS';
+                }
+            }
         else
         {
-            return 'NO HAY RESULTADOS';
+            $sql = DB::select("SELECT codigo_2,det_especifica,codigo_1,desc_espec_detalle,id_caj,descrip_caja,SUM(monto) as total  FROM presupuesto.vw_partida_presupuestal_3 where id_caj='$caja' and fecha between '$fechainicio' and '$fechafin' GROUP BY codigo_2,det_especifica,codigo_1,desc_espec_detalle,id_caj,descrip_caja order by codigo_2" );
+            if(count($sql)>0)
+            {
+                $aux='0';
+                $view =  \View::make('tesoreria.reportes.rep_por_partida', compact('sql','fechainicio','fechafin','aux','caja'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4');
+                return $pdf->stream("PRUEBA".".pdf");
+            }
+            else
+            {
+                return 'NO HAY RESULTADOS';
+            }
+            
         }
+        
+        
+        
+        
     }
      public function rep_por_tributo(Request $request)
     {

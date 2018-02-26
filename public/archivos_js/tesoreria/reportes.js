@@ -96,12 +96,12 @@ function abrir_reporte(tipo)
 {
     if(tipo==1)
     {
-        if($("#fec_ini").val()==""||$("#fec_fin").val()=="")
+        if($("#fec_ini").val()==""||$("#fec_fin").val()==""||$("#select_agencia_p").val()=="")
         {
-            mostraralertasconfoco("Ingresar fechas correctamente","#fec_ini");
+            mostraralertasconfoco("Ingresar datos correctamente","#fec_ini");
             return false;
         }
-       window.open('ver_rep_tesoreria/1?ini='+$("#fec_ini").val()+'&fin='+$("#fec_fin").val());
+       window.open('ver_rep_tesoreria/1?ini='+$("#fec_ini").val()+'&fin='+$("#fec_fin").val()+'&caja='+$("#select_agencia_p").val());
        return false;
     }
     if(tipo==2)

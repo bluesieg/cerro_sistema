@@ -14,7 +14,7 @@
     <footer class="footer" style="font-size:0.8em; text-align: left; padding-top: 5px; padding-left: 10px;"><b>Impreso Por:&nbsp; </b>{{$usuario[0]->usuario}}</footer>
 
 <body>
-    <div class="datehead">{{ $fecha }}</div>
+    <div class="datehead" style="font-size:0.7em;">{{ $fecha }}</div>
 <main>
 
     <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px;">
@@ -36,14 +36,16 @@
 
     </table>
 
-    <center><div Class="asunto" style="margin-top: 1px;font-size:0.8em;"><b>REPORTE DE CONTRIBUYENTES</b></div></center>
-    <div class="subasunto" style=" margin-bottom:1px; text-align: left; padding-left: 30px;font-size:0.7em;"> 
+    <center><div Class="asunto" style="margin-top: 1px;font-size:0.8em;"><b>REPORTE DE DATOS DE CONTRIBUYENTES</b></div></center>
+    <div class="subasunto" style=" margin-bottom:5px; text-align: left; padding-left: 30px;font-size:0.7em;"> 
+        <br>
         Año: {{ $anio }} - Hab. Urbana: {{$sql[0]->nomb_hab_urba}}
+        
     </div>
     
     <input type="hidden" value=" {{$num= 1}}">
 
-    <div class="lado3" style="height: 435px; margin-top: 0px; border-bottom: 0px solid #333">
+    <div class="lado3" style="height: 435px; margin-bottom: 20px;">
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom:20px; margin-top: 0px;  font-size: 1.0em;">
             <thead>
             <tr >

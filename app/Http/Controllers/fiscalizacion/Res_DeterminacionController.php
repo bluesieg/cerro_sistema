@@ -374,7 +374,7 @@ class Res_DeterminacionController extends Controller
             $name =Auth::user()->ape_nom;
             if($estado==0)
             {
-                $sql=DB::table('fiscalizacion.vw_hoja_liquidacion')->where('anio',$anio)->where('flg_est',0)->where('fecha_notificacion',NULL)->orderBy('nro_hoja')->get(); 
+                $sql=DB::table('fiscalizacion.vw_hoja_liquidacion')->where('anio',$anio)->orderBy('nro_hoja')->get(); 
                 if(count($sql)>=1)
                 {
                     $view =  \View::make('fiscalizacion.reportes.vw_reporte_Estado_hl', compact('sql','name','anio','estado'))->render();

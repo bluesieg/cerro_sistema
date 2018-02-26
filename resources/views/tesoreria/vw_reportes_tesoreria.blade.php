@@ -120,6 +120,20 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-xs-12" style="padding: 0px; margin-top: 10px; ">
+                        <div class="input-group input-group-md" style="width: 100%">
+                            <span class="input-group-addon" style="width: 165px">Agencia &nbsp;<i class="fa fa-users"></i></span>
+                            <div>
+                                <label class="select" >
+                                    <select id='select_agencia_p' class="form-control col-lg-8" >
+                                <option value='0'>-- TODOS --</option>
+                                @foreach ($agencias as $agencias_caja)
+                                    <option value='{{$agencias_caja->id_caj}}' >{{$agencias_caja->descrip_caja}}</option>
+                                @endforeach
+                            </select><i></i> </label>
+                            </div>
+                        </div>
+                    </div>
                     
                     
                 </div>

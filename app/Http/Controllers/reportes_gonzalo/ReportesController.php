@@ -180,7 +180,7 @@ class ReportesController extends Controller
 
                  $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio ) {
 
-                     $sql = DB::select("select nro_doc, contribuyente, persona, dom_fis from adm_tri.vw_contrib_predios_c where ano_cta = '$anio'" );
+                     $sql = DB::select("select nro_doc, contribuyente, persona, dom_fis from adm_tri.vw_contrib_predios_c where ano_cta = '$anio' order by contribuyente" );
 
                      $data= json_decode( json_encode($sql), true);
 
@@ -460,7 +460,7 @@ class ReportesController extends Controller
             })->export('xls');
 
             }
-            elseif($anio != 0 && $hab_urb = 0 && $uso != 0){
+            elseif($anio != 0 && $hab_urb == 0 && $uso != 0){
                 set_time_limit(0);
                 ini_set('memory_limit', '1G');
                 \Excel::create('REPORTE DE EMISION PREDIAL POR USO', function($excel) use ( $anio, $hab_urb ) {
@@ -503,7 +503,7 @@ class ReportesController extends Controller
           {
               set_time_limit(0);
               ini_set('memory_limit', '2G');
-              $view =  \View::make('reportes_gonzalo.reportes.reporte_emision_predial', compact('sql','anio','hab_urb','total','usuario','fecha'))->render();
+              $view =  \View::make('reportes_gonzalo.reportes.reporte_emision_predial', compact('sql','anio','hab_urb','total','usuario','fecha','uso'))->render();
               $pdf = \App::make('dompdf.wrapper');
               $pdf->loadHTML($view)->setPaper('a4');
               return $pdf->stream("Listado de Contribuyentes".".pdf");

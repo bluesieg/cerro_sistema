@@ -33,8 +33,20 @@
 
     <center><div Class="asunto" style="margin-top: 10px;"><b>REPORTE DE INGRESOS POR PARTIDA</b></div></center>
     <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px;">
-        <center><div class="sub2">Desde {{$fechainicio}} - Hasta {{$fechafin}}</div>
-                  </div></center>
+       
+        
+         @if ($caja == 0)
+                             <div class="sub2">TODOS</div>
+
+                               @else
+                            <div class="sub2">Caja: {{$sql[0]->descrip_caja}}</div>
+
+                               @endif
+                            
+        
+    </div>
+    <div class="sub2">Desde {{$fechainicio}} - Hasta {{$fechafin}}</div>
+                  </div>
     </div>
     <input type="hidden" value=" {{$num= 1}}">
 
