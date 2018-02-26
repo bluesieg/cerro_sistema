@@ -142,7 +142,7 @@
             datatype: 'json', mtype: 'GET',
             height: '120px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_tribu', 'Descripción', 'Total a Pagar', 'Saldo S/.', 'Trim I', 'Trim II', 'Trim III', 'Trim IV','con','coa'],
+            colNames: ['id_tribu', 'Descripción', 'Total a Pagar', 'Saldo S/.', 'Trim I', 'Trim II', 'Trim III', 'Trim IV','con','coa','Todo'],
             rowNum: 5, sortname: 'descrip_tributo', sortorder: 'asc', viewrecords: true, align: "center",
             colModel: [
                 {name: 'id_tribu', index: 'id_tribu', hidden:true},
@@ -154,7 +154,8 @@
                 {name: 'abo3_cta', index: 'abo3_cta', align: 'right', width: 100},
                 {name: 'abo4_cta', index: 'abo4_cta', align: 'right', width: 100},
                 {name: 'conv', index: 'conv', hidden: true},
-                {name: 'coa', index: 'coa', hidden: true}
+                {name: 'coa', index: 'coa', hidden: true},
+                {name: 'total', index: 'total', align: 'right', width: 100},
             ],
             pager: '#pager_table_cta_cte2',
             rowList: [5, 10],
@@ -166,6 +167,12 @@
                 var idarray = jQuery('#table_cta_cte2').jqGrid('getDataIDs');
 
                 for (var i = 0; i < idarray.length; i++) {
+                    var deuda = $("#table_cta_cte2").getCell(idarray[i], 'saldo');
+                    if(deuda>0 && idarray[i] == predial)
+                    {
+                        $("#table_cta_cte2").jqGrid("setCell", idarray[i], 'total',
+                                        "<input type='checkbox' name='chk_total' value='" + deuda + "' pago='"+idarray[i]+"' onchange='marcar_todos_predial(this.value,this,"+idarray[i]+")'>"+deuda);
+                    }
                     var conv = $("#table_cta_cte2").getCell(idarray[i], 'conv');
                     
                     if(conv!='' && idarray[i] == predial){
@@ -179,11 +186,11 @@
                         var val = $("#table_cta_cte2").getCell(idarray[i], 'abo' + a + '_cta');
                         if (val == '0.000' && idarray[i] == predial) {
                             $("#table_cta_cte2").jqGrid("setCell", idarray[i], 'abo' + a + '_cta',
-                                    "<input type='checkbox' name='chk_trim' value='" + a + "' id='chk_calc_pag_" + a + "' onchange='calc_tot_a_pagar_predial(" + a + ")'>", {'text-align': 'center'});
+                                    "<input type='checkbox' name='chk_trim' value='" + a + "' id='chk_calc_pag_" + a + "' onchange='calc_tot_a_pagar_predial(" + a + ",this)'>", {'text-align': 'center'});
                         }
                         if (val == '0.000' && idarray[i] == formatos) {
                             $("#table_cta_cte2").jqGrid("setCell", idarray[i], 'abo' + a + '_cta',
-                                    "<input type='checkbox' name='chk_trim_form' value='" + a + "' id='chk_calc_form_imp_" + a + "' onchange='calc_tot_a_pagar_predial(" + a + ")' disabled='disabled' checked>", {'text-align': 'center'});
+                                    "<input type='checkbox' name='chk_trim_form' value='" + a + "' id='chk_calc_form_imp_" + a + "' onchange='calc_tot_a_pagar_predial(" + a + ",this)' disabled='disabled' checked>", {'text-align': 'center'});
                         }
                     }
                     pre_x_trim = parseFloat($("#table_cta_cte2").getCell(idarray[i], 'ivpp'));

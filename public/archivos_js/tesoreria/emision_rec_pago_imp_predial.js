@@ -1,7 +1,7 @@
  
 function dialog_emi_rec_pag_imp_predial() {    
     $("#vw_emision_rec_pag_imp_predial").dialog({
-        autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
+        autoOpen: false, modal: true, width: 1100, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>.: RECIBO IMPUESTO PREDIAL :.</h4></div>",
         buttons: [{
                 html: "<i class='fa fa-fax'></i>&nbsp; Generar Recibo",
@@ -141,7 +141,10 @@ var global_tot_a_pagar = 0;
 var select_check=0;
 var select_check_form=0;
 var inter=0;
-function calc_tot_a_pagar_predial(num){
+function calc_tot_a_pagar_predial(num,esto){
+    if($(esto).not(':checked')){
+        $('input[type=checkbox][name=chk_total]').prop('checked', false);
+    }
     rowId=($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("predial"));
     pre_x_trim = parseFloat($("#table_cta_cte2").getCell(rowId, 'ivpp'));                    
     pre_x_trim = (pre_x_trim/4);
@@ -232,3 +235,37 @@ function limpiar_form_rec_imp_predial(){
     fn_actualizar_grilla('table_cta_cte2','get_grid_cta_cte2?id_contrib=0&ano_cta=0');
 }
 
+function marcar_todos_predial(valor,esto,id){
+    if($(esto).is(':checked')){
+        $('input[type=checkbox][name=chk_trim]').prop('checked', true);
+    }
+    $total=0;
+    $('input[type=checkbox][name=chk_trim]:checked').each(function(){
+        $total=parseFloat(redondeo($total,2))+parseFloat(redondeo($(this).val(),2));
+    });
+    glosa="Por el Pago de los Trimestres";
+    iniciador=0;
+    $('input[type=checkbox][name=chk_trim]:checked').each(function() {
+        if(iniciador==0)
+        {
+            glosa=glosa+" "+$(this).val();
+            iniciador++;
+        }
+        else
+        {
+            glosa=glosa+", "+$(this).val();
+        }
+    });
+    
+    var formatos = ($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("formatos"));
+    form = $("#table_cta_cte2").getCell(formatos, 'saldo') || '0.00';
+    $("#vw_emision_rec_pago_imp_pred_total_trimestre").val(formato_numero(parseFloat(valor)+parseFloat(form),2,'.',','));
+    if(form=='0.00')
+    {
+        $("#vw_emi_rec_imp_pred_glosa").val(glosa+" del "+$("#vw_emi_rec_imp_pre_contrib_anio").val());
+    }
+    else
+    {
+        $("#vw_emi_rec_imp_pred_glosa").val(glosa+" y Formatos del "+$("#vw_emi_rec_imp_pre_contrib_anio").val());
+    }
+}

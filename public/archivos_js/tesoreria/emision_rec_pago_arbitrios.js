@@ -205,9 +205,9 @@ function marcar_todos(valor,esto,id){
     }
     $total=0;
     $('input[type=checkbox][name=chk_abr]:checked').each(function() {
-        $total=parseFloat(redondeo($total,4))+parseFloat(redondeo($(this).val(),4));
+        $total=parseFloat(redondeo($total,2))+parseFloat(redondeo($(this).val(),2));
     });
-    $("#vw_emision_rec_Arbitrios_tot").val(redondeo($total,4));
+    $("#vw_emision_rec_Arbitrios_tot").val(redondeo($total,2));
 }
 deuda_total=0;
 function check_anio(name,source,deuda){ 
