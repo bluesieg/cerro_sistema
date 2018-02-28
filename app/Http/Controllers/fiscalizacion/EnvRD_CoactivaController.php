@@ -23,7 +23,7 @@ class EnvRD_CoactivaController extends Controller
         }
         return view('fiscalizacion.vw_env_rd_coactiva',compact('menu','permisos'));
     }
-    public function create_coa_master($id_contrib,$id_rd,$monto){        
+    public function create_coa_master($id_contrib,$id_rd,$monto,$anio){        
         $data = new coactiva_master();
         $data->id_contrib = $id_contrib;
         $data->fch_ini = date('Y-m-d');
@@ -33,10 +33,10 @@ class EnvRD_CoactivaController extends Controller
         $data->monto=$monto;
         $data->materia=1;
         $sql = $data->save();
+        $recpred = DB::select('select * from presupuesto.vw_impuesto_predial where anio='.$anio); 
         if($sql){
-            $this->create_coa_documentos($data->id_coa_mtr,$id_rd);
-            DB::table('adm_tri.cta_cte')->where([['id_pers','=',$id_contrib],['id_tribu','=',103],['ano_cta',date('Y')]])
-                    ->update([['id_coa_mtr'=>$data->id_coa_mtr],['trim1_estado'=>2],['trim2_estado'=>2],['trim3_estado'=>2],['trim4_estado'=>2]]);
+            DB::table('adm_tri.cta_cte')->where('id_pers','=',$id_contrib)->where('id_tribu','=',$recpred[0]->id_tributo)->where('ano_cta',$anio)
+                    ->update(['id_coa_mtr'=>$data->id_coa_mtr,'trim1_estado'=>2,'trim2_estado'=>2,'trim3_estado'=>2,'trim4_estado'=>2]);
             return $data->id_coa_mtr;
         }
     }
@@ -148,7 +148,7 @@ class EnvRD_CoactivaController extends Controller
                 $val->save();
             }
             $monto = DB::table('fiscalizacion.vw_resolucion_determinacion')->where('id_rd',$id_rd)->value('ivpp_verif'); 
-            $sql = $this->create_coa_master($id_contrib,$id_rd,$monto);
+            $sql = $this->create_coa_master($id_contrib,$id_rd,$monto,$val->anio);
             if($sql){
                 $val = $data::where("id_rd", "=", $id_rd)->first();
                 if (count($val) >= 1) {
@@ -168,6 +168,8 @@ class EnvRD_CoactivaController extends Controller
                 $update = $val->save();                
             }
             if($update){
+                DB::table('adm_tri.cta_cte')->where('id_coa_mtr','=',$val->id_coa_mtr)
+                    ->update(['id_coa_mtr'=>null]);
                 $coa_mtr=new coactiva_master;
                 $value=  $coa_mtr::where("id_coa_mtr","=",$val->id_coa_mtr)->first();
                 if(count($val)>=1){ $value->delete();}

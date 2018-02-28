@@ -155,7 +155,7 @@ function crear_dialogo_trimestres(tip)
         autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4 id='h4_dlg'>Seleccione Trimestre</h4></div>",
         buttons: [{
-            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
+            html: "<i class='fa fa-save'></i>&nbsp; Generar OP"  ,
             "class": "btn btn-success bg-color-green",
             id:"ver_rep1",
             click: function () { grabar_op(tip); }

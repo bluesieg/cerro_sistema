@@ -44,7 +44,7 @@ class CoactivaController extends Controller
     function editar_resol(Request $request){
         $id_doc=$request['id_doc'];$id_coa_mtr=$request['id_coa_mtr'];
         $resolucion=DB::select('select * from coactiva.vw_documentos_edit where id_doc='.$id_doc);
-        $fch_recep=DB::table('coactiva.vw_documentos_edit')->where('id_coa_mtr',$id_coa_mtr)->where('id_tip_doc',1)->value('fch_recep');
+        //$fch_recep=DB::table('coactiva.vw_documentos_edit')->where('id_coa_mtr',$id_coa_mtr)->where('id_tip_doc',1)->value('fch_recep');
         
         $plantilla = $this->rec_res_eje_coa_plantilla($id_doc, $id_coa_mtr);
         return view('coactiva.editor_resolucion_aper',compact('plantilla','id_doc'));

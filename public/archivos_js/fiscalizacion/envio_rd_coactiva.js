@@ -77,6 +77,7 @@ function all_update_env_rd(id_rd,env_rd){
     });    
 }
 function update_env_rd(id_rd,env_rd){
+   
     $.ajax({
         url:'update_env_rd',
         type:'GET',

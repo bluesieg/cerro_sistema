@@ -41,12 +41,15 @@ class EnvDocCoactivaController extends Controller
                 $trim = DB::table('recaudacion.vw_op_detalle')->where('id_gen_fis',$id_gen_fis)->value('trimestre'.$i);
                 if(isset($trim)){
                     if($trim>0){
-                        DB::table('adm_tri.cta_cte')->where([['id_pers','=',$id_contrib],['id_tribu','=',103]/*,['ano_cta',date('Y')]*/])
+                        $recpred = 534;
+                        DB::table('adm_tri.cta_cte')->where('id_pers','=',$id_contrib)
+                                ->where('id_tribu','=',$recpred)
+                                ->where('ano_cta',date("Y"))
                         ->update(['trim'.$i.'_estado'=>2]);
                     }                    
                 }
             }
-            DB::table('adm_tri.cta_cte')->where([['id_pers','=',$id_contrib],['id_tribu','=',103]/*,['ano_cta',date('Y')]*/])
+            DB::table('adm_tri.cta_cte')->where([['id_pers','=',$id_contrib],['id_tribu','=',$recpred]/*,['ano_cta',date('Y')]*/])
                     ->update(['id_coa_mtr'=>$data->id_coa_mtr]);
             return $data->id_coa_mtr;
         }

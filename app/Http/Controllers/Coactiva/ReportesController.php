@@ -233,20 +233,24 @@ class ReportesController extends Controller
         $ttotal=0;
         $todo = array();
         foreach ($sql as $Datos){
+            $resol=new \stdClass();
+            $resol->doc_ini='';
             if($Datos->id_val==2){
                 $nro_op = DB::table('recaudacion.orden_pago_master')->where('id_coa_mtr',$Datos->id_coa_mtr)->value('nro_fis');
                 $anio_op = DB::table('recaudacion.orden_pago_master')->where('id_coa_mtr',$Datos->id_coa_mtr)->value('anio');
+                $resol->doc_ini=$Datos->doc_ini.' - '.$nro_op.' '.$anio_op;
             }
             if($Datos->id_val==1){
+                
 //                $nro_op = DB::table('recaudacion.orden_pago_master')->where('id_coa_mtr',$Datos->id_coa_mtr)->value('nro_fis');
 //                $anio_op = DB::table('recaudacion.orden_pago_master')->where('id_coa_mtr',$Datos->id_coa_mtr)->value('anio');
             }
-            $resol=new \stdClass();
+            
             $resol->cc=$cc++;
             $resol->nro_exped=$Datos->nro_exped;
             $resol->anio=$Datos->anio;
             $resol->estado=$Datos->estado;            
-            $resol->doc_ini=$Datos->doc_ini.' - '.$nro_op.' '.$anio_op;
+            
             $resol->monto= number_format($Datos->monto,3,'.',',');
             $resol->contribuyente=$Datos->contribuyente;
             $resol->desc_mat=$Datos->desc_mat;

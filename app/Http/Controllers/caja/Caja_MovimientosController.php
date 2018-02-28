@@ -371,7 +371,7 @@ class Caja_MovimientosController extends Controller {
 //        echo $id_rec;
 //        
 //        dd($detalle);
-        $soles= $this->num2letras(round($recibo[0]->total,2));
+        $soles= $this->num2letras(number_format($recibo[0]->total,2,".",""));
         $soles_numeros= $recibo[0]->total;
         date_default_timezone_set('America/Lima');
         $fecha_larga = $this->fecha_letras(date('d-m-Y')).' : '.date('h:i A');        
