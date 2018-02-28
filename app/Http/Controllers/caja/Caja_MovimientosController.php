@@ -37,6 +37,7 @@ class Caja_MovimientosController extends Controller {
     
     public function edit(Request $request, $id){
         date_default_timezone_set('America/Lima');
+        $id_caja_mov = $request['id_caja_dia'];
         $recibo_master = new Recibos_Master();
         $val = $recibo_master::where("id_rec_mtr", "=", $id)->first();
         if (count($val) >= 1) {
@@ -240,6 +241,8 @@ class Caja_MovimientosController extends Controller {
         $data->fecha=date('Y-m-d');
         $data->hora=date('H:i A');
         $data->estado=1;
+        $data->serie_ini=$request['caja_serie'];
+        $data->nro_recibo_ini=$request['caja_nro_recibo'];
         $sql = $data->save();
         if($sql){
             return response()->json(['msg'=>'si','id_caja_dia'=>$data->id_caj_mov]);
