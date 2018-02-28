@@ -49,6 +49,7 @@ function confirmar_Pago(id_recibo){
     id_caja = $("#vw_caja_id_cajero").val();
    id_tipo_pago = $("#vw_caja_mov_txt_tip_pago").val();
    id_pers = $("#tabla_Caja_Movimientos").getCell(id_recibo, "id_contrib");
+   id_caja_dia = $("#vw_caja_dia").val();
    
     $.ajax({
         url: 'caja_movimient/'+id_recibo+'/edit',
@@ -56,7 +57,8 @@ function confirmar_Pago(id_recibo){
         data: {
             id_tip_pago:$("#vw_caja_mov_txt_tip_pago").val(),
             id_caja:id_caja,
-            id_pers:$("#tabla_Caja_Movimientos").getCell(id_recibo, "id_contrib")            
+            id_pers:$("#tabla_Caja_Movimientos").getCell(id_recibo, "id_contrib"),
+            id_caja_dia:id_caja_dia
         },
         success: function (data) {
             if(data){
@@ -122,15 +124,24 @@ function reimprimir_recib(){
 
 function apertura(){
     id_caja=$("#vw_caja_id_cajero").val();
+    
+
     $.confirm({
         title: 'Caja',
-        content: 'Quiere Aperturar la Caja...?',
+        content : '<div>'+'<h5>Serie</h5>'+
+                  '<input id="vw_caja_serie" type="text" class="form-control input-sm vw_caja_serie">'+                                     
+                  '<h5>N° Recibo</h5>'+
+                  '<input id="vw_caja_nro_recibo" type="text" class="form-control input-sm vw_caja_nro_recibo" >'+'</div>'  ,            
+                            
+        
         buttons: {
             Aceptar: function () {
+                caja_serie=$("#vw_caja_serie").val();
+                caja_nro_recibo=$("#vw_caja_nro_recibo").val();
                 $.ajax({
                     url:'apertura_caja',
                     type:'GET',
-                    data:{id_caja:id_caja},
+                    data:{id_caja:id_caja,caja_serie:caja_serie,caja_nro_recibo:caja_nro_recibo},
                     success:function(data){
                         if(data.msg=='si'){
                             MensajeExito('Caja', 'Caja Aperturada Correctamente');
@@ -138,6 +149,7 @@ function apertura(){
                             $("#vw_caja_dia").val(data.id_caja_dia);
                             $("#vw_caja_mov_btn_apert").hide();
                             $("#vw_caja_mov_btn_cierre").show();
+                            
                         }
                     },
                     error:function(data){

@@ -8,73 +8,73 @@
         @page {
             margin:0;
             padding: 0;
-            font-family: sans-serif;
+           
         }
-
     </style>
-    <body>
+    <body style="font-family: sans-serif;">
 
-        
-        <div style="z-index: 99; margin-top: 70px;">
-        <div style="margin-top: 5px;margin-right: 70px; font-size: 25px; text-align: right;">
+        <img src="img/recibo_caja.jpg" style="width: 100%;position: absolute;">              
+        <div style="position: absolute;margin-top: 70px;margin-left: 590px; font-size: 19px;">
             N°.{{$recibo[0]->serie}}
         </div>
-        <div style="margin-bottom: 15px;margin-left: 175px; font-size: 16px;">
-            {{$recibo[0]->contribuyente}}
+        <div style="position: absolute;margin-top: 85px;margin-left: 80px; font-size: 12px;">
+           Nombre&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp; {{$recibo[0]->contribuyente}}
         </div>
-        <div style="margin-top: 5px;margin-left: 175px; font-size: 16px;">
-            {{$recibo[0]->usuario}}
+        <div style="position: absolute;margin-top: 100px;margin-left: 80px; font-size: 12px;">
+           Dirección&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp; {{$recibo[0]->direccion}}
         </div>
-        <div style="margin-left: 175px; font-size: 16px;">
-            <table>
-                <thead>
-                    <tr>
-                        <th>{{$recibo[0]->id_rec_mtr}}</th>
-                        <th style="width: 155px; text-align: right;">{{date('M d',strtotime($recibo[0]->fecha))}}</th>
-                        <th style="width: 250px; text-align: right;">{{$recibo[0]->serie}}</th>
-                    </tr>
-                </thead>
-            </table> 
+        <div style="position: absolute;margin-top: 115px;margin-left: 80px; font-size: 12px;">
+           Cajero(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp; {{$recibo[0]->usuario}}
         </div>
-        <div style="margin-top: 0px;margin-left: 175px; font-size: 16px;">
-            {{$fecha_larga}}
+        <div style="position: absolute;margin-top: 130px;margin-left: 80px; font-size: 12px;">
+          Recibo N.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp; {{$recibo[0]->recib_sistema}}
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ {{date('M d',strtotime($recibo[0]->fecha))}} ]
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ref:{{$recibo[0]->id_rec_mtr}} 
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{$recibo[0]->serie}}
         </div>
-        <div style="margin-top: 5px;margin-left: 115px; font-size: 16px;">
-            GLOSA : {{$recibo[0]->glosa}}
+        <div style="position: absolute;margin-top: 145px;margin-left: 80px; font-size: 12px;">
+          Emitido&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;&nbsp;  {{$fecha_larga}}
         </div>
-        <div style="width: 700px;margin-top: 5px;margin-left: 70px; font-size: 16px;">
-            <table class="table table-sm" style="font-size:16px">
-                <thead>
+        <div style="position: absolute;margin-top: 160px;margin-left: 80px; font-size: 12px;">
+          Glosa&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;&nbsp;  {{$recibo[0]->glosa}}
+        </div>
+        
+        <div style="width: 700px;position: absolute;margin-top: 181px;margin-left: 50px; font-size: 10px;">
+            <table class="table table-sm" style="font-size:10px">
+                <thead style="border-bottom:  1px solid black;">
                     <tr>
                         <th style="width: 20px">Cant.</th>
                         <th style="width: 70px">Concepto</th>
-                        <th style="width: 450px">Descripcion</th>
-                        <th style="width: 60px" align="center">Prec.Unit</th>
-                        <th style="width: 60px" align="center">Total</th>
+                        <th style="width: 450px">Descripción</th>
+                        <th style="width: 60px" align="right">Prec.Unit</th>
+                        <th style="width: 60px" align="right">Total</th>
                     </tr>
                 </thead>
-                <tbody>
+               
+                <tbody style="border-bottom:  1px solid black;">
                     @foreach($detalle as $det)
                     <tr>
                         <td align="center">{{number_format($det->cant,0)}}</td>
                         <td align="center">{{$det->concepto}}</td>
-                        <td>{{$det->descrip_tributo}}</td>        
+                        <td>{{$det->descrip_tributo}}&nbsp;&nbsp;[{{$recibo[0]->glosa}}]</td>        
                         <td align="right">{{$det->p_unit}}</td>        
-                        <td align="right">{{number_format($det->monto,2)}}</td>        
+                        <td align="right">{{number_format($det->monto,2)}}</td> 
                     </tr>
-                    @endforeach                    
+                    @endforeach 
+                    
                 </tbody>
+                <tfoot>
+                <td colspan="5" style="text-align: right;">{{number_format($soles_numeros,2,".",",")}}</td>
+                </tfoot>              
             </table>
-            <div style="border-bottom: 1px solid #333"></div>
-            <div style="margin-top: 5px; font-size: 16px; text-align: right; padding-right: 8px;">
-                {{number_format($soles_numeros,2,".",",")}}
-            </div>
-        </div>
-        <div style="margin-top: 5px;margin-left: 110px; font-size: 18px;">
+           
+            <div style=" margin-top: 5px; font-size: 12px;">
             Son: &nbsp;{{$soles}}
         </div>
-    </div>
+        </div>
+         
     </body>
+     
 </html>
 
 <!--sd

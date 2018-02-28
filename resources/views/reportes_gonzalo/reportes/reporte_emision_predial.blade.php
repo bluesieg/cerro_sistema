@@ -32,7 +32,7 @@
         </tr>
 
     </table>
-    <center><div Class="asunto" style="margin-top: 1px;font-size:0.8em;"><b>REPORTE DE CONTRIBUYENTES</b></div></center>
+    <center><div Class="asunto" style="margin-top: 1px;margin-bottom: 5px;font-size:0.8em;"><b>REPORTE DE CONTRIBUYENTES</b></div></center>
     <div class="subasunto" style=" margin-bottom:1px; text-align: left; padding-left: 30px;font-size:0.7em;"> 
             <table>
                 <thead>
@@ -47,7 +47,11 @@
                     <tr>
                             <td style="text-align: center;">{{ $anio }}</td>
                             <td style="text-align: center;">{{ $sql[0]->nomb_hab_urba }}</td>
+                             @if ($uso == 0)
+                            <td style="text-align: center;">TODOS</td>
+                               @else
                             <td style="text-align: center;">{{ $sql[0]->uso_arbitrio }}</td>
+                            @endif  
                             <td style="text-align: center;">{{ $total[0]->usos }}</td>
                     </tr>
                 </tbody>
