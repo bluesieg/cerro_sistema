@@ -49,7 +49,7 @@ class Caja_MovimientosController extends Controller {
             $val->id_est_rec = 2;
             $query = $val->save();
             if ($query) {              
-                $function = DB::select('select tesoreria.nro_recibos_cjas(' . $request['id_caja'] . ',' . $id . ')');                
+                $function = DB::select('select tesoreria.nro_recibos_cjas(' . $id_caja_mov . ',' . $id . ')');                
                 if($function){                    
                     if($val->clase_recibo==0)
                     {
