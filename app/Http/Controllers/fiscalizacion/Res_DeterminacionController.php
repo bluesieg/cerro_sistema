@@ -284,12 +284,21 @@ class Res_DeterminacionController extends Controller
             $Lista->total = $total_pages;
             $Lista->records = $count;
             foreach ($sql as $Index => $Datos) {
+                if($Datos->fecha_notificacion == null)
+                {
+                    $notifica='<button class="btn btn-labeled bg-color-red txt-color-white" type="button" onclick="ponerfechanoti('."'".trim($Datos->nro_rd)."'".');"><span class="btn-label"><i class="fa fa-edit"></i></span> Ing. Fecha Notificación</button>';
+                }
+                else
+                {
+                    $notifica=trim($this->getCreatedAtAttribute($Datos->fecha_notificacion)->format('d/m/Y'));
+                }
                 $Lista->rows[$Index]['id'] = $Datos->id_rd;            
                 $Lista->rows[$Index]['cell'] = array(
                     trim($Datos->id_rd),
                     trim($Datos->nro_rd),
                     trim($Datos->contribuyente),
                     trim($this->getCreatedAtAttribute($Datos->fec_reg)->format('d/m/Y')),
+                    $notifica,
                     '<button class="btn btn-labeled btn-warning" type="button" onclick="verrd('.trim($Datos->id_rd).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Ver</button>',
                 );
             }
@@ -423,5 +432,16 @@ class Res_DeterminacionController extends Controller
        
         
         
+    }
+     public function edit_rd_fec(Request $request)
+    {
+        $rd=new Resolucion_Determinacion;
+        $val=  $rd::where("id_rd","=",$request['id'] )->first();
+        if(count($val)>=1)
+        {
+            $val->fecha_notificacion=$request['fec'];
+            $val->save();
+        }
+        return $request['id'];
     }
 }

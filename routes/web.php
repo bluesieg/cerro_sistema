@@ -427,6 +427,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('reso_deter', 'Res_DeterminacionController');
         Route::get('rd_rep/{id}', 'Res_DeterminacionController@rd_repo');
         Route::get('trae_rd/{an}/{contr}/{ini}/{fin}/{num}', 'Res_DeterminacionController@get_rd'); //
+        Route::get('mod_noti_rd','Res_DeterminacionController@edit_rd_fec');
         /////// coactiva
         Route::get('env_rd_coactiva','EnvRD_CoactivaController@vw_env_rd_coa');
         Route::get('fisca_get_rd','EnvRD_CoactivaController@fis_get_RD');

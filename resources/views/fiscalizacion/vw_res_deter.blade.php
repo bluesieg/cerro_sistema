@@ -154,13 +154,14 @@
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_rd', 'N° R.D.', 'contribuyente','Registro','Ver'],
+            colNames: ['id_rd', 'N° R.D.', 'contribuyente','Registro','Fec. Notificación','Ver'],
             rowNum: 20, sortname: 'id_rd', sortorder: 'desc', viewrecords: true, caption: 'Resoluciones de Determinación', align: "center",
             colModel: [
                 {name: 'id_rd', index: 'id_rd', hidden: true},
-                {name: 'nro_rd', index: 'nro_rd', align: 'center', width: 10},
-                {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 35},
+                {name: 'nro_rd', index: 'nro_rd', align: 'center', width: 8},
+                {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 25},
                 {name: 'fec_reg', index: 'fec_reg', align: 'center', width: 10},
+                {name: 'fecha_notificacion', index: 'fecha_notificacion', align: 'center', width: 12},
                 {name: '', index: '', align: 'center', width: 10},
             ],
             pager: '#pager_table_rd',
@@ -341,6 +342,40 @@
         <table id="table_sel_hojas"></table>
         <div id="pager_table_sel_hojas"></div>
    </div>
+</div> 
+<div id="dlg_fec_notificacion" style="display: none;">
+    
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
+        <div class="col-xs-12 cr-body" style="padding-left: 0px;padding-right: 10px;" >
+            <div class="col-xs-12" style="padding: 0px; margin-top: 0px;">
+                <section>
+                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                                <h2>Ingresar Fecha de Notificacíon de Carta.::..</h2>
+                        </header>
+                    </div>
+                </section>
+                <div class="col-xs-12" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">N° Hoja de Liq. &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div class=""  >
+                            <input id="input_num_rd" type="text"  class="form-control" style="height: 32px; " disabled="" >
+                        </div>
+                    </div>
+                </div>
+                               
+                <div class="col-xs-12" style="padding: 0px; margin-top: 10px ">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Fecha Notificación &nbsp;<i class="fa fa-calendar"></i></span>
+                        <div>
+                            <input id="input_fec_notifica" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div> 
 
 
