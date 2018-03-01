@@ -607,7 +607,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('descarga_predios', 'DprediosController');
         Route::get('obtener_contribuyentes', 'DprediosController@get_contribuyentes');
         Route::get('obtener_predios', 'DprediosController@get_predios');
-        Route::post('eliminar_predio', 'DprediosController@eliminar_predio');
+        Route::get('obtener_descarga_predios', 'DprediosController@get_descarga_predios');
+        Route::get('actualizar_predios_contribuyentes', 'DprediosController@actualizar_predio_contribuyente');
+        Route::get('ver_documentos/{id}', 'DprediosController@ver_documentos');
         
         //BUSQUEDA DE PREDIOS
         Route::resource('buscar_predios', 'BprediosController');

@@ -137,9 +137,39 @@ class ContribuyentesController extends Controller
         $select=DB::table('adm_tri.contribuyentes')->where('num_expediente',$request['numero_expediente'])->where('id_pers','<>',$request['id_pers'])->get();
         
         if (count($select)>0) {
-            return response()->json([
-                'msg' => 'si',
-            ]);
+            if ($request['numero_expediente'] == '') {
+                $val = $contrib::where("id_contrib", "=", $id)->first();
+                if (count($val) >= 1) {
+
+                    $val->tipo_persona=$request['tipo_persona'];
+                    $val->tlfno_fijo=$request['tlfno_fijo']; 
+                    $val->tlfono_celular=$request['tlfono_celular'];
+                    $val->email=$request['email'];
+                    $val->est_civil=$request['est_civil'];            
+                    $val->id_dpto=$request['id_dpto'];
+                    $val->id_prov=$request['id_prov']; 
+                    $val->id_dist=$request['id_dist'];            
+                    $val->nro_mun=$request['nro_mun'];
+                    $val->dpto=$request['dpto'];
+                    $val->manz=$request['manz'];
+                    $val->lote=$request['lote'];
+                    $val->id_cond_exonerac=$request['id_cond_exonerac']; 
+                    $val->id_via=$request['id_via'];        
+                    $val->id_pers=$request['id_pers']; 
+                    $val->ref_dom_fis= strtoupper($request['ref_dom_fis']);
+                    $val->nom_via_2=$request['nom_via_2'];
+                    $val->num_expediente=$request['numero_expediente'];
+                    $id_persona = $request['tipo_persona'].$request['tipo_doc'].$request['nro_doc'];
+                    $val->id_persona=$id_persona;   
+                    $val->id_conv=$conv;
+                    $val->save();  
+                    return $conv;
+                }
+            }else{
+                return response()->json([
+                    'msg' => 'si',
+                ]);
+            }
         }else{
         
         $val = $contrib::where("id_contrib", "=", $id)->first();
