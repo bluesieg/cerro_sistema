@@ -56,6 +56,7 @@ function autocomplete_tributo(textbox, soles) {
                     $("#hidden" + textbox).val(ui.item.value);
                     $("#vw_emi_rec_txt_nrecibo").val('0');
                     $("#vw_emi_rec_txt_glosa").val('');
+                     $("#vw_emi_rec_txt_direc").val('');
                     traer_tributos_sin_valor();
                     traer_alcabala();
                     return false;
@@ -184,6 +185,7 @@ function detalle_recibo() {
     tributo = $("#vw_emi_rec_txt_tributo").val();
     id_tributo = $("#hiddenvw_emi_rec_txt_tributo").val();
     glosa = $("#vw_emi_rec_txt_glosa").val();
+    direccion = $("#vw_emi_rec_txt_direc").val();
     $("#vw_emi_rec_txt_valor").attr('disabled', 'disabled');  
     $("#vw_emi_rec_txt_nrecibo").attr('disabled', 'disabled');
     if (tributo == '') {
@@ -234,6 +236,7 @@ function insert_Recibos_Master() {
         type: 'GET',
         data: {
             id_est_rec: 1,
+            direccion: ($("#vw_emi_rec_txt_direc").val()).toUpperCase(),
             glosa: ($("#vw_emi_rec_txt_glosa").val()).toUpperCase(),
             total: $("#vw_em_rec_txt_detalle_total").val().replace(',', ''),
             recibo: $("#vw_emi_rec_txt_nrecibo").val(),
@@ -422,6 +425,7 @@ function limpiar_form_rec_varios() {
     $("#vw_emi_rec_txt_valor").val('');
     $("#vw_emi_rec_txt_nrecibo").val('');
     $("#vw_emi_rec_txt_glosa").val('');
+     $("#vw_emi_rec_txt_direc").val('');
     $("#vw_em_rec_txt_detalle_total").val('000.000');
     cont = 0;
     detalle_total = 0;

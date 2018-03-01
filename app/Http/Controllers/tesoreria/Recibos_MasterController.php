@@ -41,6 +41,7 @@ class Recibos_MasterController extends Controller
         $data->id_caja    = 1;        
         $data->hora_pago  = "";
         $data->glosa      = $request['glosa'];
+        $data->direccion      = $request['direccion'];
         $data->total      = $request['total'];
         $data->id_tip_pago= 0;
         $data->id_contrib = $request['id_pers'];
@@ -435,7 +436,7 @@ class Recibos_MasterController extends Controller
                 trim($Datos->id_contrib),
                 trim($Datos->nro_recibo_mtr),
                 trim(date('d-m-Y', strtotime($Datos->fecha))),
-                trim($Datos->glosa),                
+                trim($Datos->glosa),               
                 trim($Datos->estad_recibo),
                 trim($Datos->descrip_caja),
                 trim($Datos->hora_pago),
@@ -486,15 +487,36 @@ class Recibos_MasterController extends Controller
     function verif_est_cta(Request $request){
         $check=str_split($request['check']);
         $id_contrib=$request['id_contrib'];
+        $anio=$request['anio'];
+        //$recpred = DB::select("select * from presupuesto.vw_impuesto_predial where anio='$anio'");
+        $recpred = DB::table('presupuesto.vw_impuesto_predial')->where('anio',$anio)->first();
         $array =  array();
         for($i=$check[0];$i<=end($check);$i++){
-            $sql = DB::table('adm_tri.vw_cta_cte2')->where('id_contrib',$id_contrib)->where('id_tribu',103)->value('trim'.$i.'_est');
+            $sql = DB::table('adm_tri.vw_cta_cte2')->where('id_contrib',$id_contrib)->where('id_tribu',$recpred->id_tributo)->value('trim'.$i.'_est');
             if($sql==2){ 
                 $array[]=$i;
             }
         }
         return $array;
     }
+    
+    function verif_est_cta_fraccionamiento(Request $request){
+        $id_contrib=$request['id_contrib'];
+       
+        $sql = DB::table('fraccionamiento.convenio')->where('id_contribuyente',$id_contrib)->first();
+        
+        if (count($sql) > 0 && $sql->estado == 1) {
+              return response()->json([
+              'msg' => 'si',
+              ]);
+            
+        }else{
+            return response()->json([
+                'msg' => 'no',
+            ]);
+        } 
+    }
+    
     function edit_arbitrio(Request $request){
         $check=explode("and",$request['check']);
         $id_contrib=$request['id_contrib'];

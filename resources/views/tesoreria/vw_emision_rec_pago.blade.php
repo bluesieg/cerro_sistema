@@ -346,6 +346,12 @@
                                     <textarea id="vw_emi_rec_txt_glosa" rows="2" placeholder="descripcion de recibo" class="input-sm text-uppercase"></textarea>                                    
                                 </label>                      
                             </section>
+                            <section>
+                                <label class="label">Dirección:</label>
+                                <label class="input">
+                                    <input id="vw_emi_rec_txt_direc" rows="2" placeholder="Dirección de la persona" class="input-sm text-uppercase"></input>                                    
+                                </label>                      
+                            </section>
                             <div class="row">
                                 <section class="col col-3" style="padding-right: 5px">                                    
                                     <label class="label">Cod. Tributo:</label>
