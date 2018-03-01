@@ -513,6 +513,15 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-xs-12" style="margin-top: 10px;"></div>
+                <div class="col-xs-12" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Orden del menú &nbsp;<i class="fa fa-list"></i></span>
+                        <div class=""  >
+                            <input id="dlg_orden_submod" type="text"  class="form-control" style="height: 32px; "  >
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

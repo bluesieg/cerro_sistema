@@ -149,6 +149,7 @@ function fn_edit_submod()
             $("#dlg_title_submod").val(r[0].titulo);
             $("#dlg_idsis_submod").val(r[0].id_sistema);
             $("#dlg_ruta_submod").val(r[0].ruta_sis);
+            $("#dlg_orden_submod").val(r[0].orden);
             MensajeDialogLoadAjaxFinish('dlg_submodulos');
         },
         error: function(data) {
@@ -283,6 +284,10 @@ function fn_save_submod()
         mostraralertasconfoco("Ingresar Ruta","#dlg_ruta_submod");
         return false;
     }
+    if($("#dlg_orden_submod").val()=='')
+    {
+       $("#dlg_orden_submod").val(0);
+    }
     if($("#hidden_id_submod").val()==0)
     {
         url='sub_modulos/create'; titulo="Insertó";
@@ -296,7 +301,7 @@ function fn_save_submod()
     $.ajax({
         url: url,
         type: 'GET',
-        data: {des:$("#dlg_des_submod").val(),tit:$("#dlg_title_submod").val(),sis:$("#dlg_idsis_submod").val(),ruta:$("#dlg_ruta_submod").val(),mod:modulo},
+        data: {des:$("#dlg_des_submod").val(),tit:$("#dlg_title_submod").val(),sis:$("#dlg_idsis_submod").val(),ruta:$("#dlg_ruta_submod").val(),mod:modulo,orden:$("#dlg_orden_submod").val()},
         success: function(r) 
         {
             llamar_sub_modulo() 

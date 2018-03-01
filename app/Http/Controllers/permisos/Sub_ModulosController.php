@@ -96,6 +96,7 @@ class Sub_ModulosController extends Controller
         $sub_modulos->id_sistema=$request['sis'];
         $sub_modulos->ruta_sis=$request['ruta'];
         $sub_modulos->id_mod=$request['mod'];
+        $sub_modulos->orden=$request['orden'];
         $sub_modulos->save();
         return $sub_modulos->id_sub_mod;
     }
@@ -123,6 +124,7 @@ class Sub_ModulosController extends Controller
             $val->titulo=$request['tit'];
             $val->id_sistema=$request['sis'];
             $val->ruta_sis=$request['ruta'];
+            $val->orden=$request['orden'];
             $val->save();
         }
         return $id;
