@@ -339,9 +339,9 @@ function calculos(tip)
             }
             else
             {
-                $("#inp_bar_costot").val(($("#inp_bar_frent").val()*$("#sel_bar_frecu_cos").val()).toFixed(4));
-                $("#inp_bar_cosmes").val(($("#inp_bar_costot").val()/12).toFixed(4));
-                $("#inp_bar_costri").val(($("#inp_bar_costot").val()/4).toFixed(4));
+                $("#inp_bar_costot").val(($("#inp_bar_frent").val()*$("#sel_bar_frecu_cos").val()).toFixed(2));
+                $("#inp_bar_cosmes").val(($("#inp_bar_costot").val()/12).toFixed(2));
+                $("#inp_bar_costri").val(($("#inp_bar_costot").val()/4).toFixed(2));
             }
         case 2:
             if($("#inp_ressol_area").val()==""||$("#sel_ressol_frecu").val()=="")
@@ -350,18 +350,18 @@ function calculos(tip)
             }
             else
             {
-                $("#inp_ressol_costot").val(($("#inp_ressol_area").val()*$("#sel_ressol_frecu_cos").val()).toFixed(4));
-                $("#inp_ressol_costri").val(($("#inp_ressol_costot").val()/4).toFixed(4));
-                $("#inp_ressol_cosmes").val(($("#inp_ressol_costot").val()/12).toFixed(4));
+                $("#inp_ressol_costot").val(($("#inp_ressol_area").val()*$("#sel_ressol_frecu_cos").val()).toFixed(2));
+                $("#inp_ressol_costri").val(($("#inp_ressol_costot").val()/4).toFixed(2));
+                $("#inp_ressol_cosmes").val(($("#inp_ressol_costot").val()/12).toFixed(2));
             }
         case 3:
             $("#inp_seren_costot").val($("#sel_seren_cat option:selected").attr("costo"));
-            $("#inp_seren_costri").val(($("#inp_seren_costot").val()/4).toFixed(4));
-            $("#inp_seren_cosmes").val(($("#inp_seren_costot").val()/12).toFixed(4));
+            $("#inp_seren_costri").val(($("#inp_seren_costot").val()/4).toFixed(2));
+            $("#inp_seren_cosmes").val(($("#inp_seren_costot").val()/12).toFixed(2));
         case 4:
             $("#inp_parq_costot").val($("#sel_parq_cat option:selected").attr("costo"));
-            $("#inp_parq_costri").val(($("#inp_parq_costot").val()/4).toFixed(4));
-            $("#inp_parq_mes").val(($("#inp_parq_costot").val()/12).toFixed(4));
+            $("#inp_parq_costri").val(($("#inp_parq_costot").val()/4).toFixed(2));
+            $("#inp_parq_mes").val(($("#inp_parq_costot").val()/12).toFixed(2));
     }
 }
 function call_frec_rrs(valu)
@@ -377,7 +377,7 @@ function call_frec_rrs(valu)
             $("#sel_ressol_frecu").append($('<option>',{value:0,text: "--Seleccione--", costo:0}));
             for (var i=0; i < data.length; i++)
             {
-                $("#sel_ressol_frecu").append($('<option>',{value:data[i].id_rrs,text: data[i].frecuencia, costo:data[i].costo}));
+                $("#sel_ressol_frecu").append($('<option>',{value:data[i].id_rrs,text: data[i].frecuencia, costo:parseFloat(data[i].costo).toFixed(2)}));
             } 
             $("#sel_ressol_frecu").val(valu);
             change_select('sel_ressol_frecu',2);

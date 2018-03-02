@@ -287,7 +287,7 @@
                                 <select id="sel_bar_frecu"  class="form-control" onchange="change_select('sel_bar_frecu',1)">
                                     <option value="0" costo="0">-- Seleccione --</option>
                                     @foreach ($barrido as $bar)
-                                    <option value='{{$bar->id_bar_cal}}' costo="{{$bar->costo}}" >{{$bar->frecuencia}}-Veces por Semana</option>
+                                    <option value='{{$bar->id_bar_cal}}' costo="{{number_format($bar->costo,2,".","")}}" >{{$bar->frecuencia}}-Veces por Semana</option>
                                     @endforeach          
                                 </select>
                             </div>
@@ -386,7 +386,7 @@
                                     <select id="sel_seren_cat"  class="form-control" onchange="change_select('sel_seren_cat',3)">
                                         <option value="0" costo="0">-- Seleccione --</option>
                                         @foreach ($seren as $ser)
-                                        <option value='{{$ser->id_seren}}' costo="{{$ser->costo}}" >{{$ser->categoria}}</option>
+                                        <option value='{{$ser->id_seren}}' costo="{{number_format($ser->costo,2,".","")}}" >{{$ser->categoria}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -423,7 +423,7 @@
                                     <select id="sel_parq_cat"  class="form-control" onchange="change_select('sel_parq_cat',4)">
                                         <option value="0" costo="0">-- Seleccione --</option>
                                         @foreach ($parjar as $par)
-                                        <option value='{{$par->id_par_jar}}' costo="{{$par->costo}}" >{{$par->categoria}}</option>
+                                        <option value='{{$par->id_par_jar}}' costo="{{number_format($par->costo,2,".","")}}" >{{$par->categoria}}</option>
                                         @endforeach
                                     </select>
                                 </div>

@@ -83,6 +83,11 @@ function verificar_fraccionamiento(){
 
 function gen_rec_imp_pred(ss_checks){
     
+    
+    detalle_trimestres="";
+    $('input[type=checkbox][name=chk_trim]:checked').each(function() {
+            detalle_trimestres=detalle_trimestres+$(this).val()+", ";
+    });
     $.confirm({
         title: '.:Recibo:.',
         content: 'Generar Recibo por '+ss_checks+' trimestre(s)',
@@ -104,7 +109,9 @@ function gen_rec_imp_pred(ss_checks){
                         id_trib_form:formatos,
                         montopre: (parseFloat($("#vw_emision_rec_pago_imp_pred_total_trimestre").val().replace(',', ''))-parseFloat($("#table_cta_cte2").getCell(formatos, 'saldo'))),
                         montoform: $("#table_cta_cte2").getCell(formatos, 'saldo'),
-                        trimestres:ss_checks
+                        trimestres:ss_checks,
+                        detalle_trimestres:detalle_trimestres
+                        
                     },
                     success: function (data) {
                         if (data) {
@@ -149,32 +156,15 @@ function calc_tot_a_pagar_predial(num,esto){
     pre_x_trim = parseFloat($("#table_cta_cte2").getCell(rowId, 'ivpp'));                    
     pre_x_trim = (pre_x_trim/4);
    
-    glosa="Por el Pago de los Trimestres";
-    iniciador=0;
     total=0;
     $('input[type=checkbox][name=chk_trim]:checked').each(function() {
         total=parseFloat(total)+parseFloat(pre_x_trim);
-        if(iniciador==0)
-        {
-            glosa=glosa+" "+$(this).val();
-            iniciador++;
-        }
-        else
-        {
-            glosa=glosa+", "+$(this).val();
-        }
+       
     });
     var formatos = ($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("formatos"));
     form = $("#table_cta_cte2").getCell(formatos, 'saldo') || '0.00';
     $("#vw_emision_rec_pago_imp_pred_total_trimestre").val(formato_numero(parseFloat(total)+parseFloat(form),2,'.',','));
-    if(form=='0.00')
-    {
-        $("#vw_emi_rec_imp_pred_glosa").val(glosa+" del "+$("#vw_emi_rec_imp_pre_contrib_anio").val());
-    }
-    else
-    {
-        $("#vw_emi_rec_imp_pred_glosa").val(glosa+" y Formatos del "+$("#vw_emi_rec_imp_pre_contrib_anio").val());
-    }
+
 }
 var select_check_2=0;
 
@@ -243,29 +233,9 @@ function marcar_todos_predial(valor,esto,id){
     $('input[type=checkbox][name=chk_trim]:checked').each(function(){
         $total=parseFloat(redondeo($total,2))+parseFloat(redondeo($(this).val(),2));
     });
-    glosa="Por el Pago de los Trimestres";
-    iniciador=0;
-    $('input[type=checkbox][name=chk_trim]:checked').each(function() {
-        if(iniciador==0)
-        {
-            glosa=glosa+" "+$(this).val();
-            iniciador++;
-        }
-        else
-        {
-            glosa=glosa+", "+$(this).val();
-        }
-    });
-    
+
     var formatos = ($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("formatos"));
     form = $("#table_cta_cte2").getCell(formatos, 'saldo') || '0.00';
     $("#vw_emision_rec_pago_imp_pred_total_trimestre").val(formato_numero(parseFloat(valor)+parseFloat(form),2,'.',','));
-    if(form=='0.00')
-    {
-        $("#vw_emi_rec_imp_pred_glosa").val(glosa+" del "+$("#vw_emi_rec_imp_pre_contrib_anio").val());
-    }
-    else
-    {
-        $("#vw_emi_rec_imp_pred_glosa").val(glosa+" y Formatos del "+$("#vw_emi_rec_imp_pre_contrib_anio").val());
-    }
+
 }

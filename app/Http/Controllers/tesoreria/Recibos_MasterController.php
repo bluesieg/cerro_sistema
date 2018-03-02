@@ -59,12 +59,12 @@ class Recibos_MasterController extends Controller
         if($request['montopre']>0)
         {
             $count=$this->edit_cta_cte($request['trimestres'],$data->id_rec_mtr,$request['id_pers'],$request['periodo'],$request['id_trib_pred']);
-            $this->detalle_create($request['periodo'],$data->id_rec_mtr,$request['id_trib_pred'],$request['montopre'],$count);
+            $this->detalle_create($request['periodo'],$data->id_rec_mtr,$request['id_trib_pred'],$request['montopre'],$count,$request['detalle_trimestres'].' del '.$request['periodo']);
         }
         if($request['montoform']>0)
         {
             $count=$this->edit_cta_cte('1-2-3-4',$data->id_rec_mtr,$request['id_pers'],$request['periodo'],$request['id_trib_form']);
-            $this->detalle_create($request['periodo'],$data->id_rec_mtr,$request['id_trib_form'],$request['montoform'],$count);
+            $this->detalle_create($request['periodo'],$data->id_rec_mtr,$request['id_trib_form'],$request['montoform'],$count,'del '.$request['periodo']);
         }
         return $data->id_rec_mtr;
     }
@@ -103,7 +103,7 @@ class Recibos_MasterController extends Controller
         $val->save();
         return $count;
     }
-    public function detalle_create($periodo,$id_rec_mtr,$id_trib,$monto,$cant)
+    public function detalle_create($periodo,$id_rec_mtr,$id_trib,$monto,$cant,$detalle_trimestres)
     {
         date_default_timezone_set('America/Lima');
         $rec_det = new Recibos_Detalle(); 
@@ -114,6 +114,7 @@ class Recibos_MasterController extends Controller
         $rec_det->monto=$monto;
         $rec_det->cant=$cant;
         $rec_det->p_unit=$monto/$cant;
+        $rec_det->detalle_trimestres=$detalle_trimestres;
         $rec_det->save();
         return $rec_det->id_rec_det;
     }

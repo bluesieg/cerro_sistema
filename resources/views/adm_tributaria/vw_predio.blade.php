@@ -12,7 +12,7 @@
             <div class="input-group input-group-md">
                 <span class="input-group-addon">Año de Trabajo <i class="fa fa-cogs"></i></span>
                 <div class="icon-addon addon-md">
-                    <select id='selantra' class="form-control col-lg-8" style="height: 32px;" onchange="callfilltab()">
+                    <select id='selantra' class="form-control col-lg-8" style="height: 32px;" onchange="callfilltab(1)">
                     @foreach ($anio_tra as $anio)
                     <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
                     @endforeach
@@ -39,7 +39,7 @@
                 <div class="input-group input-group-md">
                     <span class="input-group-addon">Manzana &nbsp;<i class="fa fa-list"></i></span>
                     <div class="icon-addon addon-md"  id="dvselmnza">
-                        <select id="selmnza" class="form-control" style="height: 32px;" onchange="callfilltab()">
+                        <select id="selmnza" class="form-control" style="height: 32px;" onchange="callfilltab(2)">
                         @foreach ($manzanas as $manzanas)
                         <option value='{{$manzanas->id_mzna}}'>{{$manzanas->codi_mzna}}</option>
                         @endforeach
