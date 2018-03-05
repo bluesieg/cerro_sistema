@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Documentacion Baja de Predios</title>
+    <title>Documentacion Alta de Predios</title>
         <link href="{{ asset('css/pdf.css') }}" rel="stylesheet">
         <style>
             @page { margin-bottom: 10px !important; margin-left: 70px;margin-right: 70px;};
@@ -34,7 +34,7 @@
         <table style="margin-top: 10px; margin-bottom: 5px !important; border-bottom: 1px solid black">
             <tr>
                 <td colspan="2" style="border:0px;">
-                    <b>I . <span style=" text-decoration: underline">IDENTIFICACIÓN DEL CONTRIBUYENTE</span></b>
+                    <b>I . <span style=" text-decoration: underline">IDENTIFICACIÓN DEL NUEVO CONTRIBUYENTE</span></b>
                 </td>
             </tr>
             <tr>
@@ -42,7 +42,7 @@
                     <b> NOMBRE DE CONTRIBUYENTE</b>
                 </td>
                 <td style="border:0px;">
-                    : {{$sql[0]->contribuyente}}
+                    : {{$sql_nuevo[0]->contribuyente}}
                 </td>
             </tr>
             <tr>
@@ -50,7 +50,7 @@
                     <b> N° DOCUMENTO</b>
                 </td>
                 <td style="border:0px; ">
-                    : {{$sql[0]->nro_doc_contri}}
+                    : {{$sql_nuevo[0]->nro_doc_contri}}
                 </td>
             </tr>
             <tr>
@@ -58,19 +58,19 @@
                     <b> DOMICILIO FISCAL</b>
                 </td>
                 <td style="border:0px;">
-                    : {{$sql[0]->ref_dom_fis}}
+                    : {{$sql_nuevo[0]->ref_dom_fis}}
                 </td>
             </tr>
      
         </table>
         </b>
         <div style="width: 100%; text-align: justify; font-size: 0.8em; margin-top: 0px; padding-left:18px;">
-            Se da constancia por la presente que el dia <b>{{$fecha}}</b> el Contribuyente: <b>{{$sql[0]->contribuyente}}</b> dio de <b>BAJA</b> el siguiente predio.<br>
+            Se da constancia por la presente que el dia <b>{{$fecha}}</b> el Contribuyente: <b>{{$sql_nuevo[0]->contribuyente}}</b> dio de <b>ALTA</b> el siguiente predio.<br>
         </div>
         <table style="margin-top: 5px; margin-bottom: 5px !important;">
             <tr>
                 <td colspan="2" style="border:0px;">
-                    <b>II. <span style=" text-decoration: underline">INFORMACION DEL PREDIO DADO DE BAJA</span></b>
+                    <b>II. <span style=" text-decoration: underline">INFORMACION DEL PREDIO DADO DE ALTA</span></b>
                 </td>
             </tr>
          </table>
@@ -88,22 +88,22 @@
             <tbody>
                     <tr>
                         <td>
-                            {{$sql[0]->cod_cat}}
+                            {{$sql_nuevo[0]->cod_cat}}
                         </td> 
                         <td>
-                            {{$sql[0]->nom_via."-".$sql[0]->nomb_hab_urba}}
+                            {{$sql_nuevo[0]->nom_via."-".$sql_nuevo[0]->nomb_hab_urba}}
                         </td> 
                         <td style="text-align: center">
-                            {{$sql[0]->nro_mun}}
+                            {{$sql_nuevo[0]->nro_mun}}
                         </td> 
                         <td style="text-align: center">
-                            {{$sql[0]->referencia}}
+                            {{$sql_nuevo[0]->referencia}}
                         </td> 
                         <td style="text-align: center">
-                            {{$sql[0]->mzna}}
+                            {{$sql_nuevo[0]->mzna}}
                         </td> 
                         <td style="text-align: center">
-                            {{$sql[0]->lote_cat}}
+                            {{$sql_nuevo[0]->lote_cat}}
                         </td> 
                     </tr>
                 

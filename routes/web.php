@@ -382,7 +382,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('notifica_op', 'OrdenPagoController@notifica_op_index'); //
         Route::get('mod_noti_op', 'OrdenPagoController@edit_op_fec'); //
         Route::get('reportes_op', 'OrdenPagoController@index_reportes_op'); //
-        Route::get('ver_rep_op/{anio}/{tipo}', 'OrdenPagoController@ver_reporte_op'); 
+        Route::get('ver_rep_op/{anio}/{tipo}', 'OrdenPagoController@ver_reporte_op');
+        Route::resource('beneficios_tributarios', 'Beneficios_TributariosController');
     });  
     Route::group(['namespace' => 'alcabala'], function() {//modulo de alcabala
         Route::resource('alcabala', 'AlcabalaController');
@@ -603,13 +604,20 @@ Route::group(['middleware' => 'auth'], function() {
     
     Route::group(['namespace' => 'registro_tributario'], function() {
        
-        //REGISTRO TRIBUTARIO
+        //BAJA DE PREDIOS
         Route::resource('descarga_predios', 'DprediosController');
         Route::get('obtener_contribuyentes', 'DprediosController@get_contribuyentes');
         Route::get('obtener_predios', 'DprediosController@get_predios');
         Route::get('obtener_descarga_predios', 'DprediosController@get_descarga_predios');
-        Route::get('actualizar_predios_contribuyentes', 'DprediosController@actualizar_predio_contribuyente');
+        //Route::get('actualizar_predios_contribuyentes', 'DprediosController@actualizar_predio_contribuyente');
         Route::get('ver_documentos/{id}', 'DprediosController@ver_documentos');
+        
+        //ALTA DE PREDIOS
+        Route::resource('alta_predios', 'AltaPrediosController');
+        Route::get('obtener_predios_alta', 'AltaPrediosController@get_predios_alta');
+        Route::get('obtener_descarga_alta_predios', 'AltaPrediosController@get_descarga_alta_predios');
+        Route::get('ver_documentos_alta/{id_nuevo_contrib}', 'AltaPrediosController@ver_documentos');
+        
         
         //BUSQUEDA DE PREDIOS
         Route::resource('buscar_predios', 'BprediosController');

@@ -6,15 +6,14 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Models\registro_tributario\Descarga_predios;
-use App\Models\registro_tributario\Predios_contribuyentes;
+use App\Models\registro_tributario\Alta_predios;
 
-class DprediosController extends Controller
+class AltaPrediosController extends Controller
 {
 
     public function index()
     {
-        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_descarga_predios' and id_usu=".Auth::user()->id);
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_alta_predios' and id_usu=".Auth::user()->id);
         $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
         
         if(count($permisos)==0)
@@ -23,7 +22,7 @@ class DprediosController extends Controller
         }
         $anio = DB::select('SELECT anio FROM adm_tri.uit order by anio desc');
         $motivos = DB::select('SELECT * FROM transferencias.motivo order by id_motivo asc');
-        return view('registro_tributario/vw_descarga_predios', compact('menu','permisos','anio','motivos'));
+        return view('registro_tributario/vw_alta_predios', compact('menu','permisos','anio','motivos'));
     }
 
     public function create(Request $request)
@@ -35,7 +34,7 @@ class DprediosController extends Controller
                 'msg' => 'si',
             ]);
         }else{
-            $d_predios = new Descarga_predios;
+            $d_predios = new Alta_predios;
       
             $d_predios->id_usuario = $usuario[0]->id;
             $d_predios->fch_transf = $request['fch_transf'];
@@ -43,26 +42,11 @@ class DprediosController extends Controller
             $d_predios->glosa = strtoupper($request['glosa']);
             $d_predios->motivo = $request['motivo'];
             $d_predios->anio=date('Y'); 
-            $d_predios->baja_alta = 1;
-            $d_predios->id_contribuyente = $request['id_contribuyente'];
+            $d_predios->baja_alta = 2;
+            $d_predios->id_contribuyente = $request['nuevo_contribuyente'];
             $d_predios->save();
-            $this->actualizar_predio_contribuyente($d_predios->id_trans);
+            return $d_predios->id_trans;
         }
-    }
-    
-    public function actualizar_predio_contribuyente($id_trans)
-    {
-        $transferencias = DB::table('transferencias.transferencias')->where('id_trans',$id_trans)->first();
-        
-        $predios_contribuyentes = new  Predios_contribuyentes;
-        $val=  $predios_contribuyentes::where("id_pred_contri","=",$transferencias->id_pred_contrib)->first();
-        if(count($val)>=1)
-        {
-            $val->fec_fin = $transferencias->fch_transf;
-            $val->flg_act = 0;
-            $val->save();
-        }
-        return $transferencias->id_pred_contrib;
     }
 
     /**
@@ -121,11 +105,11 @@ class DprediosController extends Controller
         //
     }
     
-    public function get_descarga_predios(Request $request){
+    public function get_descarga_alta_predios(Request $request){
         header('Content-type: application/json');
         $fecha_desde = $request['fecha_desde'];
         $fecha_hasta = $request['fecha_hasta'];
-        $totalg = DB::select("select count(*) as total from transferencias.vw_transferencias where fch_transf between '$fecha_desde' and '$fecha_hasta' and baja_alta = 1");
+        $totalg = DB::select("select count(*) as total from transferencias.vw_transferencias where fch_transf between '$fecha_desde' and '$fecha_hasta' and baja_alta = 2");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -149,7 +133,7 @@ class DprediosController extends Controller
 
      
 
-        $sql = DB::select("select id_trans,fch_transf,id_contribuyente, case motivo when 1 then 'DECLARACION JURADA' when 2 then 'AUTOMATICO' when 3 then 'JUDICIAL' when 4 then 'OTROS' end as desc_motivo from transferencias.transferencias where fch_transf between '$fecha_desde' and '$fecha_hasta' and baja_alta = 1 order by $sidx $sord limit $limit offset $start");
+        $sql = DB::select("select id_trans,fch_transf,id_contribuyente, case motivo when 1 then 'DECLARACION JURADA' when 2 then 'AUTOMATICO' when 3 then 'JUDICIAL' when 4 then 'OTROS' end as desc_motivo from transferencias.transferencias where fch_transf between '$fecha_desde' and '$fecha_hasta' and baja_alta = 2 order by $sidx $sord limit $limit offset $start");
         
         $Lista = new \stdClass();
         $Lista->page = $page;
@@ -220,12 +204,12 @@ class DprediosController extends Controller
         }
     }
     
-    function get_predios(Request $request){
+    function get_predios_alta(Request $request){
         
         $id_contrib = $request['id_contrib'];
         $anio = $request['anio'];
-        
-        $totalg = DB::select("select count(id_contrib) as total from transferencias.vw_predios where id_contrib='$id_contrib' and anio= '$anio' ");
+  
+        $totalg = DB::select("select count(id_contrib) as total from transferencias.vw_predios_bajas where id_contrib='$id_contrib' and anio= '$anio' ");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -247,7 +231,7 @@ class DprediosController extends Controller
             $start = 0;
         }
 
-        $sql = DB::table('transferencias.vw_predios')->where('id_contrib',$id_contrib)->where('anio',$anio)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $sql = DB::table('transferencias.vw_predios_bajas')->where('id_contrib',$id_contrib)->where('anio',$anio)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         
         $Lista = new \stdClass();
         $Lista->page = $page;
@@ -269,18 +253,19 @@ class DprediosController extends Controller
         
     }
     
-    public function ver_documentos($id)
+    public function ver_documentos($id_nuevo_contrib)
     {
-        $sql=DB::table('reportes.vw_02_contri_predios')->where('id_contrib',$id)->get();
+        $sql_nuevo=DB::table('reportes.vw_02_contri_predios')->where('id_contrib',$id_nuevo_contrib)->get();
+    
         $fecha_hora = (date('d/m/Y H:i:s'));
         $fecha = (date('d/m/Y'));
         
-        if(count($sql)>0)
+        if(count($sql_nuevo)>0)
         {
-            $view =  \View::make('registro_tributario.reportes.documentos_baja', compact('sql','fecha_hora','fecha'))->render();
+            $view =  \View::make('registro_tributario.reportes.documentos_alta', compact('sql_nuevo','fecha_hora','fecha'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
-            return $pdf->stream("Documentacion_bajas".".pdf");
+            return $pdf->stream("Documentacion_altas".".pdf");
         }
         else
         {   return 'NO HAY DATOS';}
