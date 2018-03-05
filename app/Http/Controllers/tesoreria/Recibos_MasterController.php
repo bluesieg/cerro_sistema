@@ -469,9 +469,26 @@ class Recibos_MasterController extends Controller
     
     function buscar_persona(Request $request){
         $nro_doc= $request['nro_doc'];
-        $persona = DB::table('adm_tri.vw_personas')->where('pers_nro_doc',$nro_doc)->first();
-        if(isset($persona->pers_raz_soc)){
-            return response()->json(['raz_soc'=>$persona->contribuyente,'msg'=>'si','id_pers'=>$persona->id_pers]);
+        $personas = DB::table('adm_tri.vw_personas')->where('pers_nro_doc',$nro_doc)->get();
+        $contribuyentes =DB::table('adm_tri.vw_contribuyentes')->where('nro_doc',$nro_doc)->get();
+        if(count($personas)>0){
+            if(count($contribuyentes)>0)
+            {
+                return response()->json([
+                'contrib' => trim($personas[0]->contribuyente),
+                'id_pers' => trim(str_replace('-','',$personas[0]->id_pers)),
+                'direccion'=> $contribuyentes[0]->dom_fis,
+                'msg'=>'si',
+                ]);
+            }
+            else{
+                return response()->json([
+                'contrib' => trim($personas[0]->contribuyente),
+                'id_pers' => trim(str_replace('-','',$personas[0]->id_pers)),
+                'direccion'=> "-",
+                'msg'=>'si',
+                ]);        
+            }   
         }else{
             return response()->json(['msg'=>'no']);
         }

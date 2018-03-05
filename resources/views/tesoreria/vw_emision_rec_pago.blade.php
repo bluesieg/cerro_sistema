@@ -488,9 +488,12 @@
                                 <label class="label">Glosa:</label>
                                 <label class="textarea">
                                     <textarea id="vw_emi_rec_imp_pred_glosa" rows="2" placeholder="descripcion de recibo" class="input-sm text-uppercase"></textarea>                                    
-                                </label>                                       
+                                </label>
+                                 <input id="vw_detalle_trimestres"  type="hidden" >
                             </section>
-                            <section>                                
+                            
+                                   
+                                                          
                                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; margin-bottom: 10px; padding: 0px !important">
                                     <table id="table_cta_cte2"></table>
                                     <div id="pager_table_cta_cte2">                                        
@@ -709,6 +712,8 @@
         </div>
     </div>
 </div>
+
+
 <div id="dlg_bus_contr" style="display: none;">
     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; margin-bottom: 10px; padding: 0px !important">
         <table id="table_contrib"></table>

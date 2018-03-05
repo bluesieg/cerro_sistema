@@ -327,11 +327,13 @@ function consultar_persona() {
         url: 'emi_recib_buscar_persona?nro_doc=' + nro_doc,
         success: function (result) {
             if (result.msg == 'si') {
-                $("#vw_emi_rec_txt_nombres_raz_soc").val(result.raz_soc);
+                $("#vw_emi_rec_txt_nombres_raz_soc").val(result.contrib);
                 $("#vw_emi_rec_txt_id_pers").val(result.id_pers);
+               $("#vw_emi_rec_txt_direc").val(result.direccion);  
                 MensajeDialogLoadAjaxFinish('vw_emi_rec_txt_nombres_raz_soc');
             } else if (result.msg == 'no') {
                 dlg_new_persona(nro_doc);
+               
             }
         },
         error: function (result) {
@@ -360,14 +362,14 @@ function dlg_new_persona(nro_doc){
     $("#pers_nro_doc").val(nro_doc);
     tipo = $("#cb_tip_doc_3").val();
     if(tipo=='02'){
-        fn_consultar_dni();
+        get_datos_dni();
         $("#pers_pat,#pers_mat,#pers_nombres").removeAttr('disabled');
         $("#pers_raz_soc").removeAttr('disabled');        
         $("#pers_raz_soc").attr('disabled',true);
         $("#pers_nro_doc").removeAttr('maxlength');
         $("#pers_nro_doc").attr('maxlength',8);        
     }else if (tipo=='00'){
-        fn_consultar_ruc();
+        get_datos_ruc();
         $("#pers_raz_soc").removeAttr('disabled');
         $("#pers_raz_soc").val('');
         $("#pers_pat,#pers_mat,#pers_nombres").attr('disabled',true);
