@@ -1476,3 +1476,4 @@ function llamar_otro(){
 function save_otros(){
    nuevo_otros = $("#dlg_inp_otros").val();
 }
+

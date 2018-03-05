@@ -109,6 +109,7 @@
     $(document).ready(function () {
         $("#menu_admtri").show();
         $("#li_preurb").addClass('cr-active')
+        callfilltab(1);
         jQuery("#table_predios").jqGrid({
             url: 'gridpredio?tpre=1&mnza='+$("#selmnza").val()+'&ctr=0&an='+$("#selantra").val(),
             datatype: 'json', mtype: 'GET',

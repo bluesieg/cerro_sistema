@@ -1,3 +1,154 @@
+map.on('singleclick', function(evt) {
+
+            mostrar=0;
+            var fl = map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
+                
+               
+                
+                if(layer.get('title')=='predios'&&mostrar==0)
+                {
+                    mostrar=1;
+                    verlote(feature.get('id_lote'));
+                    $("#dlg_sec").val(feature.get('codi_lote'));
+                    $("#dlg_mzna").val(feature.get('codi_mzna'));
+                    $("#dlg_lot").val(feature.get('sector'));
+                    return false;
+                    
+                }
+                if(layer.get('title')=='lotes'&&mostrar==0)
+                {
+                    mostrar=1;
+                    $("#dlg_lot").val(feature.get('codi_lote'));
+                    $("#dlg_mzna").val(feature.get('codi_mzna'));
+                    $("#dlg_sec").val(feature.get('sector'));
+                    viewlong_lote(feature.get('id_lote'));
+                    return false;
+                }
+             
+                
+            });
+    
+});
+function verlote(id)
+{
+    crear_dlg("dlg_predio_lote",900,"Informacion de Lote");
+    traerpredionuevo(id);
+    traerfoto(id);
+}
+function crear_dlg(dlg,ancho,titulo)
+{
+    $("#"+dlg).dialog({
+    autoOpen: false, modal: true, width: ancho, show: {effect: "fade", duration: 300}, resizable: false,
+    title: "<div class='widget-header'><h4>.: "+titulo+" :.</h4></div>",
+    buttons: [
+            {
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-primary bg-color-red",
+                click: function () {$(this).dialog("close");}
+            }]
+    }).dialog('open');
+}
+function traerpredionuevo(id)
+{
+    MensajeDialogLoadAjax('dlg_predio_lote', '.:: Cargando ...');
+    $.ajax({url: 'traerlote/'+id+'/'+$("#anio_pred").val(),
+    type: 'GET',
+    success: function(r) 
+    {
+        if(r.length>0)
+        {
+            $("#input_pred_cod_cat").text(r[0].cod_cat);
+            $("#input_pred_habilitacion").text(r[0].habilitacion);
+            $("#input_pred_propietario").text(r[0].contribuyente);
+        }
+        MensajeDialogLoadAjaxFinish('dlg_predio_lote');
+    },
+    error: function(data) {
+        mostraralertas("hubo un error, Comunicar al Administrador");
+        console.log('error');
+        console.log(data);
+        MensajeDialogLoadAjaxFinish('dlg_predio_lote');
+    }
+    }); 
+}
+function traerfoto(id)
+{
+    MensajeDialogLoadAjax('dlg_img_view', '.:: Cargando ...');
+    $.ajax({url: 'traefoto_lote_id/'+id,
+    type: 'GET',
+    success: function(r) 
+    {
+        if(r!=0)
+        {
+            $("#dlg_img_view").html('<center><img src="data:image/png;base64,'+r+'" width="85%"/></center>');
+        }
+        else
+        {
+            $("#dlg_img_view").html('<center><img src="img/recursos/Home-icon.png" width="85%"/></center>');
+        }
+        MensajeDialogLoadAjaxFinish('dlg_img_view');
+    },
+    error: function(data) {
+        mostraralertas("hubo un error, Comunicar al Administrador");
+        console.log('error');
+        console.log(data);
+        MensajeDialogLoadAjaxFinish('dlg_img_view');
+    }
+    }); 
+}
+function viewlong(id)
+{
+    $("#dlg_img_view_big").html("");
+    $("#dlg_view_foto").dialog({
+    autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
+    title: "<div class='widget-header'><h4>.:  Foto del Predio :.</h4></div>",
+    }).dialog('open');
+  
+        $("#dlg_img_view_big").html("");
+        $("#dlg_view_foto").dialog({
+        autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.:  Foto del Predio :.</h4></div>",
+        }).dialog('open');
+        $("#dlg_img_view_big").html($("#dlg_img_view").html());
+    
+}
+function viewlong_lote(id)
+{
+    
+    $("#dlg_img_view_big").html("");
+    $("#dlg_view_foto").dialog({
+    autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
+    title: "<div class='widget-header'><h4>.:  Foto del Predio :.</h4></div>",
+    }).dialog('open');
+   MensajeDialogLoadAjax('dlg_view_foto', '.:: Cargando ...');
+    $.ajax({url: 'traefoto_lote_id/'+id,
+    type: 'GET',
+    success: function(r) 
+    {
+        $("#dlg_img_view_big").html("");
+        if(r!=0)
+        {
+            $("#dlg_img_view_big").html('<center><img src="data:image/png;base64,'+r+'" width="85%"/></center>');
+        }
+        else
+        {
+            $("#dlg_img_view_big").html('<center><img src="img/recursos/Home-icon.png" width="85%"/></center>');
+        }
+        MensajeDialogLoadAjaxFinish('dlg_view_foto');
+        
+        
+    },
+    error: function(data) {
+        mostraralertas("hubo un error, Comunicar al Administrador");
+        console.log('error');
+        console.log(data);
+        MensajeDialogLoadAjaxFinish('dlg_img_view');
+    }
+    }); 
+        
+    
+}
+
 function clicknewmznamasivo()
 {
     $("#id_sector_masivo").val(0);
@@ -181,75 +332,9 @@ function get_mzns_por_sector(id_sec){
             }
         });
 
-        $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'geogetmznas_x_sector',
-            type: 'POST',
-            data: {codigo: id_sec+""},
-            success: function (data) {
-                //alert(data[0].json_build_object);
-                //alert(geojson_manzanas2);
-                map.removeLayer(lyr_manzanas2);
-                var format_manzanas2 = new ol.format.GeoJSON();
-                var features_manzanas2 = format_manzanas2.readFeatures(JSON.parse(data[0].json_build_object),
-                    {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-                var jsonSource_manzanas2 = new ol.source.Vector({
-                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
-                });
-                //vectorSource.addFeatures(features_manzanas2);
-                jsonSource_manzanas2.addFeatures(features_manzanas2);
-                lyr_manzanas2 = new ol.layer.Vector({
-                    source:jsonSource_manzanas2,
-                    style: label_manzanas,
-                    title: "manzanas"
-                });
+        
 
-                map.addLayer(lyr_manzanas2);
-                layersList[2] = lyr_manzanas2;
-                //alert(layersList.length);
-                MensajeDialogLoadAjaxFinish('map', '.:: CARGANDO ...');
-
-            },
-            error: function (data) {
-                MensajeAlerta('Predios','No se encontró ningún predio.');
-//                        mostraralertas('* Error al Eliminar Contribuyente...');
-            }
-        });
-
-        $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'get_lotes_x_sector',
-            type: 'POST',
-            data: {codigo: id_sec+""},
-            success: function (data) {
-                //alert(data[0].json_build_object);
-                //alert(geojson_manzanas2);
-                map.removeLayer(lyr_lotes3);
-                var format_lotes3 = new ol.format.GeoJSON();
-                var features_lotes3 = format_lotes3.readFeatures(JSON.parse(data[0].json_build_object),
-                    {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-                var jsonSource_lotes3 = new ol.source.Vector({
-                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
-                });
-                //vectorSource.addFeatures(features_manzanas2);
-                jsonSource_lotes3.addFeatures(features_lotes3);
-                lyr_lotes3 = new ol.layer.Vector({
-                    source:jsonSource_lotes3,
-                    style: label_lotes,
-                    title: "lotes"
-                });
-
-                map.addLayer(lyr_lotes3);
-                layersList[3] = lyr_lotes3;
-                //alert(layersList.length);
-                MensajeDialogLoadAjaxFinish('map', '.:: CARGANDO ...');
-
-            },
-            error: function (data) {
-                MensajeAlerta('Predios','No se encontró ningún predio.');
-//                        mostraralertas('* Error al Eliminar Contribuyente...');
-            }
-        });
+        
     }
 
     else{
@@ -290,7 +375,7 @@ function label_lotes(feature) {
             }),
             // get the text from the feature - `this` is ol.Feature
             // and show only under certain resolution
-            text: map.getView().getZoom() > 16 ? feature.get('codi_lote') : ''
+            text: map.getView().getZoom() > 17 ? feature.get('codi_lote') : ''
         })
          /*
         text: new ol.style.Text({
@@ -301,25 +386,21 @@ function label_lotes(feature) {
 }
 
 function get_predios(){
-    //alert(1);
-    var sector = $('#sectores_map').val();
+    var habilitacion = $('#hidden_inp_habilitacion').val();
     var anio = $('#anio_pred').val();
+    
 
-    //alert(sector + "/" + anio);
-
-    //alert($('#draw_predios').is(':checked'));
     if($('#draw_predios').is(':checked')){
-        if(sector != '0')
+        if(habilitacion != '0')
         {
+            MensajeDialogLoadAjax('dlg_map', '.:: Cargando ...');
             $.ajax({
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 url: 'get_predios_rentas',
                 type: 'POST',
-                data: {codigo: sector,
+                data: {codigo: habilitacion,
                         anio:anio},
                 success: function (data) {
-                    //alert(data[0].json_build_object);
-                    //alert(geojson_manzanas2);
                     map.removeLayer(lyr_predios4);
                     var format_predios4 = new ol.format.GeoJSON();
                     var features_predios4 = format_predios4.readFeatures(JSON.parse(data[0].json_build_object),
@@ -327,7 +408,6 @@ function get_predios(){
                     var jsonSource_predios4 = new ol.source.Vector({
                         attributions: [new ol.Attribution({html: '<a href=""></a>'})],
                     });
-                    //vectorSource.addFeatures(features_manzanas2);
                     jsonSource_predios4.addFeatures(features_predios4);
                     lyr_predios4 = new ol.layer.Vector({
                         source:jsonSource_predios4,
@@ -336,13 +416,12 @@ function get_predios(){
                     });
 
                     map.addLayer(lyr_predios4);
-                    layersList[4] = lyr_predios4;
-                    //alert(layersList.length);
-                    MensajeDialogLoadAjaxFinish('map', '.:: CARGANDO ...');
+                    MensajeDialogLoadAjaxFinish('dlg_map', '.:: CARGANDO ...');
 
                 },
                 error: function (data) {
-                    MensajeAlerta('Predios', 'No se encontraron predios en este sector');
+                    MensajeDialogLoadAjaxFinish('dlg_map', '.:: CARGANDO ...');
+                    MensajeAlerta('Predios', 'No se encontraron predios en esta Habilitación');
 //                        mostraralertas('* Error al Eliminar Contribuyente...');
                 }
             });
@@ -351,7 +430,7 @@ function get_predios(){
         }
         else{
             $("#draw_predios").prop("checked",false);
-            alert('Seleccione un sector');
+            MensajeAlerta('Habilitacion', 'No se encontraron predios en esta Habilitación');
         }
     }
     else {
@@ -379,11 +458,7 @@ function label_predios(feature) {
             // and show only under certain resolution
             text: map.getView().getZoom() > 16 ? feature.get('codi_lote') : ''
         })
-        /*
-         text: new ol.style.Text({
-         text: feature.get('nom_lote')
-         })
-         text: map.getView().getZoom() > 12 ? feature.get('nom_lote') : ''*/
+      
     });
 }
 
@@ -412,12 +487,98 @@ var onSingleClick2 = function(evt) {
 
     });
 };
-/*
-map.on('singleclick', function(evt) {
-    onSingleClick2(evt);
-});
-*/
+
 var layerSwitcher = new ol.control.LayerSwitcher({
     tipLabel: 'Légende' // Optional label for button
 });
 map.addControl(layerSwitcher);
+autocompletar_haburb('inp_habilitacion');
+
+ function autocompletar_haburb(textbox){
+    $.ajax({
+        type: 'GET',
+        url: 'autocomplete_hab_urba',
+        success: function (data) {
+            
+            var $datos = data;
+            $("#"+ textbox).autocomplete({
+                source: $datos,
+                focus: function (event, ui) {
+                    $("#" + textbox).val(ui.item.label);
+                    return false;
+                },
+                select: function (event, ui) {
+                    $("#" + textbox).val(ui.item.label);
+                    $("#hidden_"+ textbox).val(ui.item.value);
+                    traer_hab_by_id(ui.item.value);
+                    return false;
+                }
+            });
+        }
+    });
+}
+
+function traer_hab_by_id(id)
+{
+    map.removeLayer(lyr_sectores_cat1);
+    map.removeLayer(lyr_lotes3);
+    MensajeDialogLoadAjax('dlg_map', '.:: Cargando ...');
+    $.ajax({url: 'gethab_urb/'+id,
+                type: 'GET',
+                async: false,
+                success: function(r)
+                {
+                    geojson_sectores_cat1 = JSON.parse(r[0].json_build_object);
+                    var format_sectores_cat1 = new ol.format.GeoJSON();
+                    var features_sectores_cat1 = format_sectores_cat1.readFeatures(geojson_sectores_cat1,
+                            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                    var jsonSource_sectores_cat1 = new ol.source.Vector({
+                        attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                    });
+                    jsonSource_sectores_cat1.addFeatures(features_sectores_cat1);
+                    lyr_sectores_cat1 = new ol.layer.Vector({
+                        source:jsonSource_sectores_cat1,
+                        style: polygonStyleFunction,
+                        title: "Habilitaciones Urbanas"
+                    });
+                    map.addLayer(lyr_sectores_cat1);
+                    var extent = lyr_sectores_cat1.getSource().getExtent();
+                    map.getView().fit(extent, map.getSize());
+                    traer_lote_by_hab(id);
+
+                }
+            });
+}
+function traer_lote_by_hab(id)
+{
+    $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: 'get_lotes_x_sector',
+            type: 'POST',
+            data: {codigo: id},
+            success: function (data) {
+                //alert(data[0].json_build_object);
+                //alert(geojson_manzanas2);
+                map.removeLayer(lyr_lotes3);
+                var format_lotes3 = new ol.format.GeoJSON();
+                var features_lotes3 = format_lotes3.readFeatures(JSON.parse(data[0].json_build_object),
+                    {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
+                var jsonSource_lotes3 = new ol.source.Vector({
+                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
+                });
+                //vectorSource.addFeatures(features_manzanas2);
+                jsonSource_lotes3.addFeatures(features_lotes3);
+                lyr_lotes3 = new ol.layer.Vector({
+                    source:jsonSource_lotes3,
+                    style: label_lotes,
+                    title: "lotes"
+                });
+                map.addLayer(lyr_lotes3);
+                MensajeDialogLoadAjaxFinish('dlg_map');
+
+            },
+            error: function (data) {
+                MensajeAlerta('Predios','No se encontró ningún predio.');
+            }
+        });
+}

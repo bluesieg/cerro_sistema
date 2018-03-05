@@ -17,7 +17,6 @@ class MapController extends Controller
     public function index()
     {
         $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
-        $sectores = DB::select('SELECT  id_sec, sector FROM catastro.sectores order by sector asc;');
         $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
         return view('cartografia/cartografia_predios', compact('sectores','anio_tra','menu'));
     }
@@ -56,13 +55,12 @@ class MapController extends Controller
                         FROM (
                           SELECT json_build_object(
                             'type',       'Feature',
-                            'id',         id,
                             'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
                             'properties', json_build_object(
                                'gid', gid
                              )
                           ) AS feature
-                          FROM (SELECT * FROM cartografia.limites) row) features;");
+                          FROM (SELECT * FROM catastro.limites) row) features;");
 
         return response()->json($limites);
 
@@ -144,11 +142,14 @@ class MapController extends Controller
                                 'id_mzna', id_mzna,
                                 'codi_lote', codi_lote,
                                 'id_hab_urb', id_hab_urb,
-                                'id_sect',id_sect
+                                'id_sect',id_sect,
+                                'codi_mzna',codi_mzna,
+                                'sector',sector
                              )
                           ) AS feature
-                          FROM (select l.id_lote, l.id_mzna, l.codi_lote, l.id_hab_urb, l.geom, m.id_sect from  catastro.lotes l
-                                join catastro.manzanas m on m.id_mzna = l.id_mzna where id_sect = '".$req->codigo."') row) features ;");
+                          FROM (select l.id_lote, l.id_mzna,m.codi_mzna,s.sector, l.codi_lote, l.id_hab_urb, l.geom, m.id_sect from  catastro.lotes l
+                                join catastro.manzanas m on m.id_mzna = l.id_mzna
+                                join catastro.sectores s on s.id_sec=m.id_sect where id_hab_urb = '".$req->codigo."') row) features ;");
 
         return response()->json($lotes);
         /*
@@ -200,7 +201,13 @@ class MapController extends Controller
         //return view('catastro/vw_part_dlg_new_memoria_descriptiva', compact('mznas'));
     }
 
-    function get_hab_urb(){
+    function get_hab_urb($id){
+        $where="";
+        if($id>0)
+        {
+            $where='where id_hab_urb='.$id;
+        }
+       
         $sectores = DB::select("SELECT json_build_object(
                             'type',     'FeatureCollection',
                             'features', json_agg(feature)
@@ -216,7 +223,7 @@ class MapController extends Controller
                  
                              )
                           ) AS feature
-                          FROM (SELECT * FROM catastro.hab_urb) row) features;");
+                          FROM (SELECT * FROM catastro.hab_urb ".$where.") row) features;");
 
         return response()->json($sectores);
     }
@@ -283,12 +290,12 @@ class MapController extends Controller
                                 'id_mzna', id_mzna,
                                 'codi_lote', codi_lote,
                                 'id_hab_urb', id_hab_urb,
-                                'id_sect',id_sect
+                                'id_sect',id_sect,
+                                'codi_mzna',codi_mzna,
+                                'sector',sector
                              )
                           ) AS feature
-                          FROM (SELECT lotes.id_lote, lotes.id_mzna, lotes.codi_lote, lotes.id_hab_urb, lotes.geom, m.id_sect, pred_urb.anio FROM catastro.lotes lotes
-join catastro.manzanas m on m.id_mzna = lotes.id_mzna
-JOIN adm_tri.vw_predi_urba AS pred_urb on m.id_sect = pred_urb.id_sec AND pred_urb.id_mzna = lotes.id_mzna and pred_urb.id_lote = lotes.id_lote where id_sect = '".$req->codigo ."') row) features;");
+                          FROM (SELECT * from catastro.vw_lotes_by_habiltacion where id_hab_urb = '".$req->codigo."' and anio='".$req->anio."' and flg_act=1) row) features;");
 
         return response()->json($predios);
 

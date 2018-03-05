@@ -254,27 +254,27 @@ class PredioController extends Controller
         {
             if($request['tpre']=='0')
             {
-                $totalg = DB::select("select count(id_pred) as total from adm_tri.vw_predi_urba where id_contrib='".$request['ctr']."' and anio='".$request['an']."'");
-                $sql = DB::select("select id_pred,id_pred_anio,tp,sec,mzna,lote,cod_cat,mzna_dist,lote_dist,nro_mun,descripcion,contribuyente,nom_via,id_via,are_terr,val_ter,val_const from adm_tri.vw_predi_urba where id_contrib='".$request['ctr']."' and anio='".$request['an']."' and pred_anio_activo=1 and pred_contrib_activo=1 ORDER BY $sidx $sord LIMIT $limit offset $start");
+                $totalg = DB::select("select count(id_pred_anio) as total from adm_tri.vw_grid_predios where id_contrib='".$request['ctr']."' and anio='".$request['an']."' and pred_anio_activo=1 and pred_contrib_activo=1");
+                $sql = DB::select("select * from adm_tri.vw_grid_predios where id_contrib='".$request['ctr']."' and anio='".$request['an']."' and pred_anio_activo=1 and pred_contrib_activo=1 ORDER BY $sidx $sord LIMIT $limit offset $start");
             }
             else
             {
                 if($request['ctr']=='0')
                 {
-                    $totalg = DB::select("select count(id_pred) as total from adm_tri.vw_predi_urba where tip_pre_u_r=".$request['tpre']." and anio='".$request['an']."'");
-                    $sql = DB::select("select id_pred,id_pred_anio,tp,sec,mzna,lote,cod_cat,mzna_dist,lote_dist,nro_mun,descripcion,contribuyente,nom_via,id_via,are_terr,val_ter,val_const from adm_tri.vw_predi_urba where tip_pre_u_r=".$request['tpre']." and anio='".$request['an']."' and pred_anio_activo=1 and pred_contrib_activo=1 ORDER BY $sidx $sord LIMIT $limit offset $start");
+                    $totalg = DB::select("select count(id_pred_anio) as total from adm_tri.vw_grid_predios where tip_pre_u_r=".$request['tpre']." and anio='".$request['an']."'");
+                    $sql = DB::select("select * from adm_tri.vw_grid_predios where tip_pre_u_r=".$request['tpre']." and anio='".$request['an']."' and pred_anio_activo=1 and pred_contrib_activo=1 ORDER BY $sidx $sord LIMIT $limit offset $start");
                 }
                 else
                 {
-                    $totalg = DB::select("select count(id_pred) as total from adm_tri.vw_predi_urba where tip_pre_u_r=".$request['tpre']." and id_contrib='".$request['ctr']."' and anio='".$request['an']."'");
-                    $sql = DB::select("select id_pred,id_pred_anio,tp,sec,mzna,lote,cod_cat,mzna_dist,lote_dist,nro_mun,descripcion,contribuyente,nom_via,id_via,are_terr,val_ter,val_const from adm_tri.vw_predi_urba where tip_pre_u_r=".$request['tpre']." and id_contrib='".$request['ctr']."' and anio='".$request['an']."' and pred_anio_activo=1 and pred_contrib_activo=1 ORDER BY $sidx $sord LIMIT $limit offset $start");
+                    $totalg = DB::select("select count(id_pred_anio) as total from adm_tri.vw_grid_predios where tip_pre_u_r=".$request['tpre']." and id_contrib='".$request['ctr']."' and anio='".$request['an']."' and pred_anio_activo=1 and pred_contrib_activo=1");
+                    $sql = DB::select("select * from adm_tri.vw_grid_predios where tip_pre_u_r=".$request['tpre']." and id_contrib='".$request['ctr']."' and anio='".$request['an']."' and pred_anio_activo=1 and pred_contrib_activo=1 ORDER BY $sidx $sord LIMIT $limit offset $start");
                 }
             }
         }
         else
         {
-            $totalg = DB::select("select count(id_pred) as total from adm_tri.vw_predi_urba where tip_pre_u_r=".$request['tpre']." and id_mzna='".$request['mnza']."' and anio='".$request['an']."'");
-            $sql = DB::select("select id_pred,id_pred_anio,tp,sec,mzna,lote,cod_cat,mzna_dist,lote_dist,nro_mun,descripcion,contribuyente,nom_via,id_via,are_terr,val_ter,val_const from adm_tri.vw_predi_urba where tip_pre_u_r=".$request['tpre']." and id_mzna='".$request['mnza']."' and anio='".$request['an']."' and pred_anio_activo=1 and pred_contrib_activo=1 ORDER BY $sidx $sord LIMIT $limit offset $start");
+            $totalg = DB::select("select count(id_pred) as total from adm_tri.vw_grid_predios where tip_pre_u_r=".$request['tpre']." and id_mzna='".$request['mnza']."' and anio='".$request['an']."' and pred_anio_activo=1 and pred_contrib_activo=1");
+            $sql = DB::select("select * from adm_tri.vw_grid_predios where tip_pre_u_r=".$request['tpre']." and id_mzna='".$request['mnza']."' and anio='".$request['an']."' and pred_anio_activo=1 and pred_contrib_activo=1 ORDER BY $sidx $sord LIMIT $limit offset $start");
         }
         $total_pages = 0;
         if (!$sidx){
@@ -390,5 +390,11 @@ class PredioController extends Controller
         else{
             return 0; 
         }
+    }
+    public function getloteid($lote,$anio)
+    {
+        $lote = DB::select("select * from adm_tri.vw_predi_urba where id_lote=$lote and anio =$anio");
+        return $lote;
+       
     }
 }

@@ -26,13 +26,7 @@
             left:40px;
         }
     </style>
-    <!--
-    <div id="map">
-        <div id="popup" class="ol-popup">
-            <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-            <div id="popup-content"></div>
-        </div>
-    </div>-->
+
     <form class="smart-form">
 
 
@@ -54,31 +48,7 @@
         });
 </script>
     <script>
-        /*
-        var url = 'https://sampleserver1.arcgisonline.com/ArcGIS/rest/services/' +
-                'Specialty/ESRI_StateCityHighway_USA/MapServer';
 
-        var layers = [
-            new ol.layer.Tile({
-                source: new ol.source.OSM()
-            }),
-            new ol.layer.Image({
-                source: new ol.source.ImageArcGISRest({
-                    ratio: 1,
-                    params: {},
-                    url: url
-                })
-            })
-        ];
-        var map = new ol.Map({
-            layers: layers,
-            target: 'map',
-            view: new ol.View({
-                center: [-10997148, 4569099],
-                zoom: 4
-            })
-        });
-*/
 
         window.app = {};
         var app = window.app;
@@ -122,32 +92,20 @@
             var button1 = document.createElement('button');
             button1.innerHTML = 'some button';
 
-            var selectList = document.createElement("select");
-            selectList.id = "sectores_map";
-            selectList.className = "input-sm col-xs-3";
-            selectList.onchange = function(e){
-                console.log(e);
-                get_mzns_por_sector(this.value);
-                //alert(this.value);
-            }
+            var selectList = document.createElement("input");
+            selectList.id = "inp_habilitacion";
+            selectList.className = "input-sm col-xs-6";
+            selectList.type = "text";
+            selectList.style = "height:18px";
+            selectList.placeholder = "Seleccione Habilitación";
+            
 
             var selectList_anio = document.createElement("select");
             selectList_anio.id = "anio_pred";
-            selectList_anio.className = "input-sm col-xs-3";
+            selectList_anio.className = "input-sm col-xs-2";
 
 
-            var sectores = {!! json_encode($sectores) !!};
-            var option = document.createElement("option");
-            option.value = '0';
-            option.text = "- Sector -";
-            selectList.appendChild(option);
-           // alert(global_cod_alm[0].codigo);
-            for (var i = 0; i < sectores.length; i++) {
-                var option = document.createElement("option");
-                option.value = sectores[i].id_sec;
-                option.text = sectores[i].sector;
-                selectList.appendChild(option);
-            }
+            
 
             var anio = {!! json_encode($anio_tra) !!};
             // alert(global_cod_alm[0].codigo);
@@ -183,6 +141,7 @@
 
             var element = document.createElement('div');
             element.className = 'ol-unselectable ol-mycontrol';
+            element.style='width:700px !important'
 
             element.appendChild(selectList);
             element.appendChild(div2);
@@ -293,7 +252,7 @@
             }
         });
 
-        $.ajax({url: 'getsectores',
+        $.ajax({url: 'gethab_urb/0',
             type: 'GET',
             async: false,
             success: function(r)
@@ -309,39 +268,20 @@
                 lyr_sectores_cat1 = new ol.layer.Vector({
                     source:jsonSource_sectores_cat1,
                     style: polygonStyleFunction,
-                    title: "Sectores Catastrales"
-                });
-                map.addLayer(lyr_sectores_cat1);
-            }
-        });
-
-        $.ajax({url: 'get_hab_urb',
-            type: 'GET',
-            async: false,
-            success: function(r)
-            {
-                geojson_hab_urb_cat1 = JSON.parse(r[0].json_build_object);
-                var format_hab_urb_cat1 = new ol.format.GeoJSON();
-                var features_hab_urb_cat1 = format_hab_urb_cat1.readFeatures(geojson_hab_urb_cat1,
-                        {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-                var jsonSource_hab_urb_cat1 = new ol.source.Vector({
-                    attributions: [new ol.Attribution({html: '<a href=""></a>'})],
-                });
-
-                jsonSource_hab_urb_cat1.addFeatures(features_hab_urb_cat1);
-                lyr_hab_urb_cat1 = new ol.layer.Vector({
-                    source:jsonSource_hab_urb_cat1,
-                    style: polygonStyleFunction_hab_urb,
                     title: "Habilitaciones Urbanas"
                 });
-                map.addLayer(lyr_hab_urb_cat1);
+                map.addLayer(lyr_sectores_cat1);
+               
             }
         });
+
+       
 
 
         map.getView().fit([-7986511.592568, -1853075.694599, -7949722.367052, -1825746.555644], map.getSize());
         var fullscreen = new ol.control.FullScreen();
         map.addControl(fullscreen);
+       
 
         function polygonStyleFunction(feature, resolution) {
             return new ol.style.Style({
@@ -353,25 +293,16 @@
                     color: 'rgba(0, 0, 255, 0.1)'
                 }),
                 text: new ol.style.Text({
-                    text: feature.get('sector')
+                    font: '12px Calibri,sans-serif',
+                    fill: new ol.style.Fill({ color: '#fff' }),
+                    stroke: new ol.style.Stroke({
+                        color: '#000', width: 2
+                    }),
+                    text:map.getView().getZoom() > 14 ? feature.get('nomb_hab_urba') : ""
                 })
             });
         }
 
-        function polygonStyleFunction_hab_urb(feature, resolution) {
-            return new ol.style.Style({
-                stroke: new ol.style.Stroke({
-                    color: 'black',
-                    width: 2
-                }),
-                fill: new ol.style.Fill({
-                    color: 'rgba(0, 255, 0, 0.1)'
-                }),
-                text: new ol.style.Text({
-                    text: feature.get('cod_hab')
-                })
-            });
-        }
 
 
         function label_manzanas_full(feature) {
@@ -391,46 +322,92 @@
 
     <script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/map/map.js') }}"></script>
 @stop
-    <div id="dlg_map" style="display: none;">
-        <div class="widget-body">
-            <div  class="smart-form">
-                <div class="panel-group">
-                    <div class="panel panel-success">
-                        <div class="panel-heading bg-color-success">.:: Datos de la Manzana ::.</div>
-                        <div class="panel-body">
-                            <input type="hidden" id="id_mzna" value="0">
-                            <fieldset>
-                                <div class="row">
-                                    <section class="col col-2" style="padding-right: 5px; text-align: center">
-                                        <label class="label" style="text-align: center">Id:</label>
-                                        <label class="input">
-                                            <input id="id" type="text" placeholder="" class="input-sm">
-                                        </label><i></i>
-                                    </section>
+<input type="hidden" id="hidden_inp_habilitacion" value="0"/> 
+    <div id="dlg_map" style="display: none; margin-top: 5px;">
+        
+    </div>
+<div id="dlg_predio_lote" style="display: none;">
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 0px;">
+        <div class="col-xs-12 cr-body" >
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 0px;">
+                
+                <div class="col-xs-9" style="padding: 0px;">
+                    <div class="col-xs-12" style="padding: 0px;">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                            <span class="input-group-addon" style="width: 30%">Codigo Catastral &nbsp;<i class="fa fa-power-off"></i></span>
+                            <div >
+                                <label id="input_pred_cod_cat"  class="form-control" style="height: 32px;"></label>
+                            </div>
 
-                                    <section class="col col-5" style="padding-left: 5px">
-                                        <label class="label">Código:</label>
-                                        <label class="input">
-                                            <input id="codigo" type="text" placeholder="" class="input-sm">
-                                        </label><i></i>
-                                    </section>
+                        </div>
+                    </div>
+                    <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                            <span class="input-group-addon" style="width: 30%">Habilitación &nbsp;<i class="fa fa-map"></i></span>
+                            <div >
+                                <label id="input_pred_habilitacion"  class="form-control" style="height: 32px;"></label>
+                            </div>
 
-                                    <section class="col col-5" style="padding-left: 5px">
-                                        <label class="label">Sector:</label>
-                                        <label class="input">
-                                            <input id="sector" type="text" placeholder="" class="input-sm">
-                                        </label><i></i>
-                                    </section>
-                                </div>
-                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="col-xs-12" style="padding: 0px; margin-top: 10px">
+                        <div class="input-group input-group-md col-xs-12" style="padding: 0px">
+                            <span class="input-group-addon" style="width: 30%">Propietario &nbsp;<i class="fa fa-male"></i></span>
+                            <div >
+                                <label id="input_pred_propietario"  class="form-control" style="height: 32px;"></label>
+                            </div>
+
                         </div>
                     </div>
                 </div>
-
+                <div class="col-xs-3">
+                    <div class="panel panel-success cr-panel-sep" style="height: 180px;overflow-y: scroll;">
+                        <div class="panel-heading bg-color-success" style="padding: 5px">.:: Foto Predio ::.</div>
+                        <div class="panel-body cr-body" style="padding-top: 0px">
+                            <div id="dlg_img_view" style="padding: 5px; " onclick="viewlong()"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
+          
         </div>
     </div>
+</div> 
+<div id="dlg_view_foto" style="display: none;">
+    <div class="col-xs-12">
+       <div class=" col-xs-4">
+            <div class="input-group input-group-md">
+                <input type="hidden" id="dlg_idpre" value="0">
+                <span class="input-group-addon">Sector &nbsp;&nbsp;<i class="fa fa-cogs"></i></span>
+                <div class="icon-addon addon-md">
+                    <input class="text-center col-xs-12 form-control"  style="height: 32px;" id="dlg_sec" type="text" name="dlg_sec" disabled="" >
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-4">
+            <div class="input-group input-group-md">
+                <span class="input-group-addon">Manzana &nbsp;&nbsp;<i class="fa fa-apple"></i></span>
+                <div class="icon-addon addon-md">
+                    <input class="text-center form-control" style="height: 32px;" id="dlg_mzna" type="text" name="dlg_mzna" disabled="" >
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-4">
+            <div class="input-group input-group-md">
+                <span class="input-group-addon">Lotes &nbsp;<i class="fa fa-home"></i></span>
+                <div class="icon-addon addon-md">
+                     <input class="text-center form-control" style="height: 32px;" id="dlg_lot" type="text" name="dlg_mzna" disabled="" >
 
+                </div>
+            </div>
+        </div>
+</div>
+    <div class="panel panel-success cr-panel-sep" style="border:0px;">
+        <div class="panel-body cr-body">
+            <div id="dlg_img_view_big" style="padding-top: 0px"></div>
+        </div>
+    </div>
+</div> 
     @include('configuracion/vw_general')
 
 @endsection
