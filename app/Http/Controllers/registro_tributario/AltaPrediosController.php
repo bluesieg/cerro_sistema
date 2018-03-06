@@ -28,25 +28,37 @@ class AltaPrediosController extends Controller
     public function create(Request $request)
     {
         $usuario = DB::select('select * from public.usuarios where id='.Auth::user()->id);
+        $select=DB::table('transferencias.transferencias')->where('id_pred_contrib',$request['id_pred_contrib'])->where('baja_alta',2)->get();
         
-        if ($request['id_pred_contrib'] == '') {
-            return response()->json([
-                'msg' => 'si',
-            ]);
+        if (count($select)>0) {
+            
+                return response()->json([
+                    'msg' => 'repetido',
+                ]);
+                
         }else{
-            $d_predios = new Alta_predios;
-      
-            $d_predios->id_usuario = $usuario[0]->id;
-            $d_predios->fch_transf = $request['fch_transf'];
-            $d_predios->id_pred_contrib = $request['id_pred_contrib'];
-            $d_predios->glosa = strtoupper($request['glosa']);
-            $d_predios->motivo = $request['motivo'];
-            $d_predios->anio=date('Y'); 
-            $d_predios->baja_alta = 2;
-            $d_predios->id_contribuyente = $request['nuevo_contribuyente'];
-            $d_predios->save();
-            return $d_predios->id_trans;
+            
+                if ($request['id_pred_contrib'] == '') {
+                    return response()->json([
+                        'msg' => 'si',
+                    ]);
+                }else{
+                    $d_predios = new Alta_predios;
+
+                    $d_predios->id_usuario = $usuario[0]->id;
+                    $d_predios->fch_transf = $request['fch_transf'];
+                    $d_predios->id_pred_contrib = $request['id_pred_contrib'];
+                    $d_predios->glosa = strtoupper($request['glosa']);
+                    $d_predios->motivo = $request['motivo'];
+                    $d_predios->anio=date('Y'); 
+                    $d_predios->baja_alta = 2;
+                    $d_predios->id_contribuyente = $request['nuevo_contribuyente'];
+                    $d_predios->save();
+                    return $d_predios->id_trans;
+                }
+            
         }
+                
     }
 
     /**
@@ -133,7 +145,7 @@ class AltaPrediosController extends Controller
 
      
 
-        $sql = DB::select("select id_trans,fch_transf,id_contribuyente, case motivo when 1 then 'DECLARACION JURADA' when 2 then 'AUTOMATICO' when 3 then 'JUDICIAL' when 4 then 'OTROS' end as desc_motivo from transferencias.transferencias where fch_transf between '$fecha_desde' and '$fecha_hasta' and baja_alta = 2 order by $sidx $sord limit $limit offset $start");
+        $sql = DB::select("select id_trans,fch_transf,id_pred_contrib, case motivo when 1 then 'DECLARACION JURADA' when 2 then 'AUTOMATICO' when 3 then 'JUDICIAL' when 4 then 'OTROS' end as desc_motivo from transferencias.transferencias where fch_transf between '$fecha_desde' and '$fecha_hasta' and baja_alta = 2 order by $sidx $sord limit $limit offset $start");
         
         $Lista = new \stdClass();
         $Lista->page = $page;
@@ -146,7 +158,7 @@ class AltaPrediosController extends Controller
                 trim($Datos->id_trans),
                 trim($Datos->fch_transf),
                 trim($Datos->desc_motivo),
-                '<button class="btn btn-labeled btn-warning" type="button" onclick="verDocumento('.trim($Datos->id_contribuyente).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> VER DOCUMENTO</button>',
+                '<button class="btn btn-labeled btn-warning" type="button" onclick="verDocumento('.trim($Datos->id_trans).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> VER DOCUMENTO</button>',
             );
         }
 
@@ -253,16 +265,17 @@ class AltaPrediosController extends Controller
         
     }
     
-    public function ver_documentos($id_nuevo_contrib)
+    public function ver_documentos($id_trans)
     {
-        $sql_nuevo=DB::table('reportes.vw_02_contri_predios')->where('id_contrib',$id_nuevo_contrib)->get();
-    
+        $transferencia=DB::table('transferencias.vw_transferencias')->where('id_trans',$id_trans)->first();
+        $sql_nuevo=DB::table('transferencias.vw_predios_reportes')->where('id_pred_contri',$transferencia->id_pred_contrib)->get();
+        $sql_antiguo=DB::table('transferencias.vw_predios_reportes')->where('id_contrib',$transferencia->id_contribuyente)->get();
         $fecha_hora = (date('d/m/Y H:i:s'));
-        $fecha = (date('d/m/Y'));
+        $fecha = $transferencia->fch_transf;
         
         if(count($sql_nuevo)>0)
         {
-            $view =  \View::make('registro_tributario.reportes.documentos_alta', compact('sql_nuevo','fecha_hora','fecha'))->render();
+            $view =  \View::make('registro_tributario.reportes.documentos_alta', compact('sql_nuevo','sql_antiguo','fecha_hora','fecha'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("Documentacion_altas".".pdf");

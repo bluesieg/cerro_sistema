@@ -95,6 +95,7 @@ class GenericaController extends Controller
         foreach ($sql as $Index => $Datos) {
             $Lista->rows[$Index]['id'] = $Datos->id_gener;
             $Lista->rows[$Index]['cell'] = array(
+                trim($Datos->id_gener),
                 str_pad(trim($Datos->cod_generica), 3, "0", STR_PAD_LEFT),
                 trim($Datos->descr_gen)               
             );

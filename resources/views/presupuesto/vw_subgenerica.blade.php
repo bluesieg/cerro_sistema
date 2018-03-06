@@ -10,7 +10,7 @@
                         <div class="text-right">
                             <div class="col-xs-2 col-sm-12 col-md-12 col-lg-6 text-left">
                                 <label>Filtro Año:</label>
-                                <select id="vw_subgen_anio"  class="input-sm">
+                                <select id="vw_subgen_anio"  class="input-sm" onchange="selecciona_anio();">
                                     @foreach ($anio as $anio)
                                     <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
                                     @endforeach
@@ -78,9 +78,10 @@ $(document).ready(function () {
         datatype: 'json', mtype: 'GET',
         height: 'auto', autowidth: true,
         toolbarfilter: true,
-        colNames: ['Codigo', 'Descripción - Genérica'],
+        colNames: ['ID','Codigo', 'Descripción - Genérica'],
         rowNum: 15, sortname: 'id_gener', sortorder: 'asc', viewrecords: true, caption: 'Generica', align: "center",
-        colModel: [            
+        colModel: [
+            {name: 'id_gener', index: 'id_gener', align: 'center', width: 50, hidden:true},
             {name: 'cod_generica', index: 'cod_generica', align: 'center', width: 50},
             {name: 'descr_gen', index: 'descr_gen', align: 'left', width: 300}            
         ],

@@ -384,6 +384,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('reportes_op', 'OrdenPagoController@index_reportes_op'); //
         Route::get('ver_rep_op/{anio}/{tipo}', 'OrdenPagoController@ver_reporte_op');
         Route::resource('beneficios_tributarios', 'Beneficios_TributariosController');
+        Route::get('listar_beneficios_tributarios','Beneficios_TributariosController@getBeneficiosTributarios');
     });  
     Route::group(['namespace' => 'alcabala'], function() {//modulo de alcabala
         Route::resource('alcabala', 'AlcabalaController');

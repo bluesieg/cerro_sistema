@@ -141,11 +141,12 @@ function guardar_predio() {
             success: function (data) {
                 if (data.msg === 'si'){
                     mostraralertasconfoco('* DEBE SELECCIONAR UN PREDIO');
+                }else if (data.msg === 'repetido'){
+                    mostraralertasconfoco('* EL PREDIO YA FUE DADO DE ALTA');     
                 }else{
                     fn_actualizar_grilla('tabla_alta_predios');
                     dialog_close('dlg_nuevo_dpredios');
                     MensajeExito('Nueva Descarga de Predios', 'La Descarga se ha creado correctamente.');
-                    verDocumento(contribuyente);
                 }
             },
             error: function (data) {
@@ -177,7 +178,7 @@ function obtener_predios_anio(){
 
 }
 
-function verDocumento(id_nuevo_contrib)
+function verDocumento(id_trans)
 {
-    window.open('ver_documentos_alta/'+id_nuevo_contrib);
+    window.open('ver_documentos_alta/'+id_trans);
 }

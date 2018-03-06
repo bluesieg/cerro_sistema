@@ -94,6 +94,7 @@
                 },
             onSelectRow: function (Id){
                 $('#current_id').val($("#tabla_alta_predios").getCell(Id, "id_trans"));
+                
 
             }
         });
@@ -296,7 +297,7 @@
                                                 @endforeach
                                             </select><i></i>                       
                                 </section>
-                                <section class="col col-6">                                    
+                                <section class="col col-6">  
                                     <label class="label">Fecha:</label>
                                     <label class="input">
                                         <input placeholder="dd/mm/aaaa" id="dlg_fecha" class="form-control datepicker" data-dateformat='dd/mm/yy' value="{{date('d/m/Y')}}" maxlength="10">

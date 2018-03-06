@@ -109,3 +109,11 @@ function del_subgen(){
 function limpiar_form_subgen(){
     $("#subgen_cod,#subgen_desc").val('');    
 }
+
+
+function selecciona_anio(){
+    
+    jQuery("#table_Generica").jqGrid('setGridParam', {
+         url: 'get_generica?anio='+$("#vw_subgen_anio").val()
+    }).trigger('reloadGrid');
+}

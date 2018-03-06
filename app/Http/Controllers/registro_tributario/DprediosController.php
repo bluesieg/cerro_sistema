@@ -162,7 +162,7 @@ class DprediosController extends Controller
                 trim($Datos->id_trans),
                 trim($Datos->fch_transf),
                 trim($Datos->desc_motivo),
-                '<button class="btn btn-labeled btn-warning" type="button" onclick="verDocumento('.trim($Datos->id_contribuyente).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> VER DOCUMENTO</button>',
+                '<button class="btn btn-labeled btn-warning" type="button" onclick="verDocumento('.trim($Datos->id_trans).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> VER DOCUMENTO</button>',
             );
         }
 
@@ -271,9 +271,10 @@ class DprediosController extends Controller
     
     public function ver_documentos($id)
     {
-        $sql=DB::table('reportes.vw_02_contri_predios')->where('id_contrib',$id)->get();
+        $transferencia=DB::table('transferencias.vw_transferencias')->where('id_trans',$id)->first();
+        $sql=DB::table('reportes.vw_02_contri_predios')->where('id_contrib',$transferencia->id_contribuyente)->get();
         $fecha_hora = (date('d/m/Y H:i:s'));
-        $fecha = (date('d/m/Y'));
+        $fecha = $transferencia->fch_transf;
         
         if(count($sql)>0)
         {

@@ -33,10 +33,7 @@ class Recibos_DetalleController extends Controller
         if($request->periodo != null){
             $rec_det->periodo=$request->periodo;
         }else{
-            $sql = DB::select("select date_part('year',current_date) as anio");
-            foreach ($sql as $row){
-                $rec_det->periodo=$row->anio;
-            }  
+            $rec_det->periodo=date('Y');
         }
         
         $rec_det->id_ofi=0;

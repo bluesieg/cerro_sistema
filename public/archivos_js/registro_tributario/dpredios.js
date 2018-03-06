@@ -110,7 +110,6 @@ function guardar_predio() {
                     fn_actualizar_grilla('tabla_descarga_predios');
                     dialog_close('dlg_nuevo_dpredios');
                     MensajeExito('Nueva Descarga de Predios', 'La Descarga se ha creado correctamente.');
-                    verDocumento(contribuyente);
                 }
             },
             error: function (data) {

@@ -42,7 +42,7 @@
                     <b> NOMBRE DE CONTRIBUYENTE</b>
                 </td>
                 <td style="border:0px;">
-                    : {{$sql_nuevo[0]->contribuyente}}
+                    : {{$sql_antiguo[0]->contribuyente}}
                 </td>
             </tr>
             <tr>
@@ -50,7 +50,7 @@
                     <b> N° DOCUMENTO</b>
                 </td>
                 <td style="border:0px; ">
-                    : {{$sql_nuevo[0]->nro_doc_contri}}
+                    : {{$sql_antiguo[0]->nro_doc_contri}}
                 </td>
             </tr>
             <tr>
@@ -58,7 +58,7 @@
                     <b> DOMICILIO FISCAL</b>
                 </td>
                 <td style="border:0px;">
-                    : {{$sql_nuevo[0]->ref_dom_fis}}
+                    : {{$sql_antiguo[0]->ref_dom_fis}}
                 </td>
             </tr>
      
@@ -66,6 +66,7 @@
         </b>
         <div style="width: 100%; text-align: justify; font-size: 0.8em; margin-top: 0px; padding-left:18px;">
             Se da constancia por la presente que el dia <b>{{$fecha}}</b> el Contribuyente: <b>{{$sql_nuevo[0]->contribuyente}}</b> dio de <b>ALTA</b> el siguiente predio.<br>
+            Se hizo la transferencia a el Nuevo Contribuyente: <b>{{$sql_antiguo[0]->contribuyente}}</b>.<br>
         </div>
         <table style="margin-top: 5px; margin-bottom: 5px !important;">
             <tr>
@@ -78,9 +79,9 @@
             <thead>
               <tr>
                   <th style="width: 10%">Cod. Catastral</th>
-                  <th style="width: 60%">Ubicación del predio</th>
+                  <th style="width: 70%">Ubicación del predio</th>
                   <th style="width: 5%">N°</th>
-                  <th style="width: 15%">Referencia</th>
+                  <th style="width: 5%">Sector</th>
                   <th style="width: 5%">Manzana</th>
                   <th style="width: 5%">Lote</th>
               </tr>
@@ -97,7 +98,7 @@
                             {{$sql_nuevo[0]->nro_mun}}
                         </td> 
                         <td style="text-align: center">
-                            {{$sql_nuevo[0]->referencia}}
+                            {{$sql_nuevo[0]->sector}}
                         </td> 
                         <td style="text-align: center">
                             {{$sql_nuevo[0]->mzna}}

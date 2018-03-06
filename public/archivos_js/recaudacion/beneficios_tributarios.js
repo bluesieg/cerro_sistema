@@ -1,19 +1,16 @@
-function limpiar_dl_tim(tip)
+function limpiar_dl_ben_trib(tip)
 {
     if(tip==1)
     {
-        $('#documento').val("");
-        $('#valor').val("");
-        $('#anio').val("");
+        $('#dlg_documento').val("");
+        $('#dlg_descuento').val("");
     }
 }
 
-function nuevo_tim()
+function nuevo_ben_trib()
 {
-    $("#dlg_anio").val($("#select_anio option:selected").html());
-    $("#id_anio").val($("#select_anio").val());
-    limpiar_dl_tim(1);
-    $("#dlg_nuevo_tim").dialog({
+    limpiar_dl_ben_trib(1);
+    $("#dlg_nuevo_beneficio_tributario").dialog({
         autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>.:  NUEVO BENEFICIO TRIBUTARIO :.</h4></div>",
         buttons: [{
@@ -21,7 +18,7 @@ function nuevo_tim()
             "class": "btn btn-success bg-color-green",
             click: function () {
 
-                guardar_editar_tim(1);
+                guardar_editar_beneficio_tributario(1);
             }
         }, {
             html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
@@ -31,28 +28,25 @@ function nuevo_tim()
             }
         }],
     });
-    $("#dlg_nuevo_tim").dialog('open');
+    $("#dlg_nuevo_beneficio_tributario").dialog('open');
 }
 
-function actualizar_tim()
+function actualizar_ben_trib()
 {
-    var idarray = jQuery('#tabla_tim').jqGrid('getDataIDs');
+    var idarray = jQuery('#tabla_beneficios_tributarios').jqGrid('getDataIDs');
         if (idarray.length == '') {
-        mostraralertasconfoco('* No Existen Registros en la Tabla...', 'dlg_anio');
+        mostraralertasconfoco('* No Existen Registros en la Tabla...');
         }else{
             
-        
-    $("#dlg_anio").val($("#select_anio option:selected").html());
-    $("#id_anio").val($("#select_anio").val());
-    limpiar_dl_tim(1);
-    $("#dlg_nuevo_tim").dialog({
+    limpiar_dl_ben_trib(1);
+    $("#dlg_nuevo_beneficio_tributario").dialog({
         autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>.:  EDITAR TASA DE INTERES MORATORIO  :.</h4></div>",
+        title: "<div class='widget-header'><h4>.:  EDITAR BENEFICIOS TRIBUTARIOS  :.</h4></div>",
         buttons: [{
             html: "<i class='fa fa-save'></i>&nbsp; Guardar",
             "class": "btn btn-success bg-color-green",
             click: function () {
-                guardar_editar_tim(2);
+                guardar_editar_beneficio_tributario(2);
             }
         }, {
             html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
@@ -62,67 +56,90 @@ function actualizar_tim()
             }
         }],
     });
-    $("#dlg_nuevo_tim").dialog('open');
+    $("#dlg_nuevo_beneficio_tributario").dialog('open');
 
 
-    MensajeDialogLoadAjax('dlg_nuevo_tim', '.:: Cargando ...');
+    MensajeDialogLoadAjax('dlg_nuevo_beneficio_tributario', '.:: Cargando ...');
 
     id = $("#current_id").val();
-    $.ajax({url: 'tim/'+id,
+    $.ajax({url: 'beneficios_tributarios/'+id,
         type: 'GET',
         success: function(r)
         {
-            $("#id_tim").val(r[0].id_tim);
-            $("#documento").val(r[0].documento_aprob);
-            $("#valor").val(r[0].tim);
-            $("#anio").val(r[0].anio);
-            MensajeDialogLoadAjaxFinish('dlg_nuevo_tim');
+            $("#dlg_documento").val(r[0].documento);
+            $("#dlg_descuento").val(r[0].descuento);
+            $("#dlg_fecha_emision").val(r[0].fecha_emision);
+            $("#dlg_inicio_vigencia").val(r[0].inicio_vigencia);
+            $("#dlg_fin_vigencia").val(r[0].fin_vigencia);
+            $("#dlg_tim_hidden").val(r[0].tim);
+            $("#dlg_multa_hidden").val(r[0].multas);
+            MensajeDialogLoadAjaxFinish('dlg_nuevo_beneficio_tributario');
 
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");
             console.log('error');
             console.log(data);
-            MensajeDialogLoadAjaxFinish('dlg_nuevo_tim');
+            MensajeDialogLoadAjaxFinish('dlg_nuevo_beneficio_tributario');
         }
     });
     
     }
 }
 
-function guardar_editar_tim(tipo) {
+function cambiar_tim() {
+    if( $('#dlg_tim').is(':checked') ) {
+        $("#dlg_tim_hidden").attr('value', '1'); 
+    }else{
+        $("#dlg_tim_hidden").attr('value', '0');
+    }
+}   
+    
+function cambiar_multas() {    
+    if( $('#dlg_multa').is(':checked') ) {
+        $("#dlg_multa_hidden").attr('value', '1'); 
+    }else{
+        $("#dlg_multa_hidden").attr('value', '0');
+    }
+}  
 
-    documento = $("#documento").val();
-    valor = $("#valor").val();
-    anio = $("#id_anio").val();
+function guardar_editar_beneficio_tributario(tipo) {
+
+    documento = $("#dlg_documento").val();
+    descuento = $("#dlg_descuento").val();
+    f_emision = $("#dlg_fecha_emision").val();
+    f_ini_vigencia = $("#dlg_inicio_vigencia").val();
+    f_fin_vigencia = $("#dlg_fin_vigencia").val();
+    tim = $("#dlg_tim_hidden").val();
+    multas = $("#dlg_multa_hidden").val();
 
     if (documento == '') {
         mostraralertasconfoco('* El campo Documento es obligatorio...', 'documento');
         return false;
     }
-    if (valor == '') {
-        mostraralertasconfoco('* El campo Valor obligatorio...', 'valor');
-        return false;
-    }
-    if (anio == '') {
-        mostraralertasconfoco('* El campo Año obligatorio...', 'anio');
+    if (descuento == '') {
+        mostraralertasconfoco('* El campo Descuento obligatorio...', 'descuento');
         return false;
     }
 
     if (tipo == 1) {
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'insertar_nuevo_tim',
-            type: 'POST',
+            url: 'beneficios_tributarios/create',
+            type: 'GET',
             data: {
-                documento_aprob: documento,
-                tim: valor,
-                anio: anio
+                documento: documento,
+                descuento: descuento,
+                f_emision: f_emision,
+                f_ini_vigencia: f_ini_vigencia,
+                f_fin_vigencia: f_fin_vigencia,
+                tim:tim,
+                multas:multas
             },
             success: function (data) {
-                dialog_close('dlg_nuevo_tim');
-                fn_actualizar_grilla('tabla_tim');
-                MensajeExito('Nuevo TIM', 'La TIM se a creado correctamente.');
+                dialog_close('dlg_nuevo_beneficio_tributario');
+                fn_actualizar_grilla('tabla_beneficios_tributarios');
+                MensajeExito('Nuevo Beneficio Tributario', 'El Beneficio Tributario se a creado correctamente.');
             },
             error: function (data) {
                 mostraralertas('* Contactese con el Administrador...');
@@ -131,7 +148,7 @@ function guardar_editar_tim(tipo) {
     }
     else if (tipo == 2) {
         id = $("#current_id").val();
-        MensajeDialogLoadAjax('dlg_nuevo_tim', '.:: CARGANDO ...');
+        MensajeDialogLoadAjax('dlg_nuevo_beneficio_tributario', '.:: CARGANDO ...');
         $.confirm({
             title: '.:Cuidado... !',
             content: 'Los Cambios no se podran revertir...',
@@ -139,31 +156,35 @@ function guardar_editar_tim(tipo) {
                 Confirmar: function () {
                     $.ajax({
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                        url: 'modificar_tim',
-                        type: 'POST',
+                        url: 'beneficios_tributarios/'+id+'/edit',
+                        type: 'GET',
                         data: {
-                            id_tim:id,
-                            documento_aprob: documento,
-                            tim: valor,
-                            anio: anio
+                            id_ben_trib:id,
+                            documento: documento,
+                            descuento: descuento,
+                            f_emision: f_emision,
+                            f_ini_vigencia: f_ini_vigencia,
+                            f_fin_vigencia: f_fin_vigencia,
+                            tim:tim,
+                            multas:multas
                         },
                         success: function (data) {
-                            MensajeExito('Editar TIM', 'TIM: '+ id + '  -  Ha sido Modificado.');
-                            fn_actualizar_grilla('tabla_tim');
-                            dialog_close('dlg_nuevo_tim');
-                            MensajeDialogLoadAjaxFinish('dlg_nuevo_tim', '.:: CARGANDO ...');
+                            MensajeExito('Editar Beneficio Tributario', 'Beneficio Tributario: '+ id + '  -  Ha sido Modificado.');
+                            fn_actualizar_grilla('tabla_beneficios_tributarios');
+                            dialog_close('dlg_nuevo_beneficio_tributario');
+                            MensajeDialogLoadAjaxFinish('dlg_nuevo_beneficio_tributario', '.:: CARGANDO ...');
                         },
                         error: function (data) {
                             mostraralertas('* Contactese con el Administrador...');
-                            MensajeAlerta('Editar TIM','Ocurrio un Error en la Operacion.');
-                            dialog_close('dlg_nuevo_tim');
-                            MensajeDialogLoadAjaxFinish('dlg_nuevo_tim', '.:: CARGANDO ...');
+                            MensajeAlerta('Editar Beneficio Tributario','Ocurrio un Error en la Operacion.');
+                            dialog_close('dlg_nuevo_beneficio_tributario');
+                            MensajeDialogLoadAjaxFinish('dlg_nuevo_beneficio_tributario', '.:: CARGANDO ...');
                         }
                     });
                 },
                 Cancelar: function () {
-                    MensajeAlerta('Editar TIM','Operacion Cancelada.');
-                    MensajeDialogLoadAjaxFinish('dlg_nuevo_tim', '.:: CARGANDO ...');
+                    MensajeAlerta('Editar Beneficio Tributario','Operacion Cancelada.');
+                    MensajeDialogLoadAjaxFinish('dlg_nuevo_beneficio_tributario', '.:: CARGANDO ...');
                     
                 }
             }
@@ -172,11 +193,11 @@ function guardar_editar_tim(tipo) {
     }
 }
 
-function eliminar_tim() {
+function eliminar_ben_trib() {
     
-    var idarray = jQuery('#tabla_tim').jqGrid('getDataIDs');
+    var idarray = jQuery('#tabla_beneficios_tributarios').jqGrid('getDataIDs');
         if (idarray.length == '') {
-        mostraralertasconfoco('* No Existen Registros en la Tabla...', 'dlg_anio');
+        mostraralertasconfoco('* No Existen Registros en la Tabla...');
         }else{
     
     id = $("#current_id").val();
@@ -188,34 +209,24 @@ function eliminar_tim() {
             Confirmar: function () {
                 $.ajax({
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    url: 'eliminar_tim',
+                    url: 'beneficios_tributarios/destroy',
                     type: 'POST',
-                    data: {id_tim: id},
+                    data: {_method: 'delete',id_ben_trib: id},
                     success: function (data) {
-                        fn_actualizar_grilla('tabla_tim');
-                        MensajeExito('Eliminar TIM', id + ' - Ha sido Eliminado');
+                        fn_actualizar_grilla('tabla_beneficios_tributarios');
+                        MensajeExito('Eliminar Beneficios Tributario', id + ' - Ha sido Eliminado');
                     },
                     error: function (data) {
-                        MensajeAlerta('Eliminar TIM', id + ' - No se pudo Eliminar.');
+                        MensajeAlerta('Eliminar eneficios Tributario', id + ' - No se pudo Eliminar.');
                     }
                 });
             },
             Cancelar: function () {
-                MensajeAlerta('Eliminar TIM','Operacion Cancelada.');
+                MensajeAlerta('Eliminar eneficios Tributario','Operacion Cancelada.');
             }
 
         }
     });
     
     }
-}
-
-function selecciona_anio(){
-    
-    aniox = $("#select_anio").val();
-
-    jQuery("#tabla_tim").jqGrid('setGridParam', {
-         url: 'listar_tim?anio=' + aniox 
-    }).trigger('reloadGrid');
-
 }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Models\recaudacion\Beneficios_tributarios;
 
 class Beneficios_TributariosController extends Controller
 {
@@ -23,9 +24,19 @@ class Beneficios_TributariosController extends Controller
         return view('recaudacion/vw_beneficios_tributarios', compact('menu','permisos','anio'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $beneficios_tributarios = new Beneficios_tributarios;
+
+        $beneficios_tributarios->documento = $request['documento'];
+        $beneficios_tributarios->descuento = $request['descuento'];
+        $beneficios_tributarios->fecha_emision = $request['f_ini_vigencia'];
+        $beneficios_tributarios->inicio_vigencia = $request['f_ini_vigencia'];
+        $beneficios_tributarios->fin_vigencia = $request['f_fin_vigencia'];
+        $beneficios_tributarios->tim = $request['tim'];
+        $beneficios_tributarios->multas = $request['multas'];
+        $beneficios_tributarios->save();
+        return $beneficios_tributarios->id_bene_trib;
     }
 
     /**
@@ -47,8 +58,8 @@ class Beneficios_TributariosController extends Controller
      */
     public function show($id)
     {
-       $tim = DB::table('fraccionamiento.tim')->where('id_tim',$id)->get();
-       return $tim;
+       $beneficios_tributarios = DB::table('recaudacion.vw_beneficios_tributarios')->where('id_bene_trib',$id)->get();
+       return $beneficios_tributarios;
     }
 
     /**
@@ -57,9 +68,22 @@ class Beneficios_TributariosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
-        //
+        $beneficios_tributarios = new Beneficios_tributarios;
+        $val=  $beneficios_tributarios::where("id_bene_trib","=",$id )->first();
+        if(count($val)>=1)
+        {
+            $val->documento = $request['documento'];
+            $val->descuento = $request['descuento'];
+            $val->fecha_emision = $request['f_emision'];
+            $val->inicio_vigencia = $request['f_ini_vigencia'];
+            $val->fin_vigencia = $request['f_fin_vigencia'];
+            $val->tim = $request['tim'];
+            $val->multas = $request['multas'];
+            $val->save();
+        }
+        return $id;
     }
 
     /**
@@ -80,45 +104,21 @@ class Beneficios_TributariosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
-    }
-    
-    public function insertar_nuevo_tim(Request $request){
-        header('Content-type: application/json');
-        $data = $request->all();
-        $insert=DB::table('fraccionamiento.tim')->insert($data);
-
-        if ($insert) return response()->json($data);
-        else return false;
-    }
-    
-    function modificar_tim(Request $request) {
-        $data = $request->all();
-        unset($data['id_tim']);
-        $update=DB::table('fraccionamiento.tim')->where('id_tim',$request['id_tim'])->update($data);
-        if ($update){
-            return response()->json([
-                'msg' => 'si',
-            ]);
-        }else return false;
-    }
-    
-    function eliminar_tim(Request $request){
-        $delete = DB::table('fraccionamiento.tim')->where('id_tim', $request['id_tim'])->delete();
-
-        if ($delete) {
-            return response()->json([
-                'msg' => 'si',
-            ]);
+        $beneficios_tributarios = new Beneficios_tributarios;
+        $val=  $beneficios_tributarios::where("id_bene_trib","=",$request['id_ben_trib'] )->first();
+        if(count($val)>=1)
+        {
+            $val->delete();
         }
+        return "destroy ".$request['id_ben_trib'];
     }
     
-    public function getTim(Request $request){
+    public function getBeneficiosTributarios(Request $request){
         header('Content-type: application/json');
 
-        $totalg = DB::select("select count(id_tim) as total from fraccionamiento.vw_tim where anio='".$request['anio']."'");
+        $totalg = DB::select("select count(*) as total from recaudacion.vw_beneficios_tributarios");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -142,7 +142,7 @@ class Beneficios_TributariosController extends Controller
 
      
 
-        $sql = DB::table('fraccionamiento.vw_tim')->where('anio',$request['anio'])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $sql = DB::table('recaudacion.vw_beneficios_tributarios')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         
         $Lista = new \stdClass();
         $Lista->page = $page;
@@ -150,12 +150,12 @@ class Beneficios_TributariosController extends Controller
         $Lista->records = $count;
 
         foreach ($sql as $Index => $Datos) {
-            $Lista->rows[$Index]['id'] = $Datos->id_tim;
+            $Lista->rows[$Index]['id'] = $Datos->id_bene_trib;
             $Lista->rows[$Index]['cell'] = array(
-                trim($Datos->id_tim),
-                trim($Datos->documento_aprob),
-                trim($Datos->tim),
-                trim($Datos->anio),
+                trim($Datos->id_bene_trib),
+                trim($Datos->documento),
+                trim($Datos->descuento),
+                trim($Datos->fecha_emision),
             );
         }
 
