@@ -15,8 +15,6 @@
 
 <body>
     <div class="datehead" style="font-size:0.7em;">{{ $fecha }}</div>
-<main>
-
     <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px;">
         <tr>
             <td style="width: 10%; border: 0px;" >

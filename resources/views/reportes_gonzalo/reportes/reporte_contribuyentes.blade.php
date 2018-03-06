@@ -11,9 +11,9 @@
 </head>
 <footer class="footer" style="font-size:0.8em; text-align: left; padding-top: 5px; padding-left: 10px;"><b>Impreso Por:&nbsp; </b>{{$usuario[0]->usuario}}</footer>
 <body>
-    <div class="datehead">{{ $fecha }}</div>
-<main>
-   <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px;">
+    <div class="datehead" style="font-size:0.7em;">{{ $fecha }}</div>
+
+    <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px;">
         <tr>
             <td style="width: 10%; border: 0px;" >
                 <img src="img/escudo.png" height="60px"/>
@@ -33,17 +33,17 @@
     </table>
 
     <center><div Class="asunto" style="margin-top: 1px;font-size:0.8em;"><b>REPORTE LISTADO DE CONTRIBUYENTES (Pricos,Mecos,Pecos)</b></div></center>
-    <div class="subasunto" style="text-align: left; padding-left: 30px;">
-        AÑO: {{ $anio }}, MONTO DE: {{$min}} hasta {{$max}}
-  
+    <div class="subasunto" style=" margin-bottom:5px; text-align: left; padding-left: 30px;font-size:0.7em;"> 
+        <br>
+        Año: {{ $anio }} - Monto desde: {{$min}} hasta {{$max}}
+        
     </div>
-    
     <input type="hidden" value=" {{$num= 1}}">
 
     <div class="lado3" style="height: 435px; border-bottom: 1px solid #333">
 
         <br>
-        <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px; font-size: 1.3em;">
+        <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px; font-size: 1.0em;">
             <thead>
             <tr >
                 <th style="width: 3%;">N°</th>

@@ -17,33 +17,31 @@
             .t1 > thead > tr > th { border:1px solid #D5D5D5;font-size: 13px; background: #01A858;color: white; }            
         </style>
         <link href="{{ asset('css/pdf.css') }}" rel="stylesheet">
-    </head>    
+    </head>  
+        <footer class="footer" style="font-size:0.8em; text-align: left; padding-top: 5px; padding-left: 10px;"><b>Impreso Por:&nbsp; </b>{{$usuario[0]->usuario}}</footer>
     <body>
+        <div class="datehead" style="font-size:0.7em;">{{ $fecha }}</div>
         
-        <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 5px;">
-            <tr>
-            <td style="width: 8%; border: 0px;" >
-                <img src="img/escudo.png" height="70px"/>
+       <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px;">
+        <tr>
+            <td style="width: 10%; border: 0px;" >
+                <img src="img/escudo.png" height="60px"/>
             </td>
-            <td style="width: 60%; padding-top: 0px; border:0px; padding-left: 95px;">
-                <div id="details" class="clearfix">
-                  <div id="invoice" >
-                      <h1 style="padding-left: 10px;">MUNICIPALIDAD DISTRITAL DE CERRO COLORADO</h1>
-                      <div class="sub2">Creado por Ley 12075 el día 26 de Febrero de 1954</div>
-                  </div>
-                    <div style="width: 90%; border-top:1px solid #999; margin-top: 10px; margin-left: 25px;"></div>
+            <td style="width: 80%; padding-top: 0px; border:0px;">
+                <div id="details" class="sub2">
+                    <div id="invoice" style="font-size:0.7em" >
+                        <h1>{{$institucion[0]->nom1}}&nbsp;{{$institucion[0]->nom2}}</h1>
+                        <div class="sub2">Creado por Ley 12075 el día 26 de Febrero de 1954</div>
+                    </div>
+                    <div  style="width: 95%; border-top:1px solid #999; margin-top: 5px; margin-left: 25px"></div>
                 </div>
             </td>
-            <td style="width: 20%; border: 0px; padding-left: 65px;" >
-                <div id="invoice" class="sub2" style="text-align: center;"><b>{{$fecha_larga}}</b></div>
-                <div id="invoice" class="sub2" style="text-align: center;"><b>{{$hora}}</b></div>
-            </td>
             <td style="width: 10%;border: 0px;"></td>
-            </tr>
-            
-        </table>
+        </tr>
+
+    </table>
         
-        <center><div Class="asunto" style="margin-top: 0px;"><b>Reporte: Saldos del Contribuyente
+        <center><div Class="asunto" style="margin-top: 0px;font-size:0.8em;"><b>Reporte: Saldos del Contribuyente
                 </b></div></center>
     
            
@@ -139,9 +137,7 @@
             @endif
             
         </div>        
-        <div style="width: 90%; border-top:1px solid #999; margin-top: 10px; margin-left: 25px;"></div>
-        <div class="sub2" style="font-size:0.7em; text-align: left; padding-top: 5px; padding-left: 10px;"><b>Impreso Por:&nbsp; </b>{{ $usuario[0]->usuario  }}</div>
-    
+        
         <script src="{{ asset('archivos_js/reportes/est_cta.js') }}"></script>
         <script src="{{ asset('js/libs/jquery-2.1.1.min.js') }}"></script>
         <script type="text/javascript">            
