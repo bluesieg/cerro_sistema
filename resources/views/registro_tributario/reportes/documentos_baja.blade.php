@@ -61,12 +61,24 @@
                     : {{$sql[0]->ref_dom_fis}}
                 </td>
             </tr>
-     
+            <tr>
+                <td style="border:0px; padding-left:18px;">
+                    <b> COMPRADOR</b>
+                </td>
+                <td style="border:0px;">
+                    : {{$comprador}}
+                </td>
+            </tr>
         </table>
         </b>
         <div style="width: 100%; text-align: justify; font-size: 0.8em; margin-top: 0px; padding-left:18px;">
-            Se da constancia por la presente que el dia <b>{{$fecha}}</b> el Contribuyente: <b>{{$sql[0]->contribuyente}}</b> dio de <b>BAJA</b> el siguiente predio.<br>
+            Se deja constancia que se realizo la <b>BAJA</b> del predio por el siguiente Motivo:<b>{{$motivo}}</b> ,el dia <b>{{$fecha}}</b>.<br>
         </div>
+        @if(isset($motivo1))
+                @if($motivo1==2)
+                <div style="width: 100%; text-align: justify; font-size: 0.8em; margin-top: 0px; padding-left:18px;"><center><b>Segun Decreto Supremo 156-2004-EF y modificatorias.</b></center></div>
+                @endif
+        @endif
         <table style="margin-top: 5px; margin-bottom: 5px !important;">
             <tr>
                 <td colspan="2" style="border:0px;">

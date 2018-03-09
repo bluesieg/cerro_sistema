@@ -109,7 +109,7 @@
 </script>
 @stop
 
-<script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/configuracion_gonzalo/beneficios_tributarios.js') }}"></script>
+<script language="JavaScript" type="text/javascript" src="{{ asset('archivos_js/recaudacion/beneficios_tributarios.js') }}"></script>
 <div id="dlg_nuevo_beneficio_tributario" style="display: none;">
     <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
     <div class="col-xs-12 cr-body" >

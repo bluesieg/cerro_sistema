@@ -260,6 +260,13 @@
                                                                                         
                             </div>                            
                             <section>
+                                <label class="label">Comprador:</label>
+                                <label class="input">
+                                    <input id="dlg_comprador" type="text" placeholder="Nombre Completo del comprador" class="input-sm text-uppercase" maxlength="150">                                  
+                                </label>                                       
+                            </section>
+                            
+                            <section>
                                 <label class="label">Glosa:</label>
                                 <label class="textarea">
                                     <textarea id="dlg_glosa" rows="2" placeholder="descripcion de recibo" class="input-sm text-uppercase"></textarea>                                    

@@ -45,6 +45,7 @@ class DprediosController extends Controller
             $d_predios->anio=date('Y'); 
             $d_predios->baja_alta = 1;
             $d_predios->id_contribuyente = $request['id_contribuyente'];
+            $d_predios->comprador = strtoupper($request['comprador']);
             $d_predios->save();
             $this->actualizar_predio_contribuyente($d_predios->id_trans);
         }
@@ -275,10 +276,22 @@ class DprediosController extends Controller
         $sql=DB::table('reportes.vw_02_contri_predios')->where('id_contrib',$transferencia->id_contribuyente)->get();
         $fecha_hora = (date('d/m/Y H:i:s'));
         $fecha = $transferencia->fch_transf;
+        $motivo = $transferencia->motivo;
+        $motivo1 = $transferencia->motivo;
+        $comprador = $transferencia->comprador;
+        if ( $motivo == 1){
+            $motivo = 'Declaracion Jurada';
+        }else if($motivo == 2){
+            $motivo = 'Automatico';
+        }else if($motivo == 3){
+            $motivo = 'Judicial';
+        }else{
+            $motivo = 'Otros';
+        }
         
         if(count($sql)>0)
         {
-            $view =  \View::make('registro_tributario.reportes.documentos_baja', compact('sql','fecha_hora','fecha'))->render();
+            $view =  \View::make('registro_tributario.reportes.documentos_baja', compact('sql','fecha_hora','fecha','motivo','motivo1','comprador'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("Documentacion_bajas".".pdf");

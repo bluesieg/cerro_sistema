@@ -121,4 +121,9 @@ function limpiar_form_gen(){
     $("#gen_cod,#gen_desc").val('');    
 }
 
-
+function selecciona_anio(){
+    
+    jQuery("#table_Generica").jqGrid('setGridParam', {
+         url: 'get_generica?anio='+$("#vw_gen_anio").val()
+    }).trigger('reloadGrid');
+}

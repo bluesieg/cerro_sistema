@@ -82,6 +82,7 @@ function guardar_predio() {
     motivo = $("#dlg_motivos").val();
     glosa = $("#dlg_glosa").val();
     contribuyente = $("#dlg_hidden_contribuyente").val();
+    comprador = $("#dlg_comprador").val();
     
     if (contribuyente == '') {
         mostraralertasconfoco('* El campo Contribuyente es obligatorio...', 'contribuyente');
@@ -101,7 +102,8 @@ function guardar_predio() {
                 id_pred_contrib: id_predio_contribuyente,
                 glosa: glosa,
                 motivo: motivo,
-                id_contribuyente: contribuyente
+                id_contribuyente: contribuyente,
+                comprador:comprador
             },
             success: function (data) {
                 if (data.msg === 'si'){
