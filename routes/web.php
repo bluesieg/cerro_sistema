@@ -364,7 +364,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('selmzna','PredioController@ListManz');
         Route::get('sellot','PredioController@ListLote');
         Route::get('adm_impform/','PredioController@imprimir_formatos');
-        Route::get('pre_rep/{tip}/{id}/{an}/{per}','PredioController@reporte');
+        Route::get('pre_rep/{tip}/{id}/{an}/{per}/{anexo}','PredioController@reporte');
         Route::get('traefoto_lote/{sec}/{mzna}/{lote}','PredioController@getfoto');
         Route::get('traefoto_lote_id/{lote}','PredioController@getfotoid');
         Route::get('validar_predio','PredioController@validar');

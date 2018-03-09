@@ -329,7 +329,7 @@ class PredioController extends Controller
         return view('adm_tributaria/imp_formatos', compact('anio_tra','menu','permisos'));
     }
 
-    public function reporte($tip,$id,$an,$contri) 
+    public function reporte($tip,$id,$an,$contri,$anexo) 
     {
         $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
         $fecha = (date('d/m/Y H:i:s'));
@@ -347,7 +347,7 @@ class PredioController extends Controller
             $sql_ist    =DB::table('adm_tri.vw_instalaciones')->where('id_pred_anio',$id)->orderBy('cod_instal')->get();
             $sql_cond    =DB::table('adm_tri.vw_condominios')->where('id_pred_anio',$id)->orderBy('id_condom')->get();
             $foto = DB::connection('fotos')->select("select encode(foto,'base64') as foto from sect_".$sql->sec." where id_lote='".$sql->sec.$sql->mzna.$sql->lote."' limit 1");
-            $view =  \View::make('adm_tributaria.reportes.pu', compact('sql','sql_pis','sql_ist','sql_cond','foto','usuario','fecha'))->render();
+            $view =  \View::make('adm_tributaria.reportes.pu', compact('sql','sql_pis','sql_ist','sql_cond','foto','usuario','fecha','anexo'))->render();
         }
         if($tip=='PR'||$tip=='pr')
         {

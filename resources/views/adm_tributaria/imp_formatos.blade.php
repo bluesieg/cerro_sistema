@@ -93,7 +93,7 @@
         $("#menu_admtri").show();
         $("#li_impform").addClass('cr-active')
         jQuery("#table_predios").jqGrid({
-            url: 'gridpredio?mnza=0&ctr=0&tpre=0',
+            url: 'gridpredio?mnza=0&ctr=0&tpre=0&an=0',
             datatype: 'json', mtype: 'GET',
             height: '260px', autowidth: true,
             toolbarfilter: true,
@@ -101,10 +101,10 @@
             rowNum: 20, sortname: 'id_pred', sortorder: 'desc', viewrecords: true, caption: 'Predios Urbanos/Rusticos', align: "center",
             colModel: [
                 {name: 'id_pred', index: 'id_pred', hidden: true},
-                {name: 'tp', index: 'tp', align: 'center', width: 50},
-                {name: 'sec', index: 'sec', align: 'center', width: 20},
-                {name: 'mnza', index: 'mnza', align: 'center', width: 20},
-                {name: 'lote', index: 'lote', align: 'center', width: 50},
+                {name: 'tp', index: 'tp', align: 'center', width: 40},
+                {name: 'sec', index: 'sec', align: 'center', width: 30},
+                {name: 'mnza', index: 'mnza', align: 'center', width: 30},
+                {name: 'lote', index: 'lote', align: 'center', width: 30},
                 {name: 'cod_cat', index: 'cod_cat', align: 'center', width: 80},
                 {name: 'mzna_dist', index: 'mzna_dist', align: 'center', width: 40},
                 {name: 'lote_dist', index: 'lote_dist', align: 'center', width: 40},
@@ -120,6 +120,7 @@
             ],
             pager: '#pager_table_predios',
             rowList: [13, 20],
+            rownumbers: true,
             gridComplete: function () {
                     var idarray = jQuery('#table_predios').jqGrid('getDataIDs');
                     if (idarray.length > 0) {
@@ -128,7 +129,9 @@
                         }
                      
                 },
-            onSelectRow: function (Id){},
+            onSelectRow: function (Id){
+                
+            },
             ondblClickRow: function (Id){}
         });
         contrib_global=0;

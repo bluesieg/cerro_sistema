@@ -862,6 +862,9 @@ function fn_confirmar_borrar_predio()
     }
     function clicknewinst()
     {
+        $("#rinst_inp_costo").val(0);
+        $("#rinst_inp_costo").prop( "disabled", true );
+        $("#rinst_chck_costo").prop('checked', false);
         $("#dlg_idinst").val(0);
        if($('#dlg_idpre').val()==0)
         {
@@ -908,12 +911,13 @@ function fn_confirmar_borrar_predio()
             $("#rinst_inp_des").val(r[0].descrip_instal);
             $("#hidden_rinst_inp_des").val(r[0].id_instal);
             $("#rinst_inp_undmed").val(r[0].unid_medida);
+            
+          
             if(r[0].unid_medida=="UND")
             {
                 $( "#rinst_inp_largo,#rinst_inp_ancho,#rinst_inp_alto" ).prop( "disabled", true );
                 $( "#rinst_inp_canti" ).prop( "disabled", false );
                 $( "#rinst_inp_canti" ).val(r[0].pro_tot);
-
             }
             if(r[0].unid_medida=="M2" || r[0].unid_medida=="ML")
             {
@@ -921,6 +925,13 @@ function fn_confirmar_borrar_predio()
                 $( "#rinst_inp_canti,#rinst_inp_alto" ).prop( "disabled", true );
                 $( "#rinst_inp_canti" ).val(0);
             }
+            if(r[0].unid_medida=="M3")
+            {
+                $( "#rinst_inp_largo,#rinst_inp_ancho,#rinst_inp_alto" ).prop( "disabled", false );
+                $( "#rinst_inp_canti" ).prop( "disabled", true );
+                $( "#rinst_inp_canti" ).val(0);
+            }
+            
             $("#rinst_inp_anio").val(r[0].anio);
             $("#rinst_inp_mat").val(r[0].mep);
             $("#rinst_inp_econserv").val(r[0].ecs);
@@ -930,6 +941,7 @@ function fn_confirmar_borrar_predio()
             $("#rinst_inp_alto").val(r[0].dim_alt);
             $("#rinst_inp_clasi").val(r[0].id_cla);
             $("#glosa").val(r[0].glosa);
+            $("#rinst_inp_costo").val(r[0].tot_inst);
             callchangeoption("rinst_inp_mat",0);
             callchangeoption("rinst_inp_econserv",0);
             callchangeoption("rinst_inp_econstr",0);
@@ -954,6 +966,7 @@ function fn_confirmar_borrar_predio()
         if($("#rinst_inp_largo").val()==""){mostraralertasconfoco("Ingresar largo","#rinst_inp_largo"); return false}
         if($("#rinst_inp_ancho").val()==""){mostraralertasconfoco("Ingresar Ancho","#rinst_inp_ancho"); return false}
         if($("#rinst_inp_alto").val()==""){mostraralertasconfoco("Ingresar Alto","#rinst_inp_alto"); return false}
+        if($("#rinst_inp_costo").val()==""||!$("#rinst_chck_costo").is(':checked')){$("#rinst_inp_costo").val(0)}
         MensajeDialogLoadAjax('dlg_reg_inst', '.:: Guardando ...');
         Id_pre=$('#dlg_idpre').val();
         $.ajax({url: 'instalaciones_predios/create',
@@ -961,7 +974,7 @@ function fn_confirmar_borrar_predio()
         data:{inst:$("#hidden_rinst_inp_des").val(),anio:$("#rinst_inp_anio").val(),largo:$("#rinst_inp_largo").val(),
             ancho:$("#rinst_inp_ancho").val(),alto:$("#rinst_inp_alto").val(),mep:$("#rinst_inp_mat").val(),
             ecs:$("#rinst_inp_econserv").val(),ecc:$("#rinst_inp_econstr").val(),id_pre:Id_pre,cla:$("#rinst_inp_clasi").val(),
-            cant:$("#rinst_inp_canti").val(),glosa:$("#glosa").val()},
+            cant:$("#rinst_inp_canti").val(),glosa:$("#glosa").val(),costo:$("#rinst_inp_costo").val()},
         success: function(r) 
         {
             
@@ -991,6 +1004,8 @@ function fn_confirmar_borrar_predio()
         if($("#rinst_inp_largo").val()==""){mostraralertasconfoco("Ingresar largo","#rinst_inp_largo"); return false}
         if($("#rinst_inp_ancho").val()==""){mostraralertasconfoco("Ingresar Ancho","#rinst_inp_ancho"); return false}
         if($("#rinst_inp_alto").val()==""){mostraralertasconfoco("Ingresar Alto","#rinst_inp_alto"); return false}
+        if($("#rinst_inp_costo").val()==""||!$("#rinst_chck_costo").is(':checked')){$("#rinst_inp_costo").val(0);}
+
         MensajeDialogLoadAjax('dlg_reg_inst', '.:: Modificando ...');
         $.ajax({url: 'instalaciones_predios/'+$('#dlg_idinst').val()+'/edit',
         type: 'GET',
@@ -1046,6 +1061,17 @@ function fn_confirmar_borrar_predio()
                 console.log(data);
             }
         });
+    }
+    function activar_inst_costo(esto)
+    {
+        if($(esto).is(':checked'))
+        {
+            $("#rinst_inp_costo").prop( "disabled", false );
+        }
+        else
+        {
+            $("#rinst_inp_costo").prop( "disabled", true );
+        }
     }
    
     function callchangeoption(input,tip)

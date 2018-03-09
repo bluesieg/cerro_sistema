@@ -49,7 +49,7 @@
               
               <td style="width: 10%; padding: 0px 0px 0px 2px; border: 0px;text-align: center;font-size: 0.9em; " >
                 <div class="cabdiv" style="width: 100%;font-size: 0.9em !important">ANEXO</div>
-                <div class="cuerdiv" style="width: 100%;font-size: 0.9em !important">{{substr("000".$sql->nro_anexo,-4,4)}}</div>
+                <div class="cuerdiv" style="width: 100%;font-size: 0.9em !important">{{substr("000".$anexo,-4,4)}}</div>
               </td>
           </tr>
         </thead>

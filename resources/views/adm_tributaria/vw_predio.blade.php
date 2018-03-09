@@ -1239,6 +1239,25 @@
                             </label>
                         </div>
                     </div>
+                    <div class="panel-heading bg-color-success">.:: Ingresar Costo Manual ::.</div>
+                    <div class="panel-body cr-body">
+                        
+                        
+                        <div class='col col-1 text-center'>
+                            <label class="label">Activar:</label>
+                            <span>
+                                <label class="checkbox inline-block" style="color:white !important">
+                                    <input type="checkbox" name="checkbox-inline" id="rinst_chck_costo" onchange="activar_inst_costo(this)"/>
+                                    <i></i>
+                            </span>
+                        </div>
+                        <div class='col col-3'>
+                            <label class="label">Costo:</label>
+                            <label class="input">
+                                <input id="rinst_inp_costo" type="text"  class="input-sm text-right" onkeypress="return soloNumeroTab(event);" disabled="">
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

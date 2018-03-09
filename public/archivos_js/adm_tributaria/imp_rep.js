@@ -38,6 +38,8 @@ function callfilltab()
 function abrir_rep(tip)
 {
     Id=$('#table_predios').jqGrid ('getGridParam', 'selrow');
+    rowNum=$('#table_predios').jqGrid('getCell', Id, 'rn');
+    
     if(Id==null)
     {
         mostraralertas("No hay Predio seleccionado para impresión");
@@ -50,10 +52,11 @@ function abrir_rep(tip)
     }
     if(tip=="PU" && $('#table_predios').jqGrid('getCell',Id,'tp')!="URB")
     {
+        
         mostraralertas("El predio seleccionado no es Urbano.");
         return false;
     }
-    window.open('pre_rep/'+tip+'/'+Id+'/'+$("#selantra").val()+'/'+$("#dlg_contri_hidden").val());
+    window.open('pre_rep/'+tip+'/'+Id+'/'+$("#selantra").val()+'/'+$("#dlg_contri_hidden").val()+'/'+rowNum);
     
     
 }
