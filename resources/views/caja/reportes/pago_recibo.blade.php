@@ -56,7 +56,14 @@
                     <tr>
                         <td align="center">{{number_format($det->cant,0)}}</td>
                         <td align="center">{{$det->concepto}}</td>
-                        <td>{{$det->descrip_tributo}}&nbsp;&nbsp;[{{$det->detalle_trimestres}}]</td>        
+                        <td>{{$det->descrip_tributo}}&nbsp;&nbsp;
+                            @if(isset($det->detalle_trimestres))
+                                [{{$det->detalle_trimestres}}]
+                                
+                            @else
+                                [-]
+                            @endif
+                        </td>        
                         <td align="right">{{$det->p_unit}}</td>        
                         <td align="right">{{number_format($det->monto,2)}}</td> 
                     </tr>

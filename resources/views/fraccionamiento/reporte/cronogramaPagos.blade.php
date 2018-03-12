@@ -71,7 +71,7 @@
                 </tr>
                 <tr>
                     <td><b>TOTAL:</b></td>
-                    <td>&nbsp;S/.{{ $conv[0]->total_convenio}}<br/></td>
+                    <td>&nbsp;S/.{{ number_format($conv[0]->total_convenio,2,'.',',')}}<br/></td>
                 </tr>
                 <tr>
                     <td><b>INICIAL:</b></td>
@@ -87,7 +87,7 @@
                 </tr>
                 <tr>
                     <td><b>CUOTA CONSTANTE:</b></td>
-                    <td>&nbsp;S/.{{ $todo[0]->total }}<br/></td>
+                    <td>&nbsp;S/.{{ number_format($todo[0]->total,2,'.',',') }}<br/></td>
                 </tr>
                 <tr>
                     <td><b>GLOSA:</b></td>
@@ -98,24 +98,24 @@
         <div style="margin-top:10px;">         
             <table style="width: 100%;" id="t_dina_conve_fracc" class="t1">
                 <thead>
-                    <tr>
+                    <tr style="font-size:0.9em">
                         <th width="10%" align="center">N°</th>
                         <th width="40%" align="center">Saldo</th>
                         <th width="40%" align="center">Amortización</th>
                         <th width="40%" align="center">Interes</th>
                         <th width="40%" align="center">Cuota Mensual</th>
-                        <th width="40%" align="center">Fecha Vence</th>
+                        <th width="40%" align="left">Fecha Vencimiento</th>
                     </tr>
                 </thead>
                 <tbody>                
                     @foreach($todo as $value)
                     <tr>
-                        <td style="text-align: center">{{ $value->nro_cuot }}</td>
-                        <td style="text-align: center">{{ $value->saldo }}</td>
-                        <td style="text-align: center">{{ $value->amor }}</td>
-                        <td style="text-align: center">{{ $value->inter }}</td>
-                        <td style="text-align: center">{{ $value->total }}</td>
-                        <td style="text-align: center">{{ $value->fec_pago }}</td>
+                        <td style="text-align: center">{{ number_format($value->nro_cuot,2,'.',',') }}</td>
+                        <td style="text-align: center">{{ number_format($value->saldo,2,'.',',') }}</td>
+                        <td style="text-align: center">{{ number_format($value->amor,2,'.',',') }}</td>
+                        <td style="text-align: center">{{ number_format($value->inter,2,'.',',') }}</td>
+                        <td style="text-align: center">{{ number_format($value->total,2,'.',',') }}</td>
+                        <td style="text-align: left">{{ $value->fec_pago }}</td>
                     </tr>
                     @endforeach            
                 </tbody>

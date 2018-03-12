@@ -227,10 +227,10 @@ function realizar_table_fracc(){
         $('#t_dina_conve_fracc').append(
         "<tr>\n\
             <td>" + i + "</td>\n\
-            <td><label class='input'><input id='td_din_saldo_" + i + "' type='text' value='" + formato_numero(saldo,3,'.') + "' disabled='' class='input-xs text-align-right'></label></td>\n\
-            <td><label class='input'><input id='td_din_amor_" + i + "' type='text' value='" + formato_numero(amor,3,'.') + "' disabled='' class='input-xs text-align-right' style='font-size:12px'></label></td>\n\
-            <td><label class='input'><input id='td_din_inter_" + i + "' type='text' value='" + formato_numero(interes,3,'.') + "' disabled='' class='input-xs text-align-right' style='font-size:12px'></label></td>\n\
-            <td><label class='input'><input id='td_din_cc_" + i + "' type='text' value='" + formato_numero(cc,3,'.') + "' disabled='' class='input-xs text-align-right' style='font-size:12px'></label></td>\n\
+            <td><label class='input'><input id='td_din_saldo_" + i + "' type='text' value='" + formato_numero(saldo,2,'.') + "' disabled='' class='input-xs text-align-right'></label></td>\n\
+            <td><label class='input'><input id='td_din_amor_" + i + "' type='text' value='" + formato_numero(amor,2,'.') + "' disabled='' class='input-xs text-align-right' style='font-size:12px'></label></td>\n\
+            <td><label class='input'><input id='td_din_inter_" + i + "' type='text' value='" + formato_numero(interes,2,'.') + "' disabled='' class='input-xs text-align-right' style='font-size:12px'></label></td>\n\
+            <td><label class='input'><input id='td_din_cc_" + i + "' type='text' value='" + formato_numero(cc,2,'.') + "' disabled='' class='input-xs text-align-right' style='font-size:12px'></label></td>\n\
             <td><label class='input'><input id='td_din_fecha_" + i + "' type='text' value='" + sumaFecha(i*30,fecha) + "' disabled='' class='input-xs text-align-right' style='font-size:12px'></label></td>\n\
         </tr>");
 //        t_deuda=t_deuda+deuda;

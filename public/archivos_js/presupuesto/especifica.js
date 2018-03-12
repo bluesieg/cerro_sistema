@@ -112,3 +112,10 @@ function del_especifica(){
 function limpiar_form_especifica(){
     $("#especifica_cod,#especifica_desc").val('');    
 }
+
+function selecciona_anio(){
+    
+    jQuery("#table_Generica").jqGrid('setGridParam', {
+         url: 'get_generica?anio='+$("#vw_especifica_anio").val()
+    }).trigger('reloadGrid');
+}

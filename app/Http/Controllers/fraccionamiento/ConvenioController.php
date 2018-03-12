@@ -63,9 +63,8 @@ class ConvenioController extends Controller
         $id_contrib=$request['id_contrib'];
         $desde=$request['desde'];        
         $hasta=$request['hasta'];
-        $totalg = DB::select("select count(a.id_tipo)as total from fraccionamiento.fn_deuda_frac(138) a
-                    left join fraccionamiento.convenio b on a.id_contrib=b.id_contribuyente and a.anio_deu::integer=b.anio
-                    where anio_deu between '".$desde."' and '".$hasta."'");
+        $totalg = DB::select("select count(*) as total from fraccionamiento.vw_deuda_fracc        
+                    where id_contrib='$id_contrib' and anio_deu between '".$desde."' and '".$hasta."'");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -87,9 +86,8 @@ class ConvenioController extends Controller
             $start = 0;
         }
         
-        $sql = DB::select("select a.*, b.tipo as conv_tipo from fraccionamiento.fn_deuda_frac(".$id_contrib.") a "
-                .'left join fraccionamiento.convenio b on a.id_contrib=b.id_contribuyente and a.anio_deu::integer=b.anio '
-                . "where anio_deu between '".$desde."' and '".$hasta."'");
+        $sql = DB::select("select * from fraccionamiento.vw_deuda_fracc "
+                . "where id_contrib='$id_contrib' and anio_deu between '".$desde."' and '".$hasta."'");
 //        $sql = DB::select('');
         $Lista = new \stdClass();
         $Lista->page = $page;

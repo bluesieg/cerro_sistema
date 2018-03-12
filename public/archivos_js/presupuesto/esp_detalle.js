@@ -112,4 +112,10 @@ function limpiar_form_esp_det(){
     $("#esp_det_cod,#esp_det_desc").val('');    
 }
 
+function selecciona_anio(){
+    
+    jQuery("#table_Generica").jqGrid('setGridParam', {
+         url: 'get_generica?anio='+$("#vw_esp_det_anio").val()
+    }).trigger('reloadGrid');
+}
 
