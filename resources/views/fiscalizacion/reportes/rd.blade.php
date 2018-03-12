@@ -87,15 +87,7 @@
             </tr>
          </table>
         <div style="width: 100%; text-align: justify; font-size: 0.8em; margin-top: 0px; padding-left:18px;">
-            Que, habiendose realizado el respectivo proceso de fiscalización iniciado con la Carta de Requerimiendo N° {{$sql->nro_car."-".$sql->anio_carta}}-SGFT-GAT-MDCC,
-            la misma que fue notificada el {{$sql->fec_carta}}; la verificación realizada in situ en fechas {{$sql->dias_fisca}};
-            realizando acciones de medición al área construida, categorización de la edificación, su clasificación, estado de conservación y medición
-            y valorización de obras complementarias fijas y permanentes, toma de fotografías, todo ello contenido en Fichas de Inspección N°
-            @foreach($fichas as $fic)
-                {{$fic->nro_fic}}, 
-            @endforeach
-             Culminando el proceso de Fiscalización se ha detectado que no ha cumplido on sus obligaciones
-             formales y sustanciales motivo por el cual se emite la presente Resolución de Determinación.
+            {{$sql->txt_motivacion}};
         </div>
         <table style="margin-top: 5px; margin-bottom: 5px !important;">
             <tr>
@@ -188,8 +180,8 @@
                     <td style="font-size: 0.7em; text-align: right; padding-right: 5px">{{number_format($sql->pagado,3,".",",")}}</td>
                     <td style="font-size: 0.7em; text-align: right; padding-right: 5px">{{number_format($sql->ivpp_verif-$sql->pagado,3,".",",")}}</td>
                     <td style="font-size: 0.7em; text-align: right; padding-right: 5px">{{number_format($sql->ivpp_verif-$sql->pagado,3,".",",")}}</td>
-                    <td style="font-size: 0.7em; text-align: right; padding-right: 5px">4.64</td>
-                    <td style="font-size: 0.7em; text-align: right; padding-right: 5px">{{number_format($sql->ivpp_verif-$sql->pagado+4.64,3,".",",")}}</td>
+                    <td style="font-size: 0.7em; text-align: right; padding-right: 5px">{{$reajuste[0]->reajuste_actual}}</td>
+                    <td style="font-size: 0.7em; text-align: right; padding-right: 5px">{{number_format($sql->ivpp_verif-$sql->pagado+$reajuste[0]->reajuste_actual,3,".",",")}}</td>
                 </tr>
                 <tr>
                     <td colspan="4" style="text-align: center"><b>Sub Total</b></td>
@@ -197,11 +189,11 @@
                     <td style="font-size: 0.7em; text-align: right; padding-right: 5px"><b>{{number_format($sql->pagado,3,".",",")}}</b></td>
                     <td style="font-size: 0.7em; text-align: right; padding-right: 5px"><b>{{number_format($sql->ivpp_verif-$sql->pagado,3,".",",")}}</b></td>
                     <td style="font-size: 0.7em; text-align: right; padding-right: 5px"><b>{{number_format($sql->ivpp_verif-$sql->pagado,3,".",",")}}</b></td>
-                    <td style="font-size: 0.7em; text-align: right; padding-right: 5px"><b>4.64</b></td>
-                    <td style="font-size: 0.7em; text-align: right; padding-right: 5px"><b>{{number_format($sql->ivpp_verif-$sql->pagado+4.64,3,".",",")}}</b></td>
+                    <td style="font-size: 0.7em; text-align: right; padding-right: 5px"><b>{{$reajuste[0]->reajuste_actual}}</b></td>
+                    <td style="font-size: 0.7em; text-align: right; padding-right: 5px"><b>{{number_format($sql->ivpp_verif-$sql->pagado+$reajuste[0]->reajuste_actual,3,".",",")}}</b></td>
                 </tr>
                 <tr>
-                    <td colspan="4" ><b>Nota: Se considera sólo los trimestres vencidos {{$sql->anio_fis}}</b></td>
+                    <td colspan="4" ><b>Nota: Deuda se actualizatará a la fecha de pago</b></td>
                     <td colspan="5" style="text-align: center"><b>Total</b></td>
                     <td style="font-size: 0.7em; text-align: right; padding-right: 5px"><b>S/.{{number_format($sql->ivpp_verif-$sql->pagado+4.64,3,".",",")}}</b></td>
                 </tr>

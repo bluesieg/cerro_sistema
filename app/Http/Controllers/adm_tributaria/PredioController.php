@@ -343,7 +343,7 @@ class PredioController extends Controller
         if($tip=='PU'||$tip=='pu')
         {
             $sql=DB::table('adm_tri.vw_predi_urba')->where('id_pred_anio',$id)->get()->first();
-            $sql_pis    =DB::table('adm_tri.vw_pisos')->where('id_pred_anio',$id)->orderBy('num_pis')->get();
+            $sql_pis    =DB::table('adm_tri.vw_pisos')->where('id_pred_anio',$id)->orderBy('cod_piso')->get();
             $sql_ist    =DB::table('adm_tri.vw_instalaciones')->where('id_pred_anio',$id)->orderBy('cod_instal')->get();
             $sql_cond    =DB::table('adm_tri.vw_condominios')->where('id_pred_anio',$id)->orderBy('id_condom')->get();
             $foto = DB::connection('fotos')->select("select encode(foto,'base64') as foto from sect_".$sql->sec." where id_lote='".$sql->sec.$sql->mzna.$sql->lote."' limit 1");

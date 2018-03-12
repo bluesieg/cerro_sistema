@@ -49,18 +49,18 @@ function buscar_rd(tip)
     if(tip==2)
     {
         $("#table_sel_hojas").jqGrid("clearGridData", true);
-        jQuery("#table_sel_hojas").jqGrid('setGridParam', {url: 'trae_hojas_liq/'+$("#selantra").val()+'/'+$("#dlg_contri_carta_hidden").val()+'/0/0/0'}).trigger('reloadGrid');
+        jQuery("#table_sel_hojas").jqGrid('setGridParam', {url: 'trae_hojas_liq/'+$("#selantra").val()+'/'+$("#dlg_contri_hoja_hidden").val()+'/0/0/0/1'}).trigger('reloadGrid');
     }
     if(tip==3)
     {
         if($("#dlg_bus_num_hoja").val()=="")
         {
-            mostraralertasconfoco("Ingresar Numero","#dlg_bus_num_carta"); 
+            mostraralertasconfoco("Ingresar Numero","#dlg_bus_num_hoja"); 
             return false;
         }
         ajustar(6,'dlg_bus_num_hoja')
         num=$("#dlg_bus_num_hoja").val();
-        jQuery("#table_sel_hojas").jqGrid('setGridParam', {url: 'trae_hojas_liq/'+$("#selantra").val()+'/0/0/0/'+num}).trigger('reloadGrid');
+        jQuery("#table_sel_hojas").jqGrid('setGridParam', {url: 'trae_hojas_liq/'+$("#selantra").val()+'/0/0/0/'+num+'/1'}).trigger('reloadGrid');
     }
     if(tip==4)
     {
@@ -95,12 +95,56 @@ function fn_sel_hoja()
         hide:{ effect: "explode", duration: 800}, resizable: false,
         title: "<div class='widget-header'><h4><span class='widget-icon'> <i class='fa fa-align-justify'></i> </span> Crear Resolución de Determinación</h4></div>"
         }).dialog('open');
-        jQuery("#table_sel_hojas").jqGrid('setGridParam', {url: 'trae_hojas_liq/'+$("#selantra").val()+'/0/0/0/0'}).trigger('reloadGrid');
+        jQuery("#table_sel_hojas").jqGrid('setGridParam', {url: 'trae_hojas_liq/'+$("#selantra").val()+'/0/0/0/0/1'}).trigger('reloadGrid');
 }
-
+iniciar=0;
+function genera_rd(id)
+{
+    $("#dlg_motivacion").dialog({
+        autoOpen: false, modal: true, width: 1000, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.:  Ingresar Motivación :.</h4></div>",
+        buttons: [
+            {
+                id:"btnsave",
+                html: '<span class="btn-label"><i class="glyphicon glyphicon-new-window"></i></span>Grabar RD',
+                "class": "btn btn-labeled bg-color-green txt-color-white",
+                click: function () {valida_rd(id);}
+            },
+            {
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-primary bg-color-red",
+                click: function () {$(this).dialog("close");}
+            }]
+        }).dialog('open');
+        MensajeDialogLoadAjax('dlg_motivacion', '.:: CARGANDO ...');
+    $.ajax({url: 'get_motivacion_rd',
+        type: 'GET',
+        data:{hoja:id},
+        success: function(r) 
+        {
+            MensajeDialogLoadAjaxFinish('dlg_motivacion');
+            if(iniciar==0)
+            {
+                iniciar=1;
+                CKEDITOR.replace('ckeditor');
+            }
+            CKEDITOR.instances['ckeditor'].setData(r)
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            MensajeDialogLoadAjaxFinish('dlg_sel_hoja');
+            console.log('error');
+            console.log(data);
+        }
+        });
+    
+    
+    
+}
 
 function valida_rd(id)
 {
+   alert(id);
    if($("#per_new").val()==0)
    {
         sin_permiso();
@@ -129,21 +173,23 @@ function valida_rd(id)
 }
 function fn_save_rd(id)
 {
-    MensajeDialogLoadAjax('dlg_sel_hoja', '.:: CARGANDO ...');
+    var contenido = CKEDITOR.instances['ckeditor'].getData();
+    MensajeDialogLoadAjax('dlg_motivacion', '.:: CARGANDO ...');
         $.ajax({url: 'reso_deter/create',
         type: 'GET',
-        data:{hoja:id},
+        data:{hoja:id,moti:contenido},
         success: function(r) 
         {
-            MensajeDialogLoadAjaxFinish('dlg_sel_hoja');
+            MensajeDialogLoadAjaxFinish('dlg_motivacion');
             MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
             $("#dlg_sel_hoja").dialog("close");
+            $("#dlg_motivacion").dialog("close");
             buscar_rd(0);
             verrd(r);
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");
-            MensajeDialogLoadAjaxFinish('dlg_sel_hoja');
+            MensajeDialogLoadAjaxFinish('dlg_motivacion');
             console.log('error');
             console.log(data);
         }

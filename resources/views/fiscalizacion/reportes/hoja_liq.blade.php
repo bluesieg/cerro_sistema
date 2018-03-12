@@ -80,7 +80,7 @@
             y/o inquietud, debiendo según el caso adjuntar los documentos sustentatorios; de no encontrarse ninguna
             observación deberá efectuar el pago dentro del plazo ya señalado.<br>
             La presente se emite facultativamente conforme al párrafo segundo del Art. 75° parte final del Código
-            Tributario(DS 135-99-EF).<br>
+            Tributario(DS 133-2013-EF).<br>
             Vencido el plazo establecido,se procederá a la emisión de los Títulos de Ejecución correspondientes, tales como
             Resoluciones de Determinación y Resolución de Multa. La presente se emite por los Tributos y 
             periodos que se indican cuyo monto se ha actualizado a la fecha de la presente liquidación<br>
@@ -116,8 +116,8 @@
                     <td style="font-size: 0.7em; text-align: right; padding-right: 5px">{{number_format($sql->pagado,3,".",",")}}</td>
                     <td style="font-size: 0.7em; text-align: right; padding-right: 5px">{{number_format($sql->ivpp_verif-$sql->pagado,3,".",",")}}</td>
                     <td style="font-size: 0.7em; text-align: right; padding-right: 5px">{{number_format($sql->ivpp_verif-$sql->pagado,3,".",",")}}</td>
-                    <td style="font-size: 0.7em; text-align: right; padding-right: 5px">4.64</td>
-                    <td style="font-size: 0.7em; text-align: right; padding-right: 5px">{{number_format($sql->ivpp_verif-$sql->pagado+4.64,3,".",",")}}</td>
+                    <td style="font-size: 0.7em; text-align: right; padding-right: 5px">{{$reajuste[0]->reajuste_actual}}</td>
+                    <td style="font-size: 0.7em; text-align: right; padding-right: 5px">{{number_format($sql->ivpp_verif-$sql->pagado+$reajuste[0]->reajuste_actual,3,".",",")}}</td>
                 </tr>
                 <tr>
                     <td colspan="4" style="text-align: center"><b>Sub Total</b></td>
@@ -125,11 +125,11 @@
                     <td style="font-size: 0.7em; text-align: right; padding-right: 5px"><b>{{number_format($sql->pagado,3,".",",")}}</b></td>
                     <td style="font-size: 0.7em; text-align: right; padding-right: 5px"><b>{{number_format($sql->ivpp_verif-$sql->pagado,3,".",",")}}</b></td>
                     <td style="font-size: 0.7em; text-align: right; padding-right: 5px"><b>{{number_format($sql->ivpp_verif-$sql->pagado,3,".",",")}}</b></td>
-                    <td style="font-size: 0.7em; text-align: right; padding-right: 5px"><b>4.64</b></td>
-                    <td style="font-size: 0.7em; text-align: right; padding-right: 5px"><b>{{number_format($sql->ivpp_verif-$sql->pagado+4.64,3,".",",")}}</b></td>
+                    <td style="font-size: 0.7em; text-align: right; padding-right: 5px"><b>{{$reajuste[0]->reajuste_actual}}</b></td>
+                    <td style="font-size: 0.7em; text-align: right; padding-right: 5px"><b>{{number_format($sql->ivpp_verif-$sql->pagado+$reajuste[0]->reajuste_actual,3,".",",")}}</b></td>
                 </tr>
                 <tr>
-                    <td colspan="4" ><b>Nota: Se considera sólo los trimestres vencidos {{$sql->anio_fis}}</b></td>
+                    <td colspan="4" ><b>Nota: Deuda se actualizará a la fecha de pago</b></td>
                     <td colspan="5" style="text-align: center"><b>Total</b></td>
                     <td style="font-size: 0.7em; text-align: right; padding-right: 5px"><b>S/.{{number_format($sql->ivpp_verif-$sql->pagado+4.64,3,".",",")}}</b></td>
                 </tr>
@@ -138,7 +138,7 @@
         <div style="width: 100%; text-align: justify; font-size: 1.0em; margin-top: 10px;">
             <b>Base Legal:</b><br>
             D. Leg.776(DS 156-2004-EF TUO) y modificada Ley de Tributación Municipal.<br>
-            D. Sup. 135-99-EF Texto Único ordenado en Código Tributario.<br>
+            D. Sup. 133-2013-EF Texto Único ordenado en Código Tributario.<br>
             Resoluciones Directorales N° 296-2009- VIVIENDA (30-OCT 2009), 175-OCT 2010 VIVIENDA (29-OCT 2010),
             220-2001 VIVIENDA(30-OCT 2011).<BR>
             Los Intereses se calculan hasta el día de su cancelación; la tasa vigente de interes es del 1.2% mensual

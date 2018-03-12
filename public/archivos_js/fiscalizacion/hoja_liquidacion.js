@@ -39,12 +39,12 @@ function buscar_carta(tip)
     if(tip==0)
     {
         $("#table_hojas").jqGrid("clearGridData", true);
-        jQuery("#table_hojas").jqGrid('setGridParam', {url: 'trae_hojas_liq/'+$("#selantra").val()+'/0/0/0/0'}).trigger('reloadGrid');
+        jQuery("#table_hojas").jqGrid('setGridParam', {url: 'trae_hojas_liq/'+$("#selantra").val()+'/0/0/0/0/0'}).trigger('reloadGrid');
     }
     if(tip==1)
     {
         $("#table_hojas").jqGrid("clearGridData", true);
-        jQuery("#table_hojas").jqGrid('setGridParam', {url: 'trae_hojas_liq/'+$("#selantra").val()+'/'+$("#dlg_contri_hidden").val()+'/0/0/0'}).trigger('reloadGrid');
+        jQuery("#table_hojas").jqGrid('setGridParam', {url: 'trae_hojas_liq/'+$("#selantra").val()+'/'+$("#dlg_contri_hidden").val()+'/0/0/0/0'}).trigger('reloadGrid');
     }
     if(tip==2)
     {
@@ -71,7 +71,7 @@ function buscar_carta(tip)
         }
         ajustar(6,'dlg_bus_num')
         num=$("#dlg_bus_num").val();
-        jQuery("#table_hojas").jqGrid('setGridParam', {url: 'trae_hojas_liq/'+$("#selantra").val()+'/0/0/0/'+num}).trigger('reloadGrid');
+        jQuery("#table_hojas").jqGrid('setGridParam', {url: 'trae_hojas_liq/'+$("#selantra").val()+'/0/0/0/'+num+'/0'}).trigger('reloadGrid');
     }
     if(tip==5)
     {
@@ -82,7 +82,7 @@ function buscar_carta(tip)
         }
         ini=$("#dlg_bus_fini").val().replace(/\//g,"-");
         fin=$("#dlg_bus_ffin").val().replace(/\//g,"-");
-        jQuery("#table_hojas").jqGrid('setGridParam', {url: 'trae_hojas_liq/0/0/'+ini+'/'+fin+'/0'}).trigger('reloadGrid');
+        jQuery("#table_hojas").jqGrid('setGridParam', {url: 'trae_hojas_liq/0/0/'+ini+'/'+fin+'/0/0'}).trigger('reloadGrid');
     }
 }
 function fn_sel_carta()
@@ -165,6 +165,7 @@ function fn_confirmar_hoja()
             }
     });
 }
+
 function fn_save_hoja()
 {
     Id=$('#table_sel_cartas').jqGrid ('getGridParam', 'selrow');
@@ -200,6 +201,64 @@ function fn_save_hoja()
             console.log(data);
         }
         });
+}
+function fn_anu_hoja()
+{
+     $.SmartMessageBox({
+            title : "Confirmación Final!",
+            content : "Está por Anular esta Hja de Liquidación, Seguro que deseea Anular?, esto no podra ser modificado...",
+            buttons : '[Cancelar][Aceptar]'
+    }, function(ButtonPressed) {
+            if (ButtonPressed === "Aceptar") {
+
+                    anula_hoja();
+            }
+            if (ButtonPressed === "Cancelar") {
+                    $.smallBox({
+                            title : "No se Anuló",
+                            content : "<i class='fa fa-clock-o'></i> <i>Puede Corregir...</i>",
+                            color : "#C46A69",
+                            iconSmall : "fa fa-times fa-2x fadeInRight animated",
+                            timeout : 3000
+                    });
+            }
+    });
+
+   
+}
+function anula_hoja()
+{
+     Id=$('#table_hojas').jqGrid ('getGridParam', 'selrow');
+    if(Id>0)
+    {
+        MensajeDialogLoadAjax('table_hojas', '.:: CARGANDO ...');
+        $.ajax({url: 'anular_hoja',
+        type: 'GET',
+        data:{hoja:Id},
+        success: function(r) 
+        {
+            if(r==0)
+            {
+                MensajeAlerta("No se puede anular","Ya fue creada una RD",4000);
+            }
+            else
+            {
+                $('#table_hojas').trigger( 'reloadGrid' );
+            }
+            MensajeDialogLoadAjaxFinish('table_hojas');
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            MensajeDialogLoadAjaxFinish('table_hojas');
+            console.log('error');
+            console.log(data);
+        }
+        });
+    }
+    else
+    {
+        MensajeAlerta("No hay selección","Seleccione Hoja de Liquidacion...",4000);
+    }
 }
 function verhoja(id)
 {
@@ -266,4 +325,58 @@ function save_hl_fec_noti()
         sin_permiso();
     }
 
+}
+function gen_deuda(id_hoja)
+{
+    $.SmartMessageBox({
+            title : "Confirmación Final!",
+            content : "Está por enviar la Deuda al Estado de Cuenta, Está Seguro?",
+            buttons : '[Cancelar][Aceptar]'
+    }, function(ButtonPressed) {
+            if (ButtonPressed === "Aceptar") {
+
+                  fn_crear_deuda(id_hoja);
+            }
+            if (ButtonPressed === "Cancelar") {
+                    $.smallBox({
+                            title : "No se Guardo",
+                            content : "<i class='fa fa-clock-o'></i> <i>Puede Corregir...</i>",
+                            color : "#C46A69",
+                            iconSmall : "fa fa-times fa-2x fadeInRight animated",
+                            timeout : 3000
+                    });
+            }
+    });
+}
+function fn_crear_deuda(hoja)
+{
+    MensajeDialogLoadAjax('table_hojas', '.:: CARGANDO ...');
+    $.ajax({url: 'gen_deu_hoja',
+       type: 'GET',
+       data:{id:hoja},
+       success: function(r) 
+       {
+           if(r==0)
+           {
+                MensajeAlerta("No se creó Deuda","la Hoja de Liquidación está anulada..",4000);
+                MensajeDialogLoadAjaxFinish('table_hojas');
+                return false
+           }
+           if(r==-1)
+           {
+                MensajeAlerta("No se creó Deuda","Ya se creó una RD..",4000);
+                MensajeDialogLoadAjaxFinish('table_hojas');
+                return false;
+           }
+           $('#table_hojas').trigger( 'reloadGrid' );
+           MensajeExito("Modificó Creó Deuda","Su Registro Fue Modificado con Éxito...",4000);
+           MensajeDialogLoadAjaxFinish('table_hojas');
+       },
+       error: function(data) {
+           MensajeAlerta("No Modificó Correctamente","Contacte con el Administrador..",4000);
+           MensajeDialogLoadAjaxFinish('dlg_fec_notificacion');
+           console.log('error');
+           console.log(data);
+       }
+       }); 
 }

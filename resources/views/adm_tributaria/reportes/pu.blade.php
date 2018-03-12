@@ -223,6 +223,8 @@
           <tr>
               <td>{{$inst->cod_instal}}</td>
               <td style="font-size:0.6em;">{{substr($inst->descrip_instal,0,30)}} ; {{$inst->glosa}}</td>
+              @if($inst->anio>0)
+              
               <td style="text-align: center">{{$inst->anio}}</td>
               <td style="text-align: center">{{$inst->mep}}</td>
               <td style="text-align: center">{{$inst->ecs}}</td>
@@ -231,6 +233,16 @@
               <td style="text-align: right;padding-right: 5px;">{{$inst->dim_anch}}</td>
               <td style="text-align: right;padding-right: 5px;">{{$inst->dim_alt}}</td>
               <td style="text-align: center">{{$inst->unid_medida}}</td>
+              @else
+              <td style="text-align: center"></td>
+              <td style="text-align: center"></td>
+              <td style="text-align: center"></td>
+              <td style="text-align: center"></td>
+              <td style="text-align: right;padding-right: 5px;"></td>
+              <td style="text-align: right;padding-right: 5px;"></td>
+              <td style="text-align: right;padding-right: 5px;"></td>
+              <td style="text-align: center"></td>
+              @endif
               <td style="text-align: right;padding-right: 5px;">{{$inst->tot_inst}}</td>
               
               

@@ -55,7 +55,7 @@ class Ficha_verificacionController extends Controller
         $ficha->id_est_const=$request['ecc'];
         $ficha->id_tip_pred=$request['tp'];
         $ficha->arancel=$request['arcancel'];
-        
+        $ficha->id_usuario = Auth::user()->id;
         if($request['tip_pre_u_r']=="RUS")
         {
             $ficha->tip_pre_u_r=2;
@@ -97,7 +97,7 @@ class Ficha_verificacionController extends Controller
 
     public function edit($id,Request $request)
     {
-        $nro_hojas=DB::table('fiscalizacion.vw_hoja_liquidacion')->where('id_car',$request['carta'])->get();
+        $nro_hojas=DB::table('fiscalizacion.vw_hoja_liquidacion')->where('id_car',$request['carta'])->where('flg_anu',0)->get();
         if(count($nro_hojas)>0)
         {
             return 0;

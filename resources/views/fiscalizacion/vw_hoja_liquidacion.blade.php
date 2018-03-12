@@ -3,6 +3,7 @@
 <input type="hidden" id="per_imp" value="{{$permisos[0]->btn_imp}}"/>
 <input type="hidden" id="per_edit" value="{{$permisos[0]->btn_edit}}"/>
 <input type="hidden" id="per_new" value="{{$permisos[0]->btn_new}}"/>
+<input type="hidden" id="per_anu" value="{{$permisos[0]->btn_anu}}"/>
 <section id="widget-grid" class=""> 
     <div class='cr_content col-xs-12 '>
         <div class="col-xs-9">
@@ -140,6 +141,21 @@
                     </button>
                     <label><b>Nuevo</b></label>
                 @endif
+                @if( $permisos[0]->btn_anu ==1 )
+                    <button class="btn bg-color-red txt-color-white btn-circle btn-xl" onclick="fn_anu_hoja();" >
+                        <span  >
+                            <i class="glyphicon glyphicon-plus"></i>
+                        </span>
+                    </button>
+                    <label><b>Anular</b></label>
+                @else
+                    <button class="btn bg-color-red txt-color-white btn-circle btn-xl" onclick="sin_permiso();" >
+                        <span  >
+                            <i class="glyphicon glyphicon-plus"></i>
+                        </span>
+                    </button>
+                    <label><b>Anular</b></label>
+                @endif
             </div>
             </div>
     </div>
@@ -151,22 +167,26 @@
         $("#menu_fisca").show();
         $("#li_hoja_liq").addClass('cr-active')
         jQuery("#table_hojas").jqGrid({
-            url: 'trae_hojas_liq/'+$("#selantra").val()+'/0/0/0/0',
+            url: 'trae_hojas_liq/'+$("#selantra").val()+'/0/0/0/0/0',
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_hoja_liq', 'N° Hoja Liq.', 'contribuyente', 'Carta Req. Relacionada','Registro','Notificación','Días Plazo','Días Trasncurridos','Ver'],
+            colNames: ['id_hoja_liq', 'N° Hoja Liq.', 'contribuyente', 'Carta Req. Relacionada','Registro','Notificación','Días Plazo','Días Trasncurridos','Ver','RD','gen Rd','Deuda','Anulado'],
             rowNum: 20, sortname: 'id_hoja_liq', sortorder: 'desc', viewrecords: true, caption: 'Hojas de Liquidación', align: "center",
             colModel: [
                 {name: 'id_hoja_liq', index: 'id_hoja_liq', hidden: true},
-                {name: 'nro_hoja', index: 'nro_hoja', align: 'center', width: 8},
-                {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 30},
-                {name: 'nro_car', index: 'nro_car', align: 'center', width: 10},
+                {name: 'nro_hoja', index: 'nro_hoja', align: 'center', width: 6},
+                {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 28},
+                {name: 'nro_car', index: 'nro_car', align: 'center', width: 6},
                 {name: 'fec_reg', index: 'fec_reg', align: 'center', width: 8},
                 {name: 'fecha_notificacion', index: 'fecha_notificacion', align: 'center', width: 18},
                 {name: 'dia_plazo', index: 'dia_plazo', align: 'center', width: 8},
                 {name: 'dias', index: 'dias', align: 'center', width: 8},
                 {name: '', index: '', align: 'center', width: 10},
+                {name: '', index: '', hidden: true},
+                {name: '', index: '', hidden: true},
+                {name: '', index: '', align: 'center', width: 16},
+                {name: 'flg_anu', index: 'flg_anu', align: 'center', width: 5},
             ],
             pager: '#pager_table_hojas',
             rowList: [20, 50],

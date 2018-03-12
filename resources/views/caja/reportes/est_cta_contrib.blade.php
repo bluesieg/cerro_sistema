@@ -79,10 +79,11 @@
                         <th align="center" width="10%" style="font-size:0.8em">Base Imponible</th>
                         <th align="center" width="10%" style="font-size:0.8em">Formularios</th>
                         <th align="center" width="10%" style="font-size:0.8em">Impuesto Predial</th>
-                        <th align="center" width="10%" style="font-size:0.8em">Reajuste</th>
-                        <th align="center" width="10%" style="font-size:0.8em">Interes Impuesto</th>
+                        <th align="center" width="5%" style="font-size:0.8em">Reajuste</th>
+                        <th align="center" width="5%" style="font-size:0.8em">TIM</th>
                         <th align="center" width="10%" style="font-size:0.8em">Multa DJ</th>
                         <th align="center" width="10%" style="font-size:0.8em">Interes Multa</th>
+                        <th align="center" width="10%" style="font-size:0.8em">RD IP</th>
                         <th align="center" width="10%" style="font-size:0.8em">Arbitrios Municipales</th>
                         <th align="center" width="10%" style="font-size:0.8em">Descuento Arbitrios</th>
                         <th align="center" width="10%" style="font-size:0.8em">Interes Arbitrios</th>
@@ -100,6 +101,7 @@
                         <td style="text-align: right">{{ number_format($pred->interes_impuesto,2,'.',',') }}</td>
                         <td style="text-align: right">{{ number_format($pred->multa_dj,2,'.',',') }}</td>
                         <td style="text-align: right">{{ number_format($pred->interes_multa,2,'.',',') }}</td>
+                        <td style="text-align: right">{{ substr($pred->nro_rd,-4)."-".$pred->anio}}</td>
                         <td style="text-align: right">{{ number_format($pred->tot_arbitrios,2,'.',',') }}</td>
                         <td style="text-align: right">{{ number_format($pred->descuento_arbit,2,'.',',') }}</td>
                         <td style="text-align: right">{{ number_format($pred->interes_arbit,2,'.',',')  }}</td>
@@ -120,6 +122,7 @@
                         <td style="text-align: right"><b>{{ number_format($suma_total->arbitrios_municipales,2,'.',',') }}</b></td>
                         <td style="text-align: right"><b>{{ number_format($suma_total->descuento_arbitrios,2,'.',',') }}</b></td>
                         <td style="text-align: right"><b>{{ number_format($suma_total->interes_arbitrios,2,'.',',')  }}</b></td>
+                        <td></td>
                         <td style="text-align: right"><b>{{ number_format($suma_total->total,2,'.',',')  }}</b></td>
                     </tr>
                     @endforeach                                     

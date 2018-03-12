@@ -61,7 +61,7 @@
         </b>
         <div style="width: 100%; text-align: justify; font-size: 0.9em; margin-top: 0px;">
             Previo saludo, vecino cotribuyente, de conformidad con el Capítulo II Art. 60° 61° y 62° del Texto Único Ordenado del Código
-            Tributario aprobado por el D.S. 133-03-EF y en concordancia con la Ley N° 27972 y el D.S. N° 156-2004-EF, TUO de la Ley de Tributación
+            Tributario aprobado por el D.S. 133-2013-EF y en concordancia con la Ley N° 27972 y el D.S. N° 156-2004-EF, TUO de la Ley de Tributación
             Municipal, se le comunica que el día {{$sql->fec_fis}} a Horas {{$sql->hora_fis}}, se constituirá un
             equipo de fiscalizadores integrados por: 
             @foreach ($fiscalizadores as $fis)
@@ -136,7 +136,7 @@
             Los documentos requeridos y <b>No</b> presentados o exhibidos en la etapa de fiscalización no serán admitidos como medios probatorios en
             un eventual reclamo por parte del contribuyente de conformidad con el Art. 141° del Código Tributario. Este pedido se realizara en uso
             de las facultades discrecionales de fiscalización que posee la Administración Tributaria y que se encuentran reguladas en el Art. 62° del 
-            TUO del Código Tributario aprobado por el D.S. 133-03-EF y modificatorias. Asimismo le informamos que en caso que usted no pueda
+            TUO del Código Tributario aprobado por el D.S. 133-2013-EF y modificatorias. Asimismo le informamos que en caso que usted no pueda
             estar presente, podrá nombrar a un representante que acompañe y verifique el proceso de inspección.<br>
             También la Administración Tributaria de la Municipalidad Distrital de Cerro Colorado, se encuentra facultada a exigir al contribuyente
             citado, la exhibición y/o presentación de informes y análisis relacionados con hechos susceptibles de generar obligaciones tributarias
@@ -145,6 +145,7 @@
             Atentamente.-
             
         </div>
+        <div style="page-break-before:always;"></div>
         <div style="width: 100%; text-align: justify; font-size: 1.0em; margin-top:10px; padding-top: 10px;border-top: 2px solid black;">
             <center><span><b>ACTA DE NOTIFICACION</b></span></center>
                     <br>

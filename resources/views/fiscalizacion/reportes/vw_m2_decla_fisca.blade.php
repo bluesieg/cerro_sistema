@@ -98,7 +98,21 @@
                 </tr>
                 
             @endforeach
-
+            <tr>
+                <td colspan="5" class="text-align-right" style="text-align: right;">Total:</td>
+                <td style="text-align: center;padding: 0px">
+                    {{$sql->sum('are_terr') - $sql->sum('are_terr_declarado')}} m2 <br>
+                    @if($sql->sum('hectareas')-$sql->sum('are_terr_declarado')>0)
+                    {{$sql->sum('hectareas')-$sql->sum('are_terr_declarado') }}  hec
+                    @else
+                        0 hec
+                    @endif
+                </td>
+                <td style="text-align: center;padding: 0px">
+                    {{$sql->sum('are_const_fis') - $sql->sum('are_const_declar')}} m2
+                    
+                </td>
+            </tr> 
             </tbody>
         </table>
     </div>

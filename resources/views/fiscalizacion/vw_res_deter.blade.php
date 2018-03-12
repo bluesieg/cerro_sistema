@@ -145,10 +145,12 @@
     </div>
 </section>
 @section('page-js-script')
+<script src="js/plugin/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
     $(document).ready(function (){
         $("#menu_fisca").show();
-        $("#li_reso_deter").addClass('cr-active')
+        $("#li_reso_deter").addClass('cr-active');
+        
         jQuery("#table_rd").jqGrid({
             url: 'trae_rd/'+$("#selantra").val()+'/0/0/0/0',
             datatype: 'json', mtype: 'GET',
@@ -177,7 +179,7 @@
             ondblClickRow: function (Id){}
         });
         jQuery("#table_sel_hojas").jqGrid({
-            url: 'trae_hojas_liq/'+$("#selantra").val()+'/0/0/0/0',
+            url: 'trae_hojas_liq/'+$("#selantra").val()+'/0/0/0/0/1',
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
@@ -238,7 +240,7 @@
                     }
                 },
             onSelectRow: function (Id){},
-            ondblClickRow: function (Id){fn_bus_lis_hl(Id)}
+            ondblClickRow: function (Id){fn_bus_lis_rd(Id)}
         });
         
      
@@ -286,6 +288,7 @@
 </script>
 @stop
 <script src="{{ asset('archivos_js/fiscalizacion/res_deter.js') }}"></script>
+
 <div id="dlg_bus_contr" style="display: none;">
     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; margin-bottom: 10px; padding: 0px !important">
         <table id="table_contrib"></table>
@@ -315,7 +318,7 @@
                         </div>
                     </div>
                     <div class='col-lg-2'style="padding: 0px;" >
-                        <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="buscar_carta(3)">
+                        <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="buscar_rd(3)">
                             <span class="btn-label"><i class="glyphicon glyphicon-search"></i></span>Buscar
                         </button>
                     </div>
@@ -373,6 +376,21 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div> 
+	
+
+<div id="dlg_motivacion" style="display: none;">
+    
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
+        <div class="col-xs-12 cr-body" style="padding-left: 0px;padding-right: 10px;" >
+            <div class="col-xs-12" style="padding: 0px; margin-top: 0px;">
+                <textarea name="ckeditor" id="ckeditor" >
+                    Este es el textarea que es modificado por la clase ckeditor
+                </textarea> 
+               
             </div>
         </div>
     </div>

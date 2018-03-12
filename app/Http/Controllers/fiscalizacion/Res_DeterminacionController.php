@@ -35,10 +35,13 @@ class Res_DeterminacionController extends Controller
         $rd->id_hoja_liq=$request['hoja'];
         $rd->fec_reg=date("d/m/Y");
         $rd->anio=date("Y");
-        $rd->id_usuario=Auth::user()->id;;
+        $rd->txt_motivacion=str_replace("</p>","<br>",str_replace("<p>", "", $request['moti']));
+        $rd->id_usuario=Auth::user()->id;
         $rd->save();
-        $id_pred_anio=$this->create_predio_fis($rd->id_rd);
-        $this->calculos_ivpp($id_pred_anio);
+        $cuenta=DB::select("select * from fiscalizacion.vw_resolucion_determinacion where id_rd =".$rd->id_rd);
+        $id_tributo = DB::select("select id_tributo from presupuesto.vw_impuesto_predial where anio =".$cuenta[0]->anio_fis);
+        DB::select("update adm_tri.cta_cte set id_rd=".$rd->id_rd." where id_pers=".$cuenta[0]->id_contrib." and ano_cta='".$cuenta[0]->anio_fis."' and id_tribu=".$id_tributo[0]->id_tributo);
+        $this->create_predio_fis($rd->id_rd);
         return $rd->id_rd;
     }
     public function calculos_ivpp($id)
@@ -68,6 +71,7 @@ class Res_DeterminacionController extends Controller
                 }
                 $this->create_pisos($pre->id_fic,$id_pred_anio);
                 $this->create_instalaciones($pre->id_fic,$id_pred_anio);
+                $this->calculos_ivpp($id_pred_anio);
                 
             }
         }
@@ -314,7 +318,8 @@ class Res_DeterminacionController extends Controller
             $sql->letras = $this->num_letras($sql->ivpp_verif-$sql->pagado+4.64);
             $sql->fec_reg=$this->getCreatedAtAttribute($sql->fec_reg)->format('l d \d\e F \d\e\l Y ');
             $sql->fec_carta=$this->getCreatedAtAttribute($sql->fec_carta)->format('l d \d\e F \d\e\l Y ');
-            $view =  \View::make('fiscalizacion.reportes.rd', compact('sql','fichas','predios'))->render();
+            $reajuste = DB::select('select * from adm_tri.reajuste_actual()');
+            $view =  \View::make('fiscalizacion.reportes.rd', compact('sql','fichas','predios','reajuste'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("rd.pdf");
@@ -443,5 +448,21 @@ class Res_DeterminacionController extends Controller
             $val->save();
         }
         return $request['id'];
+    }
+    public function get_motivacion_rd(Request $request)
+    {
+        $sql    =DB::table('fiscalizacion.vw_hoja_liquidacion')->where('id_hoja_liq',$request['hoja'])->get()->first();
+        if(count($sql)>=1)
+        {
+            $fichas    =DB::table('fiscalizacion.vw_ficha_verificacion')->where('id_car',$sql->id_car)->get();
+            $sql->fec_carta=$this->getCreatedAtAttribute($sql->fec_carta)->format('l d \d\e F \d\e\l Y ');
+            $html='Que, habiendose realizado el respectivo proceso de fiscalización iniciado con la Carta de Requerimiendo N° '.$sql->nro_car.'-'.$sql->anio_carta.'-SGFT-GAT-MDCC, la misma que fue notificada el '.$sql->fec_carta.'; la verificación realizada in situ en fechas '.$sql->dias_fisca.'; realizando acciones de medición al área construida, categorización de la edificación, su clasificación, estado de conservación y medición y valorización de obras complementarias fijas y permanentes, toma de fotografías, todo ello contenido en Fichas de Inspección N°';
+            foreach($fichas as $fic)
+            {
+                $html.=" ".$fic->nro_fic.",";
+            }
+            $html.=' Culminando el proceso de Fiscalización se ha detectado que no ha cumplido on sus obligaciones formales y sustanciales motivo por el cual se emite la presente Resolución de Determinación.';
+            return $html;
+        }
     }
 }

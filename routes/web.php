@@ -422,14 +422,17 @@ Route::group(['middleware' => 'auth'], function() {
         ////// hoja de liquidación
         Route::resource('hoja_liquidacion', 'Hoja_liquidacionController');
         Route::get('hoja_liq_rep/{id}', 'Hoja_liquidacionController@hoja_repo'); //
-        Route::get('trae_hojas_liq/{an}/{contr}/{ini}/{fin}/{num}', 'Hoja_liquidacionController@get_hojas_liq'); //
+        Route::get('trae_hojas_liq/{an}/{contr}/{ini}/{fin}/{num}/{rd}', 'Hoja_liquidacionController@get_hojas_liq'); //
         Route::get('mod_noti_hoja','Hoja_liquidacionController@edit_hoja_fec');
+        Route::get('anular_hoja','Hoja_liquidacionController@anu_hoja');
+        Route::get('gen_deu_hoja','Hoja_liquidacionController@generar_deuda');
 
         /////// resolucion de determinación
         Route::resource('reso_deter', 'Res_DeterminacionController');
         Route::get('rd_rep/{id}', 'Res_DeterminacionController@rd_repo');
         Route::get('trae_rd/{an}/{contr}/{ini}/{fin}/{num}', 'Res_DeterminacionController@get_rd'); //
         Route::get('mod_noti_rd','Res_DeterminacionController@edit_rd_fec');
+        Route::get('get_motivacion_rd','Res_DeterminacionController@get_motivacion_rd');
         /////// coactiva
         Route::get('env_rd_coactiva','EnvRD_CoactivaController@vw_env_rd_coa');
         Route::get('fisca_get_rd','EnvRD_CoactivaController@fis_get_RD');
@@ -437,7 +440,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('mod_noti_carta','Carta_RequerimientoController@edit_carta_fec');
         ////
         Route::get('reportes_fisca','Res_DeterminacionController@reportes');
-        Route::get('ver_rep_fisca','Res_DeterminacionController@ver_reportes');
+        Route::get('ver_rep_fisca/{tip}/{anio}/{contrib}','Res_DeterminacionController@ver_reportes');
         Route::get('ver_rep_estado_hoja_liq/{id}/{anio}/{estado}','Res_DeterminacionController@ver_reporte_estado_hl');
 
         
