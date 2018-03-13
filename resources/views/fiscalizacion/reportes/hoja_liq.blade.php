@@ -29,7 +29,13 @@
             
         </table>
         
-        <center><div Class="asunto" style="margin-top: 10px;"><b>Hoja de Liquidación de Deuda Tributaria (Reparo) N° {{$sql->nro_hoja}}-{{$sql->anio}}-SGFT-GAT-MDCC</b></div></center>
+        <center><div Class="asunto" style="margin-top: 10px;">
+                @if($sql->flg_anu==0)
+                <b>Hoja de Liquidación de Deuda Tributaria (Reparo) N° {{$sql->nro_hoja}}-{{$sql->anio}}-SGFT-GAT-MDCC</b>
+                @else
+                <b>ANULADO</b>
+                @endif
+            </div></center>
         <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px;">Cerro Colorado, {{$sql->fec_reg}}</div>
 
         <table style="margin-top: 10px; margin-bottom: 10px !important; border-bottom: 1px solid black">

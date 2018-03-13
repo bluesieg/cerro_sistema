@@ -115,6 +115,11 @@
                     </button>
                 </div>
             </div>
+            <div class='col-xs-12'style="padding: 0px; margin-top: 5px" >
+                <button type="button" class="btn btn-labeled bg-color-red txt-color-white" onclick="imp_pdf_sistema()">
+                    <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir Acta de Inspección Predial no realizada
+                </button>
+            </div>
         </div>
     </div>
     <div class='cr_content col-xs-12'>
@@ -496,6 +501,11 @@
     </div>
     
 </div> 
+<div id="dlg_ifram_pdf" style="display: none;">
+    <iframe style="width: 100%; height: 600px" id="ifr_pdf">
+        
+    </iframe>
+</div>
 
 @endsection
 

@@ -506,3 +506,18 @@ function save_cr_fec_noti()
     }
 
 }
+function imp_pdf_sistema()
+{
+    $("#dlg_ifram_pdf").dialog({
+        autoOpen: false, modal: true, width:800, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.:  Imprimir Documentos :.</h4></div>"       
+        }).dialog('open');
+        MensajeDialogLoadAjax('ifr_pdf', '.:: Cargando ...');
+    var iFrameObj = document.getElementById('ifr_pdf'); 
+    iFrameObj.src = "img/recursos/pdfs/acta_ins_no_realizada.pdf"; 
+    
+    $(iFrameObj).load(function() 
+    { 
+        MensajeDialogLoadAjaxFinish('ifr_pdf');
+    });
+}

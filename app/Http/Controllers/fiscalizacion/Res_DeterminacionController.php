@@ -41,7 +41,8 @@ class Res_DeterminacionController extends Controller
         $cuenta=DB::select("select * from fiscalizacion.vw_resolucion_determinacion where id_rd =".$rd->id_rd);
         $id_tributo = DB::select("select id_tributo from presupuesto.vw_impuesto_predial where anio =".$cuenta[0]->anio_fis);
         DB::select("update adm_tri.cta_cte set id_rd=".$rd->id_rd." where id_pers=".$cuenta[0]->id_contrib." and ano_cta='".$cuenta[0]->anio_fis."' and id_tribu=".$id_tributo[0]->id_tributo);
-        $this->create_predio_fis($rd->id_rd);
+        $id_pred_anio=$this->create_predio_fis($rd->id_rd);
+        $this->calculos_ivpp($id_pred_anio);
         return $rd->id_rd;
     }
     public function calculos_ivpp($id)
@@ -71,7 +72,7 @@ class Res_DeterminacionController extends Controller
                 }
                 $this->create_pisos($pre->id_fic,$id_pred_anio);
                 $this->create_instalaciones($pre->id_fic,$id_pred_anio);
-                $this->calculos_ivpp($id_pred_anio);
+                
                 
             }
         }
@@ -336,11 +337,36 @@ class Res_DeterminacionController extends Controller
         $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
         return view('fiscalizacion/vw_reportes',compact('anio_tra','menu','permisos'));
     }
-    public function ver_reportes($tipo,$anio,$contrib)
+    public function ver_reportes($tipo,$anio,$contrib,$zona,$tip_pred)
     {
+        // contribuyente, deuda,
+        //generacion de planillas RD- remitidas a coactiva
         if($tipo==1)
         {
-            $sql    =DB::table('fiscalizacion.vw_ficha_verificacion')->where('anio',$anio)->orderBy('nro_fic')->get();
+            
+            if($zona==0)
+            {
+                if($tip_pred>0)
+                {
+                    $sql=DB::table('fiscalizacion.vw_ficha_verificacion')->where('anio',$anio)->where('tip_pre_u_r',$tip_pred)->orderBy('nro_fic')->get();
+                }
+                else
+                {
+                    $sql=DB::table('fiscalizacion.vw_ficha_verificacion')->where('anio',$anio)->orderBy('nro_fic')->get();
+                }
+            }
+            else
+            {
+                if($tip_pred>0)
+                {
+                    $sql=DB::table('fiscalizacion.vw_ficha_verificacion')->where('anio',$anio)->where('id_hab_urb',$zona)->where('tip_pre_u_r',$tip_pred)->orderBy('nro_fic')->get();
+                }
+                else
+                {
+                    $sql=DB::table('fiscalizacion.vw_ficha_verificacion')->where('anio',$anio)->where('id_hab_urb',$zona)->orderBy('nro_fic')->get();
+                }
+                
+            }
             $name =Auth::user()->ape_nom;
             if(count($sql)>=1)
             {
@@ -358,11 +384,54 @@ class Res_DeterminacionController extends Controller
         {
             if($contrib==0)
             {
-                $sql    =DB::table('fiscalizacion.vw_ficha_verificacion')->where('anio',$anio)->orderBy('nro_fic')->get();
+                if($zona==0)
+                {
+                    if($tip_pred>0)
+                    {
+                        $sql    =DB::table('fiscalizacion.vw_ficha_verificacion')->where('anio',$anio)->where('tip_pre_u_r',$tip_pred)->orderBy('nro_fic')->get();
+                    }
+                    else
+                    {
+                        $sql    =DB::table('fiscalizacion.vw_ficha_verificacion')->where('anio',$anio)->orderBy('nro_fic')->get();
+                    }
+                }
+                else
+                {
+                    if($tip_pred>0)
+                    {
+                        $sql    =DB::table('fiscalizacion.vw_ficha_verificacion')->where('anio',$anio)->where('id_hab_urb',$zona)->where('tip_pre_u_r',$tip_pred)->orderBy('nro_fic')->get();
+                    }
+                    else
+                    {
+                        $sql    =DB::table('fiscalizacion.vw_ficha_verificacion')->where('anio',$anio)->where('id_hab_urb',$zona)->orderBy('nro_fic')->get();
+                    }
+                    
+                }
             }
             else
             {
-                $sql    =DB::table('fiscalizacion.vw_ficha_verificacion')->where('anio',$anio)->where('id_contrib',$contrib)->orderBy('nro_fic')->get();
+                if($zona==0)
+                {
+                    if($tip_pred>0)
+                    {
+                        $sql    =DB::table('fiscalizacion.vw_ficha_verificacion')->where('anio',$anio)->where('id_contrib',$contrib)->where('tip_pre_u_r',$tip_pred)->orderBy('nro_fic')->get();
+                    }
+                    else
+                    {
+                        $sql    =DB::table('fiscalizacion.vw_ficha_verificacion')->where('anio',$anio)->where('id_contrib',$contrib)->orderBy('nro_fic')->get();
+                    }
+                }
+                else
+                {
+                    if($tip_pred>0)
+                    {
+                        $sql    =DB::table('fiscalizacion.vw_ficha_verificacion')->where('anio',$anio)->where('id_contrib',$contrib)->where('id_hab_urb',$zona)->where('tip_pre_u_r',$tip_pred)->orderBy('nro_fic')->get();
+                    }
+                    else
+                    {
+                        $sql    =DB::table('fiscalizacion.vw_ficha_verificacion')->where('anio',$anio)->where('id_contrib',$contrib)->where('id_hab_urb',$zona)->orderBy('nro_fic')->get();
+                    }
+                }
             }
             $name =Auth::user()->ape_nom;
             if(count($sql)>=1)
@@ -388,7 +457,7 @@ class Res_DeterminacionController extends Controller
             $name =Auth::user()->ape_nom;
             if($estado==0)
             {
-                $sql=DB::table('fiscalizacion.vw_hoja_liquidacion')->where('anio',$anio)->orderBy('nro_hoja')->get(); 
+                $sql=DB::table('fiscalizacion.vw_hoja_liquidacion')->where('anio',$anio)->WhereNull('fecha_notificacion')->orderBy('nro_hoja')->get(); 
                 if(count($sql)>=1)
                 {
                     $view =  \View::make('fiscalizacion.reportes.vw_reporte_Estado_hl', compact('sql','name','anio','estado'))->render();
@@ -403,7 +472,7 @@ class Res_DeterminacionController extends Controller
             }
             if($estado==1)
             {
-                $sql=DB::table('fiscalizacion.vw_hoja_liquidacion')->where('anio',$anio)->where('flg_est','<>',0)->where('fecha_notificacion','<>',NULL)->orderBy('nro_hoja')->get(); 
+                $sql=DB::table('fiscalizacion.vw_hoja_liquidacion')->where('anio',$anio)->where('fecha_notificacion','<>',NULL)->orderBy('nro_hoja')->get(); 
                 if(count($sql)>=1)
                 {
                     $view =  \View::make('fiscalizacion.reportes.vw_reporte_estado_hl', compact('sql','name','anio','estado'))->render();
@@ -418,10 +487,111 @@ class Res_DeterminacionController extends Controller
             }
             if($estado==2)
             {
-                $sql=DB::table('fiscalizacion.vw_hoja_liquidacion')->where('anio',$anio)->where('flg_est',1)->orderBy('nro_hoja')->get(); 
+                $sql=DB::table('fiscalizacion.vw_hoja_liquidacion')->where('anio',$anio)->where('saldo','>',0)->orderBy('nro_hoja')->get(); 
                 if(count($sql)>=1)
                 {
                     $view =  \View::make('fiscalizacion.reportes.vw_reporte_Estado_hl', compact('sql','name','anio','estado'))->render();
+                    $pdf = \App::make('dompdf.wrapper');
+                    $pdf->loadHTML($view)->setPaper('a4');
+                    return $pdf->stream("Fiscalizados.pdf");
+                }
+                else
+                {
+                    Return "No hay Datos";
+                }
+            }
+            if($estado==3)
+            {
+                $sql=DB::table('fiscalizacion.vw_hoja_liquidacion')->where('anio',$anio)->where('saldo',0)->orderBy('nro_hoja')->get(); 
+                if(count($sql)>=1)
+                {
+                    $view =  \View::make('fiscalizacion.reportes.vw_reporte_Estado_hl', compact('sql','name','anio','estado'))->render();
+                    $pdf = \App::make('dompdf.wrapper');
+                    $pdf->loadHTML($view)->setPaper('a4');
+                    return $pdf->stream("Fiscalizados.pdf");
+                }
+                else
+                {
+                    Return "No hay Datos";
+                }
+            }
+            
+            
+        }
+        
+    }
+     
+     public function ver_reporte_estado_rd($tipo,$anio,$estado)
+    {
+        if($tipo==4) 
+        {
+            $name =Auth::user()->ape_nom;
+            if($estado==0)
+            {
+                $sql=DB::table('fiscalizacion.vw_resolucion_determinacion')->where('anio',$anio)->WhereNull('fecha_notificacion')->orderBy('nro_rd')->get(); 
+                if(count($sql)>=1)
+                {
+                    $view =  \View::make('fiscalizacion.reportes.vw_reporte_estado_rd', compact('sql','name','anio','estado'))->render();
+                    $pdf = \App::make('dompdf.wrapper');
+                    $pdf->loadHTML($view)->setPaper('a4');
+                    return $pdf->stream("Fiscalizados.pdf");
+                }
+                else
+                {
+                    Return "No hay Datos";
+                }
+            }
+            if($estado==1)
+            {
+                $sql=DB::table('fiscalizacion.vw_resolucion_determinacion')->where('anio',$anio)->where('fecha_notificacion','<>',NULL)->orderBy('nro_rd')->get(); 
+                if(count($sql)>=1)
+                {
+                    $view =  \View::make('fiscalizacion.reportes.vw_reporte_estado_rd', compact('sql','name','anio','estado'))->render();
+                    $pdf = \App::make('dompdf.wrapper');
+                    $pdf->loadHTML($view)->setPaper('a4');
+                    return $pdf->stream("Fiscalizados.pdf");
+                }
+                else
+                {
+                    Return "No hay Datos";
+                }
+            }
+            if($estado==2)
+            {
+                $sql=DB::table('fiscalizacion.vw_resolucion_determinacion')->where('anio',$anio)->where('saldo','>',0)->orderBy('nro_rd')->get(); 
+                if(count($sql)>=1)
+                {
+                    $view =  \View::make('fiscalizacion.reportes.vw_reporte_estado_rd', compact('sql','name','anio','estado'))->render();
+                    $pdf = \App::make('dompdf.wrapper');
+                    $pdf->loadHTML($view)->setPaper('a4');
+                    return $pdf->stream("Fiscalizados.pdf");
+                }
+                else
+                {
+                    Return "No hay Datos";
+                }
+            }
+            if($estado==3)
+            {
+                $sql=DB::table('fiscalizacion.vw_resolucion_determinacion')->where('anio',$anio)->where('saldo',0)->orderBy('nro_rd')->get(); 
+                if(count($sql)>=1)
+                {
+                    $view =  \View::make('fiscalizacion.reportes.vw_reporte_estado_rd', compact('sql','name','anio','estado'))->render();
+                    $pdf = \App::make('dompdf.wrapper');
+                    $pdf->loadHTML($view)->setPaper('a4');
+                    return $pdf->stream("Fiscalizados.pdf");
+                }
+                else
+                {
+                    Return "No hay Datos";
+                }
+            }
+            if($estado==4)
+            {
+                $sql=DB::table('fiscalizacion.vw_resolucion_determinacion')->where('anio',$anio)->where('id_coa_mtr','>',0)->orderBy('nro_rd')->get(); 
+                if(count($sql)>=1)
+                {
+                    $view =  \View::make('fiscalizacion.reportes.vw_reporte_estado_rd', compact('sql','name','anio','estado'))->render();
                     $pdf = \App::make('dompdf.wrapper');
                     $pdf->loadHTML($view)->setPaper('a4');
                     return $pdf->stream("Fiscalizados.pdf");

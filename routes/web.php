@@ -439,8 +439,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('mod_noti_carta','Carta_RequerimientoController@edit_carta_fec');
         ////
         Route::get('reportes_fisca','Res_DeterminacionController@reportes');
-        Route::get('ver_rep_fisca/{tip}/{anio}/{contrib}','Res_DeterminacionController@ver_reportes');
+        Route::get('ver_rep_fisca/{tip}/{anio}/{contrib}/{zona}/{tip_pred}','Res_DeterminacionController@ver_reportes');
         Route::get('ver_rep_estado_hoja_liq/{id}/{anio}/{estado}','Res_DeterminacionController@ver_reporte_estado_hl');
+        Route::get('ver_rep_estado_r_d/{id}/{anio}/{estado}','Res_DeterminacionController@ver_reporte_estado_rd');
 
         
         

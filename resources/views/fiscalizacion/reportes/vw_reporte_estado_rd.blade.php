@@ -57,35 +57,37 @@
                 <th style="width: 8%">DNI/RUC</th>
                 <th style="width: 20%;">CONTRIBUYENTE</th>
                 <th style="width: 40%;">DOMICILIO FISCAL</th>
-                <th style="width: 7%;">ANULADO</th>
                 <th style="width: 10%;">DEUDA</th>
                 <th style="width: 10%;">PAGADO</th>
+                <th style="width: 10%;">COACTIVA</th>
+                
             </tr>
             </thead>
             <tbody>
 
             @foreach ($sql as $cont)
                 <tr>
-                    <td style="text-align: center;">{{ trim($cont->nro_hoja) }}</td>
+                    <td style="text-align: center;">{{ trim($cont->nro_rd) }}</td>
                     <td style="text-align: center;">{{trim($cont->pers_nro_doc)}}</td>
                     <td style="text-align: left;">{{ trim($cont->contribuyente) }}</td>
                     <td style="text-align: left;">{{trim($cont->ref_dom_fis)}}</td>
-                    <td style="text-align: center;">
-                        @if($cont->flg_anu==1)
-                         ANULADO
-                         @endif
-                    </td>
                     <td style="text-align: right;">{{number_format($cont->saldo,"2",".",",")}}</td>
                     <td style="text-align: right;">{{number_format($cont->total_pagado,"2",".",",")}}</td>
+                    <td style="text-align: left;">
+                        @if($cont->id_coa_mtr>0)
+                            En Coactiva
+                        @endif
+                    </td>
                     
                 </tr>
                 
             @endforeach
-            <tr>
-                <td colspan="5" style="text-align: right;">TOTAL:</td>
-                <td style="text-align: right;">{{number_format($sql->sum('saldo'),"2",".",",")}}</td>
-                <td style="text-align: right;">{{number_format($sql->sum('total_pagado'),"2",".",",")}}</td>
-            </tr>
+                <tr>
+                    <td colspan="4" style="text-align: right;">TOTAL:</td>
+                    <td style="text-align: right;">{{number_format($sql->sum('saldo'),"2",".",",")}}</td>
+                    <td style="text-align: right;">{{number_format($sql->sum('total_pagado'),"2",".",",")}}</td>
+                    <td style="text-align: left;"></td>
+                </tr>
             </tbody>
         </table>
     </div>

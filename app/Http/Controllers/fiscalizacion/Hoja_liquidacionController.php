@@ -135,8 +135,8 @@ class Hoja_liquidacionController extends Controller
                     {
                         if($rd==1)
                         {
-                            $totalg = DB::select('select count(id_hoja_liq) as total from fiscalizacion.vw_hoja_liquidacion where anio='.$an.' and flg_anu=0');
-                            $sql = DB::table('fiscalizacion.vw_hoja_liquidacion')->where("anio",$an)->where('flg_anu',0)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                            $totalg = DB::select('select count(id_hoja_liq) as total from fiscalizacion.vw_hoja_liquidacion where anio='.$an.' and flg_anu=0 and env_est_cta=0');
+                            $sql = DB::table('fiscalizacion.vw_hoja_liquidacion')->where("anio",$an)->where('flg_anu',0)->where('env_est_cta',0)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
                         }
                         else
                         {
@@ -148,8 +148,8 @@ class Hoja_liquidacionController extends Controller
                     {
                         if($rd==1)
                         {
-                            $totalg = DB::select("select count(id_hoja_liq) as total from fiscalizacion.vw_hoja_liquidacion where nro_hoja='".$num."' and anio=".$an.' and flg_anu=0');
-                            $sql = DB::table('fiscalizacion.vw_hoja_liquidacion')->where("anio",$an)->where("nro_hoja",$num)->where('flg_anu',0)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                            $totalg = DB::select("select count(id_hoja_liq) as total from fiscalizacion.vw_hoja_liquidacion where nro_hoja='".$num."' and anio=".$an.' and flg_anu=0 and env_est_cta=0');
+                            $sql = DB::table('fiscalizacion.vw_hoja_liquidacion')->where("anio",$an)->where("nro_hoja",$num)->where('flg_anu',0)->where('env_est_cta',0)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
                         }
                         else
                         {
@@ -163,8 +163,8 @@ class Hoja_liquidacionController extends Controller
             {
                 if($rd==1)
                 {
-                    $totalg = DB::select('select count(id_hoja_liq) as total from fiscalizacion.vw_hoja_liquidacion where anio='.$an.' and id_contrib='.$contrib.' and flg_anu=0');
-                    $sql = DB::table('fiscalizacion.vw_hoja_liquidacion')->where("anio",$an)->where("id_contrib",$contrib)->where('flg_anu',0)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                    $totalg = DB::select('select count(id_hoja_liq) as total from fiscalizacion.vw_hoja_liquidacion where anio='.$an.' and id_contrib='.$contrib.' and flg_anu=0 and env_est_cta=0');
+                    $sql = DB::table('fiscalizacion.vw_hoja_liquidacion')->where("anio",$an)->where("id_contrib",$contrib)->where('flg_anu',0)->where('env_est_cta',0)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
                 }
                 else
                 {
@@ -215,6 +215,15 @@ class Hoja_liquidacionController extends Controller
                 {
                     $anu='<a href="javascript:void(0);" class="btn btn-danger txt-color-white btn-circle"><i class="glyphicon glyphicon-remove"></i></a>';
                 }
+                if($Datos->env_est_cta==1)
+                {
+                    $btn_cta="Se Creó Deuda";
+                }
+                else
+                {
+                    $btn_cta='<button class="btn btn-labeled btn-success" type="button" onclick="gen_deuda('.trim($Datos->id_hoja_liq).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Env. Estado Cuenta</button>';
+            
+                }
                 $Lista->rows[$Index]['id'] = $Datos->id_hoja_liq;            
                 $Lista->rows[$Index]['cell'] = array(
                     trim($Datos->id_hoja_liq),
@@ -228,7 +237,7 @@ class Hoja_liquidacionController extends Controller
                     '<button class="btn btn-labeled btn-warning" type="button" onclick="verhoja('.trim($Datos->id_hoja_liq).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Ver</button>',
                     $estado,
                     $btnrd,
-                    '<button class="btn btn-labeled btn-success" type="button" onclick="gen_deuda('.trim($Datos->id_hoja_liq).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Env. Estado Cuenta</button>',
+                    $btn_cta,
                     $anu
 
                 );
@@ -276,7 +285,14 @@ class Hoja_liquidacionController extends Controller
             {
                 return -1;
             }
+            $val->env_est_cta=1;
+            $val->save();
+            $cuenta=DB::select("select * from fiscalizacion.vw_hoja_liquidacion where id_hoja_liq =".$val->id_hoja_liq);
+            $id_tributo = DB::select("select id_tributo from presupuesto.vw_impuesto_predial where anio =".$cuenta[0]->anio_fis);
+            DB::select("update adm_tri.cta_cte set id_hoja_liq=".$val->id_hoja_liq." where id_pers=".$cuenta[0]->id_contrib." and ano_cta='".$cuenta[0]->anio_fis."' and id_tribu=".$id_tributo[0]->id_tributo);
             $id_pred_anio=$this->create_predio_fis($val->id_car);
+            $this->calculos_ivpp($id_pred_anio);
+            
         }
         return $request['id'];
     }
@@ -305,7 +321,7 @@ class Hoja_liquidacionController extends Controller
             }
             $this->create_pisos($pre->id_fic,$id_pred_anio);
             $this->create_instalaciones($pre->id_fic,$id_pred_anio);
-            $this->calculos_ivpp($id_pred_anio);
+            
 
         }
         return $id_pred_anio;

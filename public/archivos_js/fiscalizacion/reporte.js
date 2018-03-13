@@ -25,14 +25,25 @@ function fn_bus_contrib_list_rep_fis(per)
     $("#"+inputglobal).val($('#table_contrib').jqGrid('getCell',per,'contribuyente'));
     $("#dlg_bus_contr").dialog("close");
 }
-
+iniciar=0;
+iniciar2=0;
 function dlg_rep_fisca(tipo)
 {
     if (tipo===1) {
+        if(iniciar==0)
+        {
+            iniciar=1;
+            autocompletar_haburb('dlg_bus_zonas');
+        }
         crear_dlg('dialog_contri_fiscalizados',600,'Contribuyentes Fiscalizados',tipo);
     } 
     if (tipo===2) {
         $("#dlg_contri_hidden").val(0);
+        if(iniciar2==0)
+        {
+            iniciar2=1;
+            autocompletar_haburb('dlg_bus_zonas_2');
+        }
         crear_dlg('dialog_m2',600,'M2 Determinados x Fiscalizados',tipo);
     }
     if (tipo===3) {
@@ -41,7 +52,32 @@ function dlg_rep_fisca(tipo)
      if (tipo===4) {
         crear_dlg('dialog_estado_resolucion_det',500,'Estado de Resolución de Determinación',tipo);
     }
+     if (tipo===5) {
+        crear_dlg('dialog_estado_resolucion_det_coactivo',500,'RD enviado a Coactivo',tipo);
+    }
    
+}
+function autocompletar_haburb(textbox){
+    $.ajax({
+        type: 'GET',
+        url: 'autocomplete_hab_urba',
+        success: function (data) {
+            
+            var $datos = data;
+            $("#"+ textbox).autocomplete({
+                source: $datos,
+                focus: function (event, ui) {
+                    $("#" + textbox).val(ui.item.label);
+                    return false;
+                },
+                select: function (event, ui) {
+                    $("#" + textbox).val(ui.item.label);
+                    $("#hidden_"+ textbox).val(ui.item.value);
+                    return false;
+                }
+            });
+        }
+    });
 }
 function crear_dlg(id,ancho,titulo,tipo)
 {
@@ -63,7 +99,13 @@ function abrir_reporte(tip)
 {
     if(tip==1)
     {
-        window.open('ver_rep_fisca/'+tip+'/'+$("#selantra_r0").val()+"/0");
+        zona=$("#hidden_dlg_bus_zonas").val();
+        if($("#hidden_dlg_bus_zonas").val()==0||$("#dlg_bus_zonas").val()=='')
+        {
+            zona=0;
+        }
+        tipo=$("#sel_tip_1").val();
+        window.open('ver_rep_fisca/'+tip+'/'+$("#selantra_r0").val()+"/0/"+zona+"/"+tipo);
     }
     if(tip==2)
     {
@@ -75,11 +117,25 @@ function abrir_reporte(tip)
         {
             contri=$("#dlg_contri_hidden").val();
         }
-        window.open('ver_rep_fisca/'+tip+'/'+$("#selantra_r0").val()+"/"+contri);
+        zona=$("#hidden_dlg_bus_zonas_2").val();
+        if($("#hidden_dlg_bus_zonas_2").val()==0||$("#dlg_bus_zonas_2").val()=='')
+        {
+            zona=0;
+        }
+        tipo=$("#sel_tip_2").val();
+        window.open('ver_rep_fisca/'+tip+'/'+$("#selantra_r0").val()+"/"+contri+"/"+zona+"/"+tipo);
     }
     if(tip==3)
     {
         window.open('ver_rep_estado_hoja_liq/'+tip+'/'+$("#select_anio_hoja_liq").val()+"/"+$("#select_estado_hl").val());
+    }
+    if(tip==4)
+    {
+        window.open('ver_rep_estado_r_d/'+tip+'/'+$("#select_anio_rd").val()+"/"+$("#select_estado_rd").val());
+    }
+    if(tip==5)
+    {
+        window.open('ver_rep_estado_r_d/4/'+$("#select_anio_rd_coactivo").val()+"/4");
     }
     
     

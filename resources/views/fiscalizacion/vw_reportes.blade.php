@@ -62,6 +62,18 @@
                             </td>
                         </tr>  
                         <!-- end TR -->
+                        <!-- TR -->
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-file-archive-o fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_rep_fisca(5);" id="titulo_r4">
+                                        REPORTE 5: RD ENVIADO A EJECUCIÓN COACTIVA.
+                                    </a>
+                                    <small>Muestra Resolución de Determinación enviadas a coactiva.</small>
+                                </h4>
+                            </td>
+                        </tr>  
+                        <!-- end TR -->
                         </tbody>
                     </table>
                 </div>
@@ -150,6 +162,28 @@
                         </div>
                         </div>
                     </div>
+                    <div class="col-xs-12" style="padding: 0px; margin-top: 5px">
+                        <div class="input-group input-group-md col-xs-12">
+                            <span class="input-group-addon" style="width:190px">POR ZONAS: &nbsp;<i class="fa fa-map"></i></span>
+                        <div>
+                                <input id="hidden_dlg_bus_zonas" type="hidden" value="0">
+                                <input id="dlg_bus_zonas" type="text"  class="form-control" style="height: 32px;font-size: 0.9em;width: 100% !important;padding-left:15px;" placeholder="TODOS">
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12" style="padding: 0px; margin-top: 5px">
+                        <div class="input-group input-group-md col-xs-12">
+                            <span class="input-group-addon" style="width:190px">Tipo Predio: &nbsp;<i class="fa fa-list"></i></span>
+                        <div>
+                            <select id='sel_tip_1' class="form-control col-lg-12" style="padding-left:15px; width: 100%">
+                                <option value='0' >TODOS</option>
+                                <option value='1' >URBANO</option>
+                                <option value='2' >RUSTICO</option>
+                            </select>
+                        </div>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -172,6 +206,27 @@
                         </div>
                         </div>
                     </div>
+                    <div class="col-xs-12" style="padding: 0px; margin-top: 5px">
+                        <div class="input-group input-group-md col-xs-12">
+                            <span class="input-group-addon" style="width:190px">POR ZONAS: &nbsp;<i class="fa fa-map"></i></span>
+                        <div>
+                                <input id="hidden_dlg_bus_zonas_2" type="hidden" value="0">
+                                <input id="dlg_bus_zonas_2" type="text"  class="form-control" style="height: 32px;font-size: 0.9em;width: 100% !important;padding-left:15px;"  placeholder="TODOS">
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12" style="padding: 0px; margin-top: 5px">
+                        <div class="input-group input-group-md col-xs-12">
+                            <span class="input-group-addon" style="width:190px">Tipo Predio: &nbsp;<i class="fa fa-list"></i></span>
+                        <div>
+                            <select id='sel_tip_2' class="form-control col-lg-12" style="padding-left:15px; width: 100%">
+                                <option value='0' >TODOS</option>
+                                <option value='1' >URBANO</option>
+                                <option value='2' >RUSTICO</option>
+                            </select>
+                        </div>
+                        </div>
+                    </div>
                     <div class="col-xs-12" style="padding: 0px;margin-top: 10px ">
                         <div class="input-group input-group-md" style="width: 100%">
                             <span class="input-group-addon" style="width:190px">Contribuyente &nbsp;<i class="fa fa-male"></i></span>
@@ -182,6 +237,7 @@
                             
                         </div>
                     </div>
+                    
                 </div>
             </div>
         </div>
@@ -213,9 +269,10 @@
                                 <span class="input-group-addon" style="width: 165px">ESTADO <i class="fa fa-cogs"></i></span>
                                     <div class="icon-addon addon-md">
                                           <select id='select_estado_hl' class="form-control col-lg-8" >
-                                            <option value='0'>GENERADO </option>
-                                            <option value='1'> NOTIFICADO </option>
-                                            <option value='2'> VENCIDO </option>
+                                            <option value='0'>NO NOTIFICADO </option>
+                                            <option value='1'>NOTIFICADO </option>
+                                            <option value='2'>NO PAGADO </option>
+                                            <option value='3'>PAGADO </option>
                                                                              
                                           </select>                                 
                                     </div>
@@ -229,5 +286,73 @@
         </div>
 </div>
 
-
+<div id="dialog_estado_resolucion_det" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <div class="row" style="padding-left: 15px;padding-right: 35px">
+                    
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                        <select id='select_anio_rd' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                            @foreach ($anio_tra as $anio_rd)
+                                                <option value='{{$anio_rd->anio}}' >{{$anio_rd->anio}}</option>
+                                            @endforeach
+                                        </select> 
+                                    </div>
+                            </div>
+                        </div>                       
+                    </div>
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">ESTADO <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                          <select id='select_estado_rd' class="form-control col-lg-8" >
+                                            <option value='0'>NO NOTIFICADO </option>
+                                            <option value='1'>NOTIFICADO </option>
+                                            <option value='2'>NO PAGADO </option>
+                                            <option value='3'>PAGADO </option>
+                                                                             
+                                          </select>                                 
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+<div id="dialog_estado_resolucion_det_coactivo" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <div class="row" style="padding-left: 15px;padding-right: 35px">
+                    
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                        <select id='select_anio_rd_coactivo' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                            @foreach ($anio_tra as $anio_rd_co)
+                                                <option value='{{$anio_rd_co->anio}}' >{{$anio_rd_co->anio}}</option>
+                                            @endforeach
+                                        </select> 
+                                    </div>
+                            </div>
+                        </div>                       
+                    </div>
+                   
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
 @endsection
