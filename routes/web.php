@@ -383,8 +383,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('mod_noti_op', 'OrdenPagoController@edit_op_fec'); //
         Route::get('reportes_op', 'OrdenPagoController@index_reportes_op'); //
         Route::get('ver_rep_op/{anio}/{tipo}', 'OrdenPagoController@ver_reporte_op');
-        Route::resource('beneficios_tributarios', 'Beneficios_TributariosController');
-        Route::get('listar_beneficios_tributarios','Beneficios_TributariosController@getBeneficiosTributarios');
+        
     });  
     Route::group(['namespace' => 'alcabala'], function() {//modulo de alcabala
         Route::resource('alcabala', 'AlcabalaController');
@@ -602,7 +601,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('obtener_contribuyente', 'UsuariosWebController@get_contribuyente');
         Route::post('insertar_nuevo_usuario', 'UsuariosWebController@insertar_nuevo_usuario');
         Route::get('listar_usuarios_web','UsuariosWebController@get_usuarios_web');
-  
+        
+        Route::resource('beneficios_tributarios', 'Beneficios_TributariosController');
+        Route::get('listar_beneficios_tributarios','Beneficios_TributariosController@getBeneficiosTributarios');
+        Route::get('actualizar_estado','Beneficios_TributariosController@actualizar_estado');
     });
     
     

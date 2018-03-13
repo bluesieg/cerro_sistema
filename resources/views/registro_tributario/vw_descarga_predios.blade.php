@@ -61,7 +61,7 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        $("#menu_registro_tributario").show();
+        $("#menu_admtri").show();
         $("#li_descarga_predios").addClass('cr-active');
         
         fecha_desde = $("#dlg_fec_desde").val(); 

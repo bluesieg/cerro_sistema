@@ -58,10 +58,6 @@
                     <td>&nbsp;{{ $conv[0]->periodo}}<br/></td>
                 </tr>
                 <tr>
-                    <td><b>POR CONCEPTOS DE:</b></td>
-                    <td>&nbsp;DEUDA &nbsp;{{ $conv[0]->desc_tipo}}<br/></td>
-                </tr>
-                <tr>
                     <td><b>TIPO FRACCIONAMIENTO:</b></td>
                     <td>&nbsp;{{ $conv[0]->tip_fracc}}<br/></td>
                 </tr>

@@ -21,7 +21,7 @@ class Beneficios_TributariosController extends Controller
             return view('errors/sin_permiso',compact('menu','permisos'));
         }
         $anio = DB::select('SELECT anio FROM adm_tri.uit order by anio desc');
-        return view('recaudacion/vw_beneficios_tributarios', compact('menu','permisos','anio'));
+        return view('configuracion_gonzalo/vw_beneficios_tributarios', compact('menu','permisos','anio'));
     }
 
     public function create(Request $request)

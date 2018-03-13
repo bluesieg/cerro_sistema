@@ -76,7 +76,7 @@
         </div>
         @if(isset($motivo1))
                 @if($motivo1==2)
-                <div style="width: 100%; text-align: justify; font-size: 0.8em; margin-top: 0px; padding-left:18px;"><center><b>Segun Decreto Supremo 156-2004-EF y modificatorias.</b></center></div>
+                <div style="width: 100%; text-align: justify; font-size: 0.8em; margin-top: 0px; padding-left:18px;"><b>Segun Decreto Supremo 156-2004-EF y modificatorias.</b></div>
                 @endif
         @endif
         <table style="margin-top: 5px; margin-bottom: 5px !important;">
