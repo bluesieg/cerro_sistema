@@ -187,8 +187,7 @@ class Caja_Est_CuentasController extends Controller
         $fracc="";
         $foto=DB::select('select pers_foto from adm_tri.vw_contribuyentes1 where id_contrib='.$id_contrib);
         $contrib1=DB::select('select * from adm_tri.vw_contribuyentes where id_contrib='.$id_contrib);
-        $total=DB::select("select SUM(base_imponible) as base_imponible,SUM(formularios) as formularios,SUM(impuesto_predial) as impuesto_predial,SUM(reajuste) as reajuste,SUM(interes_impuesto) as interes_impuesto,SUM(multa_dj) as multa_dj,SUM(interes_multa) interes_multa,SUM(arbitrios_municipales) as arbitrios_municipales,SUM(descuento_arbitrios) as descuento_arbitrios,SUM(interes_arbitrios) as interes_arbitrios,SUM(total) as total from adm_tri.vw_est_cta_sumatorias_2018 WHERE id_pers = '$id_contrib' AND ano_cta between '$desde' and '$hasta' ");
-        $contrib=DB::select("select * from adm_tri.vw_est_cta_2018 where id_pers ='$id_contrib' and ano_cta between '$desde' and '$hasta' ");
+        $contrib = DB::table("adm_tri.vw_est_cta_2018")->where('id_pers',$id_contrib)->whereBetween('ano_cta', [$desde, $hasta])->get();
         $convenio=DB::select('select * from fraccionamiento.vw_convenios where id_contribuyente='.$id_contrib);
         if(count($convenio) > 1){
             $fracc = DB::select("select * from fraccionamiento.detalle_convenio where id_conv_mtr=".$convenio[0]->id_conv." order by nro_cuota");
@@ -202,7 +201,7 @@ class Caja_Est_CuentasController extends Controller
         $pred = DB::select('select * from adm_tri.vw_cta_cte2 where id_contrib='.$id_contrib.' and ano_cta between '.$desde.' and '.$hasta);
         $institucion = DB::select('SELECT * FROM maysa.institucion');
         $fecha = (date('d/m/Y H:i:s'));
-        $view = \View::make('caja.reportes.est_cta_contrib',compact('contrib','contrib1','total','fecha','pred','desde','hasta','convenio','fracc','foto','usuario','foto_estado','hora','institucion'))->render();
+        $view = \View::make('caja.reportes.est_cta_contrib',compact('contrib','contrib1','fecha','pred','desde','hasta','convenio','fracc','foto','usuario','foto_estado','hora','institucion'))->render();
         
 //        $sql=DB::select("select * from adm_tri.cta_cte where id_pers=".$id_contrib."and ano_cta='".$hasta."'");
 //        

@@ -110,26 +110,24 @@
                     @endforeach                                     
                 </tbody>
                 <tbody>
-                    @foreach($total as $suma_total)
                     <tr>                        
                         <td colspan="2" style="text-align: right"><b>TOTAL</b></td>
-                        <td style="text-align: right"><b>{{ number_format($suma_total->formularios,2,'.',',') }}</b></td>
-                        <td style="text-align: right"><b>{{ number_format($suma_total->impuesto_predial,2,'.',',') }}</b></td>
-                        <td style="text-align: right"><b>{{ number_format($suma_total->reajuste,2,'.',',') }}</b></td>
-                        <td style="text-align: right"><b>{{ number_format($suma_total->interes_impuesto,2,'.',',') }}</b></td>
-                        <td style="text-align: right"><b>{{ number_format($suma_total->multa_dj,2,'.',',') }}</b></td>
-                        <td style="text-align: right"><b>{{ number_format($suma_total->interes_multa,2,'.',',') }}</b></td>
-                        <td style="text-align: right"><b>{{ number_format($suma_total->arbitrios_municipales,2,'.',',') }}</b></td>
-                        <td style="text-align: right"><b>{{ number_format($suma_total->descuento_arbitrios,2,'.',',') }}</b></td>
-                        <td style="text-align: right"><b>{{ number_format($suma_total->interes_arbitrios,2,'.',',')  }}</b></td>
-                        <td></td>
-                        <td style="text-align: right"><b>{{ number_format($suma_total->total,2,'.',',')  }}</b></td>
-                    </tr>
-                    @endforeach                                     
+                        <td style="text-align: right"><b>{{ number_format($contrib->sum('formularios'),2,'.',',') }}</b></td>
+                        <td style="text-align: right"><b>{{ number_format($contrib->sum('predial'),2,'.',',') }}</b></td>
+                        <td style="text-align: right"><b>{{ number_format($contrib->sum('reajuste'),2,'.',',') }}</b></td>
+                        <td style="text-align: right"><b>{{ number_format($contrib->sum('interes_impuesto'),2,'.',',') }}</b></td>
+                        <td style="text-align: right"><b>{{ number_format($contrib->sum('multa_dj'),2,'.',',') }}</b></td>
+                        <td style="text-align: right"><b>{{ number_format($contrib->sum('interes_multa'),2,'.',',') }}</b></td>
+                        <td style="text-align: right"><b>{{ number_format($contrib->sum('nro_rd'),2,'.',',') }}</b></td>
+                        <td style="text-align: right"><b>{{ number_format($contrib->sum('tot_arbitrios'),2,'.',',') }}</b></td>
+                        <td style="text-align: right"><b>{{ number_format($contrib->sum('descuento_arbit'),2,'.',',') }}</b></td>
+                        <td style="text-align: right"><b>{{ number_format($contrib->sum('interes_arbit'),2,'.',',')  }}</b></td>
+                        <td style="text-align: right"><b>{{ number_format($contrib->sum('total'),2,'.',',')  }}</b></td>
+                    </tr>                                   
                 </tbody>
             </table>
             
-            <div class="sub2" style="font-size:0.8em; text-align: right;"><b>TOTAL:&nbsp;&nbsp;&nbsp; </b>{{ number_format($suma_total->total,2,'.',',')  }}</div>
+            <div class="sub2" style="font-size:0.8em; text-align: right;"><b>TOTAL:&nbsp;&nbsp;&nbsp; </b>{{ number_format($contrib->sum('total'),2,'.',',')  }}</div>
             
             @if(isset($convenio[0]))
                 @if($convenio[0]->estado==1)

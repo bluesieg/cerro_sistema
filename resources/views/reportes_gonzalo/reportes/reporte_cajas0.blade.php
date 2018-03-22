@@ -60,7 +60,7 @@
             </tbody>
             <br>
             
-            <div class="sub2" style="font-size:0.8em; text-align: right; margin-top: 10;"><b>TOTAL:&nbsp;&nbsp;&nbsp; </b>{{number_format($sql->sum('total'),2,".",",")}}</div>
+            <div class="sub2" style="font-size:0.8em; text-align: right; margin-top: 10px;"><b>TOTAL:&nbsp;&nbsp;&nbsp; </b>{{number_format($sql->sum('total'),2,".",",")}}</div>
             
         </table>
     </div>

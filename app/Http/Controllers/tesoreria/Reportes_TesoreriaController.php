@@ -45,13 +45,14 @@ class Reportes_TesoreriaController extends Controller
         $caja = $request['caja'];
         $fechainicio = $request['ini'];
         $fechafin = $request['fin'];
+        $institucion = DB::select('SELECT * FROM maysa.institucion');
         if($fechainicio != 0 && $fechafin != 0 && $caja == 0)
             {
                 $sql = DB::select("SELECT codigo_2,det_especifica,codigo_1,desc_espec_detalle,id_caj,descrip_caja,SUM(monto) as total  FROM presupuesto.vw_partida_presupuestal_3 where fecha between '$fechainicio' and '$fechafin' GROUP BY codigo_2,det_especifica,codigo_1,desc_espec_detalle,id_caj,descrip_caja order by codigo_2" );
                 if(count($sql)>0)
                 {
                     $aux='0';
-                    $view =  \View::make('tesoreria.reportes.rep_por_partida', compact('sql','fechainicio','fechafin','aux','caja'))->render();
+                    $view =  \View::make('tesoreria.reportes.rep_por_partida', compact('sql','fechainicio','fechafin','aux','caja','institucion'))->render();
                     $pdf = \App::make('dompdf.wrapper');
                     $pdf->loadHTML($view)->setPaper('a4');
                     return $pdf->stream("PRUEBA".".pdf");
@@ -67,7 +68,7 @@ class Reportes_TesoreriaController extends Controller
             if(count($sql)>0)
             {
                 $aux='0';
-                $view =  \View::make('tesoreria.reportes.rep_por_partida', compact('sql','fechainicio','fechafin','aux','caja'))->render();
+                $view =  \View::make('tesoreria.reportes.rep_por_partida', compact('sql','fechainicio','fechafin','aux','caja','institucion'))->render();
                 $pdf = \App::make('dompdf.wrapper');
                 $pdf->loadHTML($view)->setPaper('a4');
                 return $pdf->stream("PRUEBA".".pdf");
@@ -85,16 +86,16 @@ class Reportes_TesoreriaController extends Controller
     }
      public function rep_por_tributo(Request $request)
     {
-        //gonzalo
         $id_tributo = $request['id_tributo'];
         $fechainicio = $request['ini'];
         $fechafin = $request['fin'];
+        $institucion = DB::select('SELECT * FROM maysa.institucion');
        // $sql=DB::table('presupuesto.vw_por_tributo')->where('id_tributo',$id_tributo) ->whereBetween('fecha', [$fechainicio, $fechafin])->orderBy('fecha','asc')->get();
         $sql = DB::select(" select  fecha,id_tributo,cod_tributo,descrip_tributo, sum(total) as total from presupuesto.vw_por_tributo where id_tributo='$id_tributo' and fecha between '$fechainicio' and '$fechafin' group by fecha,id_tributo,cod_tributo,descrip_tributo  order by fecha asc" );
         
         if(count($sql)>0)
         {
-            $view =  \View::make('tesoreria.reportes.rep_por_tributo', compact('sql','fechainicio','fechafin'))->render();
+            $view =  \View::make('tesoreria.reportes.rep_por_tributo', compact('sql','fechainicio','fechafin','institucion'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("PRUEBA".".pdf");

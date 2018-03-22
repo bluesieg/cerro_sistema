@@ -384,6 +384,19 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('reportes_op', 'OrdenPagoController@index_reportes_op'); //
         Route::get('ver_rep_op/{anio}/{tipo}', 'OrdenPagoController@ver_reporte_op');
         
+        Route::resource('prescripciones', 'PrescripcionesController');
+        Route::get('get_prescripciones', 'PrescripcionesController@get_prescripciones');
+        Route::get('obtener_deudas', 'PrescripcionesController@Obtener_Deudas');
+        Route::get('reporte_preinscripciones', 'PrescripcionesController@reporte_preinscripciones');
+        
+        Route::resource('control_deudas', 'ControlDeudasController');
+        Route::get('get_est_cta_cte', 'ControlDeudasController@get_est_cta_cte');
+        Route::get('get_detalle_deuda', 'ControlDeudasController@get_detalle_deuda');
+        Route::get('compensacion_predial', 'ControlDeudasController@compensacion_predial');
+        Route::get('get_predios_arbitrios', 'ControlDeudasController@get_predios_arbitrios');
+        Route::get('get_predios_arbitrios_concepto', 'ControlDeudasController@get_predios_arbitrios_concepto');
+        Route::get('get_meses_arbitrios', 'ControlDeudasController@get_meses_arbitrios');
+        
     });  
     Route::group(['namespace' => 'alcabala'], function() {//modulo de alcabala
         Route::resource('alcabala', 'AlcabalaController');
