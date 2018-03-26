@@ -35,7 +35,7 @@ class Res_DeterminacionController extends Controller
         $rd->id_hoja_liq=$request['hoja'];
         $rd->fec_reg=date("d/m/Y");
         $rd->anio=date("Y");
-        $rd->txt_motivacion=str_replace("</p>","<br>",str_replace("<p>", "", $request['moti']));
+        $rd->txt_motivacion=utf8_encode($request['moti']);
         $rd->id_usuario=Auth::user()->id;
         $rd->save();
         $cuenta=DB::select("select * from fiscalizacion.vw_resolucion_determinacion where id_rd =".$rd->id_rd);
@@ -515,6 +515,21 @@ class Res_DeterminacionController extends Controller
                     Return "No hay Datos";
                 }
             }
+            if($estado==4)
+            {
+                $sql=DB::table('fiscalizacion.vw_hoja_liquidacion')->where('anio',$anio)->orderBy('nro_hoja')->get(); 
+                if(count($sql)>=1)
+                {
+                    $view =  \View::make('fiscalizacion.reportes.vw_reporte_Estado_hl', compact('sql','name','anio','estado'))->render();
+                    $pdf = \App::make('dompdf.wrapper');
+                    $pdf->loadHTML($view)->setPaper('a4');
+                    return $pdf->stream("Fiscalizados.pdf");
+                }
+                else
+                {
+                    Return "No hay Datos";
+                }
+            }
             
             
         }
@@ -607,6 +622,31 @@ class Res_DeterminacionController extends Controller
        
         
         
+    }
+     public function ver_rep_pred_fis($anio,$tip)
+    {
+   
+            $name =Auth::user()->ape_nom;
+
+            if($tip==1)
+            {
+                $sql=DB::table('adm_tri.vw_predi_urba')->where('anio',$anio)->where('tip_pre_u_r',$tip)->where('pred_anio_activo',1)->where('pred_contrib_activo',1)->where('id_tip_ins','>',2)->orderBy('id_pred_anio')->get(); 
+            }
+            else
+            {
+                $sql=DB::table('adm_tri.vw_predi_rustico')->where('anio',$anio)->where('pred_anio_activo',1)->orderBy('id_pred_anio')->where('pred_contrib_activo',1)->where('id_tip_ins','>',2)->orderBy('id_pred_anio')->get(); 
+            }
+                if(count($sql)>=1)
+                {
+                    $view =  \View::make('fiscalizacion.reportes.vw_reporte_pred_fis', compact('sql','name','anio','tip'))->render();
+                    $pdf = \App::make('dompdf.wrapper');
+                    $pdf->loadHTML($view)->setPaper('a4');
+                    return $pdf->stream("Fiscalizados.pdf");
+                }
+                else
+                {
+                    Return "No hay Datos";
+                }
     }
      public function edit_rd_fec(Request $request)
     {

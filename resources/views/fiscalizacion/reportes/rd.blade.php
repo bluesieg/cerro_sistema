@@ -87,7 +87,7 @@
             </tr>
          </table>
         <div style="width: 100%; text-align: justify; font-size: 0.8em; margin-top: 0px; padding-left:18px;">
-            {{$sql->txt_motivacion}};
+            @php echo $sql->txt_motivacion @endphp
         </div>
         <table style="margin-top: 5px; margin-bottom: 5px !important;">
             <tr>

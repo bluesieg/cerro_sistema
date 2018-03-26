@@ -67,9 +67,33 @@
                             <td class="text-center" style="width: 40px;"><i class="fa fa-file-archive-o fa-2x text-muted"></i></td>
                             <td>
                                 <h4><a href="#" onclick="dlg_rep_fisca(5);" id="titulo_r4">
-                                        REPORTE 5: RD ENVIADO A EJECUCIÓN COACTIVA.
+                                        REPORTE 5: RD Enviado a Ejecución Coactiva.
                                     </a>
                                     <small>Muestra Resolución de Determinación enviadas a coactiva.</small>
+                                </h4>
+                            </td>
+                        </tr>  
+                        <!-- end TR -->
+                        <!-- TR -->
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-file-archive-o fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_rep_fisca(6);" id="titulo_r4">
+                                        REPORTE 6: Impuesto predial producto de la Fiscalizacion.
+                                    </a>
+                                    <small>Muestra Impuesto.</small>
+                                </h4>
+                            </td>
+                        </tr>  
+                        <!-- end TR -->
+                        <!-- TR -->
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-file-archive-o fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_rep_fisca(7);" id="titulo_r4">
+                                        REPORTE 7: Lista de Declaraciones Juradas por Fiscalización.
+                                    </a>
+                                    <small>Muestra Pu o Pr creados por fiscalizacion</small>
                                 </h4>
                             </td>
                         </tr>  
@@ -354,5 +378,68 @@
                 </div>
             </div>
         </div>
+</div>
+<div id="dialog_impuesto_6" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <div class="row" style="padding-left: 15px;padding-right: 35px">
+                    
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                        <select id='select_impuesto_6' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                            @foreach ($anio_tra as $anio_6)
+                                                <option value='{{$anio_6->anio}}' >{{$anio_6->anio}}</option>
+                                            @endforeach
+                                        </select> 
+                                    </div>
+                            </div>
+                        </div>                       
+                    </div>
+                   
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+<div id="dialog_pu_pr" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <div class="row" style="padding-left: 15px;padding-right: 35px">
+                    <div class="col-xs-12" style="padding: 0px; ">
+                        <div class="input-group input-group-md col-xs-12">
+                            <span class="input-group-addon" style="width:190px">SELECCIONAR AÑO: &nbsp;<i class="fa fa-calendar"></i></span>
+                        <div>
+                            <select id='sel_pred_fis' class="form-control col-lg-12" style="padding-left:15px; width: 100%">
+                                @foreach ($anio_tra as $anio_6)
+                                    <option value='{{$anio_6->anio}}' >{{$anio_6->anio}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        </div>
+                    </div>
+                 
+                    <div class="col-xs-12" style="padding: 0px; margin-top: 5px">
+                        <div class="input-group input-group-md col-xs-12">
+                            <span class="input-group-addon" style="width:190px">Tipo Predio: &nbsp;<i class="fa fa-list"></i></span>
+                        <div>
+                            <select id='sel_tip_pred_fis' class="form-control col-lg-12" style="padding-left:15px; width: 100%">
+                                <option value='1' >URBANO</option>
+                                <option value='2' >RUSTICO</option>
+                            </select>
+                        </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

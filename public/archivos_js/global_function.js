@@ -509,3 +509,28 @@ function ajustar(tam, num)
             return $("#" + num).val(data);
     }
 }
+
+function FilterTableAllFields(Letras, IdTabla)
+{
+    var Palabras = Letras.value.toLowerCase().split(" ");
+    var Tabla = document.getElementById(IdTabla);
+    var Elemento;
+    for (var r = 1; r < Tabla.rows.length; r++)
+    {
+	 Elemento = Tabla.rows[r].innerHTML.replace(/<[^>]+>/g, "");
+	 var displayStyle = 'none';
+	 for (var i = 0; i < Palabras.length; i++)
+	 {
+	     if (Elemento.toLowerCase().indexOf(Palabras[i]) >= 0)
+	     {
+		  displayStyle = '';
+	     }
+	     else
+	     {
+		  displayStyle = 'none';
+		  break;
+	     }
+	 }
+	 Tabla.rows[r].style.display = displayStyle;
+    }
+}

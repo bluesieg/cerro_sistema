@@ -34,19 +34,35 @@
 
     </table>
 
-    <center><div Class="asunto" style="margin-top: 1px;font-size:0.8em;"><b>REPORTE DE ESTADO DE HOJA DE LIQUIDACIÓN {{ $anio }}</b></div></center>
+    <center>
+        <div Class="asunto" style="margin-top: 1px;font-size:0.8em;">
+            <b>
+                @if ($estado == 4) 
+                    IMPUESTO PREDIAL GENERADO POR FISCALIZACIÓN {{ $anio }}
+                @else
+                    REPORTE DE ESTADO DE HOJA DE LIQUIDACIÓN {{ $anio }}
+                @endif
+            </b>
+        </div>
+    </center>
     <div class="subasunto" style=" margin-bottom:1px; text-align: left; padding-left: 30px;font-size:0.7em;">
         <h5 class="subasunto" style="font-size:0.8em;  text-align: right; padding-left: 30px;">{{ date("d/m/Y") }}</h5>
     </div>
     <div>
           @if ($estado == 0)                   
-                    <h5 class="subasunto" style="font-size:0.8em; ">ESTADO : GENERADO</h5>             
+                    <h5 class="subasunto" style="font-size:0.8em; ">ESTADO : NO NOTIFICADO</h5>             
                 @endif
           @if ($estado == 1)                   
                     <h5 class="subasunto" style="font-size:0.8em;">ESTADO : NOTIFICADO</h5>             
                  @endif
           @if ($estado == 2)                   
-                    <h5 class="subasunto" style="font-size:0.8em;">ESTADO : VENCIDO</h5>             
+                    <h5 class="subasunto" style="font-size:0.8em;">ESTADO : NO PAGADO</h5>             
+                 @endif
+          @if ($estado == 3)                   
+                    <h5 class="subasunto" style="font-size:0.8em;">ESTADO : PAGADO</h5>             
+                 @endif
+          @if ($estado == 4)                   
+                    <h5 class="subasunto" style="font-size:0.8em;">ESTADO : IMPUESTO GENERADO</h5>             
                  @endif
     </div>
     <div class="lado3" style=" margin-top: 5px;">
@@ -58,8 +74,13 @@
                 <th style="width: 20%;">CONTRIBUYENTE</th>
                 <th style="width: 40%;">DOMICILIO FISCAL</th>
                 <th style="width: 7%;">ANULADO</th>
+                @if ($estado == 4)
+                <th style="width: 20%;">IMPUESTO VERIFICADO</th>
+                @else
                 <th style="width: 10%;">DEUDA</th>
                 <th style="width: 10%;">PAGADO</th>
+                @endif
+                
             </tr>
             </thead>
             <tbody>
@@ -75,16 +96,24 @@
                          ANULADO
                          @endif
                     </td>
-                    <td style="text-align: right;">{{number_format($cont->saldo,"2",".",",")}}</td>
-                    <td style="text-align: right;">{{number_format($cont->total_pagado,"2",".",",")}}</td>
+                    @if ($estado == 4)
+                        <td style="text-align: right;">{{number_format($cont->ivpp_verif,"2",".",",")}}</td>
+                    @else
+                        <td style="text-align: right;">{{number_format($cont->saldo,"2",".",",")}}</td>
+                        <td style="text-align: right;">{{number_format($cont->total_pagado,"2",".",",")}}</td>
+                    @endif
                     
                 </tr>
                 
             @endforeach
             <tr>
                 <td colspan="5" style="text-align: right;">TOTAL:</td>
-                <td style="text-align: right;">{{number_format($sql->sum('saldo'),"2",".",",")}}</td>
-                <td style="text-align: right;">{{number_format($sql->sum('total_pagado'),"2",".",",")}}</td>
+                @if ($estado == 4)
+                    <td style="text-align: right;">{{number_format($sql->sum('ivpp_verif'),"2",".",",")}}</td>
+                @else
+                    <td style="text-align: right;">{{number_format($sql->sum('saldo'),"2",".",",")}}</td>
+                    <td style="text-align: right;">{{number_format($sql->sum('total_pagado'),"2",".",",")}}</td>
+                @endif
             </tr>
             </tbody>
         </table>

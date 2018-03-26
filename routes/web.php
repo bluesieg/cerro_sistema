@@ -455,10 +455,14 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('ver_rep_fisca/{tip}/{anio}/{contrib}/{zona}/{tip_pred}','Res_DeterminacionController@ver_reportes');
         Route::get('ver_rep_estado_hoja_liq/{id}/{anio}/{estado}','Res_DeterminacionController@ver_reporte_estado_hl');
         Route::get('ver_rep_estado_r_d/{id}/{anio}/{estado}','Res_DeterminacionController@ver_reporte_estado_rd');
-
-        
-        
-    });  
+        Route::get('ver_rep_pre_fis/{anio}/{tip}','Res_DeterminacionController@ver_rep_pred_fis');
+        //multas
+        Route::resource('fisca_multa','MultasController');
+        Route::get('trae_multas/{an}/{contr}/{ini}/{fin}/{num}', 'MultasController@get_multa'); //
+        Route::get('obtiene_multas/{text}', 'MultasController@get_multa_criterio'); //
+        Route::get('mod_noti_multa','MultasController@edit_multa_fec');
+        Route::get('multa_rep/{id}', 'MultasController@multa_repo'); // 
+    });   
     Route::get('$',function(){ echo 0;});//url auxiliar
     /*************************************** - REPORTES - *************************************** */
     Route::group(['namespace' => 'reportes'], function() {

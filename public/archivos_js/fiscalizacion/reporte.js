@@ -55,6 +55,12 @@ function dlg_rep_fisca(tipo)
      if (tipo===5) {
         crear_dlg('dialog_estado_resolucion_det_coactivo',500,'RD enviado a Coactivo',tipo);
     }
+     if (tipo===6) {
+        crear_dlg('dialog_impuesto_6',500,'Impuesto Fiscalizado',tipo);
+    }
+     if (tipo===7) {
+        crear_dlg('dialog_pu_pr',500,'Declaraciones Juradas por Fiscalizacion',tipo);
+    }
    
 }
 function autocompletar_haburb(textbox){
@@ -136,6 +142,14 @@ function abrir_reporte(tip)
     if(tip==5)
     {
         window.open('ver_rep_estado_r_d/4/'+$("#select_anio_rd_coactivo").val()+"/4");
+    }
+    if(tip==6)
+    {
+        window.open('ver_rep_estado_hoja_liq/3/'+$("#select_impuesto_6").val()+"/4");
+    }
+    if(tip==7)
+    {
+        window.open('ver_rep_pre_fis/'+$("#sel_pred_fis").val()+"/"+$("#sel_tip_pred_fis").val());
     }
     
     

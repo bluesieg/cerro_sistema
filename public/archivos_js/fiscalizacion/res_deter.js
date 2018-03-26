@@ -144,7 +144,6 @@ function genera_rd(id)
 
 function valida_rd(id)
 {
-   alert(id);
    if($("#per_new").val()==0)
    {
         sin_permiso();
@@ -261,3 +260,4 @@ function save_rd_fec_noti()
     }
 
 }
+
