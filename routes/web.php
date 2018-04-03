@@ -397,6 +397,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('get_predios_arbitrios_concepto', 'ControlDeudasController@get_predios_arbitrios_concepto');
         Route::get('get_meses_arbitrios', 'ControlDeudasController@get_meses_arbitrios');
         
+        Route::get('sqlserverprueba', 'PrescripcionesController@sqlserverprueba');
+        
     });  
     Route::group(['namespace' => 'alcabala'], function() {//modulo de alcabala
         Route::resource('alcabala', 'AlcabalaController');

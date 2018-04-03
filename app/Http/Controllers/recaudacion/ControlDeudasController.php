@@ -5,7 +5,7 @@ namespace App\Http\Controllers\recaudacion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use App\Models\presupuesto\SubGenDetalle;
+use App\Models\recaudacion\Compensacion;
 use Illuminate\Support\Facades\Auth;
 
 class ControlDeudasController extends Controller
@@ -35,8 +35,16 @@ class ControlDeudasController extends Controller
         $anio = $request['anio'];
         $monto = $request['monto'];
         
-        $fn_compens_predial = DB::select('select control_deuda.fn_compens_predial('.$id_contrib.','.$anio.','.$monto.')');
+        $fn_compens_predial = DB::select('select control_deuda.fn_comp_predial('.$id_contrib.','.$anio.','.$monto.')');
         
+        $compensacion = new Compensacion;
+        $compensacion->tipo = $request['tipo'];
+        $compensacion->anio = $anio;
+        $compensacion->arbitrios = $request['arbitrio'];
+        $compensacion->predial = $request['predial'];
+        $compensacion->observacion = $request['observacion'];
+        $compensacion->resolucion = $request['resolucion'];
+        $compensacion->save();
 
         if ($fn_compens_predial) {
             return response()->json([

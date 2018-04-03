@@ -7,7 +7,7 @@
                 <div class="row">                    
                     
                     <section class="col col-lg-12">
-                        <center><h1 class="txt-color-green"><b>CONTROL DE DEUDAS</b></h1></center>
+                        <h1 class="txt-color-green"><b>CONTROL DE DEUDAS</b></h1>
                         <div class="row">
                           
                             <div class="col-xs-2" style="padding-left: 35px;">
@@ -42,6 +42,48 @@
                                         </div>
                                     </div>
                                 </div>
+                                
+                            <div class="col-xs-12" style="padding-top: 20px;"></div>
+                            
+                                <div class="col-xs-3" style="padding-left: 35px;">
+                                <div class="input-group input-group-md">
+                                    <span class="input-group-addon">Tipo <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                        <select id='dlg_tipo' class="form-control col-lg-8" onchange="cambiarDescripcion();" style="height: 32px;">
+                                        <option value='0' >Resolucion</option>
+                                        <option value='1' >Recibo</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                </div>
+                            
+                                <div class="col-xs-2" style="padding-left: 15px;">
+                                <div class="input-group input-group-md">
+                                    <div class="icon-addon addon-md">
+                                        <label><input type="checkbox" name="dlg_check" id="dlg_arbitrio" style="width:22px;height:22px">Arbitrios</label>
+                                        <label><input type="checkbox" name="dlg_check" id="dlg_predial" style="width:22px;height:22px">Predial</label>
+                                    </div>
+                                </div>
+                                </div>
+                            
+                                <div class="col-xs-4" style="padding-left:5px;">
+                                    <div class="input-group input-group-md">
+                                        <span class="input-group-addon">Observacion. &nbsp;<i class="fa fa-hashtag"></i></span>
+                                        <div>
+                                            <input id="dlg_observacion" type="text"  class="form-control input-sm text-uppercase" style="height: 32px;font-size: 0.9em;width: 102% !important" placeholder="OBSERVACIONES">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-xs-3" style="padding-left:10px;">
+                                    <div class="input-group input-group-md">
+                                        <span class="input-group-addon" id="descripcion">Resolucion. &nbsp;<i class="fa fa-hashtag"></i></span>
+                                        <div>
+                                            <input id="dlg_resolucion" type="text"  class="form-control input-sm text-uppercase" style="height: 32px;font-size: 0.9em;width: 102% !important" placeholder="DESCRIPCION">
+                                        </div>
+                                    </div>
+                                </div>
+                            
                         </div>
                         
                         <hr style="border: 1px solid #DDD;margin: 10px -10px"> 

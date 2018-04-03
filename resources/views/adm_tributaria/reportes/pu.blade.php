@@ -162,7 +162,7 @@
               <th style="width: 4%">CLAS</th>
               <th style="width: 4%">MAT</th>
               <th style="width: 4%">EST</th>
-              <th style="width: 4%">AÑO CONS.</th>
+              <th style="width: 4%">ANT.</th>
               <th style="width: 8%">CATEGORIAS</th>
               <th style="width: 10%">VALOR UNIT M2</th>
               <th style="width: 6%">INCRE.</th>
@@ -189,7 +189,7 @@
               <td style="text-align: right;padding-right: 5px;">{{ number_format($pis->val_uni_dep,2)}}</td>
               <td style="text-align: right;padding-right: 5px;">{{number_format($pis->area_const,2)}}</td>
               <td style="text-align: right;padding-right: 5px;">{{number_format($pis->val_areas_com,2)}}</td>
-              <td style="text-align: right;padding-right: 5px;">{{number_format($pis->val_const_tot,2)}}</td>
+              <td style="text-align: right;padding-right: 5px;">{{number_format($pis->val_piso,2)}}</td>
           </tr>
           @endforeach
         </tbody>

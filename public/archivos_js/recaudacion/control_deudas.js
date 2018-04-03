@@ -58,6 +58,11 @@ function selecciona_anio(){
 
 function compensacion_predial(){
     anio = $("#dlg_anio").val();
+    tipo = $("#dlg_tipo").val();
+    observacion = $("#dlg_observacion").val();
+    resolucion = $("#dlg_resolucion").val();
+    
+    
     id_contrib = $("#dlg_hidden_contribuyente").val();
     monto = $("#dlg_monto").val();
     
@@ -67,6 +72,27 @@ function compensacion_predial(){
     }
     if(anio==""){
         mostraralertasconfoco('El Campo Año Es Obligatorio','#dlg_anio');
+        return false;
+    }
+    
+    
+    if($("#dlg_arbitrio").is(':checked')){
+       var arbitrio = 1;
+    }else{
+        arbitrio = 0;
+    }
+    if($("#dlg_predial").is(':checked')){
+       var predial = 1;
+    }else{
+        predial = 0;
+    }
+
+    if(observacion==""){
+        mostraralertasconfoco('El Campo Observacion Es Obligatorio','#dlg_observacion');
+        return false;
+    }
+    if(resolucion==""){
+        mostraralertasconfoco('El Campo Resolucion Es Obligatorio','#dlg_resolucion');
         return false;
     }
     if(monto==""){
@@ -86,7 +112,12 @@ function compensacion_predial(){
                     data: { 
                         id_contrib:id_contrib,
                         anio:anio,
-                        monto:monto
+                        monto:monto,
+                        tipo:tipo,
+                        observacion:observacion,
+                        resolucion:resolucion,
+                        arbitrio:arbitrio,
+                        predial:predial
                     },
                     beforeSend: function(){
                           MensajeDialogLoadAjax('content','.: Cargando :.');                
@@ -97,6 +128,9 @@ function compensacion_predial(){
                                 MensajeDialogLoadAjaxFinish('content');
                                 fn_actualizar_grilla('table_deuda_actual','get_est_cta_cte?id_contrib='+id_contrib+'&anio='+anio);
                                 $("#dlg_monto").val("");
+                                $('input[name=dlg_check]').attr('checked',false);
+                                $("#dlg_observacion").val("");
+                                $("#dlg_resolucion").val("");
                             }else{
                                 mostraralertas('* Contactese con el Administrador...');
                                 MensajeAlerta('Operación Fallida','No, Se Ejecuto La Compensacion de Deuda...');
@@ -115,4 +149,14 @@ function compensacion_predial(){
             }
         }
     }); 
+}
+
+function cambiarDescripcion(){
+    if ($('#dlg_tipo').val() == 0) {
+        $('#descripcion').html('Resolucion.'+'&nbsp;<i class="fa fa-hashtag"></i>');
+        $('#dlg_resolucion').val("");
+    }else{
+        $('#descripcion').html('Nº Recibo.'+'&nbsp;<i class="fa fa-hashtag"></i>');
+        $('#dlg_resolucion').val("");
+    }
 }
