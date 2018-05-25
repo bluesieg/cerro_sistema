@@ -97,7 +97,6 @@ class General extends Controller {
     }
     function autocompletar_instalaciones(Request $request){
         $Consulta = DB::table('catastro.instalaciones')->where('anio',date("Y"))->get();  
-
         $todo=array();
         foreach($Consulta as $Datos)
         {
@@ -109,12 +108,11 @@ class General extends Controller {
             array_push($todo,$Lista);
         }        
         return response()->json($todo);
-
     }
-    function sel_viaby_sec(Request $request){
+    function sel_viaby_sec(Request $request)
+    {
         $Consulta = DB::table('catastro.vw_arancel')->where('anio',$request['an'])->where('sec',$request['sec'])->where('mzna',$request['mzna'])->get();  
         return $Consulta;
-
     }
     function sel_cat_gruterr(Request $request)
     {

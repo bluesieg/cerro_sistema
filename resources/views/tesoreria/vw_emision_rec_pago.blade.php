@@ -49,6 +49,10 @@
                                     type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-tasks"></i></span>Varios
                             </button>
+                            <button @if($permisos[0]->btn_edit==1) onclick="dialog_pago_coactivo();" @else onclick="sin_permiso();" @endif
+                                    type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                                <span class="btn-label"><i class="glyphicon glyphicon-tasks"></i></span>Pago Coactivo
+                            </button>
                             <button @if($permisos[0]->btn_anu==1) onclick="" @else onclick="sin_permiso();" @endif
                                 type="button" class="btn btn-labeled btn-danger">
                                 <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Anular
@@ -262,6 +266,16 @@
             if (e.which == 13) {
                 if (globalvalidador == 0) {
                     fn_bus_contrib_predial("vw_emi_rec_arbitrios_contrib");
+                    globalvalidador = 1;
+                } else {
+                    globalvalidador = 0;
+                }
+            }
+        });
+        $("#inp_coactivo_contrib").keypress(function (e) {
+            if (e.which == 13) {
+                if (globalvalidador == 0) {
+                    fn_bus_contrib_predial("inp_coactivo_contrib");
                     globalvalidador = 1;
                 } else {
                     globalvalidador = 0;
@@ -720,9 +734,55 @@
         <div id="pager_table_contrib"></div>
     </article>
 </div>
+<div id="dlg_pago_coactivo" style="display: none;">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <div class="panel panel-success">
+                    <div class="panel-heading bg-color-success">.:: Datos del Contribuyente ::.</div>
+                    <div class="panel-body cr-body">
+                        <fieldset>
+                            <div class="row">                                
+                                <section class="col col-8" style="padding-left: 20px;padding-right:5px; ">
+                                    <label class="label">Contribuyente:</label>
+                                    <label class="input">
+                                        <input type="hidden" id="inp_coactivo_contrib_hidden" value="0"> 
+                                        <input id="inp_coactivo_contrib" type="text" placeholder="ejm. jose min 4 caracteres" class="input-sm text-uppercase">
+                                    </label>
+                                </section>
+                                <section class="col col-2" style="padding-left:5px">
+                                    <label class="label">Año:</label>                                   
+                                    <label class="select">
+                                        <select onchange="selanio_arbi_pred(this.value);" id="inp_coactivo_contrib_anio" class="input-sm">                                       
+                                            @foreach ($anio as $anio2)                                        
+                                            <option value='{{$anio2->anio}}' >{{$anio2->anio}}</option>
+                                            @endforeach                                    
+                                        </select><i></i>                        
+                                </section>
+                            </div>                            
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="panel panel-success" style="border: 0px !important">                    
+                    <div class="panel-body">    
+                        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 0px !important">
+                            <table id="table_apersonamiento"></table>
+                            <div id="pager_table_apersonamiento">
+                                <div style="float: right; font-weight: bold;">
+                                    Total S/. <input type="text" id="inp_coactivo_tot" class="input-xm text-right" style="width: 100px; height: 21px;padding-right: 4px;margin-bottom: -3px;" readonly="" value="0">
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="{{ asset('archivos_js/tesoreria/emision_rec_pago_varios.js') }}"></script>
 <script src="{{ asset('archivos_js/tesoreria/emision_rec_pago_imp_predial.js') }}"></script>
 <script src="{{ asset('archivos_js/tesoreria/emision_rec_pago_arbitrios.js') }}"></script>
 <script src="{{ asset('archivos_js/tesoreria/emision_rec_pago_fracc.js') }}"></script>
+<script src="{{ asset('archivos_js/tesoreria/pago_coactivo.js') }}"></script>
 @endsection

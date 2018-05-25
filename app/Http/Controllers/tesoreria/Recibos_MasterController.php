@@ -539,7 +539,7 @@ class Recibos_MasterController extends Controller
         $check=explode("and",$request['check']);
         $id_contrib=$request['id_contrib'];
         $anio=$request['anio'];
-        $idmaster=$this->create_rec_arb($request['total'],$id_contrib,$anio);
+        $idmaster=$this->create_rec_arb($request['total'],$id_contrib,$anio,1,0);
         $trib_barrido=DB::table('presupuesto.vw_barrido')->select('id_tributo')->where('anio',$anio)->first();
         $trib_recojo=DB::table('presupuesto.vw_limpieza')->select('id_tributo')->where('anio',$anio)->first();
         $trib_seguridad=DB::table('presupuesto.vw_serenazgo')->select('id_tributo')->where('anio',$anio)->first();
@@ -571,23 +571,36 @@ class Recibos_MasterController extends Controller
         }
         if($totalbarrido>0)
         {
-            $this->create_rec_det_arb($idmaster,$anio,$totalbarrido,$trib_barrido->id_tributo);
+            $this->create_rec_det_arb($idmaster,$anio,$totalbarrido,$trib_barrido->id_tributo,0);
         }
         if($totalrecojo>0)
         {
-            $this->create_rec_det_arb($idmaster,$anio,$totalrecojo,$trib_recojo->id_tributo);
+            $this->create_rec_det_arb($idmaster,$anio,$totalrecojo,$trib_recojo->id_tributo,0);
         }
         if($totalseguridad>0)
         {
-            $this->create_rec_det_arb($idmaster,$anio,$totalseguridad,$trib_seguridad->id_tributo);
+            $this->create_rec_det_arb($idmaster,$anio,$totalseguridad,$trib_seguridad->id_tributo,0);
         }
         if($totalparques>0)
         {
-            $this->create_rec_det_arb($idmaster,$anio,$totalparques,$trib_parques->id_tributo);
+            $this->create_rec_det_arb($idmaster,$anio,$totalparques,$trib_parques->id_tributo,0);
         }
         return $idmaster;
     }
-    public function create_rec_arb($total,$id_contrib,$anio)
+    function edit_coactivo(Request $request){
+        $check=explode("and",$request['check']);
+        $id_contrib=$request['id_contrib'];
+        $anio=$request['anio'];
+        $idmaster=$this->create_rec_arb($request['total'],$id_contrib,$anio,2,1);
+        
+        foreach($check as $coactivo)
+        {
+            $pago=explode("-",$coactivo); 
+            $this->create_rec_det_arb($idmaster,$anio,$pago[2],$pago[1],$pago[0]);
+        }
+        return $idmaster;
+    }
+    public function create_rec_arb($total,$id_contrib,$anio,$tip,$pgo_coactivo)
     {
         date_default_timezone_set('America/Lima');
         $data = new Recibos_Master();
@@ -599,7 +612,15 @@ class Recibos_MasterController extends Controller
         $data->id_est_rec = 1;
         $data->id_caja    = 1;        
         $data->hora_pago  = "";
-        $data->glosa      = "PAGO ARBITRIOS ".$anio;
+        $data->pgo_coactivo  = $pgo_coactivo;
+        if($tip==1)
+        {
+            $data->glosa      = "PAGO ARBITRIOS ".$anio;
+        }
+        else
+        {
+            $data->glosa      = "PAGO COACTIVO ";
+        }
         $data->total      = $total;
         $data->id_tip_pago= 0;
         $data->id_contrib = $id_contrib;
@@ -610,7 +631,7 @@ class Recibos_MasterController extends Controller
         $data->save();        
         return $data->id_rec_mtr;
     }
-    public function create_rec_det_arb($id,$anio,$total,$tributo)
+    public function create_rec_det_arb($id,$anio,$total,$tributo,$id_aper)
     {
         $rec_det = new Recibos_Detalle(); 
         $rec_det->id_rec_master=$id;
@@ -620,6 +641,7 @@ class Recibos_MasterController extends Controller
         $rec_det->monto=$total;
         $rec_det->cant=1;
         $rec_det->p_unit=$total;
+        $rec_det->id_aper=$id_aper;
         $rec_det->save();
         return $rec_det->id_rec_det;
     }

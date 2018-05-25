@@ -39,6 +39,7 @@ class MultasController extends Controller
            return $this->create_multa_detalle($request);
         }
     }
+    
     public function create_multa(Request $request)
     {
         $multa=new multas;
@@ -48,6 +49,7 @@ class MultasController extends Controller
         $multa->save();
         return $multa->id_multa;
     }
+    
     public function create_multa_registrada(Request $request)
     {
         $multa=new multas_registradas;
@@ -60,6 +62,7 @@ class MultasController extends Controller
         $multa->save();
         return $multa->id_multa_reg;
     }
+    
     public function create_multa_detalle(Request $request)
     {
         $datos = explode("-", $request['id_an']);
@@ -75,28 +78,24 @@ class MultasController extends Controller
 
     public function store(Request $request)
     {
-        //
     }
 
     public function show($id)
     {
-        //
     }
 
     public function edit($id)
     {
-        //
     }
 
     public function update(Request $request, $id)
     {
-        //
     }
 
     public function destroy($id)
     {
-        //
     }
+    
     public function get_multa($an,$contrib,$ini,$fin,$num,Request $request)
     {
             header('Content-type: application/json');
@@ -176,6 +175,7 @@ class MultasController extends Controller
             }
             return response()->json($Lista);
     }
+    
     public function get_multa_criterio($texto)
     {
         if($texto=='0')
@@ -228,6 +228,7 @@ class MultasController extends Controller
             return response()->json($Lista);
         }
     }
+    
     public function edit_multa_fec(Request $request)
     {
         $multa=new multas_registradas;
@@ -239,6 +240,7 @@ class MultasController extends Controller
         }
         return $request['id'];
     }
+    
     public function multa_repo($id)
     {
         $sql    =DB::table('fiscalizacion.vw_multas_registradas')->where('id_multa_reg',$id)->get()->first();
@@ -251,6 +253,86 @@ class MultasController extends Controller
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("alcabala.pdf");
         }
+    }
+    public function multa_coactiva()
+    {
+        $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_evn_mul_coactiva' and id_usu=".Auth::user()->id);
+        $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        if(count($permisos)==0)
+        {
+            return view('errors/sin_permiso',compact('menu','permisos'));
+        }
+        $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
+        return view('fiscalizacion/vw_multa_coactiva',compact('anio_tra','menu','permisos'));
+    }
+    function grid_multa($an,$tipo,Request $request){
+        $env_rd=$tipo;        
+        $page = $_GET['page'];
+        $limit = $_GET['rows'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+ 
+        $totalg = DB::select("select count(id_multa_reg) as total from fiscalizacion.vw_multas_registradas where env_coactivo=".$env_rd." and anio_reg=$an and fec_notificacion is not null");            
+            
+     
+
+        $total_pages = 0;
+        if (!$sidx) {
+            $sidx = 1;
+        }
+        $count = $totalg[0]->total;
+        if ($count > 0) {
+            $total_pages = ceil($count / $limit);
+        }
+        if ($page > $total_pages) {
+            $page = $total_pages;
+        }
+        $start = ($limit * $page) - $limit; // do not put $limit*($page - 1)  
+        if ($start < 0) {
+            $start = 0;
+        }
+        $sql = DB::table('fiscalizacion.vw_multas_registradas')->where('env_coactivo',$env_rd)->where('anio_reg',$an)->whereNotNull('fec_notificacion')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $Lista = new \stdClass();
+        $Lista->page = $page;
+        $Lista->total = $total_pages;
+        $Lista->records = $count;
+
+        foreach ($sql as $Index => $Datos) {
+            if($tipo==0)
+            {
+                $btn='<button class="btn btn-labeled bg-color-blueDark txt-color-white" type="button" onclick="env_coactiva(1,'.$Datos->id_multa_reg.')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span>Env. a Coactiva</button>';
+            }
+            else
+            {
+                $btn='<button class="btn btn-labeled bg-color-blueDark txt-color-white" type="button" onclick="env_coactiva(0,'.$Datos->id_multa_reg.')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span>Retornar </button>';
+            }
+            $Lista->rows[$Index]['id'] = $Datos->id_multa_reg;            
+            $Lista->rows[$Index]['cell'] = array(                
+                trim($Datos->nro_multa),
+                date('d-m-Y', strtotime($Datos->fec_reg)),
+                trim($Datos->anio_reg),                
+                str_replace('-','',trim($Datos->contribuyente)),
+                $Datos->total_multa,
+                $btn
+            );
+        }
+        return response()->json($Lista); 
+    }
+    
+    function fis_env_multa(Request $request){
+        $id_multa_reg=$request['id_multa_reg'];
+        $env_rd=$request['env_rd'];
+        
+        $data = new multas_registradas();
+            $val = $data::where("id_multa_reg", "=", $id_multa_reg)->first();
+            if (count($val) >= 1) {
+                $val->env_coactivo=$env_rd;            
+                $val->fch_env=date('d-m-Y');            
+                $val->hora_env=date('h:i A');                 
+                $val->save();
+                return $val->id_multa_reg;
+            }
+
     }
     
 }

@@ -193,7 +193,7 @@ Route::group(['middleware' => 'auth'], function() {
 //        Route::post('insert_new_contribuyente', 'adm_tributaria\Contribuyentes@insert_new_contribuyente');
         /*ENVIO DE DOCUEMNTOS EJECUCION COACTIVA*/
         Route::resource('envio_doc_coactiva','EnvDocCoactivaController');
-        Route::get('recaudacion_get_op', 'EnvDocCoactivaController@fis_getOP');        
+        Route::get('recaudacion_get_op/{an}/{tipo}', 'EnvDocCoactivaController@fis_getOP');        
         Route::get('updat_env_doc','EnvDocCoactivaController@up_env_doc');
         Route::get('listado_op','EnvDocCoactivaController@imp_op');
         Route::resource('modificar_persona','PersonaController');
@@ -260,6 +260,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('verif_est_cta_coactiva','Recibos_MasterController@verif_est_cta');
         Route::get('verif_est_cta_fraccionamiento','Recibos_MasterController@verif_est_cta_fraccionamiento');
         Route::get('insertar_pago_arbitrio','Recibos_MasterController@edit_arbitrio');
+        Route::get('insertar_pago_coactivo','Recibos_MasterController@edit_coactivo');
         
         Route::resource('rep_tesoreria', 'Reportes_TesoreriaController'); 
         
@@ -315,6 +316,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('coactiva_recep_doc','CoactivaController@get_doc');
         Route::get('recib_doc_coactiva','CoactivaMasterController@resep_documentos_op');
         Route::get('recib_doc_coactiva_rd','CoactivaMasterController@resep_documentos_rd');
+        Route::get('recib_doc_coactiva_multa','CoactivaMasterController@resep_documentos_multa');
         Route::get('add_documento_exped','CoactivaController@add_documento');
         Route::get('abrirdocumento/{id_doc}/{id_coa_mtr}','CoactivaController@open_document');
         Route::get('editar_resol','CoactivaController@editar_resol');
@@ -332,6 +334,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('report_exped_coa','ReportesController@report_exped_coa');
         Route::get('cbo_valores','ReportesController@cbo_valores');
         Route::get('devolver_valor','CoactivaController@devolver_valor');
+        Route::get('aceptar_valor','CoactivaController@aceptar_valor');
         Route::get('eliminar_documento','CoactivaController@eliminar_documento');
         Route::get('activar_exped','CoactivaController@activar_exped');
         Route::get('get_ctacte','CoactivaController@cta_cte');
@@ -342,6 +345,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('edit_estado','CompromisoPagoController@edit_estado_compromiso');
         
         Route::get('reporte_ingresos','ReportesController@rep_ingresos');
+        ////////tesoreria
+        Route::get('get_apersonamiento','CoactivaController@grid_apersonamiento');
     });
     
     Route::group(['namespace' => 'adm_tributaria'], function() {
@@ -374,7 +379,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('replicar_predios', 'Rep_predioController@replicar_predios');
         
     });
-    Route::group(['namespace' => 'recaudacion'], function() {//modulo de fiscalizacion
+    Route::group(['namespace' => 'recaudacion'], function() {
         Route::resource('ordenpago', 'OrdenPagoController');
         Route::get('fis_rep/{tip}/{id}/{sec}/{man}','OrdenPagoController@reporte');
         Route::get('obtiene_op/{dat}/{sec}/{manz}/{an}/{ini}/{fin}', 'OrdenPagoController@getOP'); //
@@ -449,7 +454,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('get_motivacion_rd','Res_DeterminacionController@get_motivacion_rd');
         /////// coactiva
         Route::get('env_rd_coactiva','EnvRD_CoactivaController@vw_env_rd_coa');
-        Route::get('fisca_get_rd','EnvRD_CoactivaController@fis_get_RD');
+        Route::get('fisca_get_rd/{an}/{tip}','EnvRD_CoactivaController@fis_get_RD');
         Route::get('update_env_rd','EnvRD_CoactivaController@fis_env_rd');
         Route::get('mod_noti_carta','Carta_RequerimientoController@edit_carta_fec');
         ////
@@ -464,6 +469,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('obtiene_multas/{text}', 'MultasController@get_multa_criterio'); //
         Route::get('mod_noti_multa','MultasController@edit_multa_fec');
         Route::get('multa_rep/{id}', 'MultasController@multa_repo'); // 
+        Route::get('env_multa_coactiva', 'MultasController@multa_coactiva'); 
+        Route::get('get_multa/{an}/{tip}','MultasController@grid_multa');
+        Route::get('update_env_multa','MultasController@fis_env_multa');
+// 
     });   
     Route::get('$',function(){ echo 0;});//url auxiliar
     /*************************************** - REPORTES - *************************************** */

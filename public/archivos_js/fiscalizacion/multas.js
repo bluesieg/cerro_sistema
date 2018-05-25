@@ -1,4 +1,5 @@
-var inputglobal="";
+var inputglobal=""; 
+
 function fn_bus_contrib_multa(input)
 {
     inputglobal=input;
@@ -175,7 +176,7 @@ function limpiar_multa_registrada()
         iniciar=1;
         CKEDITOR.replace('ckeditor');
     }
-    CKEDITOR.instances['ckeditor'].setData('');
+    CKEDITOR.instances['ckeditor'].setData('Fundamentos');
 }
 function buscar_multa()
 {

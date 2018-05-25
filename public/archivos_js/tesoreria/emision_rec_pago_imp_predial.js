@@ -193,9 +193,7 @@ function fn_bus_contrib_list(per){
     
     $("#"+globalinputcontri+"_cod").val($('#table_contrib').jqGrid('getCell',per,'id_per'));    
     $("#"+globalinputcontri).val($('#table_contrib').jqGrid('getCell',per,'contribuyente'));
-    tam=($('#table_contrib').jqGrid('getCell',per,'contribuyente')).length;
     anio=$("#"+globalinputcontri+"_anio").val();
-    $("#"+globalinputcontri).attr('maxlength',tam);
     id_contrib=per;
     if(globalinputcontri=='vw_emi_rec_imp_pre_contrib')
     {
@@ -204,6 +202,10 @@ function fn_bus_contrib_list(per){
     if(globalinputcontri='vw_emi_rec_imp_pre_contrib')
     {
         fn_actualizar_grilla('table_Predios_Arbitrios','grid_pred_arbitrios?id_contrib='+id_contrib+'&anio='+anio);
+    }
+    if(globalinputcontri='inp_coactivo_contrib')
+    {
+        fn_actualizar_grilla('table_apersonamiento','get_apersonamiento?id_contrib='+id_contrib+'&anio='+anio);
     }
     $("#dlg_bus_contr").dialog("close");    
 }

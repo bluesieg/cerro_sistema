@@ -195,7 +195,7 @@
                 <tr>
                     <td colspan="4" ><b>Nota: Deuda se actualizatará a la fecha de pago</b></td>
                     <td colspan="5" style="text-align: center"><b>Total</b></td>
-                    <td style="font-size: 0.7em; text-align: right; padding-right: 5px"><b>S/.{{number_format($sql->ivpp_verif-$sql->pagado+4.64,3,".",",")}}</b></td>
+                    <td style="font-size: 0.7em; text-align: right; padding-right: 5px"><b>S/.{{number_format($sql->ivpp_verif-$sql->pagado+$reajuste[0]->reajuste_actual,3,".",",")}}</b></td>
                 </tr>
             </tbody>
         </table>

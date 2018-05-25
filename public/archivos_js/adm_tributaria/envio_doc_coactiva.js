@@ -1,16 +1,24 @@
 
-function right(){
-    cont_rows=jQuery("#tabla_Doc_OP").jqGrid('getGridParam', 'records');
-    id_gen_fis=$('#tabla_Doc_OP').jqGrid ('getGridParam', 'selrow');
-    if(cont_rows==0 || id_gen_fis==null){return false;}
-    update_env_op(id_gen_fis,2);
+function env_coactiva(tip,id){
+    MensajeDialogLoadAjax('tabla_Doc_OP', '.:: CARGANDO ...');
+    MensajeDialogLoadAjax('tabla_Doc_OP_2', '.:: CARGANDO ...');
+    $.ajax({
+        url:'updat_env_doc',
+        type:'GET',
+        data:{id_gen_fis:id,env_op:tip},
+        success:function(data)
+        {
+            MensajeExito("Se envió Correctamente","Su Registro Fue Eviado con Éxito...",4000);
+            
+            fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op/'+$("#selantra").val()+"/0");
+            fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op/'+$("#selantra").val()+"/1");
+            MensajeDialogLoadAjaxFinish('tabla_Doc_OP');
+            MensajeDialogLoadAjaxFinish('tabla_Doc_OP_2');
+        },
+        error: function(){}
+    }); 
 }
-function left(){
-    cont_rows=jQuery("#tabla_Doc_OP_2").jqGrid('getGridParam', 'records');
-    id_gen_fis=$('#tabla_Doc_OP_2').jqGrid ('getGridParam', 'selrow');
-    if(cont_rows==0 || id_gen_fis==null){return false;}
-    update_env_op(id_gen_fis,1);
-}
+
 
 function all_right(){    
     var rows = $("#tabla_Doc_OP").getDataIDs();
@@ -28,20 +36,7 @@ function all_right(){
             i++;
         }, 1000);
 
-        setTimeout(function () {
-            if($("input:radio[name='myradio']:checked").val()==1){
-                fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+
-                    '&desde='+$("#vw_env_doc_fdesde").val()+'&hasta='+$("#vw_env_doc_fhasta").val());
-                fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?env_op=2&tip_bus='+$("input:radio[name='myradio']:checked").val()+
-                    '&desde='+$("#vw_env_doc_fdesde").val()+'&hasta='+$("#vw_env_doc_fhasta").val()+'&grid=2');
-            }else if($("input:radio[name='myradio']:checked").val()==2){
-                fn_actualizar_grilla('tabla_Doc_OP','recaudacion_get_op?env_op=1&tip_bus='+$("input:radio[name='myradio']:checked").val()+
-                    '&del='+$("#vw_env_doc_nrode").val()+'&al='+$("#vw_env_doc_nroa").val());
-                fn_actualizar_grilla('tabla_Doc_OP_2','recaudacion_get_op?env_op=2&tip_bus='+$("input:radio[name='myradio']:checked").val()+
-                    '&del='+$("#vw_env_doc_nrode").val()+'&al='+$("#vw_env_doc_nroa").val()+'&grid=2');
-            }
-            MensajeDialogLoadAjaxFinish('content');
-        }, (rows.length+1)*1000);
+      
     }
 }
 function all_left(){    

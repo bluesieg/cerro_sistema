@@ -316,10 +316,11 @@ class Res_DeterminacionController extends Controller
         {
             $fichas    =DB::table('fiscalizacion.vw_ficha_verificacion')->where('id_car',$sql->id_car)->get();
             $predios=DB::table('fiscalizacion.vw_puente_carta_predios')->where('id_car',$sql->id_car)->get();
-            $sql->letras = $this->num_letras($sql->ivpp_verif-$sql->pagado+4.64);
+            $reajuste = DB::select('select * from adm_tri.reajuste_actual()');
+            $sql->letras = $this->num_letras(($sql->ivpp_verif-$sql->pagado)+$reajuste[0]->reajuste_actual);
             $sql->fec_reg=$this->getCreatedAtAttribute($sql->fec_reg)->format('l d \d\e F \d\e\l Y ');
             $sql->fec_carta=$this->getCreatedAtAttribute($sql->fec_carta)->format('l d \d\e F \d\e\l Y ');
-            $reajuste = DB::select('select * from adm_tri.reajuste_actual()');
+            
             $view =  \View::make('fiscalizacion.reportes.rd', compact('sql','fichas','predios','reajuste'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
@@ -517,7 +518,7 @@ class Res_DeterminacionController extends Controller
             }
             if($estado==4)
             {
-                $sql=DB::table('fiscalizacion.vw_hoja_liquidacion')->where('anio',$anio)->orderBy('nro_hoja')->get(); 
+                $sql=DB::table('fiscalizacion.vw_hoja_liquidacion')->where('anio',$anio)->where('flg_anu',0)->orderBy('nro_hoja')->get(); 
                 if(count($sql)>=1)
                 {
                     $view =  \View::make('fiscalizacion.reportes.vw_reporte_Estado_hl', compact('sql','name','anio','estado'))->render();

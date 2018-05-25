@@ -4,7 +4,7 @@
     <div class='cr_content col-xs-12'>
         <div class="col-xs-12">
         <div class="col-lg-9">
-            <h1 class="txt-color-green"><b>Envio de RD a Ejecucion Coactiva...</b></h1>
+            <h1 class="txt-color-green"><b>Envio de Multas a Ejecucion Coactiva...</b></h1>
         </div>
         <div class="col-lg-3 col-md-6 col-xs-12">
             <div class="input-group input-group-md">
@@ -24,15 +24,15 @@
     <div class='cr_content col-xs-12'>
                 
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; padding: 0px !important">
-            <table id="tabla_Doc_RD"></table>
-            <div id="p_tabla_Doc_RD"></div>
+            <table id="tabla_Doc_multa"></table>
+            <div id="p_tabla_Doc_multa"></div>
         </article>
     </div>
     <div class='cr_content col-xs-12'>
                 
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; margin-bottom: 50px; padding: 0px !important">
-            <table id="tabla_Doc_RD_2"></table>
-            <div id="p_tabla_Doc_RD_2"></div>
+            <table id="tabla_Doc_multa_2"></table>
+            <div id="p_tabla_Doc_multa_2"></div>
         </article>
     </div>
     
@@ -44,57 +44,51 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $("#menu_fisca").show();
-        $("#li_env_rd_a_coac").addClass('cr-active');
-        jQuery("#tabla_Doc_RD").jqGrid({
-            url: 'fisca_get_rd/'+$("#selantra").val()+"/0",
+        $("#li_evn_mul_coactiva").addClass('cr-active');
+        jQuery("#tabla_Doc_multa").jqGrid({
+            url: 'get_multa/'+$("#selantra").val()+"/0",
             datatype: 'json', mtype: 'GET',
             height: '150', autowidth: true,
             toolbarfilter: true,
-            colNames: ['Nro', 'Fecha','Hora', 'Año', 'Contribuyente o Razon Social','estado','verif','Monto S/.','<button onclick="all_right()">Env. Todos</button>'],
-            rowNum: 15, sortname: 'id_rd', sortorder: 'desc', viewrecords: true, align: "center",caption:"Fiscalización",
+            colNames: ['Nro', 'Fecha', 'Año', 'Contribuyente o Razon Social','Monto S/.','<button onclick="all_right()">Env. Todos</button>'],
+            rowNum: 15, sortname: 'id_multa_reg', sortorder: 'desc', viewrecords: true, align: "center",caption:"Fiscalización",
             colModel: [                
                 {name: 'nro_rd', index: 'nro_rd', align: 'center', width: 70},
                 {name: 'fec_reg', index: 'fec_reg', align: 'center', width: 75},
-                {name: 'hora', index: 'hora', hidden:true},
                 {name: 'anio', index: 'anio', hidden: true},                               
                 {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 250},
-                {name: 'estado', index: 'estado', hidden: true},
-                {name: 'verif_env', index: 'verif_env', hidden: true},
                 {name: 'monto', index: 'monto', width: 85,align:'center'},
                 {name: 'env', index: 'env', width: 85,align:'center'}
             ],
-            pager: '#p_tabla_Doc_RD',
+            pager: '#p_tabla_Doc_multa',
             rowList: [15, 20],
             gridComplete: function () {}            
         });
-        jQuery("#tabla_Doc_RD_2").jqGrid({
-            url: 'fisca_get_rd/'+$("#selantra").val()+"/1",
+        jQuery("#tabla_Doc_multa_2").jqGrid({
+            url: 'get_multa/'+$("#selantra").val()+"/1",
             datatype: 'json', mtype: 'GET',
             height: '150', autowidth: true,
             toolbarfilter: true,
-            colNames: ['Nro', 'Fecha','Hora', 'Año', 'Contribuyente o Razon Social','estado','verif','Monto S/.','<button onclick="all_right()">Retornar Todos</button>'],
-            rowNum: 15, sortname: 'id_rd', sortorder: 'desc', viewrecords: true, align: "center",caption:"Coactiva",
+            colNames: ['Nro', 'Fecha', 'Año', 'Contribuyente o Razon Social','Monto S/.','<button onclick="all_right()">Retornar Todos</button>'],
+            rowNum: 15, sortname: 'id_multa_reg', sortorder: 'desc', viewrecords: true, align: "center",caption:"Coactiva",
             colModel: [                
                 {name: 'nro_rd', index: 'nro_rd', align: 'center', width: 70},
                 {name: 'fec_reg', index: 'fec_reg', align: 'center', width: 75},
-                {name: 'hora', index: 'hora', width: 70,align:'center'},
-                {name: 'anio', index: 'anio', hidden: true},
+                {name: 'anio', index: 'anio', hidden: true},                               
                 {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 250},
-                {name: 'estado', index: 'estado', hidden: true},
-                {name: 'verif_env', index: 'verif_env', hidden: true},
                 {name: 'monto', index: 'monto', width: 85,align:'center'},
                 {name: 'env', index: 'env', width: 85,align:'center'}
 
             ],
-            pager: '#p_tabla_Doc_RD_2',
+            pager: '#p_tabla_Doc_multa_2',
             rowList: [15, 20],
             gridComplete: function () {}
         });
         $(window).on('resize.jqGrid', function () {
-            $("#tabla_Doc_RD").jqGrid('setGridWidth', $("#content_2").width());
+            $("#tabla_Doc_multa").jqGrid('setGridWidth', $("#content_2").width());
         });
         $(window).on('resize.jqGrid', function () {
-            $("#tabla_Doc_RD_2").jqGrid('setGridWidth', $("#content_3").width());
+            $("#tabla_Doc_multa_2").jqGrid('setGridWidth', $("#content_3").width());
         });
         jQuery("#table_contrib").jqGrid({
             url: 'obtiene_cotriname?dat=0',
@@ -124,7 +118,7 @@
     });
 </script>
 @stop
-<script src="{{ asset('archivos_js/fiscalizacion/envio_rd_coactiva.js') }}"></script>
+<script src="{{ asset('archivos_js/fiscalizacion/multas_a_coactiva.js') }}"></script>
 <div id="dlg_bus_contr" style="display: none;">
     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; margin-bottom: 10px; padding: 0px !important">
         <table id="table_contrib"></table>

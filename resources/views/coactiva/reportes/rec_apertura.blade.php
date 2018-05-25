@@ -30,39 +30,9 @@
                 <div style="background:#01A858; margin-top: 0px;height: 1px"></div>           
             </center> 
         </div>
-        <div style="margin-top: -40px;">
-            <table style="font-size:15px;">
-                <tr>
-                    <td><b>Expediente N°</b></td>
-                    <td>:&nbsp;{{ $resol->nro_exped.'-'.$resol->anio_resol }} / OEC-MDCC<br/></td>
-                </tr>
-                <tr>
-                    <td><b>Entidad</b></td>
-                    <td>:&nbsp;MUNICIPALIDAD DISTRITAL DE CERRO COLORADO<br/></td>
-                </tr>
-                <tr>
-                    <td><b>Obligado</b></td>
-                    <td>:&nbsp;{{$resol->contribuyente}}<br/></td>
-                </tr>
-                <tr>
-                    <td><b>Materia</b></td>
-                    <td>:&nbsp;{{$resol->desc_mat}}<br/></td>
-                </tr>
-                <tr>
-                    <td><b>Domicilio</b></td>
-                    <td>:&nbsp;{{$resol->dom_fis}}<br/></td>
-                </tr>
-                <tr>
-                    <td><b>Ubicacion de Predio</b></td>
-                    <td>:&nbsp;{{$resol->ubi_pred}}<br/></td>
-                </tr>
-            </table>
-            </div>
-        <br>
-        <div style="text-align:center"><b>RESOLUCIÓN DE EJECUCIÓN COACTIVA NRO. {{ $resol->nro_resol.'-'.$resol->anio_resol }} / OEC-MDCC</b></div><br>
-        
+
         <div style="text-align: justify;font-size:15px;overflow:auto">           
-            @php echo $plantilla @endphp
+            @php echo $resol[0]->texto @endphp
         </div>     
     </body>
 </html>

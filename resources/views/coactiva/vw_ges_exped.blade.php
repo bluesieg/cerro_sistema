@@ -22,13 +22,13 @@
                 <ul id="tabs1" class="nav nav-tabs bordered">
                     <li class="active">
                         <a href="#s1" data-toggle="tab" aria-expanded="true">
-                            CONSOLIDADO DE EXPEDIENTES
+                            EVALUACIÓN DE EXPEDIENTES
                             <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                         </a>
                     </li>
-                    <li>
+                    <li onclick="lista_aceptados()">
                         <a href="#s2" data-toggle="tab" aria-expanded="false">
-                            VER POR CONTRIBUYENTE
+                            EXPEDIENTES ACEPTADOS
                             <i class="fa fa-lg fa-fw fa-cog fa-spin"></i>
                         </a>
                     </li>
@@ -36,8 +36,7 @@
                         <div class="input-group input-group-md">
                             <span class="input-group-addon">Año de Tramite <i class="fa fa-cogs"></i></span>
                             <div class="icon-addon addon-md">
-                                <select id='selanio_tra' class="form-control col-lg-8" style="height: 32px;">
-                                    <option value="0">Seleccione</option>
+                                <select id='selanio_tra' class="form-control col-lg-8" style="height: 32px;" onchange="select_materia()">
                                     @foreach ($anio_tra as $anio)
                                     <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
                                     @endforeach
@@ -116,29 +115,18 @@
                                     </div>                                    
                                 </section>
                                 <section class="col-lg-6 text-right" style="padding-left: 5px;">                                     
-                                    <button onclick="exped_no_trib();" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
-                                        <span class="btn-label"><i class="fa fa-folder"></i></span>Crear Expediente
-                                    </button>                                    
-                                    <button onclick="dlg_select_new_doc();" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
-                                        <span class="btn-label"><i class="fa fa-file-text"></i></span>Nuevo Documento
-                                    </button>
-                                    <button onclick="eliminar_documento();" type="button" class="btn btn-labeled bg-color-red txt-color-white">
-                                        <span class="btn-label"><i class="fa fa-trash"></i></span>Eliminar Doc.
-                                    </button>
+                                    
                                 </section>
                             </div>
                         </section>                        
                         <hr style="border: 1px solid #DDD;margin: 10px -10px">
                         <section style="">              
                             <div class="row">
-                                <section id="content_1" class="col col-lg-2" style="padding-right:5px;width: 20%"> 
+                                <div id="content_1" class="col-lg-12" style="padding-right:5px;width: 100%"> 
                                     <table id="tabla_expedientes"></table>
                                     <div id="p_tabla_expedientes"></div>                     
-                                </section>                                
-                                <section id="content_2" class="col col-lg-10" style="padding-left:5px;width: 80%">
-                                    <table id="tabla_doc_coactiva"></table>
-                                    <div id="p_tabla_doc_coactiva"></div>
-                                </section>                            
+                                </div>                                
+
                             </div>
                         </section>        
                     </div>
@@ -153,21 +141,22 @@
         $("#menu_coactiva").show();
         $("#li_gesion_exped").addClass('cr-active');
         jQuery("#all_tabla_expedientes").jqGrid({
-            url: 'get_all_exped?contrib=&materia=1',
+            url: 'get_all_exped?contrib=&materia=1&anio='+$("#selanio_tra").val(),
             datatype: 'json', mtype: 'GET',
             height: 329, autowidth: true,
             toolbarfilter: true,
-            colNames: ['Expediente','id_contrib', 'Contribuyente', 'Materia', 'Ultimo Documento Emitido', 'Monto', 'Estado','id_val'],
+            colNames: ['Expediente','id_contrib', 'Contribuyente', 'Materia', 'Oficina de Procedencia','Doc. ini.', 'Monto', 'Devolver','Aceptar'],
             rowNum: 20, sortname: 'id_coa_mtr', sortorder: 'desc', viewrecords: true, caption: 'Consolidado de Expedientes', align: "center",
             colModel: [
                 {name: 'nro_exped', index: 'nro_exped', align: 'center', width: 80},
                 {name: 'id_contrib', index: 'id_contrib', hidden: true},
                 {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 210},
                 {name: 'materia', index: 'materia', align: 'left', width: 70},
-                {name: 'ult_doc', index: 'ult_doc', align: 'left', width: 200},
+                {name: 'nombre', index: 'nombre', align: 'left', width: 200},
+                {name: 'doc_ini', index: 'doc_ini', align: 'left', width: 70},
                 {name: 'monto', index: 'monto', align: 'right', width: 70},
-                {name: 'estado', index: 'estado', align: 'left', width: 120},
-                {name: 'id_val', index: 'id_val', hidden: true}
+                {name: 'btn', index: 'btn', align: 'center', width: 100},
+                {name: 'btn', index: 'btn', align: 'center', width: 120},
             ],
             rowList: [13, 20],
             pager: '#p_all_tabla_expedientes',
@@ -182,18 +171,21 @@
             ondblClickRow: function (Id) {}
         });        
         jQuery("#tabla_expedientes").jqGrid({
-            url: 'get_exped?id_contrib=0',
+            url: '',
             datatype: 'json', mtype: 'GET',
             height: 329, autowidth: true,
             toolbarfilter: true,
-            colNames: ['Nro', 'Expediente', 'monto', 'estado','Materia'],
-            rowNum: 20, sortname: 'nro_procedimiento', sortorder: 'asc', viewrecords: true, caption: 'Expedientes', align: "center",
+            colNames: ['Nro', 'Expediente','Contribuyente', 'Materia', 'Total Deuda','Pagado','Saldo','Ver'],
+            rowNum: 20, sortname: 'nro_exped', sortorder: 'desc', viewrecords: true, caption: 'Expedientes', align: "center",
             colModel: [
                 {name: 'nro_procedimiento', index: 'nro_procedimiento', align: 'center', width: 30},
                 {name: 'nro_exped', index: 'nro_exped', align: 'center', width: 90},
-                {name: 'monto', index: 'monto', hidden: true},
-                {name: 'estado', index: 'estado', hidden: true},
-                {name: 'materia', index: 'materia', align: 'center', width: 70}
+                {name: 'contribuyente', index: 'contribuyente', align: 'center', width: 90},
+                {name: 'materia', index: 'materia',  align: 'center', width: 90},
+                {name: 'total_deuda', index: 'total_deuda',  align: 'center', width: 50},
+                {name: 'pagado', index: 'pagado', align: 'center', width: 50},
+                {name: 'saldo', index: 'saldo', align: 'center', width: 50},
+                {name: 'ver', index: 'ver', align: 'center', width: 70}
             ],
             rowList: [13, 20],
             gridComplete: function () {},
@@ -203,20 +195,20 @@
             }
         });
         jQuery("#tabla_doc_coactiva").jqGrid({
-            url: 'get_doc_exped?id_coa_mtr=0',
+            url: '',
             datatype: 'json', mtype: 'GET',
             height: 300, autowidth: true,
             toolbarfilter: true,
             colNames: ['Nro', 'Fch.Emision', 'Tipo Gestion', 'N° Resolucion', 'Fch.Recep', 'Ver', 'Editar'],
             rowNum: 20, sortname: 'id_doc', sortorder: 'asc', viewrecords: true, caption: 'Documentos', align: "center",
             colModel: [
-                {name: 'nro', index: 'nro', align: 'center', width: 20},
-                {name: 'fch_emi', index: 'fch_emi', align: 'center', width: 50},
-                {name: 'tip_gestion', index: 'tip_gestion', align: 'left', width: 230},
-                {name: 'nro_resol', index: 'nro_resol', align: 'center', width: 60},
-                {name: 'fch_recep', index: 'fch_recep', align: 'center', width: 50},
-                {name: 'ver', index: 'ver', align: 'center', width: 60},
-                {name: 'edit', index: 'edit', align: 'center', width: 60}
+                {name: 'nro', index: 'nro', align: 'center', width: 50},
+                {name: 'fch_emi', index: 'fch_emi', align: 'center', width: 100},
+                {name: 'tip_gestion', index: 'tip_gestion', align: 'left', width: 310},
+                {name: 'nro_resol', index: 'nro_resol', align: 'center', width: 100},
+                {name: 'fch_recep', index: 'fch_recep', align: 'center', width: 100},
+                {name: 'ver', index: 'ver', align: 'center', width: 130},
+                {name: 'edit', index: 'edit', align: 'center', width: 130}
             ],
             pager: '#p_tabla_doc_coactiva',
             rowList: [13, 20],
@@ -230,9 +222,10 @@
             onSelectRow: function (Id) {},
             ondblClickRow: function (Id) {}
         });
+
         $(window).on('resize.jqGrid', function () {
             $("#tabla_expedientes").jqGrid('setGridWidth', $("#content_1").width());
-            $("#tabla_doc_coactiva").jqGrid('setGridWidth', $("#content_2").width());
+            //$("#tabla_doc_coactiva").jqGrid('setGridWidth', $("#content_2").width());
             $("#all_tabla_expedientes").jqGrid('setGridWidth', $("#content_3").width());
         });
         jQuery("#table_contrib").jqGrid({
@@ -355,7 +348,7 @@
                             <section class="col-lg-10 text-right">
                                 <div class="smart-form">
                                     <label class="toggle">
-                                        <input id="adjuntar_const" onchange="adjuntar_const_chk(this);" value="1" type="checkbox" name="checkbox-toggle" checked="checked">
+                                        <input  id="adjuntar_const" onchange="adjuntar_const_chk(this);" value="1" type="checkbox" name="checkbox-toggle" checked="checked">
                                         <i data-swchon-text="SI" data-swchoff-text="NO"></i>ADJUNTAR CONSTANCIA DE NOTIFICACIÓN</label>
                                 </div>
                             </section>
@@ -406,6 +399,7 @@
                                         <th width="5%" style="text-align: center">N°</th>                                        
                                         <th width="20%" style="text-align: center">Fecha de Pago</th>
                                         <th width="10%" style="text-align: center">%</th>
+                                        <th width="10%" style="text-align: center">Monto</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -565,5 +559,53 @@
         </div>
     </div>
 </div>
+
+
+
+
+<div id="dlg_aceptar_expediente" style="display: none;">
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
+        <div id="div_adquiere" class="col-xs-12 cr-body" >
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 10px;">
+                <div class="input-group input-group-md col-xs-6">
+                    <span class="input-group-addon">COSTAS<i class="icon-append fa fa-dollar" style="margin-left: 15px;"></i></span>
+                    <div class="icon-addon addon-md">
+                        <input id="inp_costas_exp" class="form-control text-uppercase text-right" type="text" onkeypress="return soloNumeroTab(event);">
+                    </div>
+                                                           
+                </div> 
+               <section>
+                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;margin-top: 10px"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-info"></i> </span>
+                                <h2>Texto de Resolución de inicio::..</h2>
+                        </header>
+                    </div>
+                </section>
+                <textarea name="ckeditor" id="ckeditor" >
+                    Este es el textarea que es modificado por la clase ckeditor
+                </textarea> 
+               
+            </div>
+        </div>
+    </div>
+</div> 
+<div id="dlg_vista_documentos" style="display: none;">
+    <div class="col-lg-12 text-right" style="padding-left: 5px;">                                     
+        <button onclick="exped_no_trib();" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+            <span class="btn-label"><i class="fa fa-folder"></i></span>Crear Expediente
+        </button>                                    
+        <button onclick="dlg_select_new_doc();" type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+            <span class="btn-label"><i class="fa fa-file-text"></i></span>Nuevo Documento
+        </button>
+        <button onclick="eliminar_documento();" type="button" class="btn btn-labeled bg-color-red txt-color-white">
+            <span class="btn-label"><i class="fa fa-trash"></i></span>Eliminar Doc.
+        </button>
+    </div>
+    <div id="content_2" class="col-xs-12" style="padding-left:5px;width: 100%; margin-top: 10px">
+        <table id="tabla_doc_coactiva"></table>
+        <div id="p_tabla_doc_coactiva"></div>
+    </div>                            
+</div> 
 @endsection
 

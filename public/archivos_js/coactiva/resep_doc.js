@@ -1,6 +1,9 @@
-
-function up_resep_doc(){
-    tip_bus=$("input:radio[name='myradio_resep_doc']:checked").val();
+function llamargrilla()
+{
+    jQuery("#t_recep_doc").jqGrid("clearGridData");
+    fn_actualizar_grilla('t_recep_doc','coactiva_recep_doc?tip_doc='+$("#vw_recep_doc_tip_doc").val());
+}
+function up_resep_doc(tip_bus){
     if(tip_bus==1){
         fn_actualizar_grilla('t_recep_doc','coactiva_recep_doc?tip_bus='+tip_bus+'&tip_doc='+$("#vw_recep_doc_tip_doc").val()+'&desde='+$("#vw_resep_doc_fdesde").val()+'&hasta='+$("#vw_resep_doc_fhasta").val());
     }else if(tip_bus==2){
@@ -33,7 +36,7 @@ function recibir_doc(){
                         success:function(data){
                             if(data.msg=='si'){
                                 MensajeExito('COACTIVA','Documentos Recibidos.');
-                                up_resep_doc();
+                                llamargrilla();
                             }
                         },
                         error: function(){}
@@ -46,7 +49,20 @@ function recibir_doc(){
                         success:function(data){
                             if(data.msg=='si'){
                                 MensajeExito('COACTIVA','Documentos Recibidos.');
-                                up_resep_doc();
+                                llamargrilla();
+                            }
+                        },
+                        error: function(){}
+                    });
+                }else if($("#vw_recep_doc_tip_doc").val()==3){
+                    $.ajax({
+                        url:'recib_doc_coactiva_multa',
+                        type:'GET',
+                        data:{id_multa_reg:recib_doc},
+                        success:function(data){
+                            if(data.msg=='si'){
+                                MensajeExito('COACTIVA','Documentos Recibidos.');
+                                llamargrilla();
                             }
                         },
                         error: function(){}

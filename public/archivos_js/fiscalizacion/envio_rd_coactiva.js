@@ -1,16 +1,28 @@
+function callfilltab()
+{
+    fn_actualizar_grilla('tabla_Doc_RD','fisca_get_rd/'+$("#selantra").val()+"/0");
+    fn_actualizar_grilla('tabla_Doc_RD_2','fisca_get_rd/'+$("#selantra").val()+"/1");
+}
+function env_coactiva(tip,id){
+    MensajeDialogLoadAjax('tabla_Doc_RD_2', '.:: CARGANDO ...');
+    MensajeDialogLoadAjax('tabla_Doc_RD', '.:: CARGANDO ...');
+    $.ajax({
+        url:'update_env_rd',
+        type:'GET',
+        data:{id_rd:id,env_rd:tip},
+        success:function(data)
+        {
+            MensajeExito("Se envió Correctamente","Su Registro Fue Eviado con Éxito...",4000);
+            
+            callfilltab();
+            MensajeDialogLoadAjaxFinish('tabla_Doc_RD');
+            MensajeDialogLoadAjaxFinish('tabla_Doc_RD_2');
+        },
+        error: function(){}
+    }); 
+}
 
-function rd_right(){
-    cont_rows=jQuery("#tabla_Doc_RD").jqGrid('getGridParam', 'records');
-    id_rd=$('#tabla_Doc_RD').jqGrid ('getGridParam', 'selrow');
-    if(cont_rows==0 || id_rd==null){return false;}
-    update_env_rd(id_rd,2);
-}
-function rd_left(){
-    cont_rows=jQuery("#tabla_Doc_RD_2").jqGrid('getGridParam', 'records');
-    id_rd=$('#tabla_Doc_RD_2').jqGrid ('getGridParam', 'selrow');
-    if(cont_rows==0 || id_rd==null){return false;}
-    update_env_rd(id_rd,1);
-}
+
 function rd_all_right(){    
     var rows = $("#tabla_Doc_RD").getDataIDs();
     if (rows.length > 0) {
@@ -67,6 +79,7 @@ function rd_all_left(){
         }, 1100);
     }
 }
+
 function all_update_env_rd(id_rd,env_rd){     
     $.ajax({
         url:'update_env_rd',

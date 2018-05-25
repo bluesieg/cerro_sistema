@@ -73,7 +73,6 @@
                 <th style="width: 8%">DNI/RUC</th>
                 <th style="width: 20%;">CONTRIBUYENTE</th>
                 <th style="width: 40%;">DOMICILIO FISCAL</th>
-                <th style="width: 7%;">ANULADO</th>
                 @if ($estado == 4)
                 <th style="width: 20%;">IMPUESTO VERIFICADO</th>
                 @else
@@ -91,11 +90,7 @@
                     <td style="text-align: center;">{{trim($cont->pers_nro_doc)}}</td>
                     <td style="text-align: left;">{{ trim($cont->contribuyente) }}</td>
                     <td style="text-align: left;">{{trim($cont->ref_dom_fis)}}</td>
-                    <td style="text-align: center;">
-                        @if($cont->flg_anu==1)
-                         ANULADO
-                         @endif
-                    </td>
+                    
                     @if ($estado == 4)
                         <td style="text-align: right;">{{number_format($cont->ivpp_verif,"2",".",",")}}</td>
                     @else
@@ -107,7 +102,7 @@
                 
             @endforeach
             <tr>
-                <td colspan="5" style="text-align: right;">TOTAL:</td>
+                <td colspan="4" style="text-align: right;">TOTAL:</td>
                 @if ($estado == 4)
                     <td style="text-align: right;">{{number_format($sql->sum('ivpp_verif'),"2",".",",")}}</td>
                 @else

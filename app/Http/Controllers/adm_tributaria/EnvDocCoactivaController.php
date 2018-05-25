@@ -17,14 +17,18 @@ class EnvDocCoactivaController extends Controller
     public function index(){
         $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_env_doc_a_coac' and id_usu=".Auth::user()->id);
         $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
+
         if(count($permisos)==0)
         {
             return view('errors/sin_permiso',compact('menu','permisos'));
         }
-        return view('adm_tributaria.vw_env_doc_coactiva',compact('menu','permisos'));
+        return view('adm_tributaria.vw_env_doc_coactiva',compact('menu','permisos','anio_tra'));
     }
 
-    public function create_coa_master($id_contrib,$id_gen_fis,$monto){        
+    public function create_coa_master($id_contrib,$id_gen_fis,$monto){    
+        $oficina= DB::select("SELECT * from adm_tri.vw_recaudacion");
+
         $data = new coactiva_master();
         $data->id_contrib = $id_contrib;
         $data->fch_ini = date('Y-m-d');
@@ -32,16 +36,17 @@ class EnvDocCoactivaController extends Controller
         $data->anio = date('Y');
         $data->doc_ini=2;
         $data->monto=$monto;
+        $data->id_oficina=$oficina[0]->id_ofi;
         $data->materia=1;
         $sql = $data->save();
         if($sql){
             $this->create_coa_documentos($data->id_coa_mtr,$id_gen_fis);
             $i=1;
             for($i==1;$i<=4;$i++){
-                $trim = DB::table('recaudacion.vw_op_detalle')->where('id_gen_fis',$id_gen_fis)->value('trimestre'.$i);
-                if(isset($trim)){
-                    if($trim>0){
-                        $recpred = 534;
+                $trim = DB::table('recaudacion.vw_op_detalle')->where('id_gen_fis',$id_gen_fis);
+                if(count($trim)>=1){
+                    if($trim[0]->trimestre.$i>0){
+                        $recpred = $trim[0]->id_tributo;
                         DB::table('adm_tri.cta_cte')->where('id_pers','=',$id_contrib)
                                 ->where('id_tribu','=',$recpred)
                                 ->where('ano_cta',date("Y"))
@@ -71,37 +76,15 @@ class EnvDocCoactivaController extends Controller
 
     public function destroy($id){   }
     
-    public function fis_getOP(Request $request){
-        $env_op=$request['env_op'];        
-        $tip_bus=$request['tip_bus'];
+    public function fis_getOP($an,$tipo,Request $request){
         $grid=$request['grid'];
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
         $sord = $_GET['sord'];
-        
-        if(isset($grid)){
-            if($tip_bus=='1'){
-                $desde=date('Y-m-d', strtotime(str_replace('/','-',$request['desde'])));
-                $hasta=date('Y-m-d', strtotime(str_replace('/','-',$request['hasta'])));
-                $totalg = DB::select("select count(id_per) as total from recaudacion.vw_genera_fisca where env_op=".$env_op." and verif_env=0 and fec_reg between '".$desde."' and '".$hasta."' ");            
-            }else if($tip_bus=='2'){
-                $del=str_pad($request['del'], 7, "0", STR_PAD_LEFT);
-                $al=str_pad($request['al'], 7, "0", STR_PAD_LEFT);
-                $totalg = DB::select("select count(id_per) as total from recaudacion.vw_genera_fisca where env_op=".$env_op." and verif_env=0 and nro_fis between '".$del."' and '".$al."' ");            
-            }
-        }else{
-            if($tip_bus=='1'){
-                $desde=date('Y-m-d', strtotime(str_replace('/','-',$request['desde'])));
-                $hasta=date('Y-m-d', strtotime(str_replace('/','-',$request['hasta'])));
-                $totalg = DB::select("select count(id_per) as total from recaudacion.vw_genera_fisca where env_op=".$env_op." and verif_env=0 and fec_reg between '".$desde."' and '".$hasta."'");            
-            }else if($tip_bus=='2'){
-                $del=str_pad($request['del'], 7, "0", STR_PAD_LEFT);
-                $al=str_pad($request['al'], 7, "0", STR_PAD_LEFT);
-                $totalg = DB::select("select count(id_per) as total from recaudacion.vw_genera_fisca where env_op=".$env_op." and verif_env=0 and nro_fis between '".$del."' and '".$al."'");            
-            }
-        }
-
+   
+        $totalg = DB::select("select count(id_per) as total from recaudacion.vw_genera_fisca where anio_reg=$an and env_coactivo=$tipo and fec_notifica is not null ");            
+           
         $total_pages = 0;
         if (!$sidx) {
             $sidx = 1;
@@ -118,20 +101,9 @@ class EnvDocCoactivaController extends Controller
             $start = 0;
         }
         
-        if(isset($grid)){
-            if($tip_bus=='1'){
-                $sql = DB::table('recaudacion.vw_genera_fisca')->where('env_op',$env_op)->where('verif_env',0)->whereBetween('fec_reg',[$desde,$hasta])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
-            }else if($tip_bus=='2'){
-                $sql = DB::table('recaudacion.vw_genera_fisca')->where('env_op',$env_op)->where('verif_env',0)->whereBetween('nro_fis',[$del,$al])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
-            }
-        }else{
-            if($tip_bus=='1'){
-                $sql = DB::table('recaudacion.vw_genera_fisca')->where('env_op',$env_op)->where('verif_env',0)->whereBetween('fec_reg',[$desde,$hasta])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
-            }else if($tip_bus=='2'){
-                $sql = DB::table('recaudacion.vw_genera_fisca')->where('env_op',$env_op)->where('verif_env',0)->whereBetween('nro_fis',[$del,$al])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
-            }
-        }
-        
+    
+        $sql = DB::table('recaudacion.vw_genera_fisca')->where('env_coactivo',$tipo)->where('anio_reg',$an)->whereNotNull('fec_notifica')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+       
         
         $Lista = new \stdClass();
         $Lista->page = $page;
@@ -139,18 +111,27 @@ class EnvDocCoactivaController extends Controller
         $Lista->records = $count;
 
         foreach ($sql as $Index => $Datos) {
+            if($tipo==0)
+            {
+                $btn='<button class="btn btn-labeled bg-color-blueDark txt-color-white" type="button" onclick="env_coactiva(1,'.$Datos->id_gen_fis.')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span>Env. a Coactiva</button>';
+            }
+            else
+            {
+                $btn='<button class="btn btn-labeled bg-color-blueDark txt-color-white" type="button" onclick="env_coactiva(0,'.$Datos->id_gen_fis.')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span>Retornar </button>';
+            }
             $Lista->rows[$Index]['id'] = $Datos->id_gen_fis;            
             $Lista->rows[$Index]['cell'] = array(
                 trim($Datos->id_gen_fis),
                 trim($Datos->nro_fis),
-                date('d-m-Y', strtotime($Datos->fec_reg)),
+                date('d-m-Y', strtotime($Datos->fch_env)),
                 trim($Datos->hora_env),
                 trim($Datos->anio),
                 trim($Datos->nro_doc),
                 str_replace('-','',trim($Datos->contribuyente)),
                 trim($Datos->estado),
                 trim($Datos->verif_env),
-                $Datos->monto
+                $Datos->monto,
+                $btn
             );
         }
         return response()->json($Lista);       
@@ -159,46 +140,15 @@ class EnvDocCoactivaController extends Controller
     function up_env_doc(Request $request){
         $data = new orden_pago_master();        
         
-        if($request['env_op']=='2'){
             $val = $data::where("id_gen_fis", "=", $request['id_gen_fis'])->first();
             if (count($val) >= 1) {
-                $val->env_op=$request['env_op'];            
+                $val->env_coactivo=$request['env_op'];            
                 $val->fch_env=date('d-m-Y');            
                 $val->hora_env=date('h:i A');
                 $val->save();
+                return $val->id_gen_fis;
             }
-            $sql = $this->create_coa_master($val->id_contrib,$request['id_gen_fis'],$val->ivpp);
-            if($sql){
-                $val = $data::where("id_gen_fis", "=", $request['id_gen_fis'])->first();
-                if (count($val) >= 1) {
-                    $val->id_coa_mtr=$sql;
-                    $val->save();
-                }
-                return response()->json(['msg'=>'si']);
-            }
-        }else if($request['env_op']=='1'){
-            $val = $data::where("id_gen_fis", "=", $request['id_gen_fis'])->first();
-            if (count($val) >= 1) {
-                $val->env_op=$request['env_op'];            
-                $val->fch_env=null;            
-                $val->hora_env=null;
-                $val->fch_recep=null;
-                $val->hora_recep=null;
-                $update = $val->save();                
-            }
-            if($update){
-                DB::table('adm_tri.cta_cte')->where([['id_pers','=',$val->id_contrib],['id_tribu','=',103],['ano_cta',date('Y')]])
-                    ->update(['id_coa_mtr'=>null,'trim1_estado'=>'1','trim2_estado'=>'1','trim3_estado'=>'1','trim4_estado'=>'1']);
-            }
-            DB::table('coactiva.coactiva_master')->where('id_coa_mtr',$val->id_coa_mtr)->delete();
-            
-            $val = $data::where("id_gen_fis", "=", $request['id_gen_fis'])->first();
-            if (count($val) >= 1) {                
-                $val->id_coa_mtr=null;
-                $update = $val->save();                
-            }
-            return response()->json(['msg'=>'no']);
-        }
+        
         
     }
     

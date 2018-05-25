@@ -17,11 +17,12 @@ class EnvRD_CoactivaController extends Controller
     {
         $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_env_rd_a_coac' and id_usu=".Auth::user()->id);
         $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        $anio_tra = DB::select('select anio from adm_tri.uit order by anio desc');
         if(count($permisos)==0)
         {
             return view('errors/sin_permiso',compact('menu','permisos'));
         }
-        return view('fiscalizacion.vw_env_rd_coactiva',compact('menu','permisos'));
+        return view('fiscalizacion.vw_env_rd_coactiva',compact('menu','permisos','anio_tra'));
     }
     public function create_coa_master($id_contrib,$id_rd,$monto,$anio){        
         $data = new coactiva_master();
@@ -51,36 +52,16 @@ class EnvRD_CoactivaController extends Controller
         return $data->id_doc;
     }
     
-    function fis_get_RD(Request $request){
-        $env_rd=$request['env_rd'];        
-        $tip_bus=$request['tip_bus'];
-        $grid=$request['grid'];
+    function fis_get_RD($an,$tipo,Request $request){
+        $env_rd=$tipo;        
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
         $sord = $_GET['sord'];
-        
-        if(isset($grid)){
-            if($tip_bus=='1'){
-                $desde=date('Y-m-d', strtotime(str_replace('/','-',$request['desde'])));
-                $hasta=date('Y-m-d', strtotime(str_replace('/','-',$request['hasta'])));
-                $totalg = DB::select("select count(id_rd) as total from fiscalizacion.vw_resolucion_determinacion where env_rd=".$env_rd." and verif_env=0 and fec_reg between '".$desde."' and '".$hasta."' ");            
-            }else if($tip_bus=='2'){
-                $del=str_pad($request['del'], 7, "0", STR_PAD_LEFT);
-                $al=str_pad($request['al'], 7, "0", STR_PAD_LEFT);
-                $totalg = DB::select("select count(id_rd) as total from fiscalizacion.vw_resolucion_determinacion where env_rd=".$env_rd." and verif_env=0 and nro_rd between '".$del."' and '".$al."' ");            
-            }
-        }else{
-            if($tip_bus=='1'){
-                $desde=date('Y-m-d', strtotime(str_replace('/','-',$request['desde'])));
-                $hasta=date('Y-m-d', strtotime(str_replace('/','-',$request['hasta'])));
-                $totalg = DB::select("select count(id_rd) as total from fiscalizacion.vw_resolucion_determinacion where env_rd=".$env_rd." and verif_env=0 and fec_reg between '".$desde."' and '".$hasta."'");            
-            }else if($tip_bus=='2'){
-                $del=str_pad($request['del'], 7, "0", STR_PAD_LEFT);
-                $al=str_pad($request['al'], 7, "0", STR_PAD_LEFT);
-                $totalg = DB::select("select count(id_rd) as total from fiscalizacion.vw_resolucion_determinacion where env_rd=".$env_rd." and verif_env=0 and nro_rd between '".$del."' and '".$al."'");            
-            }
-        }
+ 
+        $totalg = DB::select("select count(id_rd) as total from fiscalizacion.vw_resolucion_determinacion where env_coactivo=".$env_rd." and anio=$an and fecha_notificacion is not null");            
+            
+     
 
         $total_pages = 0;
         if (!$sidx) {
@@ -97,27 +78,21 @@ class EnvRD_CoactivaController extends Controller
         if ($start < 0) {
             $start = 0;
         }
-        
-        if(isset($grid)){
-            if($tip_bus=='1'){
-                $sql = DB::table('fiscalizacion.vw_resolucion_determinacion')->where('env_rd',$env_rd)->where('verif_env',0)->whereBetween('fec_reg',[$desde,$hasta])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
-            }else if($tip_bus=='2'){
-                $sql = DB::table('fiscalizacion.vw_resolucion_determinacion')->where('env_rd',$env_rd)->where('verif_env',0)->whereBetween('nro_rd',[$del,$al])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
-            }
-        }else{
-            if($tip_bus=='1'){
-                $sql = DB::table('fiscalizacion.vw_resolucion_determinacion')->where('env_rd',$env_rd)->where('verif_env',0)->whereBetween('fec_reg',[$desde,$hasta])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
-            }else if($tip_bus=='2'){
-                $sql = DB::table('fiscalizacion.vw_resolucion_determinacion')->where('env_rd',$env_rd)->where('verif_env',0)->whereBetween('nro_rd',[$del,$al])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
-            }
-        }
-        
+        $sql = DB::table('fiscalizacion.vw_resolucion_determinacion')->where('env_coactivo',$env_rd)->where('anio',$an)->whereNotNull('fecha_notificacion')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         $Lista = new \stdClass();
         $Lista->page = $page;
         $Lista->total = $total_pages;
         $Lista->records = $count;
 
         foreach ($sql as $Index => $Datos) {
+            if($tipo==0)
+            {
+                $btn='<button class="btn btn-labeled bg-color-blueDark txt-color-white" type="button" onclick="env_coactiva(1,'.$Datos->id_rd.')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span>Env. a Coactiva</button>';
+            }
+            else
+            {
+                $btn='<button class="btn btn-labeled bg-color-blueDark txt-color-white" type="button" onclick="env_coactiva(0,'.$Datos->id_rd.')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span>Retornar </button>';
+            }
             $Lista->rows[$Index]['id'] = $Datos->id_rd;            
             $Lista->rows[$Index]['cell'] = array(                
                 trim($Datos->nro_rd),
@@ -127,7 +102,8 @@ class EnvRD_CoactivaController extends Controller
                 str_replace('-','',trim($Datos->contribuyente)),
                 trim($Datos->estado),
                 trim($Datos->verif_env),
-                $Datos->ivpp_verif
+                $Datos->ivpp_verif,
+                $btn
             );
         }
         return response()->json($Lista); 
@@ -139,47 +115,48 @@ class EnvRD_CoactivaController extends Controller
         $id_contrib=DB::table('fiscalizacion.vw_resolucion_determinacion')->where('id_rd',$id_rd)->value('id_contrib');
         
         $data = new Resolucion_Determinacion();
-        if($env_rd=='2'){
+        //if($env_rd=='2'){
             $val = $data::where("id_rd", "=", $id_rd)->first();
             if (count($val) >= 1) {
-                $val->env_rd=$env_rd;            
+                $val->env_coactivo=$env_rd;            
                 $val->fch_env=date('d-m-Y');            
                 $val->hora_env=date('h:i A');                 
                 $val->save();
+                return $val->id_rd;
             }
-            $monto = DB::table('fiscalizacion.vw_resolucion_determinacion')->where('id_rd',$id_rd)->value('ivpp_verif'); 
-            $sql = $this->create_coa_master($id_contrib,$id_rd,$monto,$val->anio);
-            if($sql){
-                $val = $data::where("id_rd", "=", $id_rd)->first();
-                if (count($val) >= 1) {
-                    $val->id_coa_mtr=$sql;
-                    $val->save();
-                }
-                return response()->json(['msg'=>'si']);
-            }
-        }else if($env_rd=='1'){
-            $val = $data::where("id_rd", "=", $id_rd)->first();
-            if (count($val) >= 1) {
-                $val->env_rd=$env_rd;            
-                $val->fch_env=null;            
-                $val->hora_env=null;
-                $val->fch_recep=null;
-                $val->hora_recep=null;
-                $update = $val->save();                
-            }
-            if($update){
-                DB::table('adm_tri.cta_cte')->where('id_coa_mtr','=',$val->id_coa_mtr)
-                    ->update(['id_coa_mtr'=>null]);
-                $coa_mtr=new coactiva_master;
-                $value=  $coa_mtr::where("id_coa_mtr","=",$val->id_coa_mtr)->first();
-                if(count($val)>=1){ $value->delete();}
-            }
-            $val = $data::where("id_rd", "=", $id_rd)->first();
-            if (count($val) >= 1) {                
-                $val->id_coa_mtr=null;
-                $update = $val->save();                
-            }
-            return response()->json(['msg'=>'si']);
-        }
+//            $monto = DB::table('fiscalizacion.vw_resolucion_determinacion')->where('id_rd',$id_rd)->value('ivpp_verif'); 
+//            $sql = $this->create_coa_master($id_contrib,$id_rd,$monto,$val->anio);
+//            if($sql){
+//                $val = $data::where("id_rd", "=", $id_rd)->first();
+//                if (count($val) >= 1) {
+//                    $val->id_coa_mtr=$sql;
+//                    $val->save();
+//                }
+//                return response()->json(['msg'=>'si']);
+//            }
+//        }else if($env_rd=='1'){
+//            $val = $data::where("id_rd", "=", $id_rd)->first();
+//            if (count($val) >= 1) {
+//                $val->env_rd=$env_rd;            
+//                $val->fch_env=null;            
+//                $val->hora_env=null;
+//                $val->fch_recep=null;
+//                $val->hora_recep=null;
+//                $update = $val->save();                
+//            }
+//            if($update){
+//                DB::table('adm_tri.cta_cte')->where('id_coa_mtr','=',$val->id_coa_mtr)
+//                    ->update(['id_coa_mtr'=>null]);
+//                $coa_mtr=new coactiva_master;
+//                $value=  $coa_mtr::where("id_coa_mtr","=",$val->id_coa_mtr)->first();
+//                if(count($val)>=1){ $value->delete();}
+//            }
+//            $val = $data::where("id_rd", "=", $id_rd)->first();
+//            if (count($val) >= 1) {                
+//                $val->id_coa_mtr=null;
+//                $update = $val->save();                
+//            }
+//            return response()->json(['msg'=>'si']);
+//        }
     }
 }

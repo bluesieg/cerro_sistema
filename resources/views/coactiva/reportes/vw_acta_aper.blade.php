@@ -34,17 +34,33 @@
         <div style="text-align:center;margin-top: -40px;"><b>ACTA DE APERSONAMIENTO</b></div>
         
         <div style="text-align: justify;font-size:14px;margin-top: -5px;">           
-            <center><u><b>EXPEDIENTE COACTIVO: </b>{{ $resol->nro_exped.'-'.$resol->anio_resol }}<b> / OEC-MDCC</b></u></center>
+            <center><u><b>EXPEDIENTE COACTIVO: </b>{{ $doc[0]->nro_exped.'-'.$doc[0]->anio_resol }}<b> / OEC-MDCC</b></u></center>
             @php echo $plantilla_acta @endphp
-            <ul>                   
-                @foreach ($cuotas as $cuotas)
-                    <li>{{$cuotas['nro']}}.- El {{$cuotas['fch_larga']}}.</li>                       
+            <table class="t1" style="width: 100%">
+                <thead>
+                    <tr>
+                        <th style="width: 10%">Cuota</th>
+                        <th style="width: 20%">Porcentaje</th>
+                        <th style="width: 20%">Monto</th>
+                        <th style="width: 50%">Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($doc as $cuotas)
+                    <tr>
+                        <td style="text-align: center">{{$cuotas->nro}}</td>
+                        <td style="text-align: right; padding-right: 10px">{{$cuotas->porcentaje}}%</td>
+                        <td style="text-align: right; padding-right: 10px">{{$cuotas->monto}}</td>
+                        <td style="padding-left: 10px">{{$cuotas->fch_larga}}</td>
+                    </tr> 
                 @endforeach
-            </ul>
+                </tbody>
+            </table>
+           
         </div>
         <div style="margin-top: 100px;width: 50%;">
             <div style="margin-top: 150px;width: 100%;border-top: 1px solid black;font-size: 13px">
-                <center>{{$resol->contribuyente}}<br>DNI:&nbsp;{{$resol->nro_doc}}</center>
+                <center>{{$doc[0]->contribuyente}}<br>DNI:&nbsp;{{$doc[0]->pers_nro_doc}}</center>
             </div>
         </div>
     </body>
