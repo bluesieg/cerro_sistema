@@ -69,8 +69,49 @@
             La presente de emite por los tributos y periodos que se indican, cuyo monto se ha actualizaco a la FECHA DE EMISIÓN, luego de esta fecha se actualizara con la tasa diaria de 0.04% conforme a la tasa de interes fijada.<br>
             <b>Monto Determinante:</b><br>
             Se ha verificado la existencia de una deuda tributaria no cancelada dentro de los plazos establecidos.<br>
-            
+            <br>
         </div>
+        
+        <b>UBICACION DEL PREDIO:</b><br>
+        
+        <table border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;margin-bottom: 5px;">
+            <thead>
+              <tr>
+                  <th style="width: 10%">Cod. Catastral</th>
+                  <th style="width: 65%">Ubicación del predio</th>
+                  <th style="width: 4%">N°</th>
+                  <th style="width: 10%">Referencia</th>
+                  <th style="width: 6%">Manzana</th>
+                  <th style="width: 5%">Lote</th>
+              </tr>
+            </thead>
+            <tbody>
+                @foreach ($predios as $pre)
+                    <tr>
+                        <td>
+                            {{$pre->cod_cat}}
+                        </td> 
+                        <td>
+                            {{$pre->nom_via."-".$pre->nomb_hab_urba}}
+                        </td> 
+                        <td style="text-align: center">
+                            {{$pre->nro_mun}}
+                        </td> 
+                        <td style="text-align: center">
+                            {{$pre->referencia}}
+                        </td> 
+                        <td style="text-align: center">
+                            {{$pre->mzna}}
+                        </td> 
+                        <td style="text-align: center">
+                            {{$pre->lote_cat}}
+                        </td> 
+                    </tr>
+                @endforeach
+                
+            </tbody>
+        </table>
+        
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 10px; margin-top: 20px" >
         <thead>
           <tr>
@@ -168,18 +209,16 @@
             <b>Base Legal:</b><br>
             Artículos 33°,77°,78° inc 1 y 194 del T.U.O. del Código Tributario, aprobado por D.S. N° 133-2013-EF y sus
             modificatorias.<br>
-            Artículo 8° y siguientes del TUO de la ley de Tributación Municipal, aprobada por D.S.N° 133-2013-EF y sus modificatorias<br>
+            Artículo 8° y siguientes del TUO de la ley de Tributación Municipal, aprobada por D.S.N° 156-2004-F y sus modificatorias<br>
             Ordenanzas 297-2010 que aprueba TIM para la jurisdicción del distrito de Cerro Colorado.<br>
             <b>Avisos:</b><br>
             -Si a la recepción de esta. Ud. ya realizo el pago de tales conceptos, le rogamos no prestar atención a la presente<br>
             -Cualquier consulta adicional, lo esperamos en la Plaza Las Americas, La Libertad, Cerro Colorado; o comuníquese al 
             teléfono (054)382590 anexo 719, en el horario de lunes a viernes de 8.00am a 3.30pm.<br>
-            -En el caso de no conformidad, podrá interponer recurso de reclamación debidamente sustentado, suscrito por letrado hábil
-            (nombre, firma y número de registro), para lo cual deberá acreditar la cancelación de la totalidad de la deuda, salvo sea
+            -En el caso de no conformidad, podrá interponer recurso de reclamación debidamente sustentado, para lo cual deberá acreditar la cancelación de la totalidad de la deuda, salvo sea
             evidente la improcedencia de la cobranza, en cuyo caso podra presentar la reclamación en el plazo de 20 días hábiles
             de notificada la presente, y conforme a los dispositivos vigentes.<br>
             <br>
-            <b>Nota:</b> Se ha aprobado los beneficios tributarios a traves de Ordenanza Municipal 459-MDCC.
         </div>
         
   </body>

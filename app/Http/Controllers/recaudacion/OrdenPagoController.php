@@ -170,7 +170,7 @@ class OrdenPagoController extends Controller
                     trim($Datos->anio),
                     trim($Datos->nro_doc),
                     trim($Datos->contribuyente),
-                    '<button class="btn btn-labeled bg-color-blueDark txt-color-white" type="button" onclick="verop('.trim($Datos->id_gen_fis).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Ver OP</button>',
+                    '<button class="btn btn-labeled bg-color-blueDark txt-color-white" type="button" onclick="verop('.trim($Datos->id_gen_fis).','.trim($Datos->id_per).')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Ver OP</button>',
                     trim($Datos->fec_notifica),
                     '<button class="btn btn-labeled bg-color-blueDark txt-color-white" type="button" onclick="ing_fec_noti('.trim($Datos->id_gen_fis).','."'".trim($Datos->nro_fis)."' , '".$envio."'".')"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Ing Fecha Notificación</button>',
                     $diastrasns
@@ -245,11 +245,13 @@ class OrdenPagoController extends Controller
         return $trim;
     }
 
-    public function reporte($tip,$id,$sec,$man) 
+    public function reporte($tip,$id,$sec,$man,$id_per) 
     {
         if($tip=='1'||$tip=='3')
         {
-            $sql    =DB::table('recaudacion.vw_op_detalle')->where('id_gen_fis',$id)->get()->first();
+            $sql =DB::table('recaudacion.vw_op_detalle')->where('id_gen_fis',$id)->get()->first();
+            $predios =DB::table('transferencias.vw_predios_reportes')->where('id_contrib',$id_per)->get();
+            
             if(count($sql)>=1)
             {
                 if($sql->anio<date("Y"))
@@ -268,7 +270,7 @@ class OrdenPagoController extends Controller
                 $UIT =DB::table('adm_tri.uit')->where('anio',$sql->anio)->get()->first();
                 
             }
-            $view =  \View::make('recaudacion.reportes.op', compact('sql','UIT'))->render();
+            $view =  \View::make('recaudacion.reportes.op', compact('sql','UIT','predios'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("OP.pdf");

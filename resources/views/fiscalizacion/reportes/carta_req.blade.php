@@ -29,7 +29,7 @@
             
         </table>
         
-        <center><div Class="asunto" style="margin-top: 10px;"><b>CARTA DE PRESENTACION Y REQUERIMIENTO DE FISCALIZACION N° {{$sql->nro_car}}-{{$sql->anio}}<br>SG-RTF-GAT-MDCC</b></div></center>
+        <center><div Class="asunto" style="margin-top: 10px;"><b>CARTA DE PRESENTACION Y REQUERIMIENTO DE FISCALIZACION N° {{$sql->nro_car}}-{{$sql->anio}}<br>SGFT-GAT-MDCC</b></div></center>
         <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px;">Cerro Colorado, {{$sql->fec_reg}}</div>
 
         <table style="margin-top: 10px; margin-bottom: 5px !important font-weight: bold">

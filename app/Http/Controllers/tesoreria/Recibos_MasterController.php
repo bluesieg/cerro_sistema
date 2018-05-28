@@ -49,6 +49,10 @@ class Recibos_MasterController extends Controller
         $data->cod_fracc  = $request['cod_fracc'] ?? 0 ;
         $data->n_cuot     = 0;
         $data->clase_recibo=$request['clase_recibo'];
+        $data->t1=$request['t1'];
+        $data->t2=$request['t2'];
+        $data->t3=$request['t3'];
+        $data->t4=$request['t4'];
         $data->fracc_check = $request['fracc_check'] ?? 0;
         if($request->recibo == null){
             $data->id_alcab=0;
@@ -503,19 +507,22 @@ class Recibos_MasterController extends Controller
     }
     
     function verif_est_cta(Request $request){
-        $check=str_split($request['check']);
-        $id_contrib=$request['id_contrib'];
-        $anio=$request['anio'];
-        //$recpred = DB::select("select * from presupuesto.vw_impuesto_predial where anio='$anio'");
-        $recpred = DB::table('presupuesto.vw_impuesto_predial')->where('anio',$anio)->first();
-        $array =  array();
-        for($i=$check[0];$i<=end($check);$i++){
-            $sql = DB::table('adm_tri.vw_cta_cte2')->where('id_contrib',$id_contrib)->where('id_tribu',$recpred->id_tributo)->value('trim'.$i.'_est');
-            if($sql==2){ 
-                $array[]=$i;
+        
+        if ($request['check'] != null) {
+            $check=str_split($request['check']);
+            $id_contrib=$request['id_contrib'];
+            $anio=$request['anio'];
+            $recpred = DB::table('presupuesto.vw_impuesto_predial')->where('anio',$anio)->first();
+            $array =  array();
+            for($i=$check[0];$i<=end($check);$i++){
+                $sql = DB::table('adm_tri.vw_cta_cte2')->where('id_contrib',$id_contrib)->where('id_tribu',$recpred->id_tributo)->value('trim'.$i.'_est');
+                if($sql==2){ 
+                    $array[]=$i;
+                }
             }
+            return $array;
         }
-        return $array;
+        
     }
     
     function verif_est_cta_fraccionamiento(Request $request){
@@ -733,13 +740,10 @@ class Recibos_MasterController extends Controller
     public function traer_alcabala(Request $request){
         
         $sql= DB::select("select * from presupuesto.vw_tributos_vladi where descrip_tributo like " . "'%".'ALCABALA'."%'" . " and anio = (select date_part('year',current_date))");
-            foreach ($sql as $row){
-                     $result_sql = $row->id_tributo;
-                    }  
-                    
+               
         if (count($sql)>0) {
             
-            if ($result_sql == $request['alcabala']) {
+            if ($sql[0]->id_tributo == $request['alcabala']) {
                 return response()->json([
                 'msg' => 'si',
                 ]);
@@ -754,18 +758,15 @@ class Recibos_MasterController extends Controller
     public function validar_alcabala(Request $request){
         $id_alcabala = $request['nro_recibo'];
         
-        $sql= DB::select("select * from alcabala.alcabala where id_alcab = '$id_alcabala'");
-        foreach ($sql as $row){
-                     $result_sql = $row->estado;
-                }
-                
+        $sql= DB::table("alcabala.alcabala")->where('id_alcab',$id_alcabala)->first();
+              
         if (count($sql)>0) {
             
-            if ($result_sql == 1) {
+            if ($sql->estado == 1) {
                 return response()->json([
                 'msg' => 'PAGADO',
                 ]);
-            }elseif ($result_sql == 0){
+            }elseif ($sql->estado == 0){
                 return response()->json([
                 'msg' => 'VIGENTE',
                 ]);
@@ -785,13 +786,10 @@ class Recibos_MasterController extends Controller
     public function traer_glosa(Request $request){
         $nro_recibo = $request['nro_recibo'];
         
-        $sql= DB::select("select * from alcabala.alcabala where id_alcab = '$nro_recibo'");
-        foreach ($sql as $row){
-                     $nro_alcabala = $row->nro_alcab;
-                     $anio_alcabala = $row->anio;
-                }
+        $sql = DB::table("alcabala.alcabala")->where('id_alcab',$nro_recibo)->first();
+
         if (count($sql)>0) {
-            $glosa = $nro_alcabala . "-" . $anio_alcabala;
+            $glosa = $sql->nro_alcab . "-" . $sql->anio;
             return $glosa;
         }else{
             return 'no-existe';

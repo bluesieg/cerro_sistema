@@ -31,13 +31,17 @@
                                     </label>
                             </div> -->
 
-                             <div class="col-xs-6"> 
+                             <div class="col-xs-3"> 
                                  <input type="hidden" id="hiddenproced_ofi" value="0">
                                 <input style="width: 100%;" id="proced_ofi" type="text" placeholder="Escriba el nombre de de la oficina" class="input-sm text-uppercase">
                              </div>
+                            
+                            <div class="col-xs-3"> 
+                                <input style="width: 100%;" id="dlg_buscar_tributos" type="text"  class="input-sm text-uppercase" placeholder="ESCRIBIR EL NOMBRE DEL TRIBUTO">
+                            </div>
 
                             <div class="col-xs-4">
-                                <div class="text-right">
+                                <div class="text-left">
                                     
                                     @if( $permisos[0]->btn_new ==1 )
                                         <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="nuevo_tributo();">
@@ -126,13 +130,14 @@
             datatype: 'json', mtype: 'GET',
             height: 'auto', autowidth: true,
             toolbarfilter: true,
-            colNames: ['ID','PROCEDIMIENTO','TRIBUTO','VALOR'],
+            colNames: ['ID','PROCEDIMIENTO','TRIBUTO','VALOR','OFICINA'],
             rowNum: 20,sortname: 'id_tributo', viewrecords: true, caption: 'TRIBUTOS', align: "center",
             colModel: [
                 {name: 'id_tributo', index: 'id_tributo', align: 'center',width:(pageWidth*(10/100))},
                 {name: 'descrip_procedim', index: 'descrip_procedim', align: 'left', width:(pageWidth*(70/100))}, 
                 {name: 'descrip_tributo', index: 'descrip_tributo', align: 'left', width:(pageWidth*(70/100))},
                 {name: 'soles', index: 'soles', align: 'center', width:(pageWidth*(10/100))},
+                {name: 'nombre', index: 'nombre', align: 'center', hidden:true ,width:(pageWidth*(10/100))}
 
             ],
             pager: '#pager_table_tributos',
@@ -157,6 +162,14 @@
             $("#tabla_tributo").jqGrid('setGridWidth', $("#content").width());
         });
 
+    });
+    
+    $("#dlg_buscar_tributos").keypress(function (e) {
+        if (e.which == 13) {
+
+               fn_buscar_tributos();
+
+        }
     });
 
 

@@ -134,9 +134,10 @@ function generar_op(tip,ctb)
         window.open('fis_rep/'+tip+'/0/'+ini+'/'+fin);
     }
 }
-function verop(idop)
+function verop(idop,id_per)
 {
     Id=$('#table_op').jqGrid ('getGridParam', 'selrow');
+
     if(Id==null&&tip==1)
     {
         mostraralertas("No hay Contribuyente seleccionado para impresión");
@@ -145,7 +146,9 @@ function verop(idop)
     //MensajeDialogLoadAjax('widget-grid', '.:: Generando ...');
     sec=$("#selsec option:selected").text();
     man=$("#selmnza option:selected").text();
-    window.open('fis_rep/1/'+idop+'/'+0+'/'+0);
+
+    window.open('fis_rep/1/'+idop+'/'+0+'/'+0+'/'+id_per);
+    
 }
 
 

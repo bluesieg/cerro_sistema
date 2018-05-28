@@ -79,6 +79,11 @@
                                             </li>                                            
                                         </ul>
                                     </div>
+                                    <button 
+                                        @if($permisos[0]->btn_new==1) onclick="anular_recibo();" @else onclick="sin_permiso();" @endif
+                                        type="button" class="btn btn-labeled bg-color-red txt-color-white">
+                                        <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Anular Recibo
+                                    </button>
                                 </section>
                             </div>
                         </div>

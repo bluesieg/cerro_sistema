@@ -150,7 +150,8 @@
             Los Intereses se calculan hasta el día de su cancelación; la tasa vigente de interes es del 1.2% mensual
             (Art. 33 TUO CT) y Ordenaza Municipal N° 297-2010 del 30 de Abr. del 2010.<br>
             La Multa Tributaria está contemplada en la Ordenanza Municipal N° 338-MDCC de fecha 29-Mar del 2012.
-            
+            <br> 
+            Atentamente.
         </div>
         
         

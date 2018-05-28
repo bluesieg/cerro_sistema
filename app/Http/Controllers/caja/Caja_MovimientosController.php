@@ -573,5 +573,12 @@ class Caja_MovimientosController extends Controller {
         $end_num = ucfirst($tex) . ' con ' . $float[1] . '/100 Nuevos Soles';
         return $end_num;
     }
+    
+    public function anular_recibo(Request $request){
+        $id_rec_mtr = $request['id_rec_mtr'];
+        
+        $function = DB::select('select tesoreria.fr_eliminar_recibo(' . $id_rec_mtr . ')');
+        
+    }
 
 }

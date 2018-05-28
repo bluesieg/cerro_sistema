@@ -43,7 +43,7 @@
                             <button onclick="eliminar_usuario();" id="btn_vw_usuarios_Eliminar" type="button" class="btn btn-labeled btn-danger">
                                 <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
                             </button> 
-                            <button type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
+                            <button onclick="imprimir_usuario();" type="button" class="btn btn-labeled bg-color-magenta txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-print"></i></span>Imprimir
                             </button> 
                         </div>
@@ -527,8 +527,26 @@
     </div>
 </div> 
 
-
-
+<div id="dialog_usuarios_imprimir" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                <div class="row">
+                    <section class="col col-10" style="padding-left:35px;padding-right:5px;">
+                        <label class="label">USUARIOS:</label>
+                        <label class="select">
+                            <select id='select_usuarios' class="form-control col-lg-8">
+                                <option value='1' >ACTIVOS</option>
+                                <option value='0' >INACTIVOS</option>
+                            </select><i></i> </label>
+                    </section>
+                </div>
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
 
 @endsection
 

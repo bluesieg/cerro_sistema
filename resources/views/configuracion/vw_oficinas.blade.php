@@ -22,7 +22,7 @@
                                 <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Editar
                             </button>
                             <button 
-                                @if($permisos[0]->btn_edit==1) onclick="config_eliminar_oficina()" @else onclick="sin_permiso();" @endif
+                                @if($permisos[0]->btn_del==1) onclick="config_eliminar_oficina()" @else onclick="sin_permiso();" @endif
                                 id="btn_vw_oficinas_Eliminar" type="button" class="btn btn-labeled btn-danger">
                                 <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
                             </button> 

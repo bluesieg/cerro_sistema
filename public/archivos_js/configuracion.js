@@ -487,28 +487,55 @@ function limpiar_form_usuario() {
 
 function eliminar_usuario() {
     id = $('#table_Usuarios').jqGrid('getGridParam', 'selrow');
-    $.confirm({
-        title: '.:Cuidado... !',
-        content: 'Los Cambios no se podran revertir...',
-        buttons: {
-            Confirmar: function () {
-                $.ajax({
-                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                    type: 'POST',
-                    url: 'usuario_delete',
-                    data: {id: id},
-                    success: function (data) {
-                        fn_actualizar_grilla('table_Usuarios', 'list_usuarios');
-                        dialog_close('dialog_new_edit_Usuario');
-                    }, error: function (data) {
-                        dialog_close('dialog_new_edit_Usuario');
-                        MensajeAlerta('* Error.', 'Contactese con el Administrador.');
-                    }
-                });
-            },
-            Cancelar: function () {
-                MensajeAlerta('Eliminar Usuario..', 'Operacion Cancelada.');
+    if(id)
+    {
+        $.confirm({
+            title: '.:Cuidado... !',
+            content: 'Los Cambios no se podran revertir...',
+            buttons: {
+                Confirmar: function () {
+                    $.ajax({
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        type: 'POST',
+                        url: 'usuario_delete',
+                        data: {id: id},
+                        success: function (data) {
+                            fn_actualizar_grilla('table_Usuarios', 'list_usuarios');
+                            MensajeExito('Usuario','El Usuario fue eliminado...');
+                        }, error: function (data) {
+                            dialog_close('dialog_new_edit_Usuario');
+                            MensajeAlerta('* Error.', 'Contactese con el Administrador.');
+                        }
+                    });
+                },
+                Cancelar: function () {
+                    MensajeAlerta('Eliminar Usuario..', 'Operacion Cancelada.');
+                }
             }
-        }
-    });
+        });
+    }else{
+        mostraralertasconfoco("No Hay Usuarios Seleccionados","#table_Usuarios");
+    }
+}
+
+
+function imprimir_usuario(num_rep){
+    $("#dialog_usuarios_imprimir").dialog({
+        autoOpen: false, modal: true, width: 350, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>&nbsp&nbsp.: REPORTE DE USUARIOS :.</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_rep(num_rep); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+
+}
+
+function abrir_rep(){
+    window.open('get_usuarios/'+ $('#select_usuarios').val());
 }

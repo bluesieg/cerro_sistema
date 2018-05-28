@@ -239,12 +239,12 @@ function modificar_oficina(tipo, Id) {
         mostraralertasconfoco('* Ingrese el Nombre de la Oficina...','#ofi_txt_nombre_textarea');
         return false;
     }
-    if (tipo === 'NUEVO' && Id === undefined) {
+    if (tipo === 'NUEVO') {
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type: 'POST',
             url: 'oficinas_insert_new',
-            data: {nombre: v_nombre, cod_oficina: Id},
+            data: {nombre: v_nombre, cod_oficina: 0},
             success: function (data) {
                 if (data.msg == 'si') {
                     recargar_oficinas();

@@ -283,6 +283,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('apertura_caja','Caja_MovimientosController@apertura_caja');
         Route::get('cierre_caja','Caja_MovimientosController@cierre_caja');
         Route::get('reporte_diario_caja/{id_caja}','Caja_MovimientosController@rep_dia_caja');
+        Route::get('anular_recibo','Caja_MovimientosController@anular_recibo');
     });
     Route::group(['namespace'=>'caja'],function(){///ESTADO DE CUENTAS
         Route::resource('estado_de_cta','Caja_Est_CuentasController');

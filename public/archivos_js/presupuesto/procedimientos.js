@@ -189,9 +189,10 @@ function autocompletar_oficinas(textbox){
 function seleccionar_anio(){
     
     anio = $("#vw_procedim_anio").val();
+    procedimiento = $('#dlg_buscar_procedimiento').val();
 
     jQuery("#table_Procedimiento").jqGrid('setGridParam', {
-         url: 'get_procedimientos?anio=' + anio 
+         url: 'get_procedimientos?anio=' + anio + '&procedimiento=' + procedimiento
     }).trigger('reloadGrid');
 
 }
@@ -200,3 +201,18 @@ function limpiar_form_proced(){
     $("#proced_desc,#hiddenproced_ofi,#proced_ofi,#proced_esp_det,#hiddenproced_esp_det").val('');    
 }
 
+
+function fn_buscar_procedimiento(){
+    procedimiento = $('#dlg_buscar_procedimiento').val();
+    anio = $("#vw_procedim_anio").val();
+            
+    MensajeDialogLoadAjax('dlg_buscar_procedimiento', '.:: Cargando ...');
+    
+    
+    jQuery("#table_Procedimiento").jqGrid('setGridParam', {
+         url: 'get_procedimientos?anio=' + anio + '&procedimiento=' + procedimiento
+    }).trigger('reloadGrid');
+    
+    MensajeDialogLoadAjaxFinish('dlg_buscar_procedimiento');
+    
+}

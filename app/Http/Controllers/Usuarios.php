@@ -49,7 +49,7 @@ class Usuarios extends Controller {
     public function index(Request $request) {
         
         $user = $request['user'];
-        $totalg = DB::select("select count(id) as total from vw_usuarios where ape_nom like '%".strtoupper($user)."%'");
+        $totalg = DB::select("select count(id) as total from vw_usuarios where ape_nom like '%".strtoupper($user)."%' and estado = 1");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -71,7 +71,7 @@ class Usuarios extends Controller {
             $start = 0;
         }
 
-        $sql = DB::table('public.vw_usuarios')->where('ape_nom','like','%'.strtoupper($user).'%')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        $sql = DB::table('public.vw_usuarios')->where('ape_nom','like','%'.strtoupper($user).'%')->where('estado', 1)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         $Lista = new \stdClass();
         $Lista->page = $page;
         $Lista->total = $total_pages;
@@ -109,6 +109,7 @@ class Usuarios extends Controller {
         $data->contrasena = $this->encripta_pass($request['vw_usuario_txt_password']);
         $data->created_at = date("Y-m-d H:i:s");
         $data->updated_at = date("Y-m-d H:i:s");
+        $data->estado = 1;
         $insert=$data->save();
         if ($insert) {
             $id_pers=$request['vw_usuario_txt_id_pers'];
@@ -183,24 +184,15 @@ class Usuarios extends Controller {
         }
     }
 
-    function eliminar_usuario(Request $data) {
-//        if (Auth::user()->id == $data['id']) {
-//            $user = User::find($id);
-//            $user->delete();
-//            Auth::logout();
-//            return redirect()->route('welcome');
-//        } else {
-//            return redirect()->route('home');
-//        }
-
-        $user = DB::table('usuarios')->select('usuario')->where('id', '=', $data['id'])->get();
-        $delete = DB::table('usuarios')->where('id', $data['id'])->delete();
-
-        if ($delete) {
-            return response()->json([
-                        'usuario' => $user[0],
-            ]);
+    function eliminar_usuario(Request $request) {
+        $Usuarios_u = new Usuarios_u;
+        $val=  $Usuarios_u::where("id","=",$request['id'] )->first();
+        if(count($val)>=1)
+        {
+            $val->estado = 0;
+            $val->save();
         }
+        return "destroy ".$request['id'];
     }
     
     function cambiar_foto_usuario(Request $request){
@@ -271,6 +263,24 @@ class Usuarios extends Controller {
         
         $c = implode("", $array);
         return $c;
+    }
+    
+    public function reporte_usuarios($estado){
+ 
+        $sql = DB::table('public.vw_usuarios')->where('estado',$estado)->get();
+        $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
+        $fecha = (date('d/m/Y H:i:s'));
+        if(count($sql)>0)
+        {
+            $view =  \View::make('configuracion.reportes.reporte_usuarios', compact('sql','usuario','fecha'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("PRUEBA".".pdf");
+        }
+        else
+        {
+            return 'No hay datos';
+        }
     }
 
 }

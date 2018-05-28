@@ -121,9 +121,14 @@ class TributosController extends Controller
     
     public function getTributos(Request $request){
         header('Content-type: application/json');
-
+        
+        if ($request['id_ofi'] == "") {
+            $totalg = DB::select("select count(id_tributo) as total from presupuesto.vw_tributos_vladi_1 where anio='".$request['anio']."' and descrip_tributo like '%".strtoupper($request['tributo'])."%' ");
+        }else{
+            $totalg = DB::select("select count(id_tributo) as total from presupuesto.vw_tributos_vladi_1 where anio='".$request['anio']."' and id_ofi=".$request['id_ofi']."");
+        }
         //$totalg = DB::select("select count(id_tributo) as total from presupuesto.vw_tributos_vladi_1");
-        $totalg = DB::select("select count(id_tributo) as total from presupuesto.vw_tributos_vladi_1 where anio='".$request['anio']."' and id_ofi=".$request['id_ofi']."");
+        
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -145,10 +150,14 @@ class TributosController extends Controller
             $start = 0;
         }
 
-     
+        if ($request['id_ofi'] == "") {
+            $sql = DB::table('presupuesto.vw_tributos_vladi_1')->where('anio',$request['anio'])->where('descrip_tributo','like', '%'.strtoupper($request['tributo']).'%')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        }else{
+            $sql = DB::table('presupuesto.vw_tributos_vladi_1')->where('anio',$request['anio'])->where('id_ofi',$request['id_ofi'])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        }
 
         //$sql = DB::table('presupuesto.vw_tributos_vladi_1')->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
-        $sql = DB::table('presupuesto.vw_tributos_vladi_1')->where('anio',$request['anio'])->where('id_ofi',$request['id_ofi'])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+        
         
         $Lista = new \stdClass();
         $Lista->page = $page;
@@ -162,6 +171,7 @@ class TributosController extends Controller
                 trim($Datos->descrip_procedim),
                 trim($Datos->descrip_tributo),
                 trim($Datos->soles),
+                trim($Datos->nombre)
             );
         }
 

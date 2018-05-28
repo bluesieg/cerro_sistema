@@ -83,8 +83,9 @@
                         <th align="center" width="5%" style="font-size:0.8em">TIM</th>
                         <th align="center" width="10%" style="font-size:0.8em">Multa DJ</th>
                         <th align="center" width="10%" style="font-size:0.8em">Interes Multa</th>
-                        <th align="center" width="10%" style="font-size:0.8em">RD IP</th>
+                        <th align="center" width="10%" style="font-size:0.8em">RD_OP</th>
                         <th align="center" width="10%" style="font-size:0.8em">Arbitrios Municipales</th>
+                        <th align="center" width="10%" style="font-size:0.8em">RD_ARB</th>
                         <th align="center" width="10%" style="font-size:0.8em">Descuento Arbitrios</th>
                         <th align="center" width="10%" style="font-size:0.8em">Interes Arbitrios</th>
                         <th align="center" width="10%" style="font-size:0.8em">Total</th>
@@ -103,6 +104,7 @@
                         <td style="text-align: right">{{ number_format($pred->interes_multa,2,'.',',') }}</td>
                         <td style="text-align: right">{{ substr($pred->nro_rd,-4)."-".$pred->anio}}</td>
                         <td style="text-align: right">{{ number_format($pred->tot_arbitrios,2,'.',',') }}</td>
+                        <td style="text-align: right"></td>
                         <td style="text-align: right">{{ number_format($pred->descuento_arbit,2,'.',',') }}</td>
                         <td style="text-align: right">{{ number_format($pred->interes_arbit,2,'.',',')  }}</td>
                         <td style="text-align: right">{{ number_format($pred->total,2,'.',',')  }}</td>
@@ -120,6 +122,7 @@
                         <td style="text-align: right"><b>{{ number_format($contrib->sum('interes_multa'),2,'.',',') }}</b></td>
                         <td style="text-align: right"><b>{{ number_format($contrib->sum('nro_rd'),2,'.',',') }}</b></td>
                         <td style="text-align: right"><b>{{ number_format($contrib->sum('tot_arbitrios'),2,'.',',') }}</b></td>
+                        <td style="text-align: right"></td>
                         <td style="text-align: right"><b>{{ number_format($contrib->sum('descuento_arbit'),2,'.',',') }}</b></td>
                         <td style="text-align: right"><b>{{ number_format($contrib->sum('interes_arbit'),2,'.',',')  }}</b></td>
                         <td style="text-align: right"><b>{{ number_format($contrib->sum('total'),2,'.',',')  }}</b></td>

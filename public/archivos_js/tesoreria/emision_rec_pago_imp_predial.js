@@ -1,5 +1,6 @@
  
-function dialog_emi_rec_pag_imp_predial() {    
+function dialog_emi_rec_pag_imp_predial() {
+    $("#vw_emi_rec_imp_pred_t1").val("0");$("#vw_emi_rec_imp_pred_t2").val("0");$("#vw_emi_rec_imp_pred_t3").val("0");$("#vw_emi_rec_imp_pred_t4").val("0");
     $("#vw_emision_rec_pag_imp_predial").dialog({
         autoOpen: false, modal: true, width: 1100, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>.: RECIBO IMPUESTO PREDIAL :.</h4></div>",
@@ -43,10 +44,6 @@ function gen_recibo_imp_predial(){
         mostraralertas('No hay trimestres para seleccionar o Todos los Trimestres estan pagados');
         return false;
     }
-    if(s_checks==0){
-        mostraralertasconfoco('Haga click en un Trimestre para Generar el Recibo','#vw_emi_rec_imp_pre_contrib');
-        return false;
-    }
     
     $.ajax({
         url:'verif_est_cta_coactiva?anio=' + anio,
@@ -88,6 +85,12 @@ function gen_rec_imp_pred(ss_checks){
     $('input[type=checkbox][name=chk_trim]:checked').each(function() {
             detalle_trimestres=detalle_trimestres+$(this).val()+", ";
     });
+    
+    t1 = $("#vw_emi_rec_imp_pred_t1").val();
+    t2 = $("#vw_emi_rec_imp_pred_t2").val();
+    t3 = $("#vw_emi_rec_imp_pred_t3").val();
+    t4 = $("#vw_emi_rec_imp_pred_t4").val();
+    
     $.confirm({
         title: '.:Recibo:.',
         content: 'Generar Recibo por '+ss_checks+' trimestre(s)',
@@ -110,8 +113,11 @@ function gen_rec_imp_pred(ss_checks){
                         montopre: (parseFloat($("#vw_emision_rec_pago_imp_pred_total_trimestre").val().replace(',', ''))-parseFloat($("#table_cta_cte2").getCell(formatos, 'saldo'))),
                         montoform: $("#table_cta_cte2").getCell(formatos, 'saldo'),
                         trimestres:ss_checks,
-                        detalle_trimestres:detalle_trimestres
-                        
+                        detalle_trimestres:detalle_trimestres,
+                        t1:t1,
+                        t2:t2,
+                        t3:t3,
+                        t4:t4      
                     },
                     success: function (data) {
                         if (data) {
@@ -152,6 +158,13 @@ function calc_tot_a_pagar_predial(num,esto){
     if($(esto).not(':checked')){
         $('input[type=checkbox][name=chk_total]').prop('checked', false);
     }
+    
+    if( $(esto).is(':checked') ){
+       $("#vw_emi_rec_imp_pred_t"+num).val("1");
+    }else{
+       $("#vw_emi_rec_imp_pred_t"+num).val("0");
+    }
+
     rowId=($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("predial"));
     pre_x_trim = parseFloat($("#table_cta_cte2").getCell(rowId, 'ivpp'));                    
     pre_x_trim = (pre_x_trim/4);

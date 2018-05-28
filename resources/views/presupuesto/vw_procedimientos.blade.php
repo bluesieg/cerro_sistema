@@ -6,33 +6,42 @@
             <div class="well well-sm well-light">
                 <h1 class="txt-color-green"><b>Procedimientos...</b></h1>
                 <div class="row">
-                    <div class="col-xs-12">
-                        <div class="text-right">
-                            <div class="col-xs-2 col-sm-12 col-md-12 col-lg-6 text-left">
-                                <label>Filtro Año:</label>
+                    
+                        <div class="col-xs-2">
+                            <label>Filtro Año:</label>
+                            <label class="select">
                                 <select id="vw_procedim_anio"  class="input-sm" onchange="seleccionar_anio();">
                                     @foreach ($anio as $anio)
                                     <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
                                     @endforeach
                                 </select><i></i>
-                            </div>
-                            <button 
-                                @if($permisos[0]->btn_new==1) onclick="dlg_procedimiento();"  @else onclick="sin_permiso();" @endif
-                                 type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
-                                <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
-                            </button>
-                            <button 
-                                @if($permisos[0]->btn_edit==1) onclick="up_dlg_procedimiento();"  @else onclick="sin_permiso();" @endif
-                                 type="button" class="btn btn-labeled bg-color-blue txt-color-white">
-                                <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
-                            </button>
-                            <button 
-                                @if($permisos[0]->btn_del==1) onclick="del_procedimiento();"  @else onclick="sin_permiso();" @endif
-                                 type="button" class="btn btn-labeled btn-danger">
-                                <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
-                            </button>
-                        </div>                        
-                    </div>
+                            </label>
+                        </div>
+                     
+                        <div class="col-xs-6"> 
+                            <input id="dlg_buscar_procedimiento" type="text"  class="form-control" style="height: 36px;font-size: 0.9em;width: 102% !important" placeholder="ESCRIBIR EL NOMBRE DEL PROCEDIMIENTO">
+                        </div>
+                    
+                        <div class="col-xs-4">
+                            <div class="text-right">    
+                                <button 
+                                    @if($permisos[0]->btn_new==1) onclick="dlg_procedimiento();"  @else onclick="sin_permiso();" @endif
+                                     type="button" class="btn btn-labeled bg-color-greenLight txt-color-white">
+                                    <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
+                                </button>
+                                <button 
+                                    @if($permisos[0]->btn_edit==1) onclick="up_dlg_procedimiento();"  @else onclick="sin_permiso();" @endif
+                                     type="button" class="btn btn-labeled bg-color-blue txt-color-white">
+                                    <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
+                                </button>
+                                <button 
+                                    @if($permisos[0]->btn_del==1) onclick="del_procedimiento();"  @else onclick="sin_permiso();" @endif
+                                     type="button" class="btn btn-labeled btn-danger">
+                                    <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Eliminar
+                                </button>
+                            </div> 
+                        </div>                      
+                    
                 </div> 
             </div>
             <div class="well well-sm well-light" style="margin-top:-20px;">                
@@ -95,6 +104,14 @@ $(document).ready(function () {
         $("#table_Procedimiento").jqGrid('setGridWidth', $("#content_2").width());
     });
 });
+
+    $("#dlg_buscar_procedimiento").keypress(function (e) {
+        if (e.which == 13) {
+
+               fn_buscar_procedimiento();
+
+        }
+    });
 </script>
 @stop
 <script src="{{ asset('archivos_js/presupuesto/procedimientos.js') }}"></script>

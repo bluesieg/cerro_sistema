@@ -257,4 +257,40 @@ function limpiar_form_caja_mov_pago(){
     $("#vw_caja_mov_txt_descripcion").val('');
 }
 
-
+function anular_recibo(){
+    id_rec_mtr=$('#tabla_Caja_Movimientos').jqGrid ('getGridParam', 'selrow');
+    
+    if(id_rec_mtr)
+    {
+        estado = $('#tabla_Caja_Movimientos').jqGrid ('getCell', id_rec_mtr, 'estad_recibo');
+        if(estado != 'Pagado'){
+           mostraralertasconfoco("El Recibo No esta Pagado");
+        }else{
+            $.confirm({
+                title: 'MENSAJE DEL SISTEMA',
+                content: '¿ESTAS SEGURO DE ANULAR ESTE RECIBO?',
+                buttons: {
+                    Aceptar: function () {
+                        $.ajax({url: 'anular_recibo',
+                         type: 'GET',
+                         data:{id_rec_mtr:id_rec_mtr},
+                         success: function(data) 
+                         {
+                             fn_actualizar_grilla('tabla_Caja_Movimientos');
+                             MensajeExito('Recibo fue Anulado', 'La Operacion se Realizo con exito.');
+                         },
+                         error: function(data) {
+                             mostraralertas("hubo un error, Comunicar al Administrador");
+                             console.log('error');
+                             console.log(data);
+                         }
+                         }); 
+                    },
+                    Cancelar: function () {}
+                }
+            });
+        }  
+    }else{
+        mostraralertasconfoco("No Hay Recibos Seleccionados","#tabla_Caja_Movimientos");
+    }
+}

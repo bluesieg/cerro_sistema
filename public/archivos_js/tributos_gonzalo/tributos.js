@@ -43,55 +43,56 @@ function nuevo_tributo()
 
 function actualizar_tributo()
 {
-    if ($("#hiddenproced_ofi").val()==0) {
-        mostraralertasconfoco("Seleccione Oficina ","#proced_ofi");
-        return false;
+    id=$('#tabla_tributo').jqGrid ('getGridParam', 'selrow');
+    if (id) {
+        oficina = $('#tabla_tributo').jqGrid ('getCell', id, 'nombre');
+        $("#dlg_ofi").val(oficina);
+        limpiar_dl_tributo(1);
+        $("#dlg_nuevo_tributo").dialog({
+            autoOpen: false, modal: true, width: 1100, show: {effect: "fade", duration: 300}, resizable: false,
+            title: "<div class='widget-header'><h4>.:  EDITAR TRIBUTO  :.</h4></div>",
+            buttons: [{
+                html: "<i class='fa fa-save'></i>&nbsp; Guardar",
+                "class": "btn btn-success bg-color-green",
+                click: function () {
+                    guardar_editar_tributo(2);
+                }
+            }, {
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-danger",
+                click: function () {
+                    $(this).dialog("close");
+                }
+            }],
+        });
+        $("#dlg_nuevo_tributo").dialog('open');
+        autocompletar_procedimientos('nombre_procedimiento');
+
+
+        MensajeDialogLoadAjax('dlg_nuevo_tributo', '.:: Cargando ...');
+
+        $.ajax({url: 'tributos/'+id,
+            type: 'GET',
+            success: function(r)
+            {
+                $("#id_tributo").val(r[0].id_tributo);
+                $("#hidden_nombre_procedimiento").val(r[0].id_procedimiento);
+                $("#nombre_procedimiento").val(r[0].descrip_procedim);
+                $("#nombre_tributo").val(r[0].descrip_tributo);
+                $("#valor_tributo").val(r[0].soles);
+                MensajeDialogLoadAjaxFinish('dlg_nuevo_tributo');
+
+            },
+            error: function(data) {
+                mostraralertas("hubo un error, Comunicar al Administrador");
+                console.log('error');
+                console.log(data);
+                MensajeDialogLoadAjaxFinish('dlg_nuevo_tributo');
+            }
+        });
+    }else{
+        mostraralertasconfoco("No Hay Registros Seleccionados","#tabla_tributo");
     }
-    $("#dlg_ofi").val($("#proced_ofi").val());
-    limpiar_dl_tributo(1);
-    $("#dlg_nuevo_tributo").dialog({
-        autoOpen: false, modal: true, width: 1100, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>.:  EDITAR TRIBUTO  :.</h4></div>",
-        buttons: [{
-            html: "<i class='fa fa-save'></i>&nbsp; Guardar",
-            "class": "btn btn-success bg-color-green",
-            click: function () {
-                guardar_editar_tributo(2);
-            }
-        }, {
-            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
-            "class": "btn btn-danger",
-            click: function () {
-                $(this).dialog("close");
-            }
-        }],
-    });
-    $("#dlg_nuevo_tributo").dialog('open');
-    autocompletar_procedimientos('nombre_procedimiento');
-
-
-    MensajeDialogLoadAjax('dlg_nuevo_tributo', '.:: Cargando ...');
-
-    id = $("#current_id").val();
-    $.ajax({url: 'tributos/'+id,
-        type: 'GET',
-        success: function(r)
-        {
-            $("#id_tributo").val(r[0].id_tributo);
-            $("#hidden_nombre_procedimiento").val(r[0].id_procedimiento);
-            $("#nombre_procedimiento").val(r[0].descrip_procedim);
-            $("#nombre_tributo").val(r[0].descrip_tributo);
-            $("#valor_tributo").val(r[0].soles);
-            MensajeDialogLoadAjaxFinish('dlg_nuevo_tributo');
-
-        },
-        error: function(data) {
-            mostraralertas("hubo un error, Comunicar al Administrador");
-            console.log('error');
-            console.log(data);
-            MensajeDialogLoadAjaxFinish('dlg_nuevo_tributo');
-        }
-    });
 }
 
 function guardar_editar_tributo(tipo) {
@@ -143,7 +144,7 @@ function guardar_editar_tributo(tipo) {
         });
     }
     else if (tipo == 2) {
-        id = $("#current_id").val();
+        id=$('#tabla_tributo').jqGrid ('getGridParam', 'selrow');
         MensajeDialogLoadAjax('dlg_nuevo_tributo', '.:: CARGANDO ...');
         $.confirm({
             title: '.:Cuidado... !',
@@ -257,6 +258,22 @@ function autocompletar_procedimientos(textbox){
             });
         }
     });
+}
+
+
+function fn_buscar_tributos(){
+    tributo = $('#dlg_buscar_tributos').val();
+    anio = $("#select_anio").val();
+            
+    MensajeDialogLoadAjax('dlg_buscar_tributos', '.:: Cargando ...');
+    
+    
+    jQuery("#tabla_tributo").jqGrid('setGridParam', {
+         url: 'listar_tributos?anio=' + anio + '&tributo=' + tributo
+    }).trigger('reloadGrid');
+    
+    MensajeDialogLoadAjaxFinish('dlg_buscar_tributos');
+    
 }
 
 

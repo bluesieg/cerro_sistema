@@ -53,10 +53,6 @@
                                     type="button" class="btn btn-labeled bg-color-blue txt-color-white">
                                 <span class="btn-label"><i class="glyphicon glyphicon-tasks"></i></span>Pago Coactivo
                             </button>
-                            <button @if($permisos[0]->btn_anu==1) onclick="" @else onclick="sin_permiso();" @endif
-                                type="button" class="btn btn-labeled btn-danger">
-                                <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Anular
-                            </button>
                         </div>
                     </div>
                 </div> 
@@ -506,8 +502,11 @@
                                  <input id="vw_detalle_trimestres"  type="hidden" >
                             </section>
                             
-                                   
-                                                          
+                            <input type="hidden" id="vw_emi_rec_imp_pred_t1" value="0">
+                            <input type="hidden" id="vw_emi_rec_imp_pred_t2" value="0">
+                            <input type="hidden" id="vw_emi_rec_imp_pred_t3" value="0">
+                            <input type="hidden" id="vw_emi_rec_imp_pred_t4" value="0">
+                                                                
                                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; margin-bottom: 10px; padding: 0px !important">
                                     <table id="table_cta_cte2"></table>
                                     <div id="pager_table_cta_cte2">                                        
