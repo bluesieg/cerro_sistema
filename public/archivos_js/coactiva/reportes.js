@@ -1,4 +1,11 @@
+function dlg_reporte_coactivo(tip)
+{
+    if(tip==0)
+    {
+        window.open('reporte_contribuyentes/'+ $('#selantra_r0').val()+ '/'+ $('#min').val()+ '/' + $('#max').val() + '/'  +$('#num_reg').val());   
+    }
 
+}
 
 function rango_fecha_rep(){
     desde = $("#vw_rep_coa_fdesde").val();
