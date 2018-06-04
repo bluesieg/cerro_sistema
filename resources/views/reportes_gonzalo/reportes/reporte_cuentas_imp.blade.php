@@ -2,20 +2,21 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Listado de Datos de los Contribuyentes</title>
+    <title>REPORTE CUENTAS DE IMPUESTO PREDIAL</title>
     <link href="{{ asset('css/pdf.css') }}" rel="stylesheet">
     <style>
         .move-ahead { counter-increment: page 2; position: absolute; visibility: hidden; }
         .pagenum:after { content:' ' counter(page); }
-       .footer {position: fixed }
-
+        .footer {position: fixed }
     </style>
 </head>
     <footer class="footer" style="font-size:0.8em; text-align: left; padding-top: 5px; padding-left: 10px;"><b>Impreso Por:&nbsp; </b>{{$usuario[0]->usuario}}</footer>
 
 <body>
-    <div class="datehead" style="font-size:0.7em;">{{ $fecha }}</div>
-    <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px;">
+    <div class="datehead">{{ $fecha }}</div>
+<main>
+
+     <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px;">
         <tr>
             <td style="width: 10%; border: 0px;" >
                 <img src="img/escudo.png" height="60px"/>
@@ -34,24 +35,25 @@
 
     </table>
 
-    <center><div Class="asunto" style="margin-top: 1px;font-size:0.8em;"><b>REPORTE DE DATOS DE CONTRIBUYENTES</b></div></center>
-    <div class="subasunto" style=" margin-bottom:5px; text-align: left; padding-left: 30px;font-size:0.7em;"> 
-        <br>
-        Año: {{ $anio }} - Hab. Urbana: {{$sql[0]->nomb_hab_urba}}
-        
+    <center><div Class="asunto" style="margin-top: 10px; font-size:0.8em;"><b>REPORTE CUENTAS DE IMPUESTO PREDIAL $cond</b></div></center>
+    <div class="subasunto" style=" margin-bottom:1px; text-align: left; padding-left: 30px;font-size:0.7em;">
+        <h4 class="subasunto" style="font-size:1em;  text-align: left; ">Año : {{ $sql[0]->nomb_hab_urba }} &nb&nbsp;Zona : {{ $sql[0]->nomb_hab_urba }}</h5>  
     </div>
-    
+   
     <input type="hidden" value=" {{$num= 1}}">
 
-    <div class="lado3" style="height: 435px; margin-bottom: 20px;">
-        <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom:20px; margin-top: 0px;  font-size: 1.0em;">
+    <div class="lado3" style="font-size:0.8em; height: 435px; border-bottom: 0px solid #333 ">
+
+        <br>
+        <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px; font-size: 0.9em;">
             <thead>
             <tr >
-                <th style="width: 5%;">N°</th>
-                <th style="width: 10%">DNI/RUC</th>
-                <th style="width: 30%;">CONTRIBUYENTE</th>
-                <th style="width: 15%;">TIPO PERSONA</th>
-                <th style="width: 40%">DOMICILIO</th>
+              
+                <th style="width: 5%; text-align: center;">CÓDIGO</th>
+                <th style="width: 40%; text-align: center;">NOMBRE </th>
+                <th style="width: 7%; text-align: center;">TOTAL A PAGAR</th>
+                <th style="width: 7%; text-align: center;">TOTAL </th>
+                <th style="width: 10%; text-align: center;">% DE MOROSIDAD</th>
             </tr>
             </thead>
             <tbody>
@@ -59,14 +61,13 @@
             @foreach ($sql as $cont)
                 <tr>
                     <td style="text-align: center;">{{ $num++ }}</td>
-                    <td style="text-align: center;">{{$cont->nro_doc}}</td>
-                    <td style="text-align: left;">{{ $cont->contribuyente }}</td>
-                    <td style="text-align: left;">{{$cont->persona}}</td>
-                    <td style="text-align: left;">{{$cont->dom_fis}}</td>
+                    <td style="text-align: center;">{{ $cont->id_pers }}</td>
+                    <td style="text-align: left;">{{$cont->id_pers}}</td>
+                    <td style="text-align: center;">{{ $cont->id_pers }}</td>
+                    <td style="text-align: center;">{{ $cont->id_pers }}</td>
+                  
                 </tr>
-                
             @endforeach
-
             </tbody>
         </table>
     </div>

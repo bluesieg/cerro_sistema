@@ -1,8 +1,8 @@
 function dlg_reporte_coactivo(tip)
 {
-    if(tip==0)
+    if(tip==1)
     {
-        window.open('reporte_contribuyentes/'+ $('#selantra_r0').val()+ '/'+ $('#min').val()+ '/' + $('#max').val() + '/'  +$('#num_reg').val());   
+         window.open('reporte_ingresos_pdf?fini='+$('#dlg_bus_fini').val()+'&ffin='+$('#dlg_bus_ffin').val());
     }
 
 }

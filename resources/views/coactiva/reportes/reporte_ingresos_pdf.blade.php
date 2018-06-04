@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Predios Ingresados Por Usuario</title>
+    <title>Reporte de ingresos coactivo</title>
     <link href="{{ asset('css/pdf.css') }}" rel="stylesheet">
     <style>
         .move-ahead { counter-increment: page 2; position: absolute; visibility: hidden; }
@@ -31,21 +31,19 @@
 
     </table>
 
-    <center><div Class="asunto" style="margin-top: 10px;"><b>Reporte de Predios Ingresados Por Usuario</b></div></center>
+    <center><div Class="asunto" style="margin-top: 10px;"><b>Reporte de Ingresos Coactivo</b></div></center>
     <div class="subasunto" style="text-align: center; padding-left: 30px; margin-top: 20px;">
         <table>
             <thead>
                 <tr> 
                     <th colspan="1" style="text-align: center; width: 10%;">FECHA INICIO</th>
                     <th colspan="1" style="text-align: center; width: 10%;">FECHA FIN</th>
-                    <th colspan="1" style="text-align: center; width: 10%;">TOTAL</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td colspan="1" style="text-align: center;">{{ $fechainicio }}</td>
                     <td colspan="1" style="text-align: center;">{{ $fechafin }}</td>
-                    <td colspan="1" style="text-align: center;">{{ $total[0]->usuario }}</td>
                 </tr>
             </tbody>
         </table>
@@ -59,15 +57,13 @@
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px; font-size: 1.3em;">
             <thead>
             <tr >
-                 <th style="width: 5%; text-align: center;">Nº</th>
-                <th style="width: 28%; text-align: center;">NOMBRE</th>
+                <th style="width: 5%; text-align: center;">Nº</th>
+                <th style="width: 28%; text-align: center;">CONTRIBUYENTE</th>
                 <th style="width: 7%; text-align: center;">DNI</th>
-                <th style="width: 5%; text-align: center;">SECTOR</th>
-                <th style="width: 5%; text-align: center;">MZ</th>
-                <th style="width: 5%; text-align: center;">LOTE</th>
-                <th style="width: 30%; text-align: center;">CONTRIBUYENTE</th>
-                <th style="width: 10%; text-align: center;">FECHA REGISTRO</th>
-                <th style="width: 5%; text-align: center;">HORA REGISTRO</th>
+                <th style="width: 5%; text-align: center;">N°APERSONAMIENTO</th>
+                <th style="width: 5%; text-align: center;">AÑO</th>
+                <th style="width: 5%; text-align: center;">FECHA PAGO</th>
+                <th style="width: 30%; text-align: center;">MONTO</th>
             </tr>
             </thead>
             <tbody>
@@ -75,17 +71,20 @@
             @foreach ($sql as $cont)
                 <tr>
                     <td style="text-align: center;">{{ $num++ }}</td>
-                    <td style="text-align: center;">{{ $cont->nom_usu }}</td>
-                    <td style="text-align: center;">{{$cont->dni_usu}}</td>
-                    <td style="text-align: center;">{{ $cont->sec }}</td>
-                    <td style="text-align: center;">{{ $cont->mzna }}</td>
-                    <td style="text-align: center;">{{ $cont->lote }}</td>
                     <td style="text-align: center;">{{ $cont->contribuyente }}</td>
-                    <td style="text-align: center;">{{ $cont->fec_reg }}</td>
-                    <td style="text-align: center;">{{ $cont->hora_reg }}</td> 
+                    <td style="text-align: center;">{{$cont->pers_nro_doc}}</td>
+                    <td style="text-align: center;">{{ $cont->nro_resol }}</td>
+                    <td style="text-align: center;">{{ $cont->anio }}</td>
+                    <td style="text-align: center;">{{ $cont->fecha }}</td>
+                    <td style="text-align: center;">{{ $cont->monto }}</td>
                 </tr>
             @endforeach
+             @foreach ($sql as $suma)
+            
+            <div class="sub2" style="font-size:0.8em; text-align: right; margin-top: 10;"><b>TOTAL:&nbsp;&nbsp;&nbsp; </b>{{ number_format($suma->sum,2,".",",") }}</div>
+            @endforeach
             </tbody>
+            
         </table>
     </div>
 </body>

@@ -22,7 +22,7 @@
             <td style="width: 80%; padding-top: 10px; border:0px;">
                 <div id="details" class="clearfix">
                     <div id="invoice" >
-                        <h1>MUNICIPALIDAD DISTRITAL DE CERRO COLORADO</h1>
+                        <h1>{{$institucion[0]->nom1}}&nbsp;{{$institucion[0]->nom2}}</h1>
                         <div class="sub2">Creado por Ley 12075 el día 26 de Febrero de 1954</div>
                     </div>
                     <div style="width: 90%; border-top:1px solid #999; margin-top: 10px; margin-left: 25px;"></div>

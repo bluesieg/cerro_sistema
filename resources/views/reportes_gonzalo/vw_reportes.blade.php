@@ -53,8 +53,6 @@
                                     <small>Descripción reporte 1</small>
                                 </h4>
                             </td>
-          
-                         
                         </tr>  
 
                         <!-- TR -->
@@ -67,8 +65,16 @@
                                     <small>Descripción reporte 2</small>
                                 </h4>
                             </td>
-          
-                         
+                        </tr>
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_reportes_andrea(3);" id="titulo_r1">
+                                        REPORTE 3: Listado de datos de los Contribuyentes, Predios, Pisos, Instalaciones e Inafectación.
+                                    </a>
+                                    <small>Descripción reporte 3</small>
+                                </h4>
+                            </td>
                         </tr>
                         <!-- end TR -->
                         
@@ -112,10 +118,34 @@
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
+                                <h4><a href="#" onclick="dlg_reportes_andrea(7);" id="titulo_r1">
+                                        REPORTE 7: Reporte del Monto de la Emisión Predial Afecto y Exonerado.
+                                    </a>
+                                    <small>Descripción reporte 7</small>
+                                </h4>
+                            </td>
+          
+                         
+                        </tr>
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
                                 <h4><a href="#" onclick="dlg_reportes_andrea(8);" id="titulo_r1">
                                         REPORTE 8: Reporte Número de  Contribuyentes de la emision predial Afecto y Exonerado.
                                     </a>
                                     <small>Descripción reporte 6</small>
+                                </h4>
+                            </td>
+          
+                         
+                        </tr>
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_reportes_andrea(9);" id="titulo_r1">
+                                        REPORTE 9: Reporte Monto de Autovaluo Inafecto.
+                                    </a>
+                                    <small>Descripción reporte 9</small>
                                 </h4>
                             </td>
           
@@ -206,6 +236,29 @@
                         <tr>
                             <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
                             <td>
+                                <h4><a href="#" onclick="dlg_reportes_andrea(25);" id="titulo_r1">
+                                        REPORTE 25: Reporte de cuentas de impuesto predial determinado,recaudado y saldos por cobrar .</a>
+                                    <small>Descripción reporte 25</small>
+                                </h4>
+                            </td>
+          
+                         
+                        </tr>
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_reportes_andrea(26);" id="titulo_r1">
+                                        REPORTE 26: Reporte de cuentas de Arbitrios Municipales determinado,recaudado y saldos por cobrar .</a>
+                                    <small>Descripción reporte 26</small>
+                                </h4>
+                            </td>
+          
+                         
+                        </tr>
+                       
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
                                 <h4><a href="#" onclick="dlg_reportes_andrea(101);" id="titulo_r1">
                                         REPORTE 12: Reporte de Cantidad de Contribuyentes según Forma de Adquisición.</a>
                                     <small>Descripción reporte 12</small>
@@ -232,6 +285,17 @@
                             <td>
                                 <h4><a href="#" onclick="dlg_reportes_andrea(103);" id="titulo_r1">
                                         REPORTE 13: Reporte General de Caja.</a>
+                                    <small>Descripción reporte 13</small>
+                                </h4>
+                            </td>
+          
+                         
+                        </tr>
+                        <tr>
+                            <td class="text-center" style="width: 40px;"><i class="fa fa-group fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_reportes_andrea(123);" id="titulo_r1">
+                                       repppppppp</a>
                                     <small>Descripción reporte 13</small>
                                 </h4>
                             </td>
@@ -793,6 +857,41 @@ function autocompletar_haburb(textbox){
         </div>
     </div>
 </div>
+<div id="dialog_datos_contribuyentes_p_detallado" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                        <select id='select_sup_anio_pred_det' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                            @foreach ($anio_tra as $anio_pred)
+                                                <option value='{{$anio_pred->anio}}' >{{$anio_pred->anio}}</option>
+                                            @endforeach
+                                        </select> 
+                                    </div>
+                            </div>
+                        </div>                       
+                    </div>
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12" >
+                            <div class="input-group input-group-md" style="width: 100%">
+                                <span class="input-group-addon" style="width: 165px">Hab. Urbana &nbsp;<i class="fa fa-file-archive-o"></i></span>
+                                <div> 
+                                     <input type="hidden" id="hidden_habilitacion_urbana_det" value="0">
+                                     <textarea  id="habilitacion_urbana_det" type="text" placeholder="Escriba una Habilitación Urbana" class="form-control" style="height: 32px; padding-left: 10px"  ></textarea>
+                                </div>
+                            </div>
+                         </div>
+                    </div>  
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
 <div id="dialog_cantidad_por_zona" style="display: none">
     <div class="widget-body">
         <div  class="smart-form">
@@ -1119,6 +1218,86 @@ function autocompletar_haburb(textbox){
         </div>
     </div>
 </div>
+<div id="dialog_monto_ep_afecto_exonerado" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                        <select id='select_anio_monto_ep' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                            @foreach ($anio_tra as $anio_con)
+                                                <option value='{{$anio_con->anio}}' >{{$anio_con->anio}}</option>
+                                            @endforeach
+                                        </select> 
+                                    </div>
+                            </div>
+                        </div>                       
+                    </div>
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">CONDICION <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                          <select id='select_condicion_monto_ep_afec_exon' class="form-control col-lg-8" >
+                                            @foreach ($condicion as $afec_exo)
+                                                <option value='{{$afec_exo->id_exo}}' >{{$afec_exo->desc_exon}}</option>
+                                            @endforeach
+                                          </select>                                 
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dialog_rep_autovaluo" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                        <select id='select_ep_autovaluo' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                            @foreach ($anio_tra as $anio_con)
+                                                <option value='{{$anio_con->anio}}' >{{$anio_con->anio}}</option>
+                                            @endforeach
+                                        </select> 
+                                    </div>
+                            </div>
+                        </div>                       
+                    </div>
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12">
+                            <div class="input-group input-group-md">
+                                <span class="input-group-addon" style="width: 165px">CONDICIÓN <i class="fa fa-cogs"></i></span>
+                                    <div class="icon-addon addon-md">
+                                          <select id='select_condicion_ep_autovaluo' class="form-control col-lg-8" >
+                                            @foreach ($inafecto as $inafec)
+                                                <option value='{{$inafec->id_exo}}' >{{$inafec->desc_exon}}</option>
+                                            @endforeach
+                                          </select>                                 
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
 <div id="dialog_por_morosidad_arbitrios" style="display: none">
     <div class="widget-body">
         <div  class="smart-form">
@@ -1221,6 +1400,44 @@ function autocompletar_haburb(textbox){
                                             <select id='select_doc' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
                                                     <option value='1' >OP</option>
                                                     <option value='2' >RD</option>                                                    
+                                            </select>
+
+                                        </div>
+                                </div>
+                     </div>
+                    </div> 
+                    
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dialog_cuentas_imp" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                </div>
+                    <div class="row" style="padding: 5px 30px;">
+                        <div class="col-xs-12" >
+                            <div class="input-group input-group-md" style="width: 100%">
+                                <span class="input-group-addon" style="width: 165px">Hab. Urbana &nbsp;<i class="fa fa-file-archive-o"></i></span>
+                                <div> 
+                                     <input type="hidden" id="hidden_habilitacion_urbana25" value="0">
+                                     <textarea  id="habilitacion_urbana25" type="text" placeholder="Escriba una Habilitación Urbana" class="form-control" style="height: 32px; padding-left: 10px"  ></textarea>
+                                </div>
+                            </div>
+                         </div>
+                    </div>  
+                <div class="row" style="padding: 10px 40px;">
+                        <div class="col-xs-12">
+                                <div class="input-group input-group-md">
+                                    <span class="input-group-addon" style="width: 165px">Año <i class="fa fa-cogs"></i></span>
+                                        <div class="icon-addon addon-md">
+                                            <select id='select_condicion_imp' class="form-control col-lg-8" style="height: 32px; width: 90%" onchange="callfilltab()">
+                                                    <option value='1' >DETERMINADO</option>
+                                                    <option value='2' >RECAUDADO</option>  
+                                                    <option value='3' >SALDOS POR COBRAR</option>  
                                             </select>
 
                                         </div>
