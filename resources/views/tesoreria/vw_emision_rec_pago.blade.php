@@ -509,13 +509,36 @@
                                                                 
                                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; margin-bottom: 10px; padding: 0px !important">
                                     <table id="table_cta_cte2"></table>
-                                    <div id="pager_table_cta_cte2">                                        
-                                        <div style="float: right; font-weight: bold;">
-                                            Total S/.<input type="text" id="vw_emision_rec_pago_imp_pred_total_trimestre" class="input-sm text-right" style="width: 95px; height: 8px;padding-right: 4px;" readonly="">
+                                    <div id="pager_table_cta_cte2">
+                                        <div class="col-xs-6"></div>
+                                        <div class="col-xs-3" style="z-index: 99999999">
+                                            <div class="input-group input-group-md" style="background-color: white;margin-top: 34px;">
+                                                <span class="input-group-addon" style="width: 100px; background-color: white">Activar Pago a Cuenta &nbsp;</span>
+                                                <div class="input-group-addon"  style=" background-color: white; ">
+                                                    <input id="check_pago_cuenta" type="checkbox" style="margin-top: 5px;" onchange="validar_pago_cuenta()">
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div style="float: right; font-weight: bold;">
-                                            Precio x Trim:<input type="text" id="vw_emis_re_pag_pre_x_trim" class="input-sm text-right" style="width: 60px; height: 8px;padding-right: 4px;" readonly="">
-                                        </div> 
+                                        <div class="col-xs-3" style="padding: 0px;">
+                                            
+                                            <div class="col-xs-12" style="padding: 0px;">
+                                                <div class="input-group input-group-md">
+                                                    <span class="input-group-addon" style="width: 100px; background-color: white">Trimestre S/. &nbsp;<i class="fa fa-dollar"></i></span>
+                                                    <div class=""  >
+                                                        <input id="vw_emis_re_pag_pre_x_trim" type="text"  class="form-control" style="height: 32px; text-align: right; padding-right: 5px;width: 120px;" disabled="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12" style="padding: 0px;">
+                                                <div class="input-group input-group-md">
+                                                    <span class="input-group-addon" style="width: 100px;background-color: white">Total S/. &nbsp;<i class="fa fa-dollar"></i></span>
+                                                    <div class=""  >
+                                                        <input id="vw_emision_rec_pago_imp_pred_total_trimestre" type="text"  class="form-control" style="height: 32px; text-align: right; padding-right: 5px;width: 120px;" disabled="" onkeypress="return soloNumeroTab(event);">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
                                     </div>
                                 </article>
                             </section>

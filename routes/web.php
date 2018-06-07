@@ -346,6 +346,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('edit_estado','CompromisoPagoController@edit_estado_compromiso');
         
         Route::get('reporte_ingresos','ReportesController@rep_ingresos');
+        Route::get('reporte_ingresos_pdf','ReportesController@reporte_ingresos_pdf');
         ////////tesoreria
         Route::get('get_apersonamiento','CoactivaController@grid_apersonamiento');
     });

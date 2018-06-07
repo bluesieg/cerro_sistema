@@ -42,7 +42,6 @@ class Recibos_MasterController extends Controller
         $data->hora_pago  = "";
         $data->glosa      = $request['glosa'];
         $data->direccion      = $request['direccion'];
-        $data->total      = $request['total'];
         $data->id_tip_pago= 0;
         $data->id_contrib = $request['id_pers'];
         $data->id_tribut_master=0;
@@ -53,22 +52,36 @@ class Recibos_MasterController extends Controller
         $data->t2=$request['t2'];
         $data->t3=$request['t3'];
         $data->t4=$request['t4'];
+        $data->t4=$request['t4'];
         $data->fracc_check = $request['fracc_check'] ?? 0;
+        $data->pgo_acta = $request['acuenta'];
+        if($request['acuenta']=='1')
+        {
+            $data->total      = $request['monto_acuenta'];
+        }
+        else
+        {
+            $data->total      = $request['total'];
+        }   
         if($request->recibo == null){
             $data->id_alcab=0;
         }else{
             $data->id_alcab = $request['recibo'];
         }
         $data->save();
-        if($request['montopre']>0)
+        if($request['montopre']>0&&$request['acuenta']==0)
         {
             $count=$this->edit_cta_cte($request['trimestres'],$data->id_rec_mtr,$request['id_pers'],$request['periodo'],$request['id_trib_pred']);
             $this->detalle_create($request['periodo'],$data->id_rec_mtr,$request['id_trib_pred'],$request['montopre'],$count,$request['detalle_trimestres'].' del '.$request['periodo']);
         }
-        if($request['montoform']>0)
+        if($request['montoform']>0&&$request['acuenta']==0)
         {
             $count=$this->edit_cta_cte('1-2-3-4',$data->id_rec_mtr,$request['id_pers'],$request['periodo'],$request['id_trib_form']);
             $this->detalle_create($request['periodo'],$data->id_rec_mtr,$request['id_trib_form'],$request['montoform'],$count,'del '.$request['periodo']);
+        }
+        if($request['acuenta']==1)
+        {
+            $this->detalle_create($request['periodo'],$data->id_rec_mtr,$request['id_trib_pred'],$request['monto_acuenta'],1,'PAGO A CUENTA PREDIAL');
         }
         return $data->id_rec_mtr;
     }

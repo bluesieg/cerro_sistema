@@ -187,7 +187,8 @@
                 {name: 'saldo', index: 'saldo', align: 'center', width: 50},
                 {name: 'ver', index: 'ver', align: 'center', width: 70}
             ],
-            rowList: [13, 20],
+            pager: '#p_tabla_expedientes',
+            rowList: [30, 50, 100],
             gridComplete: function () {},
             onSelectRow: function (Id) {},
             ondblClickRow: function (Id) {
@@ -224,7 +225,7 @@
         });
 
         $(window).on('resize.jqGrid', function () {
-            $("#tabla_expedientes").jqGrid('setGridWidth', $("#content_1").width());
+            $("#tabla_expedientes").jqGrid('setGridWidth', $("#content_3").width());
             //$("#tabla_doc_coactiva").jqGrid('setGridWidth', $("#content_2").width());
             $("#all_tabla_expedientes").jqGrid('setGridWidth', $("#content_3").width());
         });

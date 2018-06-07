@@ -31,7 +31,14 @@
             </center> 
         </div>
 
-        <div style="text-align: justify;font-size:15px;overflow:auto">           
+        <div style="text-align: justify;font-size:15px;overflow:auto">
+            Cerro Colorado,<br>
+            VISTOS: El Escrito de fecha {{$ini[0]->fec_reg}} de la {{$resol[0]->nom_oficina}}
+            de la Municipalidad Distrital de Cerro Colorado, mediante el cual dicha entidad remite a este Despacho el
+            Expediente del contribuyente, {{str_replace('-','',$ini[0]->contribuyente)}} (en adelante el Obligado), que contiene la
+            {{$resol[0]->documento}} N° {{$resol[0]->nro_documento}}-SGFT-MDCC, con su
+            respectiva Constancia de notificación adjunta a la misma, la Constancia de cosa decidida administrativa, y
+            los actuados que dieron origen a los mismos, respecto de la deuda tributaria correspondiente al periodo {{$ini[0]->anio}} y
             @php echo $resol[0]->texto @endphp
         </div>     
     </body>

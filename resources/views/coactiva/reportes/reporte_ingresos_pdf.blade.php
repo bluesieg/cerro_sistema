@@ -58,12 +58,12 @@
             <thead>
             <tr >
                 <th style="width: 5%; text-align: center;">Nº</th>
-                <th style="width: 28%; text-align: center;">CONTRIBUYENTE</th>
+                <th style="width: 35%; text-align: center;">CONTRIBUYENTE</th>
                 <th style="width: 7%; text-align: center;">DNI</th>
                 <th style="width: 5%; text-align: center;">N°APERSONAMIENTO</th>
                 <th style="width: 5%; text-align: center;">AÑO</th>
-                <th style="width: 5%; text-align: center;">FECHA PAGO</th>
-                <th style="width: 30%; text-align: center;">MONTO</th>
+                <th style="width: 7%; text-align: center;">FECHA PAGO</th>
+                <th style="width: 25%; text-align: center;">MONTO</th>
             </tr>
             </thead>
             <tbody>
@@ -76,13 +76,14 @@
                     <td style="text-align: center;">{{ $cont->nro_resol }}</td>
                     <td style="text-align: center;">{{ $cont->anio }}</td>
                     <td style="text-align: center;">{{ $cont->fecha }}</td>
-                    <td style="text-align: center;">{{ $cont->monto }}</td>
+                    <td style="text-align: right; padding-right: 5px">{{ number_format($cont->monto,2,".",",")}}</td>
                 </tr>
             @endforeach
-             @foreach ($sql as $suma)
-            
-            <div class="sub2" style="font-size:0.8em; text-align: right; margin-top: 10;"><b>TOTAL:&nbsp;&nbsp;&nbsp; </b>{{ number_format($suma->sum,2,".",",") }}</div>
-            @endforeach
+            <tr>
+                 <td colspan="6" style="text-align: right; padding-right: 5px">TOTAL:</td>
+                 <td style="text-align: right; padding-right: 5px">{{ number_format($sql->sum('monto'),2,".",",") }}</td>
+             </tr>
+             
             </tbody>
             
         </table>

@@ -676,8 +676,23 @@ class CoactivaController extends Controller
     }
     function verdocumentoresini($id_doc,$id_coa_mtr)
     {
-        $resol=DB::select('select * from coactiva.coactiva_documentos where id_doc='.$id_doc);
-        $view = \View::make('coactiva.reportes.rec_apertura',compact('resol'))->render();
+        $resol=DB::select('select * from coactiva.vw_documentos where id_doc='.$id_doc);
+        if($resol[0]->doc_ini==1)
+        {
+            $resol[0]->documento='Resolución de Determinación';
+            $ini=DB::select('select * from fiscalizacion.vw_resolucion_determinacion where id_rd='.$resol[0]->id_doc_ini);
+            $ini[0]->fec_reg=$this->getCreatedAtAttribute($ini[0]->fec_reg)->format('l d \d\e F \d\e\l Y ');
+            $resol[0]->nro_documento=$ini[0]->nro_rd."-".$ini[0].ani;
+        }
+        if($resol[0]->doc_ini==2)
+        {
+            $resol[0]->documento='Orden de Pago';
+            $ini=DB::select('select * from recaudacion.vw_genera_fisca where id_gen_fis='.$resol[0]->id_doc_ini );
+            $ini[0]->fec_reg=$this->getCreatedAtAttribute($ini[0]->fec_reg)->format('l d \d\e F \d\e\l Y ');
+            $resol[0]->nro_documento=$ini[0]->nro_fis."-".$ini[0]->anio;
+        }
+        
+        $view = \View::make('coactiva.reportes.rec_apertura',compact('resol','ini'))->render();
         $pdf = \App::make('dompdf.wrapper');            
         $pdf->loadHTML($view)->setPaper('a4');
         return $pdf->stream('Resolucion_inicio.pdf');

@@ -1,4 +1,20 @@
- 
+function validar_pago_cuenta()
+{
+    if($("#vw_emi_rec_imp_pre_contrib_hidden").val()==null||$("#vw_emi_rec_imp_pre_contrib_hidden").val()==0)
+    {
+        mostraralertasconfoco('Ingresar Contribuyente',"#vw_emi_rec_imp_pre_contrib");
+        $( "#check_pago_cuenta" ).prop( "checked", false );
+        return false;
+    }
+    if ($('#check_pago_cuenta').is(':checked'))
+    {
+        $("#vw_emision_rec_pago_imp_pred_total_trimestre").prop( "disabled", false );
+    }
+    else
+    {
+         $("#vw_emision_rec_pago_imp_pred_total_trimestre").prop( "disabled", true );
+    }
+}
 function dialog_emi_rec_pag_imp_predial() {
     $("#vw_emi_rec_imp_pred_t1").val("0");$("#vw_emi_rec_imp_pred_t2").val("0");$("#vw_emi_rec_imp_pred_t3").val("0");$("#vw_emi_rec_imp_pred_t4").val("0");
     $("#vw_emision_rec_pag_imp_predial").dialog({
@@ -117,7 +133,9 @@ function gen_rec_imp_pred(ss_checks){
                         t1:t1,
                         t2:t2,
                         t3:t3,
-                        t4:t4      
+                        t4:t4,
+                        acuenta:$('#check_pago_cuenta').is(':checked')?1:0,
+                        monto_acuenta:$("#vw_emision_rec_pago_imp_pred_total_trimestre").val().replace(',', '')
                     },
                     success: function (data) {
                         if (data) {
@@ -238,6 +256,8 @@ function limpiar_form_rec_imp_predial(){
     select_check=0;
     inter=0;
     fn_actualizar_grilla('table_cta_cte2','get_grid_cta_cte2?id_contrib=0&ano_cta=0');
+    $( "#check_pago_cuenta" ).prop( "checked", false );
+    $("#vw_emision_rec_pago_imp_pred_total_trimestre").prop( "disabled", true );
 }
 
 function marcar_todos_predial(valor,esto,id){
