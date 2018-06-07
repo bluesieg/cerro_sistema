@@ -1295,6 +1295,9 @@ class ReportesController extends Controller
             }
     }
     
+    
+    
+    
     public function reporte_cajas( Request $request)
     {
         
