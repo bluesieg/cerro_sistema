@@ -50,7 +50,7 @@ class Caja_MovimientosController extends Controller {
             $query = $val->save();
             if ($query) {              
                 $function = DB::select('select tesoreria.nro_recibos_cjas(' . $id_caja_mov . ',' . $id . ')');                
-                if($function){                    
+                if($val->pgo_acta==0){                    
                     if($val->clase_recibo==0)
                     {
                         $cuentas= DB::select("select * from adm_tri.cta_cte where id_rec_trim1=$id or id_rec_trim2=$id or id_rec_trim3=$id or id_rec_trim4=$id");
@@ -207,6 +207,12 @@ class Caja_MovimientosController extends Controller {
                         return $id.'fraccionamiento';
                     }
                     else return $id.'varios';                    
+                }
+                else
+                {
+                    $detalle = DB::select('select periodo from tesoreria.recibos_detalle where id_rec_master='.$id);                
+                    DB::select('select control_deuda.fn_pag_a_cta_sin_formatos(' . $val->id_contrib . ',' . $detalle[0]->periodo . ','.$val->total.' )');
+                    return $id;
                 }
             }
         }
