@@ -1294,4 +1294,51 @@ class ReportesController extends Controller
                 return 'No hay datos';
             }
     }
+    
+    public function reporte_cajas( Request $request)
+    {
+        
+        $fechainicio = $request['ini'];
+        $fechafin = $request['fin'];
+        $id_agencia = $request['id_agen'];
+        $institucion = DB::select('SELECT * FROM maysa.institucion');
+        $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
+        if($id_agencia == 0 ){
+            $sql = DB::table("tesoreria.vw_caja_mov")->select("descrip_caja",DB::raw('SUM(total) as total'))->whereBetween('fecha', [$fechainicio, $fechafin])->groupBy('descrip_caja')->orderBy('descrip_caja','asc')->get();
+            if($sql)
+            {
+                set_time_limit(0);
+                ini_set('memory_limit', '2G');
+                $view = \View::make('reportes_gonzalo.reportes.reporte_cajas0', compact('sql','institucion','agencia','usuario'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4');
+                return $pdf->stream("PRUEBA".".pdf");
+            }
+            else
+            {
+                return 'No hay datos';
+            }
+        
+        }
+        
+        else{
+            $sql = DB::select(" SELECT descrip_caja,fecha,sum(total) FROM tesoreria.vw_caja_mov where id_caja ='$id_agencia' and fecha between '$fechainicio' and '$fechafin' GROUP BY descrip_caja,  fecha" );
+            $sql1 = DB::select(" SELECT descrip_caja,sum(total)FROM tesoreria.vw_caja_mov where id_caja ='$id_agencia'  and fecha between '$fechainicio' and '$fechafin' GROUP BY descrip_caja " );
+
+            if($sql)
+            {
+                set_time_limit(0);
+                ini_set('memory_limit', '2G');
+                $view = \View::make('reportes_gonzalo.reportes.reporte_cajas', compact('sql','sql1'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4');
+                return $pdf->stream("PRUEBA".".pdf");
+            }
+            else
+            {
+                return 'No hay datos';
+            }
+       } 
+        
+    }
 }
