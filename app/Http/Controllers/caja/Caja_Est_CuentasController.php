@@ -196,8 +196,8 @@ class Caja_Est_CuentasController extends Controller
         $arb = DB::select('select * from arbitrios.vw_cta_arbi_x_trim where id_contrib='.$id_contrib.' and anio between '.$desde.' and '.$hasta);
         $imp=DB::select('select adm_tri.calcula_reajuste_ipm('.$id_contrib.','.$desde.')');
         $imp=DB::select('select adm_tri.calcula_reajuste_ipm('.$id_contrib.','.$hasta.')');
-        $tim=DB::select('select adm_tri.calcula_tim('.$id_contrib.','.$desde.')');
-        $tim=DB::select('select adm_tri.calcula_tim('.$id_contrib.','.$hasta.')');
+        //$tim=DB::select('select adm_tri.calcula_tim('.$id_contrib.','.$desde.')');
+        //$tim=DB::select('select adm_tri.calcula_tim('.$id_contrib.','.$hasta.')');
         $pred = DB::select('select * from adm_tri.vw_cta_cte2 where id_contrib='.$id_contrib.' and ano_cta between '.$desde.' and '.$hasta);
         $institucion = DB::select('SELECT * FROM maysa.institucion');
         $fecha = (date('d/m/Y H:i:s'));

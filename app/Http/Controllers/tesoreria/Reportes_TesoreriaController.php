@@ -47,24 +47,26 @@ class Reportes_TesoreriaController extends Controller
         $fechafin = $request['fin'];
         $institucion = DB::select('SELECT * FROM maysa.institucion');
         if($fechainicio != 0 && $fechafin != 0 && $caja == 0)
+        {
+            //$sql = DB::select("SELECT codigo_2,det_especifica,codigo_1,desc_espec_detalle,id_caj,descrip_caja,SUM(monto) as total  FROM presupuesto.vw_partida_presupuestal_3 where fecha between '$fechainicio' and '$fechafin' GROUP BY codigo_2,det_especifica,codigo_1,desc_espec_detalle,id_caj,descrip_caja order by codigo_2" );
+            $sql = DB::table("presupuesto.vw_partida_presupuestal_3")->select('codigo_2','det_especifica','codigo_1','desc_espec_detalle','id_caj','descrip_caja',DB::raw('SUM(monto) as total'))->whereBetween('fecha', [$fechainicio, $fechafin])->groupBy('codigo_2','det_especifica','codigo_1','desc_espec_detalle','id_caj','descrip_caja')->orderBy('codigo_2')->get();
+            if(count($sql)>0)
             {
-                $sql = DB::select("SELECT codigo_2,det_especifica,codigo_1,desc_espec_detalle,id_caj,descrip_caja,SUM(monto) as total  FROM presupuesto.vw_partida_presupuestal_3 where fecha between '$fechainicio' and '$fechafin' GROUP BY codigo_2,det_especifica,codigo_1,desc_espec_detalle,id_caj,descrip_caja order by codigo_2" );
-                if(count($sql)>0)
-                {
-                    $aux='0';
-                    $view =  \View::make('tesoreria.reportes.rep_por_partida', compact('sql','fechainicio','fechafin','aux','caja','institucion'))->render();
-                    $pdf = \App::make('dompdf.wrapper');
-                    $pdf->loadHTML($view)->setPaper('a4');
-                    return $pdf->stream("PRUEBA".".pdf");
-                }
-                else
-                {
-                    return 'NO HAY RESULTADOS';
-                }
+                $aux='0';
+                $view =  \View::make('tesoreria.reportes.rep_por_partida', compact('sql','fechainicio','fechafin','aux','caja','institucion'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4');
+                return $pdf->stream("PRUEBA".".pdf");
             }
+            else
+            {
+                return 'NO HAY RESULTADOS';
+            }
+        }
         else
         {
-            $sql = DB::select("SELECT codigo_2,det_especifica,codigo_1,desc_espec_detalle,id_caj,descrip_caja,SUM(monto) as total  FROM presupuesto.vw_partida_presupuestal_3 where id_caj='$caja' and fecha between '$fechainicio' and '$fechafin' GROUP BY codigo_2,det_especifica,codigo_1,desc_espec_detalle,id_caj,descrip_caja order by codigo_2" );
+            //$sql = DB::select("SELECT codigo_2,det_especifica,codigo_1,desc_espec_detalle,id_caj,descrip_caja,SUM(monto) as total  FROM presupuesto.vw_partida_presupuestal_3 where id_caj='$caja' and fecha between '$fechainicio' and '$fechafin' GROUP BY codigo_2,det_especifica,codigo_1,desc_espec_detalle,id_caj,descrip_caja order by codigo_2" );
+            $sql = DB::table("presupuesto.vw_partida_presupuestal_3")->select('codigo_2','det_especifica','codigo_1','desc_espec_detalle','id_caj','descrip_caja',DB::raw('SUM(monto) as total'))->whereBetween('fecha', [$fechainicio, $fechafin])->groupBy('codigo_2','det_especifica','codigo_1','desc_espec_detalle','id_caj','descrip_caja')->orderBy('codigo_2')->get();
             if(count($sql)>0)
             {
                 $aux='0';

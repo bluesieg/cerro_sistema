@@ -50,7 +50,7 @@
     </div>
     <input type="hidden" value=" {{$num= 1}}">
 
-    <div class="lado3" style="height: 435px; border-bottom: 1px solid #333">
+    <div class="lado3" style="height: 435px; border-bottom: 0px solid #333">
 
         <br>
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px; font-size: 1.3em;">
@@ -84,6 +84,9 @@
             </tr>
             </tbody>
         </table>
+        
+        
+        <div class="sub2" style="text-align: right; padding-right: 90px;"><b>TOTAL:&nbsp;&nbsp;&nbsp; </b>{{ number_format($sql->sum('total'),2,'.',',')  }}</div>
     </div>
   
 </body>
