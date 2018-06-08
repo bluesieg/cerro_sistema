@@ -194,20 +194,17 @@ class Caja_Est_CuentasController extends Controller
         }
         $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
         $arb = DB::select('select * from arbitrios.vw_cta_arbi_x_trim where id_contrib='.$id_contrib.' and anio between '.$desde.' and '.$hasta);
-        $imp=DB::select('select adm_tri.calcula_reajuste_ipm('.$id_contrib.','.$desde.')');
-        $imp=DB::select('select adm_tri.calcula_reajuste_ipm('.$id_contrib.','.$hasta.')');
-        //$tim=DB::select('select adm_tri.calcula_tim('.$id_contrib.','.$desde.')');
-        //$tim=DB::select('select adm_tri.calcula_tim('.$id_contrib.','.$hasta.')');
+//          $imp=DB::select('select adm_tri.calcula_reajuste_ipm('.$id_contrib.','.$desde.')');
+//          $imp=DB::select('select adm_tri.calcula_reajuste_ipm('.$id_contrib.','.$hasta.')');
+//          $tim=DB::select('select adm_tri.calcula_tim('.$id_contrib.','.$desde.')');
+//          $tim=DB::select('select adm_tri.calcula_tim('.$id_contrib.','.$hasta.')');
         $pred = DB::select('select * from adm_tri.vw_cta_cte2 where id_contrib='.$id_contrib.' and ano_cta between '.$desde.' and '.$hasta);
         $institucion = DB::select('SELECT * FROM maysa.institucion');
         $fecha = (date('d/m/Y H:i:s'));
         $view = \View::make('caja.reportes.est_cta_contrib',compact('contrib','contrib1','fecha','pred','desde','hasta','convenio','fracc','foto','usuario','foto_estado','hora','institucion'))->render();
         
 //        $sql=DB::select("select * from adm_tri.cta_cte where id_pers=".$id_contrib."and ano_cta='".$hasta."'");
-//        
 //        $view = \View::make('caja.reportes.est_cta_contrib',compact('contrib','fecha_larga','hasta'))->render();
-        
-        
         
         $pdf = \App::make('dompdf.wrapper');            
         $pdf->loadHTML($view)->setPaper('a5','landscape');

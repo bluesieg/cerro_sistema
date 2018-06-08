@@ -61,7 +61,7 @@ class ControlDeudasController extends Controller
         $anio =  $request['anio'];
         $id_contrib =  $request['id_contrib'];
         
-        $calcula_tim = DB::select('select adm_tri.calcula_tim('.$id_contrib.','.$anio.')');
+        //$calcula_tim = DB::select('select adm_tri.calcula_tim('.$id_contrib.','.$anio.')');
         
         $totalg = DB::select("select count(*) as total from control_deuda.vw_deuda_01 where id_contrib = '$id_contrib' and ano_cta = '$anio' ");
         $page = $_GET['page'];
