@@ -298,12 +298,14 @@ function dlg_new_persona(nro_doc){
     if(tipo=='02'){
         get_datos_dni();
         $("#pers_pat,#pers_mat,#pers_nombres").removeAttr('disabled');
-        $("#pers_raz_soc").removeAttr('disabled');        
+        $("#pers_raz_soc").removeAttr('disabled');
+        $("#entidad_reciproca").attr('disabled',true);
         $("#pers_raz_soc").attr('disabled',true);
         $("#pers_nro_doc").removeAttr('maxlength');
         $("#pers_nro_doc").attr('maxlength',8);        
     }else if (tipo=='00'){        
         get_datos_ruc();
+        $("#entidad_reciproca").removeAttr('disabled');
         $("#pers_raz_soc").removeAttr('disabled');
         $("#pers_raz_soc").val('');
         $("#pers_pat,#pers_mat,#pers_nombres").attr('disabled',true);
@@ -337,6 +339,7 @@ function new_persona(){
             mostraralertasconfoco('Ingrese al menos un apellido', '#pers_pat');
             return false;
         }
+        
     }
     $.ajax({  
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
@@ -351,7 +354,8 @@ function new_persona(){
             pers_nro_doc : $("#pers_nro_doc").val() || '-',
             pers_sexo : $("#pers_sexo").val() || '-',
             pers_fnac : $("#pers_fnac").val() || '1900-01-01',
-            pers_foto:$("#pers_foto").attr("src")
+            pers_foto:$("#pers_foto").attr("src"),
+            entidad_reciproca:$("#entidad_reciproca").is(':checked')?1:0
         },
         success: function (data) {
             if(data){
@@ -482,8 +486,10 @@ function filtro_tipo_doc_pers(tipo) {
         $("#pers_nro_doc").attr('maxlength',8);
         $("#pers_nro_doc").val('');
         $("#pers_raz_soc").val('');
+        $("#entidad_reciproca").attr('disabled',true);
     }else if(tipo=='00'){
         $("#pers_raz_soc").removeAttr('disabled');
+        $("#entidad_reciproca").removeAttr('disabled');
         $("#pers_pat,#pers_mat,#pers_nombres").attr('disabled',true);
         
         $("#pers_nro_doc").removeAttr('maxlength');

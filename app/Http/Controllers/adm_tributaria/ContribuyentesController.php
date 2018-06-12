@@ -226,6 +226,7 @@ class ContribuyentesController extends Controller
         //$data->pers_foto = base64_encode($img_file);
         $data->fec_reg=date("d/m/Y");
         $data->pers_foto = $image;
+        $data->entidad_reciproca = $request['entidad_reciproca'];
         $data->save();        
         return $data->id_pers;
     }

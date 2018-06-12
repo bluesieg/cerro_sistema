@@ -55,8 +55,8 @@
                     <tr>
                         <th align="center" width="5%">N°</th>
                         <th align="center" width="10%">Nro Recibo</th>
+                        <th align="center" width="20%">Persona</th>
                         <th align="center" width="50%">Descripción / Glosa</th>
-                        <th align="center" width="10%">Hora Pago</th>
                         <th align="center" width="10%">Total S/.</th>
                     </tr>                                        
                 </thead>
@@ -65,8 +65,8 @@
                     <tr>                        
                         <td style="text-align: center">{{ $master->nro }}</td>
                         <td style="text-align: center">{{ $master->nro_recibo }}</td>
+                        <td style="text-align: center">{{ $master->persona }}</td>
                         <td style="text-align: left">{{ $master->glosa }}</td>
-                        <td style="text-align: center">{{ $master->hora_pago }}</td>
                         <td style="text-align: right">{{ number_format($master->total,2,'.',',') }}</td>                        
                     </tr>
                     @endforeach
