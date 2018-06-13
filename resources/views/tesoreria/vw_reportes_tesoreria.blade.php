@@ -43,6 +43,18 @@
           
                          
                         </tr>
+                         <tr>
+                            <td class="text-center" style="width: 80px;"><i class="fa fa-file-o fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_teso_reportes(3);" >
+                                       Reporte de Operaciones Reciprocas
+                                    </a>
+                                    <small>Descripción reporte: Lista de todos los Ingresos de Entidades Públicas</small>
+                                </h4>
+                            </td>
+          
+                         
+                        </tr>
                         
                                                                       
                         <!-- end TR -->
@@ -200,6 +212,36 @@
     </div>
 </div>
 
+<div id="dialog_ope_reciprocas" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                <div class="row" style="padding: 10px 30px;">
+                    
+                   
+                    <div class="col-xs-12" style="padding: 0px; margin-top: 10px;">
+                        <div class="input-group input-group-md" style="width: 100%">
+                            <span class="input-group-addon" style="width: 165px">Fecha inicio &nbsp;<i class="fa fa-calendar"></i></span>
+                            <div>
+                            <input id="fec_ini_ope_reci" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('01/m/Y')}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12" style="padding: 0px; margin-top: 10px; ">
+                        <div class="input-group input-group-md" style="width: 100%">
+                            <span class="input-group-addon" style="width: 165px">Fecha fin &nbsp;<i class="fa fa-calendar"></i></span>
+                            <div>
+                            <input id="fec_fin_ope_reci" name="dlg_fec" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
 
 @endsection
 

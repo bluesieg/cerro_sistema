@@ -15,8 +15,9 @@ function dlg_teso_reportes(tipo)
     }
     if(tipo == 3)
     {
-        crear_dialogo_por_zonas()
+        crear_dialogo_rep_ope_reciprocas();
     }
+    
             
 }
 function crear_dialogo_por_partida()
@@ -39,26 +40,35 @@ function crear_dialogo_por_partida()
 var aux1=0;
 function crear_dialogo_por_tributo()
 {
-    $("#dialog_por_tributo").dialog({
+    $("#dialog_ope_reciprocas").dialog({
         autoOpen: false, modal: true, width: 850, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header'><h4>.:Ingresos /tributo:</h4></div>",
         buttons: [{
             html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
             "class": "btn btn-success bg-color-green",
-            click: function () { abrir_reporte(2); }
+            click: function () { abrir_reporte(3); }
         }, {
             html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
             "class": "btn btn-danger",
             click: function () { $(this).dialog("close"); }
         }]
     }).dialog('open');
-    if(aux1==0)
-    {
-        autocompletar_tributo('tributo');
-        aux1=1;
-    }
-    
-    
+}
+function crear_dialogo_rep_ope_reciprocas()
+{
+    $("#dialog_ope_reciprocas").dialog({
+        autoOpen: false, modal: true, width: 450, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.:Ingresos /Operaciones Reciprocas:</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_reporte(3); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
 }
 
 function selecciona_anio(){
@@ -121,11 +131,11 @@ function abrir_reporte(tipo)
     if(tipo==3)
     {
      
-       window.open('ver_rep_tesoreria/3?ini='+$("#fec_ini").val()+'&fin='+$("#fec_fin_tributo").val()+'&id_tributo='+$('#hiddentributo').val());
+       window.open('ver_rep_tesoreria/3?ini='+$("#fec_ini_ope_reci").val()+'&fin='+$("#fec_fin_ope_reci").val());
        return false;
     }
    
-   
+  
     
 }
 
