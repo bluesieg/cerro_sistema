@@ -38,8 +38,8 @@
         <thead>
           <tr>
               <th style="width: 5%">N°</th>
-              <th style="width: 30%">RUC</th>
-              <th style="width: 65%">Entidad</th>
+              <th style="width: 10%">RUC</th>
+              <th style="width: 75%">Entidad</th>
               
           </tr>
         </thead>
@@ -49,7 +49,7 @@
           <tr>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$num++}}</td>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$rep->pers_nro_doc}}</td>
-              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$rep->pers_raz_soc}}</td>
+              <td style="text-align: left;font-size: 0.7em; padding: 0px;">{{strtoupper($rep->pers_raz_soc)}}</td>
           </tr>
           @endforeach
           
