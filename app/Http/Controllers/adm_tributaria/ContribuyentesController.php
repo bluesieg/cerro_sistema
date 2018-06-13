@@ -216,7 +216,7 @@ class ContribuyentesController extends Controller
         $data->pers_ape_pat = $request['pers_ape_pat'];
         $data->pers_ape_mat = $request['pers_ape_mat'];
         $data->pers_nombres = $request['pers_nombres'];
-        $data->pers_raz_soc = $request['pers_raz_soc'];
+        $data->pers_raz_soc = strtoupper($request['pers_raz_soc']);
         $data->pers_tip_doc = $request['pers_tip_doc'];
         $data->pers_nro_doc = $request['pers_nro_doc'];
         $data->pers_sexo = $request['pers_sexo'];

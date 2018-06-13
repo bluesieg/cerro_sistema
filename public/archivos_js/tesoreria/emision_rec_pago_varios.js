@@ -364,13 +364,15 @@ function dlg_new_persona(nro_doc){
     if(tipo=='02'){
         get_datos_dni();
         $("#pers_pat,#pers_mat,#pers_nombres").removeAttr('disabled');
-        $("#pers_raz_soc").removeAttr('disabled');        
+        $("#pers_raz_soc").removeAttr('disabled'); 
+        $("#entidad_reciproca").attr('disabled',true);
         $("#pers_raz_soc").attr('disabled',true);
         $("#pers_nro_doc").removeAttr('maxlength');
         $("#pers_nro_doc").attr('maxlength',8);        
     }else if (tipo=='00'){
         get_datos_ruc();
         $("#pers_raz_soc").removeAttr('disabled');
+        $("#entidad_reciproca").removeAttr('disabled');
         $("#pers_raz_soc").val('');
         $("#pers_pat,#pers_mat,#pers_nombres").attr('disabled',true);
         $("#pers_nro_doc").removeAttr('maxlength');
@@ -402,7 +404,8 @@ function new_persona(){
             pers_tip_doc : $("#cb_tip_doc_3").val() || '-',
             pers_nro_doc : $("#pers_nro_doc").val() || '-',
             pers_sexo : $("#pers_sexo").val() || '-',
-            pers_fnac : $("#pers_fnac").val() || '1900-01-01'
+            pers_fnac : $("#pers_fnac").val() || '1900-01-01',
+            entidad_reciproca:$("#entidad_reciproca").is(':checked')?1:0
         },
         success: function (data) {
             consultar_persona();

@@ -17,7 +17,11 @@ function dlg_teso_reportes(tipo)
     {
         crear_dialogo_rep_ope_reciprocas();
     }
-    
+    if(tipo == 4)
+    {
+       window.open('ver_rep_tesoreria/4');
+       return false;
+    }
             
 }
 function crear_dialogo_por_partida()

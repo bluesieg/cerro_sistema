@@ -21,7 +21,7 @@
            Nombre&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp; {{$recibo[0]->contribuyente}}
         </div>
         <div style="position: absolute;margin-top: 100px;margin-left: 80px; font-size: 12px;">
-           Dirección&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp; {{$recibo[0]->direccion}}
+           Dirección&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp; {{$recibo[0]->dom_fis}} - {{$recibo[0]->direccion}}
         </div>
         <div style="position: absolute;margin-top: 115px;margin-left: 80px; font-size: 12px;">
            Cajero(a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp; {{$recibo[0]->usuario}}

@@ -712,12 +712,18 @@
                                     </label>                                                                     
                                 </section> 
                             </div>                            
-                            <section>
-                                <label class="label">Razon Social:</label>
-                                <label class="input">
-                                    <input id="pers_raz_soc" type="text" class="input-sm text-uppercase">
-                                </label>                                                 
-                            </section>
+                            <div class="row">                            
+                                <section class="col col-9" style="padding-left:12px;">
+                                    <label class="label">Razon Social:</label>
+                                    <label class="input">
+                                        <input id="pers_raz_soc" name="pers_raz_soc" type="text" class="input-sm text-uppercase">
+                                    </label>
+                                </section>
+                                <section class="col col-3" style="padding-left:5px;">
+                                <label class="label">Entidad Reciproca:</label>
+                                <label><input type="checkbox" name="entidad_reciproca" id="entidad_reciproca" style="width:22px;height:22px" disabled=""></label>
+                                </section>
+                            </div>
                             <div class="row">
                                 <section class="col col-6" style="padding-right:5px;">
                                     <label class="label">Sexo:</label>                                   

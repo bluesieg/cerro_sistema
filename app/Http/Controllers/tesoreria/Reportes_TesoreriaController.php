@@ -41,6 +41,10 @@ class Reportes_TesoreriaController extends Controller
         {
             return $this->rep_ope_reciprocas($request);
         }
+        if($tip=='4')
+        {
+            return $this->rep_entidades_estado($request);
+        }
        
     }
     
@@ -112,12 +116,12 @@ class Reportes_TesoreriaController extends Controller
         }
         
     }
-     public function rep_ope_reciprocas(Request $request)
+    public function rep_ope_reciprocas(Request $request)
     {
         $fechainicio = $request['ini'];
         $fechafin = $request['fin'];
         $institucion = DB::select('SELECT * FROM maysa.institucion');
-        $sql = DB::table("tesoreria.vw_ingresos_entid_recipr")->select('codigo_1','ruc','entidad','monto')->whereBetween('fecha', [$fechainicio, $fechafin])->orderBy('fecha')->get();
+        $sql = DB::table("tesoreria.vw_ingresos_entid_recipr")->select('codigo_1','ruc','entidad','monto')->whereBetween('fecha', [$fechainicio, $fechafin])->orderBy('id_rec_mtr')->orderBy('fecha')->get();
         
         if(count($sql)>0)
         {
@@ -125,6 +129,25 @@ class Reportes_TesoreriaController extends Controller
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("PRUEBA".".pdf");
+        }
+        else
+        {
+            return 'NO HAY RESULTADOS';
+        }
+        
+    }
+    
+    public function rep_entidades_estado(Request $request)
+    {
+        $institucion = DB::select('SELECT * FROM maysa.institucion');
+        $sql = DB::table("adm_tri.personas")->where('entidad_reciproca',1)->orderBy('id_pers')->get();
+        
+        if(count($sql)>0)
+        {
+            $view =  \View::make('tesoreria.reportes.rep_entidades_reciprocas', compact('sql','institucion'))->render();
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($view)->setPaper('a4');
+            return $pdf->stream("Entidades Reciprocas".".pdf");
         }
         else
         {

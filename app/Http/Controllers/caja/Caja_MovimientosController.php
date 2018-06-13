@@ -360,7 +360,7 @@ class Caja_MovimientosController extends Controller {
 
     function reportes_caja_mov(Request $request) {
         $id_rec = $request['id_rec'];
-        $recibo = DB::table('tesoreria.vw_caja_pago_recib')->where('id_rec_mtr', $id_rec)->get();
+        $recibo = DB::table('tesoreria.vw_caja_pago_recib2')->where('id_rec_mtr', $id_rec)->get();
         
         if($recibo[0]->clase_recibo=='0'|| $recibo[0]->clase_recibo=='3'){
             $contrib = DB::table('adm_tri.vw_contribuyentes')->select('contribuyente')->where('id_contrib',$recibo[0]->id_contrib)->first();
@@ -373,8 +373,7 @@ class Caja_MovimientosController extends Controller {
             $detalle = DB::table('tesoreria.vw_recibo_detalle_impresion')->where('id_rec_master',$id_rec)->get();
         }
         if($recibo[0]->clase_recibo=='1'){
-            $contrib = DB::table('adm_tri.personas')->where('id_pers',$recibo[0]->id_contrib)->first();
-            $recibo[0]->contribuyente = $contrib->pers_ape_pat.' '.$contrib->pers_ape_mat.' '.$contrib->pers_nombres;
+            $recibo[0]->contribuyente;
         }
 //        dd($recibo);
 //        echo $id_rec;

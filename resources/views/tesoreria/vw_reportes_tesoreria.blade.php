@@ -47,9 +47,21 @@
                             <td class="text-center" style="width: 80px;"><i class="fa fa-file-o fa-2x text-muted"></i></td>
                             <td>
                                 <h4><a href="#" onclick="dlg_teso_reportes(3);" >
-                                       Reporte de Operaciones Reciprocas
+                                       Reporte de Ingresos de Operaciones Reciprocas
                                     </a>
                                     <small>Descripción reporte: Lista de todos los Ingresos de Entidades Públicas</small>
+                                </h4>
+                            </td>
+          
+                         
+                        </tr>
+                        <tr>
+                            <td class="text-center" style="width: 80px;"><i class="fa fa-file-o fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_teso_reportes(4);" >
+                                       Reporte de Entidades Reciprocas
+                                    </a>
+                                    <small>Descripción reporte: Lista de todas las Entidades Públicas</small>
                                 </h4>
                             </td>
           
