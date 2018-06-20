@@ -324,7 +324,7 @@ class ReportesController extends Controller
             ini_set('memory_limit', '2G');
             $view =  \View::make('coactiva.reportes.reporte_ingresos_pdf', compact('sql','fechainicio','fechafin','institucion'))->render();
             $pdf = \App::make('dompdf.wrapper');
-            $pdf->loadHTML($view)->setPaper('a4','landscape');
+            $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("REPORTE-INGRESOS-COACTIVO".".pdf");
         }
         else

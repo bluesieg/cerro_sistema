@@ -559,7 +559,7 @@ class Recibos_MasterController extends Controller
         $check=explode("and",$request['check']);
         $id_contrib=$request['id_contrib'];
         $anio=$request['anio'];
-        $idmaster=$this->create_rec_arb($request['total'],$id_contrib,$anio,1,0);
+        $idmaster=$this->create_rec_arb($request['total'],$id_contrib,$anio,1,0,2);
         $trib_barrido=DB::table('presupuesto.vw_barrido')->select('id_tributo')->where('anio',$anio)->first();
         $trib_recojo=DB::table('presupuesto.vw_limpieza')->select('id_tributo')->where('anio',$anio)->first();
         $trib_seguridad=DB::table('presupuesto.vw_serenazgo')->select('id_tributo')->where('anio',$anio)->first();
@@ -611,7 +611,7 @@ class Recibos_MasterController extends Controller
         $check=explode("and",$request['check']);
         $id_contrib=$request['id_contrib'];
         $anio=$request['anio'];
-        $idmaster=$this->create_rec_arb($request['total'],$id_contrib,$anio,2,1);
+        $idmaster=$this->create_rec_arb($request['total'],$id_contrib,$anio,2,1,4);
         
         foreach($check as $coactivo)
         {
@@ -620,7 +620,7 @@ class Recibos_MasterController extends Controller
         }
         return $idmaster;
     }
-    public function create_rec_arb($total,$id_contrib,$anio,$tip,$pgo_coactivo)
+    public function create_rec_arb($total,$id_contrib,$anio,$tip,$pgo_coactivo,$clase)
     {
         date_default_timezone_set('America/Lima');
         $data = new Recibos_Master();
@@ -647,7 +647,7 @@ class Recibos_MasterController extends Controller
         $data->id_tribut_master=0;
         $data->cod_fracc  = 0 ;
         $data->n_cuot     = 0;
-        $data->clase_recibo=2;
+        $data->clase_recibo=$clase;
         $data->save();        
         return $data->id_rec_mtr;
     }
@@ -661,6 +661,25 @@ class Recibos_MasterController extends Controller
         $rec_det->monto=$total;
         $rec_det->cant=1;
         $rec_det->p_unit=$total;
+        if($id_aper>0)
+        {
+            $periodo_real= DB::select("select doc_ini,id_doc_ini from coactiva.vw_apersonamiento_reporte where id_aper=".$id_aper);
+            if($periodo_real[0]->doc_ini==2)
+            {
+                $op=DB::select("select anio from recaudacion.orden_pago_master where id_gen_fis=".$periodo_real[0]->id_doc_ini);
+                $rec_det->periodo=$op[0]->anio;
+            }
+            if($periodo_real[0]->doc_ini==1)
+            {
+                $rp=DB::select("select anio from fiscalizacion.resolucion_determinacion where id_rd=".$periodo_real[0]->id_doc_ini);
+                $rec_det->periodo=$rp[0]->anio;
+            }
+            
+        }
+        else
+        {
+            $rec_det->periodo=$anio;
+        }
         $rec_det->id_aper=$id_aper;
         $rec_det->save();
         return $rec_det->id_rec_det;

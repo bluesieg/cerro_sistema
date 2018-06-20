@@ -32,8 +32,8 @@
     </table>
 
     <center><div Class="asunto" style="margin-top: 10px;"><b>Reporte de Ingresos Coactivo</b></div></center>
-    <div class="subasunto" style="text-align: center; padding-left: 30px; margin-top: 20px;">
-        <table>
+    <div class="lado3" >
+        <table style="width: 500px; font-size: 1.3em; margin-top: 10px">
             <thead>
                 <tr> 
                     <th colspan="1" style="text-align: center; width: 10%;">FECHA INICIO</th>
@@ -51,19 +51,19 @@
    
     <input type="hidden" value=" {{$num= 1}}">
 
-    <div class="lado3" style="height: 435px; border-bottom: 1px solid #333">
+    <div class="lado3" >
 
-        <br>
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px; font-size: 1.3em;">
             <thead>
             <tr >
-                <th style="width: 5%; text-align: center;">Nº</th>
-                <th style="width: 35%; text-align: center;">CONTRIBUYENTE</th>
-                <th style="width: 7%; text-align: center;">DNI</th>
-                <th style="width: 5%; text-align: center;">N°APERSONAMIENTO</th>
-                <th style="width: 5%; text-align: center;">AÑO</th>
-                <th style="width: 7%; text-align: center;">FECHA PAGO</th>
-                <th style="width: 25%; text-align: center;">MONTO</th>
+                <th style="width: 3%; text-align: center;">Nº</th>
+                <th style="width: 40%; text-align: center;">CONTRIBUYENTE</th>
+                <th style="width: 12%; text-align: center;">DOCUMETO</th>
+                <th style="width: 10%; text-align: center;">N°<BR>APERSO-<br>NAMIENTO</th>
+                <th style="width: 7%; text-align: center;">N°<BR>CUOTA</th>
+                <th style="width: 6%; text-align: center;">AÑO</th>
+                <th style="width: 10%; text-align: center;">FECHA PAGO</th>
+                <th style="width: 12%; text-align: center;">MONTO</th>
             </tr>
             </thead>
             <tbody>
@@ -71,16 +71,17 @@
             @foreach ($sql as $cont)
                 <tr>
                     <td style="text-align: center;">{{ $num++ }}</td>
-                    <td style="text-align: center;">{{ $cont->contribuyente }}</td>
+                    <td style="text-align: left;">{{ $cont->contribuyente }}</td>
                     <td style="text-align: center;">{{$cont->pers_nro_doc}}</td>
                     <td style="text-align: center;">{{ $cont->nro_resol }}</td>
+                    <td style="text-align: center;">{{ $cont->nro_cuo }}</td>
                     <td style="text-align: center;">{{ $cont->anio }}</td>
                     <td style="text-align: center;">{{ $cont->fecha }}</td>
                     <td style="text-align: right; padding-right: 5px">{{ number_format($cont->monto,2,".",",")}}</td>
                 </tr>
             @endforeach
             <tr>
-                 <td colspan="6" style="text-align: right; padding-right: 5px">TOTAL:</td>
+                 <td colspan="7" style="text-align: right; padding-right: 5px">TOTAL:</td>
                  <td style="text-align: right; padding-right: 5px">{{ number_format($sql->sum('monto'),2,".",",") }}</td>
              </tr>
              

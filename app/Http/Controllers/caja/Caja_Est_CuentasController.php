@@ -202,10 +202,8 @@ class Caja_Est_CuentasController extends Controller
         $institucion = DB::select('SELECT * FROM maysa.institucion');
         $fecha = (date('d/m/Y H:i:s'));
         $view = \View::make('caja.reportes.est_cta_contrib',compact('contrib','contrib1','fecha','pred','desde','hasta','convenio','fracc','foto','usuario','foto_estado','hora','institucion'))->render();
-        
 //        $sql=DB::select("select * from adm_tri.cta_cte where id_pers=".$id_contrib."and ano_cta='".$hasta."'");
 //        $view = \View::make('caja.reportes.est_cta_contrib',compact('contrib','fecha_larga','hasta'))->render();
-        
         $pdf = \App::make('dompdf.wrapper');            
         $pdf->loadHTML($view)->setPaper('a5','landscape');
         return $pdf->stream();

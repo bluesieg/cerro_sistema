@@ -383,7 +383,7 @@ Route::group(['middleware' => 'auth'], function() {
     });
     Route::group(['namespace' => 'recaudacion'], function() {
         Route::resource('ordenpago', 'OrdenPagoController');
-        Route::get('fis_rep/{tip}/{id}/{sec}/{man}','OrdenPagoController@reporte');
+        Route::get('fis_rep/{tip}/{id}/{sec}/{man}/{contrib}','OrdenPagoController@reporte');
         Route::get('obtiene_op/{dat}/{sec}/{manz}/{an}/{ini}/{fin}', 'OrdenPagoController@getOP'); //
         Route::get('obtiene_con_sec', 'OrdenPagoController@getcontrbsec'); //
         Route::get('notifica_op', 'OrdenPagoController@notifica_op_index'); //

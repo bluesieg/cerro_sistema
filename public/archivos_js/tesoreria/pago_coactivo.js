@@ -37,7 +37,7 @@ function grid_apersonamiento(){
         datatype: 'json', mtype: 'GET',
         height: 200, autowidth: true,
         colNames: ['Cuota', 'N° Resolución','Contribuyente / Razon Social', 'Fecha Pago', 'Monto', 'estado'],
-        rowNum: 5, sortname: 'id_aper', sortorder: 'asc', viewrecords: true,caption:'Lista de Cuotas Coactiva', align: "center",
+        rowNum: 50, sortname: 'id_aper', sortorder: 'asc', viewrecords: true,caption:'Lista de Cuotas Coactiva', align: "center",
         colModel: [
             {name: 'nro_cuo', index: 'nro_cuo', width: 10},
             {name: 'nro_resol', index: 'nro_resol',align:'center', width: 40},
@@ -47,7 +47,7 @@ function grid_apersonamiento(){
             {name: 'estado', index: 'estado',align:'center', width: 20}
         ],
         pager: '#pager_table_apersonamiento',
-        rowList: [10, 20],
+        rowList: [50, 100],
         gridComplete: function () {
             var rows = $("#table_apersonamiento").getDataIDs();
             if (rows.length > 0) {

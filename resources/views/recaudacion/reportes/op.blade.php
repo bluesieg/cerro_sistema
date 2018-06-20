@@ -5,7 +5,7 @@
     <title>Example 2</title>
         <link href="{{ asset('css/pdf.css') }}" rel="stylesheet">
         <style>
-            @page { margin-bottom: 10px !important; margin-left: 80px;margin-right: 80px;};
+            @page { margin-bottom: 20px !important; margin-left: 80px;margin-right: 80px;};
         </style>
   </head>
   <body>
@@ -78,9 +78,9 @@
             <thead>
               <tr>
                   <th style="width: 10%">Cod. Catastral</th>
-                  <th style="width: 65%">Ubicación del predio</th>
+                  <th style="width: 45%">Ubicación del predio</th>
                   <th style="width: 4%">N°</th>
-                  <th style="width: 10%">Referencia</th>
+                  <th style="width: 30%">Referencia</th>
                   <th style="width: 6%">Manzana</th>
                   <th style="width: 5%">Lote</th>
               </tr>
