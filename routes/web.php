@@ -156,6 +156,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('get_datos_usuario','Usuarios@get_datos_usuario');
     Route::post('cambiar_foto_user','Usuarios@cambiar_foto_usuario');
     Route::post('cambiar_pass_user','Usuarios@cambiar_pass_user');
+    Route::get('get_usuarios/{estado}','Usuarios@reporte_usuarios');
 
     /*     * **************************AUTOLLENADO DE COMBOS********************************************************************* */
     Route::get('get_all_tipo_documento', 'General@get_tipo_doc'); //llena combo tipo documento

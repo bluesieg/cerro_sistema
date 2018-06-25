@@ -519,22 +519,3 @@ function eliminar_usuario() {
 }
 
 
-function imprimir_usuario(num_rep){
-    $("#dialog_usuarios_imprimir").dialog({
-        autoOpen: false, modal: true, width: 350, show: {effect: "fade", duration: 300}, resizable: false,
-        title: "<div class='widget-header'><h4>&nbsp&nbsp.: REPORTE DE USUARIOS :.</h4></div>",
-        buttons: [{
-            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
-            "class": "btn btn-success bg-color-green",
-            click: function () { mostrar_usuarios(num_rep); }
-        }, {
-            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
-            "class": "btn btn-danger",
-            click: function () { $(this).dialog("close"); }
-        }]
-    }).dialog('open');
-}
-
-function mostrar_usuarios(){
-    window.open('get_usuarios/'+ $('#select_usuarios').val());
-}

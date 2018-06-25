@@ -36,7 +36,12 @@
           Emitido&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;&nbsp;  {{$fecha_larga}}
         </div>
         <div style="position: absolute;margin-top: 160px;margin-left: 80px; font-size: 12px;">
-          Glosa&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;&nbsp;  {{$recibo[0]->glosa}}
+         @if (strlen(trim($recibo[0]->glosa)) > 77)
+            Glosa&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;&nbsp;  {{ substr($recibo[0]->glosa,0,78) }}
+          @else
+            Glosa&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;&nbsp;  {{ $recibo[0]->glosa }}
+          @endif   
+            
         </div>
         
         <div style="width: 700px;position: absolute;margin-top: 181px;margin-left: 50px; font-size: 10px;">
