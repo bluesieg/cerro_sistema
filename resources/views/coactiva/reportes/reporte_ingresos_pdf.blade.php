@@ -9,7 +9,10 @@
         .pagenum:after { content:' ' counter(page); }
     </style>
 </head>
+    <footer class="footer" style="font-size:0.8em; text-align: left; padding-top: 5px; padding-left: 10px;"><b>Impreso Por:&nbsp; </b>{{$usuario}}</footer>
+
 <body>
+    <div class="datehead " style="font-size:0.7em; text-align: center">Impreso<br>{{ date('d/m/Y') }}<br>{{ date('h:i:s A') }}</div>
 <main>
 
     <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 5px;">

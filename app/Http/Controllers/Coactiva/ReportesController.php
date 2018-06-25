@@ -318,11 +318,12 @@ class ReportesController extends Controller
         $sql=DB::table('coactiva.vw_reporte_ingresos')->whereBetween('fecha', [$fechainicio, $fechafin])->orderBy('fecha','desc')->orderBy('id_aper','desc')->get();
         
          $institucion = DB::select('SELECT * FROM maysa.institucion');
+         $usuario= Auth::user()->usuario;
         if(count($sql)>0)
         {
             set_time_limit(0);
             ini_set('memory_limit', '2G');
-            $view =  \View::make('coactiva.reportes.reporte_ingresos_pdf', compact('sql','fechainicio','fechafin','institucion'))->render();
+            $view =  \View::make('coactiva.reportes.reporte_ingresos_pdf', compact('sql','fechainicio','fechafin','institucion','usuario'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("REPORTE-INGRESOS-COACTIVO".".pdf");

@@ -526,16 +526,15 @@ function imprimir_usuario(num_rep){
         buttons: [{
             html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
             "class": "btn btn-success bg-color-green",
-            click: function () { abrir_rep(num_rep); }
+            click: function () { mostrar_usuarios(num_rep); }
         }, {
             html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
             "class": "btn btn-danger",
             click: function () { $(this).dialog("close"); }
         }]
     }).dialog('open');
-
 }
 
-function abrir_rep(){
+function mostrar_usuarios(){
     window.open('get_usuarios/'+ $('#select_usuarios').val());
 }

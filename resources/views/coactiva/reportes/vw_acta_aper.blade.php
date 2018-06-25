@@ -31,18 +31,18 @@
             </center> 
         </div>
         
-        <div style="text-align:center;margin-top: -40px;"><b>ACTA DE APERSONAMIENTO</b></div>
+        <div style="text-align:center;margin-top: -40px;"><b>ACTA DE APERSONAMIENTO {{$doc[0]->nro_resol.'-'.$doc[0]->anio_resol}}</b></div>
         
         <div style="text-align: justify;font-size:14px;margin-top: -5px;">           
-            <center><u><b>EXPEDIENTE COACTIVO: </b>{{ $doc[0]->nro_exped.'-'.$doc[0]->anio_resol }}<b> / OEC-MDCC</b></u></center>
+            <center><u><b>EXPEDIENTE COACTIVO: </b>{{ $doc[0]->nro_exped.'-'.$doc[0]->anio }}<b> / OEC-MDCC</b></u></center>
             @php echo $plantilla_acta @endphp
             <table class="t1" style="width: 100%">
                 <thead>
                     <tr>
-                        <th style="width: 10%">Cuota</th>
-                        <th style="width: 20%">Porcentaje</th>
-                        <th style="width: 20%">Monto</th>
-                        <th style="width: 50%">Fecha</th>
+                        <th style="width: 10%; text-align: center">Cuota</th>
+                        <th style="width: 20%;text-align: center">Porcentaje</th>
+                        <th style="width: 20%;text-align: center">Monto</th>
+                        <th style="width: 50%;text-align: center">Fecha</th>
                     </tr>
                 </thead>
                 <tbody>
