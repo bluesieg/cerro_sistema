@@ -13,7 +13,7 @@
     </style>
     <body style="font-family: sans-serif;">
 
-        <img src="img/recibo_caja.jpg" style="width: 100%;position: absolute;">              
+        <img src="img/FONDOC.jpg" style="width: 100%;position: absolute;">              
         <div style="position: absolute;margin-top: 70px;margin-left: 590px; font-size: 19px;">
             N°.{{$recibo[0]->serie}}
         </div>
