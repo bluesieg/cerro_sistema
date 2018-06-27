@@ -578,21 +578,27 @@ function crear_dialogo_cuentas_imp()
         auxci=1;
     }
 }
+auxca=0;
 function crear_dialogo_cuentas_arbi()
 {
     $("#dialog_cuentas_arbi").dialog({
-        autoOpen: false, modal: true, width: 380, show: {effect: "fade", duration: 300}, resizable: false,
+        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
         title: "<div class='widget-header' ><h5>&nbsp&nbsp.:Reporte de cuentas de Arbitrios Municpales:.</h5></div>",
         buttons: [{
             html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
             "class": "btn btn-success bg-color-green",
-            click: function () { abrir_reporte_monto_trans_a_coactivo(); }
+            click: function () { abrir_reporte_cuentas_arbi(); }
         },{
             html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
             "class": "btn btn-danger",
             click: function () { $(this).dialog("close"); }
         }]
     }).dialog('open');
+    if(auxca==0)
+    {
+        autocompletar_haburb('habilitacion_urbana26');
+        auxca=1;
+    }
 }
 function dlg_reportes_andrea(tipo)
 {
@@ -669,8 +675,8 @@ function dlg_reportes_andrea(tipo)
     }
     if (tipo===26) {
          crear_dialogo_cuentas_arbi();
-         $('#habilitacion_urbana25').val("");
-         $('#hidden_habilitacion_urbana25').val("");     
+         $('#habilitacion_urbana26').val("");
+         $('#hidden_habilitacion_urbana26').val("");     
     }
     if (tipo===18) {
         crear_dialogo_cuentas_arbi();
@@ -906,13 +912,13 @@ function abrir_reporte_cuentas_imp()
             mostraralertasconfoco("Debes Ingresar una Habilitacion Urbana","#hidden_habilitacion_urbana25");
             return false;
         }
-        window.open('reporte_monto_cuentas_imp'+'/'+$('#select_condicion_imp').val()+'/'+$('#hidden_habilitacion_urbana25').val()+'');   
+        window.open('reporte_monto_cuentas_imp'+'/'+$('#hidden_habilitacion_urbana25').val()+'/'+$('#select_anio25').val());   
 }
-function abrir_reporte_cuentas_arb()
+function abrir_reporte_cuentas_arbi()
 {   
         if ($("#hidden_habilitacion_urbana26").val() == 0){
             mostraralertasconfoco("Debes Ingresar una Habilitacion Urbana","#hidden_habilitacion_urbana26");
             return false;
         }
-        window.open('reporte_monto_cuentas_arb'+'/'+$('#select_condicion_imp').val()+'/'+$('#hidden_habilitacion_urbana26').val()+''); 
+        window.open('reporte_monto_cuentas_arb'+'/'+$('#hidden_habilitacion_urbana26').val()+'/'+$('#select_anio26').val());   
 }

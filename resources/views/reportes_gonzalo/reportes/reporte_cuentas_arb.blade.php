@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>REPORTE CUENTAS DE IMPUESTO PREDIAL</title>
+    <title>REPORTE CUENTAS DE ARBITRIOS</title>
     <link href="{{ asset('css/pdf.css') }}" rel="stylesheet">
     <style>
         .move-ahead { counter-increment: page 2; position: absolute; visibility: hidden; }
@@ -35,7 +35,7 @@
 
     </table>
 
-    <center><div Class="asunto" style="margin-top: 10px; font-size:0.8em;"><b>REPORTE CUENTAS DE IMPUESTO PREDIAL {{$anio}}</b></div></center>
+    <center><div Class="asunto" style="margin-top: 10px; font-size:0.8em;"><b>REPORTE CUENTAS DE ARBITRIOS {{$anio}}</b></div></center>
     <div class="subasunto" style=" margin-bottom:1px; text-align: left; padding-left: 30px;font-size:0.7em;">
         <h4 class="subasunto" style="font-size:1em;  text-align: left; ">Zona : {{ $sql[0]->nomb_hab_urba }} </h4>  
     </div>
@@ -65,7 +65,7 @@
                     <td style="text-align: center;">{{ $num++ }}</td>
                     <td style="text-align: center;">{{ $cont->id_contrib }}</td>
                     <td style="text-align: left;">{{$cont->contribuyente}}</td>
-                    <td style="text-align: left;">{{ $cont->dom_fis }}</td>
+                    <td style="text-align: left;">{{ $cont->direccion }}</td>
                     <td style="text-align: center;">{{ $cont->tot_deuda }}</td>
                     <td style="text-align: center;">{{ $cont->pagado }}</td>
                     <td style="text-align: center;">{{ $cont->saldo }}</td>

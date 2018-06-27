@@ -565,6 +565,8 @@ Route::group(['middleware' => 'auth'], function() {
         //NUEVOS
         Route::get('reporte_bi_afecto_exonerado/{tipo}/{anio}/{condicion}','ReportesController@reporte_bi_afecto_exonerado');
         Route::get('reporte_ep_afecto_exonerado/{tipo}/{anio}/{condicion}','ReportesController@reporte_ep_afecto_exonerado');
+        Route::get('reporte_monto_cuentas_imp/{hab_urb}/{anio}','ReportesController@reporte_monto_cuentas_imp');
+        Route::get('reporte_monto_cuentas_arb/{hab_urb}/{anio}','ReportesController@reporte_monto_cuentas_arb');
  
     });
     Route::group(['namespace' => 'catastro_gonzalo'], function() {

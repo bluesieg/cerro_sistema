@@ -1241,9 +1241,9 @@ class ReportesController extends Controller
         }
        
     }
-    public function reporte_cuentas_predial($hab_urb,$cond)
+    public function reporte_monto_cuentas_imp($hab_urb,$anio)
     { 
-            $sql = DB::table('reportes.vw_reporte_26')->where('id_hab_urb',$hab_urb)->orderBy('contribuyente')->get();
+            $sql = DB::table('reportes.vw_reporte_25')->where('id_hab_urb',$hab_urb)->where('ano_cta',$anio)->orderBy('contribuyente')->get();
             $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
             $fecha = (date('d/m/Y H:i:s'));
             $institucion = DB::select('SELECT * FROM maysa.institucion');
@@ -1251,10 +1251,30 @@ class ReportesController extends Controller
             {
                 set_time_limit(0);
                 ini_set('memory_limit', '2G');
-                $view =  \View::make('reportes_gonzalo.reportes.reporte_cuentas_imp', compact('sql','usuario','fecha','institucion'))->render();
+                $view =  \View::make('reportes_gonzalo.reportes.reporte_cuentas_imp', compact('sql','usuario','fecha','institucion','anio'))->render();
                 $pdf = \App::make('dompdf.wrapper');
                 $pdf->loadHTML($view)->setPaper('a4','landscape');
                 return $pdf->stream("Lista Contribuyentes y Predios".".pdf");
+            }
+            else
+            {
+                return 'No hay datos';
+            }     
+    }
+     public function reporte_monto_cuentas_arb($hab_urb,$anio)
+    { 
+            $sql = DB::table('reportes.vw_reporte_26')->where('id_hab_urb',$hab_urb)->where('anio',$anio)->orderBy('contribuyente')->get();
+            $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
+            $fecha = (date('d/m/Y H:i:s'));
+            $institucion = DB::select('SELECT * FROM maysa.institucion');
+            if(count($sql)>0)
+            {
+                set_time_limit(0);
+                ini_set('memory_limit', '2G');
+                $view =  \View::make('reportes_gonzalo.reportes.reporte_cuentas_arb', compact('sql','usuario','fecha','institucion','anio'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4','landscape');
+                return $pdf->stream("Lista Recaudado,Pagado y Saldos Arbitrios".".pdf");
             }
             else
             {
