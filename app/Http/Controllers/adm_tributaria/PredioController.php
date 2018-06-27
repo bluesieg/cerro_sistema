@@ -391,6 +391,22 @@ class PredioController extends Controller
             return 0; 
         }
     }
+     public function getfotoid_mapa($lote)
+    {
+        $lote = DB::select("SELECT id_lote, a.id_mzna, codi_lote, id_hab_urb, b.codi_mzna,c.id_sec,c.sector
+                                                    FROM catastro.lotes a
+                                                    left join catastro.manzanas b on a.id_mzna=b.id_mzna
+                                                    left join catastro.sectores c on b.id_sect=c.id_sec
+                                                   where id_lote=".$lote);
+        $foto = DB::connection('fotos')->select("select encode(foto,'base64') as foto, nom_foto from sect_".$lote[0]->sector." where id_lote='".$lote[0]->sector.$lote[0]->codi_mzna.$lote[0]->codi_lote."'");
+        if(count($foto)>=1){
+            return $foto;
+           //return $foto[0]->foto;
+        }
+        else{
+            return 0; 
+        }
+    }
     public function getloteid($lote,$anio)
     {
         $lote = DB::select("select * from adm_tri.vw_predi_urba where id_lote=$lote and anio =$anio");

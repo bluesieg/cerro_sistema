@@ -1,5 +1,29 @@
 @extends('layouts.app')
 @section('content')
+<style>
+        
+        .ol-touch .rotate-north {
+            top: 80px;
+        }
+        .ol-mycontrol {
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 4px;
+            padding: 2px;
+            position: absolute;
+            width:300px;
+            top: 5px;
+            left:40px;
+        }
+        #legend{
+        right:10px; 
+        top:20px; 
+        z-index:10000; 
+        width:130px; 
+        height:370px; 
+        background-color:#FFFFFF;
+        display: none;
+        }
+    </style>
 <input type="hidden" id="per_edit" value="{{$permisos[0]->btn_edit}}"/>
 <input type="hidden" id="per_del" value="{{$permisos[0]->btn_del}}"/>
 <section id="widget-grid" class=""> 
@@ -21,7 +45,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-6" style="padding-top: 17px; margin-top: 5px">
+    <div class="col-xs-4" style="padding-top: 17px; margin-top: 5px; padding-right: 0px">
             <div class="col-xs-6" style="padding: 0px;">
                 <div class="input-group input-group-md">
                     <span class="input-group-addon">Sector &nbsp;<i class="fa fa-list"></i></span>
@@ -36,10 +60,10 @@
                 </div>
             </div>
             <div class="col-xs-6" style="padding: 0px;">
-                <div class="input-group input-group-md">
+                <div class="input-group input-group-md" style="padding: 0px;">
                     <span class="input-group-addon">Manzana &nbsp;<i class="fa fa-list"></i></span>
                     <div class="icon-addon addon-md"  id="dvselmnza">
-                        <select id="selmnza" class="form-control" style="height: 32px;" onchange="callfilltab(2)">
+                        <select id="selmnza" class="form-control" style="height: 32px;padding-left: 15px;" onchange="callfilltab(2)">
                         @foreach ($manzanas as $manzanas)
                         <option value='{{$manzanas->id_mzna}}'>{{$manzanas->codi_mzna}}</option>
                         @endforeach
@@ -51,7 +75,7 @@
              
             
             </div>
-    <div class="col-lg-6 col-md-12 col-xs-12">
+    <div class="col-lg-8 col-md-12 col-xs-12">
         <ul class="text-right" style="margin-top: 22px !important; margin-bottom: 0px !important">
                 @if( $permisos[0]->btn_new ==1 )
                     <button type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="clicknewgrid();">
@@ -62,6 +86,9 @@
                         <span class="btn-label"><i class="glyphicon glyphicon-plus-sign"></i></span>Nuevo
                     </button>
                 @endif
+                    <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="map_reg_lote();">
+                        <span class="btn-label"><i class="glyphicon glyphicon-map-marker"></i></span>Buscar Mapa
+                    </button>
                 @if( $permisos[0]->btn_edit ==1 )
                     <button  type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="clickmodgrid();">
                         <span class="btn-label"><i class="glyphicon glyphicon-pencil"></i></span>Modificar
@@ -1516,6 +1543,60 @@
         </div>
     </div>
 </div>
+ <div id="dlg_mapa_reg_lote" >
+    <input type="hidden" id="hidden_inp_habilitacion" value="0"/>
+    <form class="smart-form">
+        <div id="id_map_reg_lote" style="background: white; height: 50% !important">
+            <div id="popup" class="ol-popup">
+                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                <div id="popup-content"></div>
+            </div>
+            <div id="legend"></div>
+        </div>
+    </form>
+</div>
+ <div id="dlg_view_foto_desde_mapa" style="display: none;">
+    <div class="col-xs-12">
+       <div class=" col-xs-3">
+            <div class="input-group input-group-md">
+                <input type="hidden" id="dlg_idpre" value="0">
+                <span class="input-group-addon">Sector &nbsp;&nbsp;<i class="fa fa-cogs"></i></span>
+                <div class="icon-addon addon-md">
+                    <input class="text-center col-xs-12 form-control"  style="height: 32px;" id="dlg_sec_foto" type="text" name="dlg_sec" disabled="" >
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <div class="input-group input-group-md">
+                <span class="input-group-addon">Manzana &nbsp;&nbsp;<i class="fa fa-apple"></i></span>
+                <div class="icon-addon addon-md">
+                    <input class="text-center form-control" style="height: 32px;" id="dlg_mzna_foto" type="text" name="dlg_mzna" disabled="" >
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <div class="input-group input-group-md">
+                <span class="input-group-addon">Lotes &nbsp;<i class="fa fa-home"></i></span>
+                <div class="icon-addon addon-md">
+                    <input class="text-center form-control" style="height: 32px;" id="dlg_lot_foto" type="text" name="dlg_mzna" disabled="" >
+                    <input type="hidden" id="hidden_dlg_lot_foto" value="0">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-3" style="padding-left: 0px;">
+            <button style="width: 100%" type="button" class="btn btn-labeled bg-color-greenLight txt-color-white" onclick="selec_reg_lote();">
+                <span class="btn-label"><i class="glyphicon glyphicon-check"></i></span>Seleccinar Lote
+            </button>
+        </div>
+    </div>
+    <div class="panel panel-success cr-panel-sep" style="border:0px; margin-top: 10px">
+        <div class="panel-body cr-body">
+            <div id="dlg_img_view_big_mapa" style="padding-top: 0px; margin-top: 15px"></div>
+        </div>
+    </div>
+</div> 
+
+
  <!-- -->
 @endsection
 

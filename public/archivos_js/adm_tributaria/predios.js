@@ -1502,4 +1502,32 @@ function llamar_otro(){
 function save_otros(){
    nuevo_otros = $("#dlg_inp_otros").val();
 }
-
+aux_mapa_lote =0;
+function map_reg_lote()
+{
+    if(aux_mapa_lote==0)
+    {
+        aux_mapa_lote=1;
+        iniciar_mapa();
+    }
+    crear_dlg("dlg_mapa_reg_lote",1000,"Seleccione Lote");
+}
+function selec_reg_lote()
+{
+    
+        jQuery("#table_pisos").jqGrid('setGridParam', {url: 'gridpisos/0'}).trigger('reloadGrid');
+        jQuery("#table_condos").jqGrid('setGridParam', {url: 'gridcondos/0'}).trigger('reloadGrid');
+        jQuery("#table_instal").jqGrid('setGridParam', {url: 'gridinsta/0'}).trigger('reloadGrid');
+        limpiarpred(1);
+        $("#dlg_lot").html('');
+        $("#dlg_lot").append('<option value="' + $("#hidden_dlg_lot_foto").val() + '" >' + $("#dlg_lot_foto").val() + '</option>');
+        $("#dlg_sec").val($("#dlg_sec_foto").val());
+        $("#dlg_mzna").val($("#dlg_mzna_foto").val());
+        traerfoto();
+        $("#dlg_contri_hidden").val(0);
+        auto_select("dlg_inp_nvia","sel_viaby_sec",0);
+        $("#dlg_reg_dj").dialog('open');
+        
+    $("#dlg_view_foto_desde_mapa").dialog("close");
+    $("#dlg_mapa_reg_lote").dialog("close");
+}

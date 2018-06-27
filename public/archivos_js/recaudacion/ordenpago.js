@@ -171,6 +171,7 @@ function crear_dialogo_trimestres(tip)
 }
 function grabar_op(tip)
 {
+    MensajeDialogLoadAjax('dialog_sel_trimestre', '.:: Generando ...');
     Id_contrib=$("#dlg_contri_hidden").val();
     if(Id_contrib==0&&tip==1)
     {
@@ -200,12 +201,13 @@ function grabar_op(tip)
             }
             else
             {
-                window.open('fis_rep/'+tip+'/'+r+'/'+0+'/'+0);
+                window.open('fis_rep/'+tip+'/'+r+'/'+0+'/0/'+Id_contrib);
                 MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
                 call_list_contrib(tip);
             }
             $('body').unblock();
             MensajeDialogLoadAjaxFinish("dlg_ctrb_sector");
+            MensajeDialogLoadAjaxFinish("dialog_sel_trimestre");
             $("#dialog_sel_trimestre").dialog("close")
             
         },

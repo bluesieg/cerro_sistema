@@ -110,4 +110,58 @@ class MapaController extends Controller
     {
         //
     }
+    function get_hab_urb($id){
+        $where="";
+        if($id>0)
+        {
+            $where='where id_hab_urb='.$id;
+        }
+       
+        $sectores = DB::select("SELECT json_build_object(
+                            'type',     'FeatureCollection',
+                            'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       'Feature',
+                            'id_hab_urb',         id_hab_urb,
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                              'codi_hab_urba',codi_hab_urba,
+                              'nomb_hab_urba',nomb_hab_urba
+                 
+                             )
+                          ) AS feature
+                          FROM (SELECT * FROM catastro.hab_urb ".$where.") row) features;");
+
+        return response()->json($sectores);
+    }
+    public function get_lotes_x_hab_urb(Request $req){
+
+
+        $lotes = DB::select("SELECT json_build_object(
+                            'type',     'FeatureCollection',
+                            'features', json_agg(feature)
+                        )
+                        FROM (
+                          SELECT json_build_object(
+                            'type',       'Feature',
+                            'id_lote',         id_lote,
+                            'geometry',   ST_AsGeoJSON(ST_Transform (geom, 4326))::json,
+                            'properties', json_build_object(
+                               'id_lote', id_lote,
+                                'id_mzna', id_mzna,
+                                'codi_lote', codi_lote,
+                                'id_hab_urb', id_hab_urb,
+                                'id_sect',id_sect,
+                                'codi_mzna',codi_mzna,
+                                'sector',sector
+                             )
+                          ) AS feature
+                          FROM (select l.id_lote, l.id_mzna,m.codi_mzna,s.sector, l.codi_lote, l.id_hab_urb, l.geom, m.id_sect from  catastro.lotes l
+                                join catastro.manzanas m on m.id_mzna = l.id_mzna
+                                join catastro.sectores s on s.id_sec=m.id_sect where id_hab_urb = '".$req->codigo."') row) features ;");
+
+        return response()->json($lotes);
+    }
 }

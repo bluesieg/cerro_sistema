@@ -144,6 +144,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('get_z_agricola', 'MapController@get_z_agricola');
         Route::get('get_z_eriaza', 'MapController@get_z_eriaza');
         Route::get('get_aportes', 'MapController@get_aportes');
+        
     });
     /******************************      MANTENIMIENTO   USUARIOS ********************************************************/
     Route::get('list_usuarios', 'Usuarios@index'); // tabla grilla Usuarios
@@ -375,6 +376,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('pre_rep/{tip}/{id}/{an}/{per}/{anexo}','PredioController@reporte');
         Route::get('traefoto_lote/{sec}/{mzna}/{lote}','PredioController@getfoto');
         Route::get('traefoto_lote_id/{lote}','PredioController@getfotoid');
+        Route::get('traefoto_lote_id_mapa/{lote}','PredioController@getfotoid_mapa');
         Route::get('validar_predio','PredioController@validar');
         
         Route::resource('replicar_predio','Rep_predioController');
@@ -521,6 +523,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::group(['namespace' => 'mapa'], function() {
         Route::resource('mapa_cris', 'MapaController');
         Route::get('mapa_cris_getlimites', 'MapaController@get_limites');
+        Route::get('gethab_urb_by_id/{id}', 'MapaController@get_hab_urb');
+        Route::get('get_lotes_x_hab_urb', 'MapaController@get_lotes_x_hab_urb');
     });
     
      /*************************************** - GONZALO - *************************************** */
