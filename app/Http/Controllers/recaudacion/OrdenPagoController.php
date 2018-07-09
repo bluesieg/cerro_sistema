@@ -29,7 +29,7 @@ class OrdenPagoController extends Controller
     {
         if($request['tip']=='1'||$request['tip']=='3')
         {
-            $sql = DB::select("select id_contrib from adm_tri.vw_predi_urba where pred_contrib_activo=1 and pred_anio_activo=1 and id_contrib=".$request['per']." and anio=".$request['an']);
+            $sql = DB::select("select id_contrib from adm_tri.vw_grid_predios where pred_contrib_activo=1 and pred_anio_activo=1 and id_contrib=".$request['per']." and anio=".$request['an']);
             if(count($sql)>=1){
                 return $this->create_by_user($request['per'],$request['an'],$request['tri']);
             }
@@ -40,11 +40,11 @@ class OrdenPagoController extends Controller
         }
         if($request['tip']=='4')
         {
-            $sql = DB::select("select id_contrib from adm_tri.vw_predi_urba where sec='".$request['sec']."' and mzna='".$request['man']."' and anio=".$request['an']." group by id_contrib order by id_contrib");
+            $sql = DB::select("select id_contrib from adm_tri.vw_grid_predios where pred_contrib_activo=1 and sec='".$request['sec']."' and mzna='".$request['man']."' and anio=".$request['an']." group by id_contrib order by id_contrib");
             $orden=0;
             foreach ($sql as $contri)
             {
-                $valor=$this->create_by_user($contri->id_contrib,$request['an']);
+                $valor=$this->create_by_user($contri->id_contrib,$request['an'],$request['tri']);
                 if($orden==0)
                 {
                     $orden=$valor;
@@ -199,8 +199,8 @@ class OrdenPagoController extends Controller
                 $start = 0;
             }
             
-            $totalg = DB::select("select count(id_contrib) as total from adm_tri.vw_predi_urba where sec='".$request['sec']."' and mzna='".$request['man']."' group by id_contrib order by id_contrib");
-            $sql = DB::select("select id_contrib,nro_doc, contribuyente from adm_tri.vw_predi_urba where sec='".$request['sec']."' and mzna='".$request['man']."' group by id_contrib,nro_doc, contribuyente order by id_contrib");
+            $totalg = DB::select("select count(id_contrib) as total from adm_tri.vw_grid_predios where id_sec=".$request['sec']." and id_mzna=".$request['man']." and anio=".$request['an']." group by id_contrib order by id_contrib");
+            $sql = DB::select("select id_contrib,nro_doc, contribuyente from adm_tri.vw_grid_predios where id_sec=".$request['sec']." and id_mzna=".$request['man']." and anio=".$request['an']." group by id_contrib,nro_doc, contribuyente order by id_contrib");
             
             
 

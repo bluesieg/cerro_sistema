@@ -206,6 +206,11 @@ class Caja_MovimientosController extends Controller {
                         }
                         return $id.'fraccionamiento';
                     }
+                    if($val->clase_recibo==4)
+                    {
+                        $detalle = DB::select('select periodo from tesoreria.recibos_detalle where id_rec_master='.$id);                
+                        DB::select('select control_deuda.fn_pag_a_cta_sin_formatos(' . $val->id_contrib . ',' . $detalle[0]->periodo . ','.$val->total.' )');
+                    }
                     else return $id.'varios';                    
                 }
                 else

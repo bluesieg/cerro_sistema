@@ -58,7 +58,7 @@
                     </button>
                 </div>
             </div>
-<!--            <div class="col-xs-12"></div>
+           <div class="col-xs-12"></div>
             <div class="col-xs-3" style="padding: 0px; margin-top: 5px">
                 <section>
                     <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 0px;"  >
@@ -108,7 +108,7 @@
                     <span class="btn-label"><i class="fa fa-file-text-o"></i></span>Generar OP por Sector
                 </button>
             </div>
-            </div>-->
+            </div>
             
             
             <div class="col-xs-12"></div>
@@ -154,7 +154,7 @@
             </div>
         </div>
     </div>
-    <div class='cr_content col-xs-12'>
+    <div class='cr_content col-xs-12' style="margin-bottom: 50px">
         
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; padding: 0px !important">
             <table id="table_op"></table>
@@ -237,7 +237,7 @@
             height: '400px', autowidth: true,
             toolbarfilter: true,
             colNames: ['id_contrib','DNI/RUC','contribuyente','Generar Op'],
-            rowNum: 20, sortname: 'id_contrib', sortorder: 'desc', viewrecords: true, caption: 'Contribuyentes por Sector', align: "center",
+            rowNum: 1000, sortname: 'id_contrib', sortorder: 'desc', viewrecords: true, caption: 'Contribuyentes por Sector', align: "center",
             colModel: [
                 {name: 'id_contrib', index: 'id_contrib', hidden: true},
                 {name: 'nro_doc', index: 'nro_doc', align: 'center',width: 160},
@@ -245,7 +245,7 @@
                 {name: 'op', index: 'op', align: 'left',width: 170},
             ],
             pager: '#pager_table_contrib_bysec',
-            rowList: [13, 20],
+            rowList: [1000, 2000],
             gridComplete: function () {
                     var idarray = jQuery('#table_contrib_bysec').jqGrid('getDataIDs');
                     if (idarray.length > 0) {

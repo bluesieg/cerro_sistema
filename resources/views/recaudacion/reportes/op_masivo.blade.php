@@ -33,7 +33,7 @@
             
         </table>
         
-        <center><div Class="asunto" style="margin-top: 10px;"><b>ORDEN DE PAGO PREDIAL N° {{$sql->nro_fis}}-{{$sql->anio}}-GAT-MDCC</b></div></center>
+        <center><div Class="asunto" style="margin-top: 10px;"><b>ORDEN DE PAGO PREDIAL N° {{$sql->nro_fis}}-{{$sql->anio_reg}}-GAT-MDCC</b></div></center>
         <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px;">Cerro Colorado, {{$sql->fec_reg}}</div>
 
         <div class="lado3" style="margin-top: 30px; font-weight: bold">
@@ -73,8 +73,50 @@
             La presente de emite por los tributos y periodos que se indican, cuyo monto se ha actualizaco a la FECHA DE EMISIÓN, luego de esta fecha se actualizara con la tasa diaria de 0.04% conforme a la tasa de interes fijada.<br>
             <b>Monto Determinante:</b><br>
             Se ha verificado la existencia de una deuda tributaria no cancelada dentro de los plazos establecidos.<br>
-            
+            <br>
         </div>
+        
+        <b>UBICACION DEL PREDIO:</b><br>
+        
+        <table border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;margin-bottom: 5px;">
+            <thead>
+              <tr>
+                  <th style="width: 10%">Cod. Catastral</th>
+                  <th style="width: 45%">Ubicación del predio</th>
+                  <th style="width: 4%">N°</th>
+                  <th style="width: 30%">Referencia</th>
+                  <th style="width: 6%">Manzana</th>
+                  <th style="width: 5%">Lote</th>
+              </tr>
+            </thead>
+            <tbody>
+                <?php $predios =DB::table('transferencias.vw_predios_reportes')->where('id_contrib',$sql->id_per)->get(); ?>
+                @foreach ($predios as $pre)
+                    <tr>
+                        <td>
+                            {{$pre->cod_cat}}
+                        </td> 
+                        <td>
+                            {{$pre->nom_via."-".$pre->nomb_hab_urba}}
+                        </td> 
+                        <td style="text-align: center">
+                            {{$pre->nro_mun}}
+                        </td> 
+                        <td style="text-align: center">
+                            {{$pre->referencia}}
+                        </td> 
+                        <td style="text-align: center">
+                            {{$pre->mzna}}
+                        </td> 
+                        <td style="text-align: center">
+                            {{$pre->lote_cat}}
+                        </td> 
+                    </tr>
+                @endforeach
+                
+            </tbody>
+        </table>
+        
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 10px; margin-top: 20px" >
         <thead>
           <tr>
@@ -94,29 +136,31 @@
           
         </thead>
         <tbody>
+          @if($sql->trimestre1>0)
           <tr>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">Imp.<br>Predial</td>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$sql->nro_fis}}</td>
-              <td style="text-align: center;font-size: 0.7em; padding: 0px;">2017-1</td>
+              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$sql->periodo1}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp_afecto,2)}}</td>
               <td style="text-align: right; font-size: 0.6em;padding-right: 2px;">Hasta 15 UIT<br>De 15 a 60 UIT<br>Más de 60 UIT</td>
               <td style="text-align: right; font-size: 0.6em; padding-right: 2px;">0.2%<br>0.6%<br>1.0%</td>
-              <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp,2)}}</td>
+              <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp/4,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->trimestre1,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->factor1,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->reajuste1,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->interes1,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->sub_total1,2)}}</td>
           </tr>
-          @if($sql->trimestre>1)
+          @endif
+          @if($sql->trimestre2>0)
           <tr>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">Imp.<br>Predial</td>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$sql->nro_fis}}</td>
-              <td style="text-align: center;font-size: 0.7em; padding: 0px;">2017-2</td>
+              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$sql->periodo2}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp_afecto,2)}}</td>
               <td style="text-align: right; font-size: 0.6em;padding-right: 2px;">Hasta 15 UIT<br>De 15 a 60 UIT<br>Más de 60 UIT</td>
               <td style="text-align: right; font-size: 0.6em; padding-right: 2px;">0.2%<br>0.6%<br>1.0%</td>
-              <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp,2)}}</td>
+              <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp/4,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->trimestre2,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->factor2,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->reajuste2,2)}}</td>
@@ -124,15 +168,15 @@
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->sub_total2,2)}}</td>
           </tr>
           @endif
-          @if($sql->trimestre>2)
+          @if($sql->trimestre3>0)
           <tr>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">Imp.<br>Predial</td>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$sql->nro_fis}}</td>
-              <td style="text-align: center;font-size: 0.7em; padding: 0px;">2017-3</td>
+              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$sql->periodo3}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp_afecto,2)}}</td>
               <td style="text-align: right; font-size: 0.6em;padding-right: 2px;">Hasta 15 UIT<br>De 15 a 60 UIT<br>Más de 60 UIT</td>
               <td style="text-align: right; font-size: 0.6em; padding-right: 2px;">0.2%<br>0.6%<br>1.0%</td>
-              <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp,2)}}</td>
+              <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp/4,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->trimestre3,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->factor3,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->reajuste3,2)}}</td>
@@ -140,15 +184,15 @@
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->sub_total3,2)}}</td>
           </tr>
           @endif
-          @if($sql->trimestre>4)
+          @if($sql->trimestre4>0)
           <tr>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">Imp.<br>Predial</td>
               <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$sql->nro_fis}}</td>
-              <td style="text-align: center;font-size: 0.7em; padding: 0px;">2017-4</td>
+              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$sql->periodo4}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp_afecto,2)}}</td>
               <td style="text-align: right; font-size: 0.6em;padding-right: 2px;">Hasta 15 UIT<br>De 15 a 60 UIT<br>Más de 60 UIT</td>
               <td style="text-align: right; font-size: 0.6em; padding-right: 2px;">0.2%<br>0.6%<br>1.0%</td>
-              <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp,2)}}</td>
+              <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp/4,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->trimestre4,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->factor4,2)}}</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->reajuste4,2)}}</td>
@@ -158,7 +202,7 @@
           @endif
           <tr>
               <td colspan="6">Total Insoluto</td>
-              <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->ivpp*$sql->trimestre,2)}}</td>
+              <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format(($sql->total),2)}}</td>
               <td colspan="4" style="text-align: right; padding-right: 2px; ">Total</td>
               <td style="text-align: right; padding-right: 2px; font-size: 0.7em">{{number_format($sql->sub_total1+$sql->sub_total2+$sql->sub_total3+$sql->sub_total4,2)}}</td>
           </tr>
@@ -170,18 +214,16 @@
             <b>Base Legal:</b><br>
             Artículos 33°,77°,78° inc 1 y 194 del T.U.O. del Código Tributario, aprobado por D.S. N° 133-2013-EF y sus
             modificatorias.<br>
-            Artículo 8° y siguientes del TUO de la ley de Tributación Municipal, aprobada por D.S.N° 133-2013-EF y sus modificatorias<br>
+            Artículo 8° y siguientes del TUO de la ley de Tributación Municipal, aprobada por D.S.N° 156-2004-F y sus modificatorias<br>
             Ordenanzas 297-2010 que aprueba TIM para la jurisdicción del distrito de Cerro Colorado.<br>
             <b>Avisos:</b><br>
             -Si a la recepción de esta. Ud. ya realizo el pago de tales conceptos, le rogamos no prestar atención a la presente<br>
             -Cualquier consulta adicional, lo esperamos en la Plaza Las Americas, La Libertad, Cerro Colorado; o comuníquese al 
             teléfono (054)382590 anexo 719, en el horario de lunes a viernes de 8.00am a 3.30pm.<br>
-            -En el caso de no conformidad, podrá interponer recurso de reclamación debidamente sustentado, suscrito por letrado hábil
-            (nombre, firma y número de registro), para lo cual deberá acreditar la cancelación de la totalidad de la deuda, salvo sea
+            -En el caso de no conformidad, podrá interponer recurso de reclamación debidamente sustentado, para lo cual deberá acreditar la cancelación de la totalidad de la deuda, salvo sea
             evidente la improcedencia de la cobranza, en cuyo caso podra presentar la reclamación en el plazo de 20 días hábiles
             de notificada la presente, y conforme a los dispositivos vigentes.<br>
             <br>
-            <b>Nota:</b> Se ha aprobado los beneficios tributarios a traves de Ordenanza Municipal 459-MDCC.
         </div>
         
         @endforeach

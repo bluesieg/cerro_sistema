@@ -101,21 +101,16 @@ function generar_op(tip,ctb)
     
     if(tip==1||tip==3||tip==4)
     {
-        if(tip==1)
+        if(tip==3)
         {
-            crear_dialogo_trimestres(tip);
-            
+            $("#dlg_contri_hidden").val(ctb);
         }
-        if(tip==3||tip==4)
-        {
-            MensajeDialogLoadAjax("dlg_ctrb_sector", '.:: Cargando ...');
-            grabar_op(tip);
-
-        }
-       
+        crear_dialogo_trimestres(tip);
     }
     if(tip==2)
     {
+        sec=$("#selsec").val();
+        man=$("#selmnza").val();
         jQuery("#table_contrib_bysec").jqGrid('setGridParam', {url: 'obtiene_con_sec?sec='+sec+'&man='+man+"&an="+$("#selantra").val()}).trigger('reloadGrid');
         $("#dlg_ctrb_sector").dialog({
         autoOpen: false, modal: true, width: 700, show: {effect: "fade", duration: 300}, resizable: false,
@@ -178,9 +173,9 @@ function grabar_op(tip)
         mostraralertas("No hay Contribuyente seleccionado para generar");
         return false;
     }
-    if(tip==3||tip==4)
+    if(tip==4)
     {
-       Id_contrib=ctb;
+       Id_contrib=0;
     }
     
     sec=$("#selsec option:selected").text();
@@ -203,12 +198,13 @@ function grabar_op(tip)
             {
                 window.open('fis_rep/'+tip+'/'+r+'/'+0+'/0/'+Id_contrib);
                 MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
-                call_list_contrib(tip);
+                call_list_contrib(3);
             }
             $('body').unblock();
             MensajeDialogLoadAjaxFinish("dlg_ctrb_sector");
             MensajeDialogLoadAjaxFinish("dialog_sel_trimestre");
-            $("#dialog_sel_trimestre").dialog("close")
+            $("#dialog_sel_trimestre").dialog("close");
+            
             
         },
         error: function(data) {
