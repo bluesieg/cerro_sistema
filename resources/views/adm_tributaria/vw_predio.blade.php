@@ -1082,9 +1082,12 @@
                         </div>
                         <div class='col-lg-3'>
                             <label class="label">Areas Comunes:</label>
-                            <label class="input">
-                                <input id="rpiso_inp_acomun" type="text"  class="input-sm text-right" placeholder="0.00" onkeypress="return soloNumeroTab(event);" >
-                            </label>
+                            <span>
+                                <label class="checkbox inline-block" style="color:white !important">
+                                    <input type="checkbox" name="checkbox-inline" id="rpiso_inp_check_comun" />
+                                    <i></i>
+                            </span>
+                            
                         </div>
                     </div>
                 </div>

@@ -110,7 +110,7 @@
             </thead>
             <tbody>
               <tr>
-                  <td colspan="2" style="text-align: center">{{$dir}}</td>
+                  <td colspan="2" style="text-align: center">{{$dir}}, {{$sql->referencia}}</td>
                   <td colspan="2" style="text-align: center">CERRO COLORADO</td>
               </tr>
             </tbody>
@@ -163,10 +163,27 @@
             <thead>
               <tr>
                   <td class="nro">17</td>
-                  <th style="width: 30%">VALOR DEL AUTOVALUO DEL TERRENO</th>
+                  <th style="width: 40%">AREA DEL TERRENO</th>
                   <td class="nro">18</td>
-                  <th style="width: 30%">PORCENTAJE ADQUIRIDO</th>
+                  <th style="width: 40%">AREA CONSTRUIDA</th>
+                  
+              </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="2" style="text-align: right; padding-right: 10px;">{{$sql->are_terr}}</td> 
+                    <td colspan="2" style="text-align: right; padding-right: 10px;">{{$sql->area_const}} M2</td> 
+                </tr>
+            </tbody>
+        </table>
+        <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 5px;">
+            <thead>
+              <tr>
                   <td class="nro">19</td>
+                  <th style="width: 30%">VALOR DEL AUTOVALUO DEL PREDIO</th>
+                  <td class="nro">20</td>
+                  <th style="width: 30%">PORCENTAJE ADQUIRIDO</th>
+                  <td class="nro">21</td>
                   <th style="width: 30%">VALOR DE LO ADQUIRIDO POR EL CONTRIBUYENTE</th>
               </tr>
             </thead>
@@ -181,13 +198,13 @@
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 5px;">
             <thead>
               <tr>
-                  <td class="nro">20</td>
-                  <th style="width: 30%">PRECIO DE TRANFERENCIA</th>
-                  <td class="nro">21</td>
-                  <th style="width: 15%">MONEDA</th>
                   <td class="nro">22</td>
-                  <th style="width: 15%">CAMBIO APLICADO</th>
+                  <th style="width: 30%">PRECIO DE TRANFERENCIA</th>
                   <td class="nro">23</td>
+                  <th style="width: 15%">MONEDA</th>
+                  <td class="nro">24</td>
+                  <th style="width: 15%">CAMBIO APLICADO</th>
+                  <td class="nro">25</td>
                   <th style="width: 30%">VALOR DE TRANSFERENCIA EN SOLES</th>
               </tr>
             </thead>
@@ -203,19 +220,19 @@
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 5px;">
             <thead>
               <tr>
-                  <td class="nro">24</td>
-                  <th style="width: 15%">Base Imponible<br>se consigna el mas alto<br>de (1) y (2)</th>
-                  <td class="nro">25</td>
-                  <th style="width: 10%">UIT</th>
                   <td class="nro">26</td>
-                  <th style="width: 15%">N° UIT DEDUCCION</th>
+                  <th style="width: 15%">Base Imponible<br>se consigna el mas alto<br>de (1) y (2)</th>
                   <td class="nro">27</td>
-                  <th style="width: 15%">IMPORTE DEDUCIBLE</th>
+                  <th style="width: 10%">UIT</th>
                   <td class="nro">28</td>
-                  <th style="width: 15%">BASE IMPONIBLE AFECTA</th>
+                  <th style="width: 15%">N° UIT DEDUCCION</th>
                   <td class="nro">29</td>
-                  <th style="width: 15%">TASA DEL IMPUESTO</th>
+                  <th style="width: 15%">IMPORTE DEDUCIBLE</th>
                   <td class="nro">30</td>
+                  <th style="width: 15%">BASE IMPONIBLE AFECTA</th>
+                  <td class="nro">31</td>
+                  <th style="width: 15%">TASA DEL IMPUESTO</th>
+                  <td class="nro">32</td>
                   <th style="width: 15%">IMPUESTO A PAGAR</th>
               </tr>
             </thead>
@@ -244,11 +261,11 @@
                     <td colspan="2"></td>
                 </tr>
               <tr>
-                  <td class="nro">31</td>
-                  <th style="width: 40%">Firma del Contribuyente o Representante Legal</th>
-                  <td class="nro">32</td>
-                  <th style="width: 20%">Huella Digital</th>
                   <td class="nro">33</td>
+                  <th style="width: 40%">Firma del Contribuyente o Representante Legal</th>
+                  <td class="nro">34</td>
+                  <th style="width: 20%">Huella Digital</th>
+                  <td class="nro">35</td>
                   <th style="width: 40%">Sello Y Firma de ADM. Tributaria</th>
               </tr>
             </thead>

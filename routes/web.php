@@ -534,6 +534,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('reporte_supervisores/{anio}/{sector}/{manzana}', 'ReportesController@reportes'); 
         Route::get('listado_datos_contribuyentes/{tipo}/{anio}/{hab_urb}', 'ReportesController@listado_contribuyentes'); 
         Route::get('listado_contribuyentes_predios/{tipo}/{anio}/{hab_urb}','ReportesController@listado_contribuyentes_predios');
+        Route::get('listado_contribuyentes_predios_det/{tipo}/{anio}/{hab_urb}','ReportesController@listado_contribuyentes_predios_det');
         Route::get('reporte_contribuyentes_exonerados/{anio}/{hab_urb}/{tipo}','ReportesController@reporte_contribuyentes_exonerados');
         Route::get('reporte_cantidad_contribuyentes/{anio}/{hab_urb}','ReportesController@reporte_cantidad_contribuyentes');
         Route::get('autocomplete_hab_urba', 'ReportesController@autocompletar_haburb');

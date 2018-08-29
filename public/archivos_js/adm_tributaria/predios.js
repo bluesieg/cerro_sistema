@@ -509,8 +509,8 @@ function fn_confirmar_borrar_predio()
             mostraralertas("No se puede crear piso en un terreno sin construir..");
             return false;
         }
-       
-        $("#rpiso_inp_nro,#rpiso_inp_fech,#rpiso_inp_econstr,#rpiso_inp_estruc,#rpiso_inp_aconst,#rpiso_inp_acomun").val("")
+       $("#rpiso_inp_check_comun").prop('checked',false)
+        $("#rpiso_inp_nro,#rpiso_inp_fech,#rpiso_inp_econstr,#rpiso_inp_estruc,#rpiso_inp_aconst").val("")
         $("#rpiso_inp_clasi").val($("#rpiso_inp_clasi option:first").val());
         $("#rpiso_inp_mat").val($("#rpiso_inp_mat option:first").val());
         $("#rpiso_inp_econserv").val($("#rpiso_inp_econserv option:first").val());
@@ -548,7 +548,8 @@ function fn_confirmar_borrar_predio()
             $("#rpiso_inp_econstr").val(parseInt(r[0].ecc));
             $("#rpiso_inp_estruc").val(r[0].est_mur+r[0].est_tch+r[0].aca_pis+r[0].aca_pta+r[0].aca_rev+r[0].aca_ban+r[0].ins_ele);
             $("#rpiso_inp_aconst").val(r[0].area_const);
-            $("#rpiso_inp_acomun").val(r[0].val_areas_com);
+            r[0].check_are_comun==1?$("#rpiso_inp_check_comun").prop('checked',true):$("#rpiso_inp_check_comun").prop('checked',false);
+            //$("#rpiso_inp_acomun").val(r[0].val_areas_com);
             MensajeDialogLoadAjaxFinish('dlg_reg_piso');
             callchangeoption("rpiso_inp_clasi",0);
             callchangeoption("rpiso_inp_mat",0);
@@ -577,7 +578,6 @@ function fn_confirmar_borrar_predio()
         if($("#rpiso_inp_estruc").val()==""){mostraralertasconfoco("Ingresar Estructuras","#rpiso_inp_estruc"); return false}
         if($("#rpiso_inp_estruc").val().length<7){mostraralertasconfoco("Cadena de Estructura incompleta, Ingrese 7 caracteres","#rpiso_inp_estruc"); return false}
         if($("#rpiso_inp_aconst").val()==""){mostraralertasconfoco("Ingresar Area Construida","#rpiso_inp_aconst"); return false}
-        if($("#rpiso_inp_acomun").val()==""){$("#rpiso_inp_acomun").val(0);}
         MensajeDialogLoadAjax('dlg_reg_piso', '.:: Guardando ...');
         Id_pre=$('#dlg_idpre').val();
         $("#rpiso_inp_estruc").val().toUpperCase();
@@ -585,7 +585,7 @@ function fn_confirmar_borrar_predio()
         type: 'GET',
         data:{nro:$("#rpiso_inp_nro").val(),fech:$("#rpiso_inp_fech").val(),clasi:$("#rpiso_inp_clasi").val(),
         mep:$("#rpiso_inp_mat").val(),estconserv:$("#rpiso_inp_econserv").val(),estconst:$("#rpiso_inp_econstr").val(),
-        estru:$("#rpiso_inp_estruc").val().toUpperCase(),aconst:$("#rpiso_inp_aconst").val(),acomun:$("#rpiso_inp_acomun").val(),id_pre:Id_pre},
+        estru:$("#rpiso_inp_estruc").val().toUpperCase(),aconst:$("#rpiso_inp_aconst").val(),acomun:$("#rpiso_inp_check_comun").is(':checked')?1:0,id_pre:Id_pre},
         success: function(r) 
         {
             MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
@@ -615,14 +615,13 @@ function fn_confirmar_borrar_predio()
         if($("#rpiso_inp_estruc").val()==""){mostraralertasconfoco("Ingresar Estructuras","#rpiso_inp_estruc"); return false}
         if($("#rpiso_inp_estruc").val().length<7){mostraralertasconfoco("Cadena de Estructura incompleta, Ingrese 7 caracteres","#rpiso_inp_estruc"); return false}
         if($("#rpiso_inp_aconst").val()==""){mostraralertasconfoco("Ingresar Area Construida","#rpiso_inp_aconst"); return false}
-        if($("#rpiso_inp_acomun").val()==""){mostraralertasconfoco("Ingresar Area Común","#rpiso_inp_acomun"); return false}
         MensajeDialogLoadAjax('dlg_reg_piso', '.:: Modificando ...');
         
         $.ajax({url: 'pisos_predios/'+$('#dlg_idpiso').val()+'/edit',
         type: 'GET',
         data:{nro:$("#rpiso_inp_nro").val(),fech:$("#rpiso_inp_fech").val(),clasi:$("#rpiso_inp_clasi").val(),
         mep:$("#rpiso_inp_mat").val(),estconserv:$("#rpiso_inp_econserv").val(),estconst:$("#rpiso_inp_econstr").val(),
-        estru:$("#rpiso_inp_estruc").val().toUpperCase(),aconst:$("#rpiso_inp_aconst").val(),acomun:$("#rpiso_inp_acomun").val()},
+        estru:$("#rpiso_inp_estruc").val().toUpperCase(),aconst:$("#rpiso_inp_aconst").val(),acomun:$("#rpiso_inp_check_comun").is(':checked')?1:0},
         success: function(r) 
         {
             MensajeExito("Modificó Correctamente","Su Registro Fue Insertado con Éxito...",4000);

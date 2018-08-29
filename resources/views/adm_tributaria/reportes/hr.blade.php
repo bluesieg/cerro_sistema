@@ -143,9 +143,9 @@
               <th>NUMERO INTERIOR/DPTO</th>
           </tr>
           <tr>
-              <td colspan="6">{{$sql->dom_fiscal}}</td>
+              <td colspan="6">{{$sql->dom_fiscal}}, {{$sql->ref_dom_fis}}</td>
               <td colspan="2" style="text-align: center;">{{$sql->nro_mun}}</td>
-              <td colspan="2" style="text-align: center;"></td>
+              <td colspan="2" style="text-align: center;">{{$sql->contri_dpto}}</td>
           </tr>
           <tr>
               <td class="nro">16</td>
@@ -180,7 +180,7 @@
             <tr>
               <td>{{ $loop->iteration }}</td>
               <td>{{$pre->tp}}</td>
-              <td>{{$pre->cod_cat." - ".$pre->nom_via." ".$pre->nro_mun}}</td>
+              <td>{{$pre->nom_via." ".$pre->nro_mun." ".($pre->mzna_dist!=null?"MZN ".$pre->mzna_dist:"")." ".($pre->lote_dist!=null?"LT ".$pre->lote_dist:"")." ".($pre->zona!="-"?"ZONA ".$pre->zona:"")." ".($pre->secc!="-"?"SECC ".$pre->secc:"")." ".($pre->dpto!="-"?"DPTO ".$pre->dpto:"")." ".($pre->referencia!=null?$pre->referencia:"")." ".$pre->nomb_hab_urba}}</td>
               <td style="text-align: center">{{$pre->nro_condominios}}</td>
               <td style="text-align: right; padding-right: 5px;">{{number_format($pre->base_impon_afecto,2,".",",")}}</td>
             </tr>
@@ -234,7 +234,5 @@
             </thead>
             <div style="padding-top: 1px; font-size: 0.6em; text-align:right ;">IMPRESO POR : {{$usuario[0]->usuario}}</div>
         </table>
-        
   </body>
-  
 </html>

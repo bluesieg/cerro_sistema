@@ -507,6 +507,19 @@ class AlcabalaController extends Controller
             {
                 $afecto=$sql->valor_transferencia*$sql->tip_camb;
             }
+            if($sql->area_const==null)
+            {
+                $sql->area_const=0;
+            }
+            if($sql->tip_pre_u_r==1)
+            {
+                $sql->are_terr=$sql->are_terr.' M2';
+            }
+            else
+            {
+                $sql->are_terr=$sql->are_terr.' Has';
+                $dir=$sql->lugar_pr_rust." ".$sql->ubicac_pr_rus." ".$sql->klm." ".$sql->nom_pre_pr_rus;
+            }
             $sql->fec_doc_tranf=$this->getCreatedAtAttribute($sql->fec_doc_tranf)->format('d/m/Y');
             if($sql->id_tip_camb==2){$moneda="$";}
             $view =  \View::make('alcabala.reportes.alcab', compact('sql','dir','moneda','afecto'))->render();

@@ -60,7 +60,7 @@ class ContribuyentesController extends Controller
                 $data->manz=$request['manz'];
                 $data->lote=$request['lote'];
                 $data->id_cond_exonerac=$request['id_cond_exonerac']; 
-                $data->id_via=$request['id_via'];        
+                $data->id_via=0;        
                 $data->id_pers=$request['id_pers']; 
                 $data->id_conv=$id_conv;
                 $data->ref_dom_fis= strtoupper($request['ref_dom_fis']);
@@ -94,7 +94,7 @@ class ContribuyentesController extends Controller
                 $data->manz=$request['manz'];
                 $data->lote=$request['lote'];
                 $data->id_cond_exonerac=$request['id_cond_exonerac']; 
-                $data->id_via=$request['id_via'];        
+                $data->id_via=0;        
                 $data->id_pers=$request['id_pers']; 
                 $data->id_conv=$id_conv;
                 $data->ref_dom_fis= strtoupper($request['ref_dom_fis']);
@@ -154,7 +154,7 @@ class ContribuyentesController extends Controller
                     $val->manz=$request['manz'];
                     $val->lote=$request['lote'];
                     $val->id_cond_exonerac=$request['id_cond_exonerac']; 
-                    $val->id_via=$request['id_via'];        
+                    $val->id_via=0;        
                     $val->id_pers=$request['id_pers']; 
                     $val->ref_dom_fis= strtoupper($request['ref_dom_fis']);
                     $val->nom_via_2=$request['nom_via_2'];

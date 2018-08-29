@@ -100,27 +100,31 @@
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px;" >
         <thead>
           <tr>
-              <th style="width: 43%">HABILITACION URBANA</th>
-              <th style="width: 30%">CALLE / AV. /PSJE</th>
-              <th style="width: 7%">N° MUN.</th>
-              <th style="width: 6%">INTER</th>
-              <th style="width: 7%">MZNA</th>
-              <th style="width: 7%">LOTE</th>
+              <th style="width: 40%;font-size: 0.6em">HABILITACION URBANA</th>
+              <th style="width: 30%;font-size: 0.6em">CALLE / AV. /PSJE</th>
+              <th style="width: 5%;font-size: 0.6em">N° MUN.</th>
+              <th style="width: 5%;font-size: 0.6em">MZNA</th>
+              <th style="width: 5%;font-size: 0.6em">LOTE</th>
+              <th style="width: 5%;font-size: 0.6em">ZONA</th>
+              <th style="width: 5%;font-size: 0.6em">SECC</th>
+              <th style="width: 5%;font-size: 0.6em">DPTO</th>
           </tr>
           
         </thead>
         <tbody>
           <tr>
-              <td>{{$sql->habilitacion}}</td>
-              <td>{{$sql->cod_via."-".$sql->nom_via}}</td>
-              <td>{{$sql->nro_mun}}</td>
-              <td>{{$sql->nro_int}}</td>
-              <td>{{$sql->mzna_dist}}</td>
-              <td>{{$sql->lote_dist}}</td>
+              <td style="font-size: 0.6em">{{$sql->habilitacion}}</td>
+              <td style="font-size: 0.6em">{{$sql->nom_via}}</td>
+              <td style="font-size: 0.6em">{{$sql->nro_mun}}</td>
+              <td style="font-size: 0.6em">{{$sql->mzna_dist}}</td>
+              <td style="font-size: 0.6em">{{$sql->lote_dist}}</td>
+              <td style="font-size: 0.6em">{{$sql->zona}}</td>
+              <td style="font-size: 0.6em">{{$sql->secc}}</td>
+              <td style="font-size: 0.6em">{{$sql->dpto}}</td>
           </tr>
           <tr>
-              <td colspan="6">
-                  REFERENCIA: @if($sql->sup_mzna!=''){{'SUP. MNZA '.$sql->sup_mzna.', '}}@endif
+              <td colspan="8" style="font-size: 0.6em"e>
+                  @if($sql->sup_mzna!=''){{'SUP. MNZA '.$sql->sup_mzna.', '}}@endif
                               @if($sql->gpo_zonal!=''){{'GPO. ZONAL '.$sql->gpo_zonal.', '}}@endif 
                               @if($sql->referencia!='-'){{$sql->referencia}}@endif 
                               
@@ -158,19 +162,20 @@
         <table border="0" cellspacing="0" cellpadding="0">
         <thead>
           <tr>
-              <th style="width: 4%">PISO</th>
-              <th style="width: 4%">CLAS</th>
-              <th style="width: 4%">MAT</th>
-              <th style="width: 4%">EST</th>
-              <th style="width: 4%">ANT.</th>
-              <th style="width: 8%">CATEGORIAS</th>
-              <th style="width: 10%">VALOR UNIT M2</th>
-              <th style="width: 6%">INCRE.</th>
-              <th style="width: 6%">DEPREC (%)</th>
-              <th style="width: 10%">VALOR UNIT DEPREC.</th>
-              <th style="width: 10%">AREA CONST.</th>
-              <th style="width: 10%">AREA COMUN</th>
-              <th style="width: 15%">VALOR TOTAL S/.</th>
+              <th style="width: 4%;font-size: 0.6em">PISO</th>
+              <th style="width: 4%;font-size: 0.6em">CLAS</th>
+              <th style="width: 4%;font-size: 0.6em">MAT</th>
+              <th style="width: 4%;font-size: 0.6em">EST</th>
+              <th style="width: 4%;font-size: 0.6em">ANT.</th>
+              <th style="width: 8%;font-size: 0.6em">CATEGORIAS</th>
+              <th style="width: 10%;font-size: 0.6em">VALOR <br> UNIT M2</th>
+              <th style="width: 6%;font-size: 0.6em">INCRE.</th>
+              <th style="width: 6%;font-size: 0.6em">DEPREC</th>
+              <th style="width: 10%;font-size: 0.6em">VALOR UNIT DEPREC.</th>
+              <th style="width: 7%;font-size: 0.6em">AREA <br>CONST.</th>
+              <th style="width: 7%;font-size: 0.6em">VAL AREA <br>CONST.</th>
+              <th style="width: 7%;font-size: 0.6em">AREA <br>COMUN</th>
+              <th style="width: 15%;font-size: 0.6em">VALOR <br>TOTAL S/.</th>
               
           </tr>
         </thead>
@@ -185,9 +190,10 @@
               <td style="padding-left: 2px;">{{$pis->est_mur.$pis->est_tch.$pis->aca_pis.$pis->aca_pta.$pis->aca_rev.$pis->aca_ban.$pis->ins_ele}}</td>
               <td style="text-align: right;padding-right: 5px;">{{number_format($pis->val_cons,2)}}</td>
               <td style="text-align: right;padding-right: 5px;">{{number_format($pis->inc_pis)}}</td>
-              <td style="text-align: right;padding-right: 5px;">{{$pis->por_dep."%"}}</td>
+              <td style="text-align: right;padding-right: 5px;">{{number_format($pis->val_cons*($pis->por_dep/100),2)}}</td>
               <td style="text-align: right;padding-right: 5px;">{{ number_format($pis->val_uni_dep,2)}}</td>
               <td style="text-align: right;padding-right: 5px;">{{number_format($pis->area_const,2)}}</td>
+              <td style="text-align: right;padding-right: 5px;">{{number_format($pis->val_const_tot,2)}}</td>
               <td style="text-align: right;padding-right: 5px;">{{number_format($pis->val_areas_com,2)}}</td>
               <td style="text-align: right;padding-right: 5px;">{{number_format($pis->val_piso,2)}}</td>
           </tr>

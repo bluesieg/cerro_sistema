@@ -25,12 +25,12 @@ function open_dialog_new_edit_Contribuyente() {
     MensajeDialogLoadAjaxFinish('dialog_new_edit_Contribuyentes');
 }
 function selec_dist(val){
-    if(val=='040104'){
-        autocompletar_av_jr_call('txt_av_jr_calle_psje');
-    }else{
-        $("#txt_av_jr_calle_psje").autocomplete({source: []});
+//    if(val=='040104'){
+//        autocompletar_av_jr_call('txt_av_jr_calle_psje');
+//    }else{
+//        $("#txt_av_jr_calle_psje").autocomplete({source: []});
         $("#hiddentxt_av_jr_calle_psje").val('0');
-    }
+//    }
 }
 function buscar_contrib(){
     fn_actualizar_grilla('table_Contribuyentes','grid_contribuyentes?buscar='+($("#vw_contrib_buscar").val()).toUpperCase());
@@ -243,10 +243,10 @@ function update_contrib(){
             id_dpto:$("#contrib_dpto").val(),
             id_prov:$("#contrib_prov").val(), 
             id_dist:$("#contrib_dist").val(),            
-            nro_mun:$("#contrib_nro_mun").val() || '0',
-            dpto:$("#contrib_dpto_depa").val() || '0',
-            manz:$("#contrib_manz").val() || '0',
-            lote:$("#contrib_lote").val() || '0',
+            nro_mun:$("#contrib_nro_mun").val(),
+            dpto:$("#contrib_dpto_depa").val(),
+            manz:$("#contrib_manz").val(),
+            lote:$("#contrib_lote").val(),
             id_cond_exonerac:$("#contrib_id_cond_exonerac").val() || '1', 
             id_via:$("#hiddentxt_av_jr_calle_psje").val() || '0',             
             id_pers:$("#vw_contrib_id_pers").val() || '0', 
@@ -403,10 +403,10 @@ function new_contrib() {
             id_dpto:$("#contrib_dpto").val(),
             id_prov:$("#contrib_prov").val(), 
             id_dist:$("#contrib_dist").val(),            
-            nro_mun:$("#contrib_nro_mun").val() || '0',
-            dpto:$("#contrib_dpto_depa").val() || '0',
-            manz:$("#contrib_manz").val() || '0',
-            lote:$("#contrib_lote").val() || '0',
+            nro_mun:$("#contrib_nro_mun").val(),
+            dpto:$("#contrib_dpto_depa").val(),
+            manz:$("#contrib_manz").val() ,
+            lote:$("#contrib_lote").val(),
             id_cond_exonerac:$("#contrib_id_cond_exonerac").val() || '1', 
             id_via:$("#hiddentxt_av_jr_calle_psje").val() || '0',             
             id_pers:$("#vw_contrib_id_pers").val() || '0', 

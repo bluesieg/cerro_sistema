@@ -39,7 +39,8 @@ class PisosController extends Controller
         $pisos->aca_ban = substr($request['estru'],5,1);
         $pisos->ins_ele = substr($request['estru'],6,1);
         $pisos->area_const = $request['aconst'];
-        $pisos->val_areas_com = $request['acomun'];
+        //$pisos->val_areas_com = $request['acomun'];
+        $pisos->check_are_comun=$request['acomun'];
         $pisos->num_pis = $totapisos[0]->total+1;
         $pisos->id_pred_anio = $request['id_pre'];
         $pisos->save();
@@ -90,10 +91,9 @@ class PisosController extends Controller
             $val->aca_ban = substr($request['estru'],5,1);
             $val->ins_ele = substr($request['estru'],6,1);
             $val->area_const = $request['aconst'];
-            $val->val_areas_com = $request['acomun'];
+            //$val->val_areas_com = $request['acomun'];
+            $val->check_are_comun=$request['acomun'];
             $val->save();
-            
-            
             $this->calculos_ivpp($val->id_pred_anio);
        
         }
