@@ -75,57 +75,57 @@
                 <thead>
                     <tr>
                         
-                        <th align="center" width="5%" style="font-size:0.8em">Año</th>
-                        <th align="center" width="10%" style="font-size:0.8em">Base Imponible</th>
-                        <th align="center" width="10%" style="font-size:0.8em">Formularios</th>
-                        <th align="center" width="10%" style="font-size:0.8em">Impuesto Predial</th>
-                        <th align="center" width="5%" style="font-size:0.8em">Reajuste</th>
-                        <th align="center" width="5%" style="font-size:0.8em">TIM</th>
-                        <th align="center" width="10%" style="font-size:0.8em">Multa DJ</th>
-                        <th align="center" width="10%" style="font-size:0.8em">Interes Multa</th>
-                        <th align="center" width="10%" style="font-size:0.8em">RD_OP</th>
-                        <th align="center" width="10%" style="font-size:0.8em">Arbitrios Municipales</th>
-                        <th align="center" width="10%" style="font-size:0.8em">RD_ARB</th>
-                        <th align="center" width="10%" style="font-size:0.8em">Descuento Arbitrios</th>
-                        <th align="center" width="10%" style="font-size:0.8em">Interes Arbitrios</th>
-                        <th align="center" width="10%" style="font-size:0.8em">Total</th>
+                        <th align="center" width="5%" style="font-size:0.6em">Año</th>
+                        <th align="center" width="15%" style="font-size:0.6em">Base Imponible</th>
+                        <th align="center" width="5%" style="font-size:0.6em">Form</th>
+                        <th align="center" width="10%" style="font-size:0.6em">Impuesto Predial</th>
+                        <th align="center" width="5%" style="font-size:0.6em">Reajuste</th>
+                        <th align="center" width="5%" style="font-size:0.6em">TIM</th>
+                        <th align="center" width="10%" style="font-size:0.6em">Multa DJ</th>
+                        <th align="center" width="10%" style="font-size:0.6em">Interes Multa</th>
+                        <th align="center" width="10%" style="font-size:0.6em">RD_OP</th>
+                        <th align="center" width="10%" style="font-size:0.6em">Arbitrios Municipales</th>
+                        <th align="center" width="10%" style="font-size:0.6em">RD_ARB</th>
+                        <th align="center" width="10%" style="font-size:0.6em">Descuento Arbitrios</th>
+                        <th align="center" width="10%" style="font-size:0.6em">Interes Arbitrios</th>
+                        <th align="center" width="10%" style="font-size:0.6em">Total</th>
                     </tr>                                        
                 </thead>
                 <tbody>
                     @foreach($contrib as $pred)
                     <tr>                        
-                        <td style="text-align: center">{{ $pred->ano_cta }}</td>
-                        <td style="text-align: right">{{ number_format($pred->base_imponible,2,'.',',') }}</td>
-                        <td style="text-align: right">{{ number_format($pred->formularios,2,'.',',') }}</td>
-                        <td style="text-align: right">{{ number_format($pred->predial,2,'.',',') }}</td>
-                        <td style="text-align: right">{{ number_format($pred->reajuste,2,'.',',') }}</td>
-                        <td style="text-align: right">{{ number_format($pred->interes_impuesto,2,'.',',') }}</td>
-                        <td style="text-align: right">{{ number_format($pred->multa_dj,2,'.',',') }}</td>
-                        <td style="text-align: right">{{ number_format($pred->interes_multa,2,'.',',') }}</td>
-                        <td style="text-align: right">{{ substr($pred->nro_rd,-4)."-".$pred->anio}}</td>
-                        <td style="text-align: right">{{ number_format($pred->tot_arbitrios,2,'.',',') }}</td>
-                        <td style="text-align: right"></td>
-                        <td style="text-align: right">{{ number_format($pred->descuento_arbit,2,'.',',') }}</td>
-                        <td style="text-align: right">{{ number_format($pred->interes_arbit,2,'.',',')  }}</td>
-                        <td style="text-align: right">{{ number_format($pred->total,2,'.',',')  }}</td>
+                        <td style="text-align: center;font-size:0.6em">{{ $pred->ano_cta }}</td>
+                        <td style="text-align: right;font-size:0.6em">{{ number_format($pred->base_imponible,2,'.',',') }}</td>
+                        <td style="text-align: right;font-size:0.6em">{{ number_format($pred->formularios,2,'.',',') }}</td>
+                        <td style="text-align: right;font-size:0.6em">{{ number_format($pred->predial,2,'.',',') }}</td>
+                        <td style="text-align: right;font-size:0.6em">{{ number_format($pred->reajuste,2,'.',',') }}</td>
+                        <td style="text-align: right;font-size:0.6em">{{ number_format($pred->interes_impuesto,2,'.',',') }}</td>
+                        <td style="text-align: right;font-size:0.6em">{{ number_format($pred->multa_dj,2,'.',',') }}</td>
+                        <td style="text-align: right;font-size:0.6em">{{ number_format($pred->interes_multa,2,'.',',') }}</td>
+                        <td style="text-align: right;font-size:0.6em">{{ substr($pred->nro_rd,-4)."-".$pred->anio}}</td>
+                        <td style="text-align: right;font-size:0.6em">{{ number_format($pred->tot_arbitrios,2,'.',',') }}</td>
+                        <td style="text-align: right;font-size:0.6em"></td>
+                        <td style="text-align: right;font-size:0.6em">{{ number_format($pred->descuento_arbit,2,'.',',') }}</td>
+                        <td style="text-align: right;font-size:0.6em">{{ number_format($pred->interes_arbit,2,'.',',')  }}</td>
+                        <td style="text-align: right;font-size:0.6em">{{ number_format($pred->total,2,'.',',')  }}</td>
                     </tr>
                     @endforeach                                     
                 </tbody>
                 <tbody>
                     <tr>                        
                         <td colspan="2" style="text-align: right"><b>TOTAL</b></td>
-                        <td style="text-align: right"><b>{{ number_format($contrib->sum('formularios'),2,'.',',') }}</b></td>
-                        <td style="text-align: right"><b>{{ number_format($contrib->sum('predial'),2,'.',',') }}</b></td>
-                        <td style="text-align: right"><b>{{ number_format($contrib->sum('reajuste'),2,'.',',') }}</b></td>
-                        <td style="text-align: right"><b>{{ number_format($contrib->sum('interes_impuesto'),2,'.',',') }}</b></td>
-                        <td style="text-align: right"><b>{{ number_format($contrib->sum('multa_dj'),2,'.',',') }}</b></td>
-                        <td style="text-align: right"><b>{{ number_format($contrib->sum('interes_multa'),2,'.',',') }}</b></td>
-                        <td style="text-align: right"><b>{{ number_format($contrib->sum('nro_rd'),2,'.',',') }}</b></td>
-                        <td style="text-align: right"><b>{{ number_format($contrib->sum('tot_arbitrios'),2,'.',',') }}</b></td>
-                        <td style="text-align: right"></td>
-                        <td style="text-align: right"><b>{{ number_format($contrib->sum('descuento_arbit'),2,'.',',') }}</b></td>
-                        <td style="text-align: right"><b>{{ number_format($contrib->sum('interes_arbit'),2,'.',',')  }}</b></td>
-                        <td style="text-align: right"><b>{{ number_format($contrib->sum('total'),2,'.',',')  }}</b></td>
+                        <td style="text-align: right;font-size:0.6em"><b>{{ number_format($contrib->sum('formularios'),2,'.',',') }}</b></td>
+                        <td style="text-align: right;font-size:0.6em"><b>{{ number_format($contrib->sum('predial'),2,'.',',') }}</b></td>
+                        <td style="text-align: right;font-size:0.6em"><b>{{ number_format($contrib->sum('reajuste'),2,'.',',') }}</b></td>
+                        <td style="text-align: right;font-size:0.6em"><b>{{ number_format($contrib->sum('interes_impuesto'),2,'.',',') }}</b></td>
+                        <td style="text-align: right;font-size:0.6em"><b>{{ number_format($contrib->sum('multa_dj'),2,'.',',') }}</b></td>
+                        <td style="text-align: right;font-size:0.6em"><b>{{ number_format($contrib->sum('interes_multa'),2,'.',',') }}</b></td>
+                        <td style="text-align: right;font-size:0.6em"><b>{{ number_format($contrib->sum('nro_rd'),2,'.',',') }}</b></td>
+                        <td style="text-align: right;font-size:0.6em"><b>{{ number_format($contrib->sum('tot_arbitrios'),2,'.',',') }}</b></td>
+                        <td style="text-align: right;font-size:0.6em"></td>
+                        <td style="text-align: right;font-size:0.6em"><b>{{ number_format($contrib->sum('descuento_arbit'),2,'.',',') }}</b></td>
+                        <td style="text-align: right;font-size:0.6em"><b>{{ number_format($contrib->sum('interes_arbit'),2,'.',',')  }}</b></td>
+                        <td style="text-align: right;font-size:0.6em"><b>{{ number_format($contrib->sum('total'),2,'.',',')  }}</b></td>
                     </tr>                                   
                 </tbody>
             </table>

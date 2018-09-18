@@ -32,11 +32,11 @@
          
           
           
-          <div class="lado" style="text-align: left !important; padding-top: 20px;">GERENCIA DE RENTAS</div>
+          <div class="lado" style="text-align: left !important; padding-top: 20px;">GERENCIA DE ADM. TRIBUTARIA</div>
           <div class="lado">
-              <div class="sub">IMPUESTO PREDIAL</div>
+              <div class="sub">HOJA DE RESUMEN</div>
           </div>
-          <div class="lado" style="text-align: right !important"><div class="resaltado" >HR - {{ $an }}</div>HOJA RESUMEN</div>
+          <div class="lado" style="text-align: right !important">PERIODO<BR><div class="resaltado" >{{ $an }}</div></div>
           <div Class="asunto" style="margin-top: 5px;">DECLARACION JURADA DE AUTOVALUO</div>
           <div class="subasunto">LEY TRIBUTARIA MUNICIPAL/DECRETO LEGISLATIVO 776</div>
           <table border="0" cellspacing="0" cellpadding="0" style="margin: 0px;">
@@ -164,7 +164,7 @@
         
       </table>
         <div class="lado3" style="height: 420px; border-bottom: 1px solid #333">
-            INFORMACION ADICIONAL. 
+            VALORIZACION DE PREDIOS Y DETERMINACION DE IMPUESTO
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px; font-size: 1.3em;">
         <thead>
             <tr >

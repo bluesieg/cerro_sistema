@@ -135,6 +135,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('get_centro_sector', 'MapController@get_centro_sector');
         Route::post('mznas_x_sector', 'MapController@mznas_x_sector');
         Route::post('get_lotes_x_sector', 'MapController@get_lotes_x_sector');
+        Route::post('get_lotes_x_sector_mapa', 'MapController@get_lotes_x_sector_mapa');
         Route::post('get_predios_rentas','MapController@get_predios_rentas');
         Route::get('getagencias', 'MapController@get_agencias');
         Route::get('getagencias_polygono', 'MapController@get_agencias_polygono');

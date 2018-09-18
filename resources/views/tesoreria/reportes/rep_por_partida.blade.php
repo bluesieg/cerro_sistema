@@ -31,7 +31,7 @@
 
     </table>
 
-    <center><div Class="asunto" style="margin-top: 10px;"><b>REPORTE DE INGRESOS POR PARTIDA</b></div></center>
+    <center><div Class="asunto" style="margin-top: 10px;"><b>RECIBO DE INGRESOS</b></div></center>
     <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px;">
        
         

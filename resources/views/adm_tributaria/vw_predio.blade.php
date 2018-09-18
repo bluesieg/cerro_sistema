@@ -725,13 +725,14 @@
                                         </label>
                                     </div>
                                     <div class='col-lg-3'>
-                                        <label class="label">Area Terreno:</label>
+                                        <label class="label">Are. Terr./Matriz:</label>
                                         <label class="input">
+                                            
                                             <input id="dlg_inp_areter" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" onkeyup="validarvalter();" style="text-align: right" placeholder="0.00">
                                         </label>
                                     </div>
                                     <div class='col-lg-3'>
-                                        <label class="label">Area comun Terr.:</label>
+                                        <label class="label">% Area Comun:</label>
                                         <label class="input">
                                             <input id="dlg_inp_arecomter" type="text"  class="input-sm" onkeypress="return soloNumeroTab(event);" onkeyup="validarvalter();" style="text-align: right" placeholder="0.00">
                                         </label>

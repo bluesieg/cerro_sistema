@@ -1091,7 +1091,14 @@ function fn_confirmar_borrar_predio()
             comun=0;}
         else{
             comun=$("#dlg_inp_arecomter").val();}
-        $("#dlg_inp_valterr").val(formato_numero($("#dlg_inp_aranc").val()*(parseFloat($("#dlg_inp_areter").val())+parseFloat(comun)),3,".",","));
+        if(comun>0)
+        {
+            $("#dlg_inp_valterr").val(formato_numero($("#dlg_inp_aranc").val()*(parseFloat($("#dlg_inp_areter").val())*parseFloat(comun)/100),3,".",","));
+        }
+        else
+        {
+            $("#dlg_inp_valterr").val(formato_numero($("#dlg_inp_aranc").val()*(parseFloat($("#dlg_inp_areter").val())),3,".",","));
+        }
     }
     autocompletar=0;
     function auto_input(textbox,url,extra){

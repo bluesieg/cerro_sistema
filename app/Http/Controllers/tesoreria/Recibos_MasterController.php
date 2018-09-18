@@ -138,34 +138,29 @@ class Recibos_MasterController extends Controller
    
     public function store(Request $request)
     {
-        //
     }
    
     public function show($id)
     {
-        //
     }
 
     public function edit($id)
     {
-        //
     }
 
     public function update(Request $request, $id)
     {
-        //
     }
 
     public function destroy($id)
     {
-        //
     }
-   
-
     
     function tabla_cta_cte_2(Request $request){
         $id_contrib = $request['id_contrib'];
         $ano_cta = $request['ano_cta'];
+        $imp=DB::select('select adm_tri.calcula_reajuste_ipm('.$id_contrib.','.$ano_cta.')');
+        $tim=DB::select('select adm_tri.calcula_tim('.$id_contrib.','.$ano_cta.')');
         $totalg = DB::select("select count(id_contrib) as total from adm_tri.vw_cta_cte2 where id_contrib='".$id_contrib."' and ano_cta='".$ano_cta."'");
         $page = $_GET['page'];
         $limit = $_GET['rows'];
@@ -209,12 +204,14 @@ class Recibos_MasterController extends Controller
                 $Datos->id_tribu,
                 //$Datos->id_contrib,
                 trim($Datos->descrip_tributo),
-                trim($Datos->ivpp),
-                trim($Datos->saldo),                
-                trim($Datos->abo1_cta),                
-                trim($Datos->abo2_cta),
-                trim($Datos->abo3_cta),
-                trim($Datos->abo4_cta),
+                //trim($Datos->ivpp),
+                $Datos->car1_cta+$Datos->car2_cta+$Datos->car3_cta+$Datos->car4_cta,
+                //trim($Datos->saldo),   
+                ($Datos->car1_cta-$Datos->abo1_cta)+($Datos->car2_cta-$Datos->abo2_cta)+($Datos->car3_cta-$Datos->abo3_cta)+($Datos->car4_cta-$Datos->abo4_cta),
+                trim($Datos->car1_cta-$Datos->abo1_cta),                
+                trim($Datos->car2_cta-$Datos->abo2_cta),
+                trim($Datos->car3_cta-$Datos->abo3_cta),
+                trim($Datos->car4_cta-$Datos->abo4_cta),
                 $Datos->id_conv_mtr,
                 $Datos->id_coa_mtr                
             );

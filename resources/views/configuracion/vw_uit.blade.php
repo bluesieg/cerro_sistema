@@ -130,7 +130,7 @@
             datatype: 'json', mtype: 'GET',
             autowidth: true, height: 'auto',
             colNames: ['pk_uit', 'Año', 'UIT', 'Uit Alcab %', 'Tasa Alcab', 'Formatos', '% Min Ivpp', '% Min O Inst', 'deoa15', 'de15a60', 'mas60','Factor Instalaciones'],
-            rowNum: 15, sortname: 'pk_uit', sortorder: 'desc', viewrecords: true, caption: 'Lista UIT', align: "center",
+            rowNum: 15, sortname: 'anio', sortorder: 'desc', viewrecords: true, caption: 'Lista UIT', align: "center",
             colModel: [
                 {name: 'pk_uit', index: 'pk_uit', hidden: true},
                 {name: 'anio', index: 'anio', align: 'center'},

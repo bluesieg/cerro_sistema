@@ -184,13 +184,13 @@
                     }
                     for (var a = 1; a <= 4; a++) {
                         var val = $("#table_cta_cte2").getCell(idarray[i], 'abo' + a + '_cta');
-                        if (val == '0.000' && idarray[i] == predial) {
+                        if (parseFloat(val) > 0 && idarray[i] == predial) {
                             $("#table_cta_cte2").jqGrid("setCell", idarray[i], 'abo' + a + '_cta',
-                                    "<input type='checkbox' name='chk_trim' value='" + a + "' id='chk_calc_pag_" + a + "' onchange='calc_tot_a_pagar_predial(" + a + ",this)'>", {'text-align': 'center'});
+                                    "<input type='checkbox' name='chk_trim' value='" + a + "' id='chk_calc_pag_" + a + "' cantidad='"+val+"' onchange='calc_tot_a_pagar_predial(" + a + ",this,"+val+")'>"+val, {'text-align': 'center'});
                         }
                         if (val == '0.000' && idarray[i] == formatos) {
                             $("#table_cta_cte2").jqGrid("setCell", idarray[i], 'abo' + a + '_cta',
-                                    "<input type='checkbox' name='chk_trim_form' value='" + a + "' id='chk_calc_form_imp_" + a + "' onchange='calc_tot_a_pagar_predial(" + a + ",this)' disabled='disabled' checked>", {'text-align': 'center'});
+                                    "<input type='checkbox' name='chk_trim_form' value='" + a + "' id='chk_calc_form_imp_" + a + "' cantidad='"+val+"' onchange='calc_tot_a_pagar_predial(" + a + ",this,"+val+")' disabled='disabled' checked>", {'text-align': 'center'});
                         }
                     }
                     pre_x_trim = parseFloat($("#table_cta_cte2").getCell(idarray[i], 'ivpp'));
@@ -523,7 +523,7 @@
                                             
                                             <div class="col-xs-12" style="padding: 0px;">
                                                 <div class="input-group input-group-md">
-                                                    <span class="input-group-addon" style="width: 100px; background-color: white">Trimestre S/. &nbsp;<i class="fa fa-dollar"></i></span>
+                                                    <span class="input-group-addon" style="width: 100px; background-color: white">Trimestre S/. &nbsp;</span>
                                                     <div class=""  >
                                                         <input id="vw_emis_re_pag_pre_x_trim" type="text"  class="form-control" style="height: 32px; text-align: right; padding-right: 5px;width: 120px;" disabled="">
                                                     </div>
@@ -531,7 +531,7 @@
                                             </div>
                                             <div class="col-xs-12" style="padding: 0px;">
                                                 <div class="input-group input-group-md">
-                                                    <span class="input-group-addon" style="width: 100px;background-color: white">Total S/. &nbsp;<i class="fa fa-dollar"></i></span>
+                                                    <span class="input-group-addon" style="width: 100px;background-color: white">Total S/. &nbsp;</span>
                                                     <div class=""  >
                                                         <input id="vw_emision_rec_pago_imp_pred_total_trimestre" type="text"  class="form-control" style="height: 32px; text-align: right; padding-right: 5px;width: 120px;" disabled="" onkeypress="return soloNumeroTab(event);">
                                                     </div>

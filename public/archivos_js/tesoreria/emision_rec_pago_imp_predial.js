@@ -172,7 +172,7 @@ var global_tot_a_pagar = 0;
 var select_check=0;
 var select_check_form=0;
 var inter=0;
-function calc_tot_a_pagar_predial(num,esto){
+function calc_tot_a_pagar_predial(num,esto,val){
     if($(esto).not(':checked')){
         $('input[type=checkbox][name=chk_total]').prop('checked', false);
     }
@@ -184,12 +184,13 @@ function calc_tot_a_pagar_predial(num,esto){
     }
 
     rowId=($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("predial"));
-    pre_x_trim = parseFloat($("#table_cta_cte2").getCell(rowId, 'ivpp'));                    
-    pre_x_trim = (pre_x_trim/4);
+//    pre_x_trim = parseFloat($("#table_cta_cte2").getCell(rowId, 'saldo'));
+    
+    pre_x_trim = parseFloat(val);
    
     total=0;
     $('input[type=checkbox][name=chk_trim]:checked').each(function() {
-        total=parseFloat(total)+parseFloat(pre_x_trim);
+        total=parseFloat(total)+parseFloat($(this).attr("cantidad"));
        
     });
     var formatos = ($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("formatos"));

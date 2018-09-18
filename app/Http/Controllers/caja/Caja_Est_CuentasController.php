@@ -185,6 +185,12 @@ class Caja_Est_CuentasController extends Controller
     function print_est_cta_contrib($id_contrib,$desde,$hasta,Request $request){
         $foto_estado=$request['foto']; 
         $fracc="";
+        ///////llamar funcion imp
+        for($i=$desde;$i<=$hasta;$i++)
+        {
+            $imp=DB::select('select adm_tri.calcula_reajuste_ipm('.$id_contrib.','.$i.')');
+            $tim=DB::select('select adm_tri.calcula_tim('.$id_contrib.','.$i.')');
+        }
         $foto=DB::select('select pers_foto from adm_tri.vw_contribuyentes1 where id_contrib='.$id_contrib);
         $contrib1=DB::select('select * from adm_tri.vw_contribuyentes where id_contrib='.$id_contrib);
         $contrib = DB::table("adm_tri.vw_est_cta_2018")->where('id_pers',$id_contrib)->whereBetween('ano_cta', [$desde, $hasta])->get();

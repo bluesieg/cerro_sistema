@@ -477,7 +477,10 @@ function crearmanzana(val)
 {
     $("#dlg_selecciona_sector").dialog('close');
     map.removeLayer(lyr_sectores);
-    crearsector(1);
+    if(val>0)
+    {
+        crearsector(1);
+    }
     $("#chk_sector").prop("checked", true);
     $.ajax({url: 'getmznas',
             type: 'GET',
@@ -537,7 +540,7 @@ function crearlotes()
     
     $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            url: 'get_lotes_x_sector',
+            url: 'get_lotes_x_sector_mapa',
             type: 'POST',
             data: {codigo: $("#selsec").val()+""},
             success: function (data) {
@@ -585,7 +588,7 @@ function stylelotes(feature, resolution) {
 
 function crearhaburb()
 {
-    $.ajax({url: 'gethab_urb',
+    $.ajax({url: 'gethab_urb_by_id/'+$("#selsec").val(),
             type: 'GET',
 //            async: false,
             data:{sector:$("#selsec").val()},
@@ -624,7 +627,15 @@ function stylehaburb(feature, resolution) {
         }),
         text: new ol.style.Text({
         //font: '12px Roboto',
-        text: feature.get('codi_hab_urba')
+            text: map.getView().getZoom() > 14 ? feature.get('nomb_hab_urba') : "", 
+            fill: new ol.style.Fill({
+                color: 'white',
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'black',
+                width: 2,
+                lineCap: 'butt',
+            }),
         })
     });
 }

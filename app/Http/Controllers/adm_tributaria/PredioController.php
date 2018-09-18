@@ -194,7 +194,7 @@ class PredioController extends Controller
     public function destroy(Request $request)
     {
         $id_pred=DB::select("select id_pred,anio from adm_tri.predios_anio where id_pred_anio=".$request['id']);
-        $return=DB::select("select adm_tri.fn_elimina_predio(".$id_pred[0]->id_pred.")");
+        $return=DB::select("select adm_tri.fn_elimina_predio(".$id_pred[0]->id_pred.",".$id_pred[0]->anio.")");
     }
     public function ListManz(Request $request)
     {
@@ -222,14 +222,14 @@ class PredioController extends Controller
     }
     public function validar(Request $request)
     {
-        $count = DB::table('adm_tri.vw_predi_urba')->where('id_lote',$request['lote'])->where('anio',$request['an'])->where('pred_anio_activo',1)->where('pred_contrib_activo',1)->count();
+        $count = DB::table('adm_tri.vw_grid_predios')->where('id_lote',$request['lote'])->where('anio',$request['an'])->where('pred_anio_activo',1)->where('pred_contrib_activo',1)->count();
         if($count==0)
         {
             return $count;
         }
         else
         {
-            $poseedores=DB::table('adm_tri.vw_predi_urba')->select('contribuyente')->where('id_lote',$request['lote'])->where('anio',$request['an'])->where('pred_anio_activo',1)->where('pred_contrib_activo',1)->get();
+            $poseedores=DB::table('adm_tri.vw_grid_predios')->select('contribuyente')->where('id_lote',$request['lote'])->where('anio',$request['an'])->where('pred_anio_activo',1)->where('pred_contrib_activo',1)->get();
             $lista="";
             foreach ($poseedores as $contri)
             {

@@ -52,8 +52,8 @@
                 <thead>
                     <tr>
                         <th align="center" width="5%">Año</th>
-                        <th align="center" width="10%">Base Imponible</th>
-                        <th align="center" width="10%">Formularios</th>
+                        <th align="center" width="15%">Base Imponible</th>
+                        <th align="center" width="5%">Form</th>
                         <th align="center" width="10%">Impuesto Prediak</th>
                         <th align="center" width="10%">Trim II</th>
                         <th align="center" width="10%">Reajusto</th>

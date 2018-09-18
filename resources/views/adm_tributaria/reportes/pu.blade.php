@@ -37,7 +37,11 @@
               <td style=" font-size: 0.7em; width: 20%; border: 0px; text-align: center;">
                   MUNICIPALIDAD DISTRITAL DE CERRO COLORADO
               </td>
-              <td style="width: 40%;  border: 0px; padding: 10px 0px 0px 80px;"><div class="resaltado" style="font-size: 3em">PU - {{ $sql->anio }}</div>(Predio Urbano)</td>
+              <td style="width: 25%;  border: 0px; padding: 10px 0px 0px 80px; text-align: center"><div class="resaltado" style="font-size: 3em">PU</div>  <div style="font-size: 0.8em">PREDIO URBANO</div>
+              </td>
+              <td style="width: 15%;border: 1px; padding: 0px 0px 0px 0px; text-align: center">
+                  PERIODO<div class="resaltado" style="font-size: 3em;margin-top: 10px">{{ $sql->anio }}</div>
+              </td>
                 <td style="width: 15%; padding: 0px; border: 0px;text-align: center;font-size: 0.9em; " >
                 <div class="cabdiv" style="width: 100%; font-size: 0.9em !important">código contribuyente</div>
                 <div class="cuerdiv" style="width: 100%;font-size: 0.9em !important">{{ $sql->id_persona }}</div>
@@ -49,7 +53,7 @@
               
               <td style="width: 10%; padding: 0px 0px 0px 2px; border: 0px;text-align: center;font-size: 0.9em; " >
                 <div class="cabdiv" style="width: 100%;font-size: 0.9em !important">ANEXO</div>
-                <div class="cuerdiv" style="width: 100%;font-size: 0.9em !important">{{substr("000".$anexo,-4,4)}}</div>
+                <div class="cuerdiv" style="width: 100%;font-size: 0.9em !important">{{substr("000".$sql->anexo,-4,4)}}</div>
               </td>
           </tr>
         </thead>
@@ -157,7 +161,7 @@
       </table>
       <div style="height: 510px">
         <div class="lado3" >
-            INFORMACIÓN DE PISOS:    
+            DATOS DE LA CONSTRUCCION:    
         </div>
         <table border="0" cellspacing="0" cellpadding="0">
         <thead>
@@ -204,7 +208,7 @@
         @if (count($sql_ist) >= 1)
   
           <div class="lado3" >
-            INFORMACIÓN DE INSTALACIONES:    
+            DATOS DE LAS INSTALACIONES FIJAS Y PERMANENTES:    
         </div>
         <table border="0" cellspacing="0" cellpadding="0">
         <thead>
@@ -311,9 +315,21 @@
             </thead>
             <tbody>
               <tr>
-                  <td style="text-align: right;padding-right: 5px">{{number_format($sql->are_terr,2)}}</td>
-                  <td STYLE="border: 0px;">+</td>
-                  <td style="text-align: right;padding-right: 5px">{{number_format($sql->are_com_terr,2)}}</td>
+                  <td style="text-align: right;padding-right: 5px">
+                    @if($sql->are_com_terr>0)
+                        0
+                    @else
+                        {{number_format($sql->are_terr,2)}}
+                    @endif
+                  </td>
+                  <td STYLE="border: 0px;"></td>
+                  <td style="text-align: right;padding-right: 5px">
+                    @if($sql->are_com_terr>0)
+                        {{number_format($sql->are_terr*($sql->are_com_terr/100),2)}}
+                    @else
+                        {{number_format($sql->are_com_terr,2)}}
+                    @endif
+                  </td>
                   <td STYLE="border: 0px;">*</td>
                   <td style="text-align: right;padding-right: 5px">{{number_format($sql->arancel,2)}}</td>
                   <td STYLE="border: 0px;"></td>
