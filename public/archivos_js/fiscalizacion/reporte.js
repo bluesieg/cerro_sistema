@@ -35,7 +35,7 @@ function dlg_rep_fisca(tipo)
             iniciar=1;
             autocompletar_haburb('dlg_bus_zonas');
         }
-        crear_dlg('dialog_contri_fiscalizados',600,'Contribuyentes Fiscalizados',tipo);
+        crear_dlg_1('dialog_contri_fiscalizados',600,'Contribuyentes Fiscalizados',tipo);
     } 
     if (tipo===2) {
         $("#dlg_contri_hidden").val(0);
@@ -44,22 +44,22 @@ function dlg_rep_fisca(tipo)
             iniciar2=1;
             autocompletar_haburb('dlg_bus_zonas_2');
         }
-        crear_dlg('dialog_m2',600,'M2 Determinados x Fiscalizados',tipo);
+        crear_dlg_1('dialog_m2',600,'M2 Determinados x Fiscalizados',tipo);
     }
     if (tipo===3) {
-        crear_dlg('dialog_estado_hoja_liq',600,'Estado de Hoja de Liquidación',tipo);
+        crear_dlg_1('dialog_estado_hoja_liq',600,'Estado de Hoja de Liquidación',tipo);
     }
      if (tipo===4) {
-        crear_dlg('dialog_estado_resolucion_det',500,'Estado de Resolución de Determinación',tipo);
+        crear_dlg_1('dialog_estado_resolucion_det',500,'Estado de Resolución de Determinación',tipo);
     }
      if (tipo===5) {
-        crear_dlg('dialog_estado_resolucion_det_coactivo',500,'RD enviado a Coactivo',tipo);
+        crear_dlg_1('dialog_estado_resolucion_det_coactivo',500,'RD enviado a Coactivo',tipo);
     }
      if (tipo===6) {
-        crear_dlg('dialog_impuesto_6',500,'Impuesto Fiscalizado',tipo);
+        crear_dlg_1('dialog_impuesto_6',500,'Impuesto Fiscalizado',tipo);
     }
      if (tipo===7) {
-        crear_dlg('dialog_pu_pr',500,'Declaraciones Juradas por Fiscalizacion',tipo);
+        crear_dlg_1('dialog_pu_pr',500,'Declaraciones Juradas por Fiscalizacion',tipo);
     }
    
 }
@@ -85,7 +85,7 @@ function autocompletar_haburb(textbox){
         }
     });
 }
-function crear_dlg(id,ancho,titulo,tipo)
+function crear_dlg_1(id,ancho,titulo,tipo)
 {
     $("#"+id).dialog({
         autoOpen: false, modal: true, width: ancho, show: {effect: "fade", duration: 300}, resizable: false,

@@ -48,7 +48,7 @@ class Carta_RequerimientoController extends Controller
         $carta->anio_fis=$request['anfis'];
         $carta->id_usuario = Auth::user()->id;
         $carta->save();
-        $this->puente_carta_predios_create($carta->id_car,$carta->id_contrib,$carta->anio_fis);
+        $this->puente_carta_predios_create($carta->id_car,$carta->id_contrib,date('Y'));
         return $carta->id_car;
     }
 

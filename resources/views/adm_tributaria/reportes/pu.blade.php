@@ -213,17 +213,21 @@
         <table border="0" cellspacing="0" cellpadding="0">
         <thead>
           <tr>
-              <th style="width: 3%">COD</th>
-              <th style="width: 22%">DESCRIPCION</th>
-              <th style="width: 4%">ANTIG.</th>
-              <th style="width: 4%">MEP</th>
-              <th style="width: 4%">ECS</th>
-              <th style="width: 4%">ECC</th>
-              <th style="width: 4%">LARGO</th>
-              <th style="width: 4%">ANCHO</th>
-              <th style="width: 4%">ALTO</th>
-              <th style="width: 4%">UND. MED</th>
-              <th style="width: 10%">PROD.TOTAL</th>
+              <th style="width: 2%;font-size: 0.5em">COD</th>
+              <th style="width: 17%;font-size: 0.5em">DESCRIPCION</th>
+              <th style="width: 4%;font-size: 0.5em">ANTIG.</th>
+              <th style="width: 3%;font-size: 0.5em">CLAS</th>
+              <th style="width: 3%;font-size: 0.5em">MEP</th>
+              <th style="width: 3%;font-size: 0.5em">ECS</th>
+              <th style="width: 3%;font-size: 0.5em">ECC</th>
+              <th style="width: 4%;font-size: 0.5em">LARGO</th>
+              <th style="width: 4%;font-size: 0.5em">ANCHO</th>
+              <th style="width: 4%;font-size: 0.5em">ALTO</th>
+              <th style="width: 4%;font-size: 0.5em">UND. MED</th>
+              <th style="width: 5%;font-size: 0.5em">V. TOT.</th>
+              <th style="width: 5%;font-size: 0.5em">DEPREC.</th>
+              <th style="width: 5%;font-size: 0.5em">V. DEPREC</th>
+              <th style="width: 5%;font-size: 0.5em">VAL. OBRA</th>
               
           </tr>
           
@@ -231,29 +235,33 @@
         <tbody>
         @foreach ($sql_ist as $inst)
           <tr>
-              <td>{{$inst->cod_instal}}</td>
-              <td style="font-size:0.6em;">{{substr($inst->descrip_instal,0,30)}} ; {{$inst->glosa}}</td>
+              <td style="font-size: 0.5em">{{$inst->cod_instal}}</td>
+              <td style="font-size: 0.5em">{{substr($inst->descrip_instal,0,30)}} ; {{$inst->glosa}}</td>
               @if($inst->anio>0)
               
-              <td style="text-align: center">{{$inst->anio}}</td>
-              <td style="text-align: center">{{$inst->mep}}</td>
-              <td style="text-align: center">{{$inst->ecs}}</td>
-              <td style="text-align: center">{{$inst->ecc}}</td>
-              <td style="text-align: right;padding-right: 5px;">{{$inst->dim_lar}}</td>
-              <td style="text-align: right;padding-right: 5px;">{{$inst->dim_anch}}</td>
-              <td style="text-align: right;padding-right: 5px;">{{$inst->dim_alt}}</td>
-              <td style="text-align: center">{{$inst->unid_medida}}</td>
+              <td style="text-align: center; font-size: 0.5em">{{$inst->anio}}</td>
+              <td style="text-align: center; font-size: 0.5em">{{$inst->id_cla}}</td>
+              <td style="text-align: center; font-size: 0.5em">{{$inst->mep}}</td>
+              <td style="text-align: center; font-size: 0.5em">{{$inst->ecs}}</td>
+              <td style="text-align: center; font-size: 0.5em">{{$inst->ecc}}</td>
+              <td style="text-align: right;padding-right: 5px;; font-size: 0.5em">{{$inst->dim_lar}}</td>
+              <td style="text-align: right;padding-right: 5px;; font-size: 0.5em">{{$inst->dim_anch}}</td>
+              <td style="text-align: right;padding-right: 5px;; font-size: 0.5em">{{$inst->dim_alt}}</td>
+              <td style="text-align: center; font-size: 0.5em">{{$inst->unid_medida}}</td>
               @else
-              <td style="text-align: center"></td>
-              <td style="text-align: center"></td>
-              <td style="text-align: center"></td>
-              <td style="text-align: center"></td>
-              <td style="text-align: right;padding-right: 5px;"></td>
-              <td style="text-align: right;padding-right: 5px;"></td>
-              <td style="text-align: right;padding-right: 5px;"></td>
-              <td style="text-align: center"></td>
+              <td style="text-align: center; font-size: 0.5em"></td>
+              <td style="text-align: center; font-size: 0.5em"></td>
+              <td style="text-align: center; font-size: 0.5em"></td>
+              <td style="text-align: center; font-size: 0.5em"></td>
+              <td style="text-align: right;padding-right: 5px;; font-size: 0.5em"></td>
+              <td style="text-align: right;padding-right: 5px;; font-size: 0.5em"></td>
+              <td style="text-align: right;padding-right: 5px;; font-size: 0.5em"></td>
+              <td style="text-align: center; font-size: 0.5em"></td>
               @endif
-              <td style="text-align: right;padding-right: 5px;">{{$inst->tot_inst}}</td>
+              <td style="text-align: right;padding-right: 5px;; font-size: 0.5em">{{number_format($inst->val_obra,2,".",",")}}</td>
+              <td style="text-align: right;padding-right: 5px;; font-size: 0.5em">{{number_format($inst->valor_depec,2,".",",")}}</td>
+              <td style="text-align: right;padding-right: 5px;; font-size: 0.5em">{{number_format($inst->val_dep,2,".",",")}}</td>
+              <td style="text-align: right;padding-right: 5px;; font-size: 0.5em">{{number_format($inst->tot_inst,2,".",",")}}</td>
               
               
           </tr>
@@ -332,11 +340,16 @@
                   </td>
                   <td STYLE="border: 0px;">*</td>
                   <td style="text-align: right;padding-right: 5px">{{number_format($sql->arancel,2)}}</td>
-                  <td STYLE="border: 0px;"></td>
+                  <td STYLE="border: 0px;">
+                      
+                  </td>
               </tr>
               <tr>
                   
                   <td colspan="5" style="border:0px">
+                      @if($sql->id_cond_exonerac==4||$sql->id_cond_exonerac==5)
+                        {{$sql->desc_exon}} beneficiario de la deducción de la base imponible del impuesto predial equivalente al 50% UIT D.L. 776 art 19.
+                      @endif
                   </td>
                   
               </tr>

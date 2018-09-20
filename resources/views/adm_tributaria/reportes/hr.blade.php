@@ -178,7 +178,7 @@
         <tbody>
             @foreach ($sql_pre as $pre)
             <tr>
-              <td>{{ $loop->iteration }}</td>
+              <td>{{ $pre->anexo }}</td>
               <td>{{$pre->tp}}</td>
               <td>{{$pre->nom_via." ".$pre->nro_mun." ".($pre->mzna_dist!=null?"MZN ".$pre->mzna_dist:"")." ".($pre->lote_dist!=null?"LT ".$pre->lote_dist:"")." ".($pre->zona!="-"?"ZONA ".$pre->zona:"")." ".($pre->secc!="-"?"SECC ".$pre->secc:"")." ".($pre->dpto!="-"?"DPTO ".$pre->dpto:"")." ".($pre->referencia!=null?$pre->referencia:"")." ".$pre->nomb_hab_urba}}</td>
               <td style="text-align: center">{{$pre->nro_condominios}}</td>
@@ -192,7 +192,11 @@
         <table border="0" cellspacing="0" cellpadding="0" >
             <thead>
               <tr>
-                  <td style="width: 50%; border:0px;" rowspan="3"></td>
+                  <td style="width: 50%; border:0px;" rowspan="3">
+                      @if($sql->id_cond_exonerac==4||$sql->id_cond_exonerac==5)
+                        {{$sql->desc_exon}} beneficiario de la deducción de la base imponible del impuesto predial equivalente al 50% UIT D.L. 776 art 19.
+                      @endif
+                  </td>
                   <td class="nro">18</td>
                   <th style="width: 22.5%">BASE IMPONIBLE</th>
                   <td style="text-align: right; padding-right: 5px;">{{number_format($sql_pre->sum('base_impon_afecto'),2,".",",") }}</td>

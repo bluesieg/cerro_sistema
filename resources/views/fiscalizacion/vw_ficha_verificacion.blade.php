@@ -646,7 +646,7 @@
                             <div id="div_urb2">
                                 <div class="panel-group col-xs-3 " style="margin-top: 5px;   ">                
                                     <div class="panel panel-success cr-panel-sep">
-                                        <div class="panel-heading bg-color-success">Area Terr</div>
+                                        <div class="panel-heading bg-color-success">Are. Terr./Matriz</div>
                                         <div class="panel-body cr-body">
                                             <div class='col-lg-12 pd_dlg_cr' style="margin-top: 8px; padding-left: 10px;">
                                                 <label class="input">
@@ -659,7 +659,7 @@
                             
                                 <div class="panel-group col-xs-3 " style="margin-top: 5px;  ">                
                                     <div class="panel panel-success cr-panel-sep">
-                                        <div class="panel-heading bg-color-success">Area comun Terr</div>
+                                        <div class="panel-heading bg-color-success">% Area Comun:</div>
                                         <div class="panel-body cr-body">
                                             <div class='col-lg-12 pd_dlg_cr' style="margin-top: 8px; padding-left: 10px;">
                                                 <label class="input">

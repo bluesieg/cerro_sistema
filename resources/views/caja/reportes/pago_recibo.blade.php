@@ -60,7 +60,7 @@
                     @foreach($detalle as $det)
                     <tr>
                         <td align="center">{{number_format($det->cant,0)}}</td>
-                        <td align="center">{{$det->codigo_2}}</td>
+                        <td align="center">{{$det->codigo_1}}</td>
                         <td>{{$det->descrip_tributo}}&nbsp;&nbsp;
                             @if(isset($det->detalle_trimestres))
                                 [{{$det->detalle_trimestres}}]

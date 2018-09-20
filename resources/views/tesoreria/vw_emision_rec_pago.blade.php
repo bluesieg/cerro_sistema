@@ -510,7 +510,16 @@
                                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; margin-bottom: 10px; padding: 0px !important">
                                     <table id="table_cta_cte2"></table>
                                     <div id="pager_table_cta_cte2">
-                                        <div class="col-xs-6"></div>
+                                        <div class="col-xs-6">
+                                            <div class="col-xs-12" style="padding: 0px;">
+                                                <div class="input-group input-group-md">
+                                                    <span class="input-group-addon" style="width: 100px; background-color: white">Interes S/. &nbsp;</span>
+                                                    <div class="">
+                                                        <input id="input_interes_tot" type="text"  class="form-control" style="height: 32px; text-align: right; padding-right: 5px;width: 120px;" disabled="" value="0.00">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="col-xs-3" style="z-index: 99999999">
                                             <div class="input-group input-group-md" style="background-color: white;margin-top: 34px;">
                                                 <span class="input-group-addon" style="width: 100px; background-color: white">Activar Pago a Cuenta &nbsp;</span>

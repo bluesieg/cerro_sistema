@@ -24,7 +24,7 @@
                     <div style="width: 90%; border-top:1px solid #999; margin-top: 10px; margin-left: 25px;"></div>
                 </div>
             </td>
-            <td style="width: 10%;border: 0px; text-align: center"><b>Año a Fiscalizar<br>{{$sql->anio_fis}}</b></td>
+            <td style="width: 10%;border: 0px; text-align: center"><b></b></td>
             </tr>
             
         </table>
@@ -55,6 +55,14 @@
                 </td>
                 <td style="border:0px;">
                     : {{$sql->ref_dom_fis}}
+                </td>
+            </tr>
+            <tr>
+                <td style="border:0px">
+                    PERIODO FISCALIZADO
+               </td>
+                <td style="border:0px;">
+                    : {{$sql->anio_fis}} - {{date("Y")}}
                 </td>
             </tr>
         </table>

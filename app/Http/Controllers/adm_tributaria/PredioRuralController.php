@@ -114,6 +114,7 @@ class PredioRuralController extends Controller
         $rustico->id_uso_pre_rust = $request['uterr'];
         $rustico->id_gpo_tierra=$request['gpt'];
         $rustico->id_cat_gpo_tierra=$request['cgpt'];
+        $rustico->uc=$request['uc'];
         $rustico->save();
         return $rustico->id_pred_rus;
     }
@@ -149,6 +150,7 @@ class PredioRuralController extends Controller
             $val->id_uso_pre_rust = $request['uterr'];
             $val->id_gpo_tierra=$request['gpt'];
             $val->id_cat_gpo_tierra=$request['cgpt'];
+            $val->uc=$request['uc'];
             $val->save();
         }
         return "edit".$id;

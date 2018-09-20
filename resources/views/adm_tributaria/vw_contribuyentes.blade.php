@@ -170,7 +170,51 @@
                     get_datos_ruc();
                 }
             }
-        });        
+        });  
+//        $.ajax({
+//                   type: 'GET',
+//                   url: url,
+//                   data:{an:$("#selantra").val()},
+//                   success: function(data){               
+//                        var $local_todo=data;          
+//                         $("#inp_dep_prov_dis").autocomplete({
+//                              source: $local_todo,
+//                              focus: function(event, ui) {
+//                                     $("#"+textbox).val(ui.item.label);                             
+//                                     return false;
+//                              },
+//                              select: function(event, ui) {
+//                                     $("#"+textbox).val(ui.item.label);
+//                                     $("#hidden_"+textbox).val(ui.item.value);
+//                                     if(extra!=0)
+//                                     {
+//                                        $("#"+textbox+"_cod").val(ui.item.codi);
+//                                     }
+//                                     if(extra==2)
+//                                     {
+//                                        $( "#rinst_inp_largo,#rinst_inp_ancho,#rinst_inp_alto,#rinst_inp_canti" ).val(0);
+//                                        $("#rinst_inp_undmed").val(ui.item.und);
+//                                        if(ui.item.und=="UND")
+//                                        {
+//                                            $( "#rinst_inp_largo,#rinst_inp_ancho,#rinst_inp_alto" ).prop( "disabled", true );
+//                                            $( "#rinst_inp_canti" ).prop( "disabled", false );
+//                                        }
+//                                        if(ui.item.und=="M2" || ui.item.und=="ML")
+//                                        {
+//                                            $( "#rinst_inp_largo,#rinst_inp_ancho" ).prop( "disabled", false );
+//                                            $( "#rinst_inp_canti,#rinst_inp_alto" ).prop( "disabled", true );
+//                                        }
+//                                        if(ui.item.und=="M3")
+//                                        {
+//                                            $( "#rinst_inp_largo,#rinst_inp_ancho,#rinst_inp_alto" ).prop( "disabled", false );
+//                                            $( "#rinst_inp_canti" ).prop( "disabled", true );
+//                                        }
+//                                     }
+//                                      return false;
+//                              }   
+//                          });             
+//                    }
+//            });
     });
 </script>
 @stop
@@ -304,6 +348,14 @@
                                         </select><i></i> </label>   
                                 </section>
                             </div>
+                            <div class="col-xs-12" style="padding-left: 0px; display: none">
+                                <section class="col-xs-12" style="padding-left:0px;">
+                                    <label class="label">Departamento,Provincia,Distrito:</label>
+                                    <label class="input">
+                                        <input  id="inp_dep_prov_dis" type="text" class="input-sm text-uppercase" placeholder="Departamento,Provincia,Distrito">
+                                    </label>   
+                                </section>
+                            </div> 
                             <div class="row">
                                 <section class="col col-4" style="padding-right:5px;">
                                     <label class="label">Avenida, Jiron, Calle o Pasaje.:</label>

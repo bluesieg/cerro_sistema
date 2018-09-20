@@ -1,3 +1,12 @@
+function callfilltab(tip)
+{
+    if(tip==1)
+    {
+        callfilltab_arbitrios();
+    }
+    jQuery("#table_predios").jqGrid('setGridParam', {url: 'gridpredio?tpre=2&mnza=0&ctr=0&an='+$("#selantra").val()}).trigger('reloadGrid');
+
+}
 function fn_bus_contrib_rus()
 {
     if($("#dlg_contri").val()=="")
@@ -147,6 +156,7 @@ function llamarcambio()
                 $("#dlg_sel_tterr").val(r[0].id_tip_pre_rus);
                 $("#dlg_sel_uterr").val(r[0].id_uso_pre_rust);
                 $("#dlg_sel_gpoterr").val(r[0].id_gpo_tierra);
+                $("#dlg_inp_uc").val(r[0].uc);
                 auto_select("dlg_sel_gpocatterr","sel_cat_gruterr",r[0].id_gpo_tierra,r[0].id_cat_gpo_tierra);
                 MensajeDialogLoadAjaxFinish('dlg_reg_dj');
                 jQuery("#table_pisos").jqGrid('setGridParam', {url: 'gridpisos/'+Id}).trigger('reloadGrid');
@@ -167,7 +177,6 @@ function llamarcambio()
     }
     function dlgSave()
     {
-        
         if($('#dlg_contri_hidden').val()==0){mostraralertasconfoco('Ingresar contribuyente...',"#dlg_dni");return false}
         if($('#dlg_sel_condpre').val()==null){mostraralertasconfoco('Ingresar condicion predio...',"#dlg_sel_condpre");return false}
         if($('#dlg_sel_gpocatterr').val()==null){mostraralertasconfoco('Seleccion categoria de Tierras...',"#dlg_sel_gpocatterr");return false}
@@ -184,7 +193,8 @@ function llamarcambio()
         valle:$("#dlg_inp_valle").val(),carretera:$("#dlg_inp_carre").val(),km:$("#dlg_inp_km").val(),
         nompre:$("#dlg_inp_nompre").val(),norte:$("#dlg_inp_norte").val(),sur:$("#dlg_inp_sur").val(),
         este:$("#dlg_inp_este").val(),oeste:$("#dlg_inp_oeste").val(),tterr:$("#dlg_sel_tterr").val(),uterr:$("#dlg_sel_uterr").val(),
-        gpt:$("#dlg_sel_gpoterr").val(),cgpt:$("#dlg_sel_gpocatterr").val(),otros:nuevo_otros_pr},
+        gpt:$("#dlg_sel_gpoterr").val(),cgpt:$("#dlg_sel_gpocatterr").val(),otros:nuevo_otros_pr,
+        uc:$("#dlg_inp_uc").val()},
         success: function(r) 
         {
             $('#dlg_idpre').val(r);
@@ -219,7 +229,7 @@ function llamarcambio()
         valle:$("#dlg_inp_valle").val(),carretera:$("#dlg_inp_carre").val(),km:$("#dlg_inp_km").val(),
         nompre:$("#dlg_inp_nompre").val(),norte:$("#dlg_inp_norte").val(),sur:$("#dlg_inp_sur").val(),
         este:$("#dlg_inp_este").val(),oeste:$("#dlg_inp_oeste").val(),tterr:$("#dlg_sel_tterr").val(),uterr:$("#dlg_sel_uterr").val(),
-        gpt:$("#dlg_sel_gpoterr").val(),cgpt:$("#dlg_sel_gpocatterr").val(),otros:nuevo_otros_pr},
+        gpt:$("#dlg_sel_gpoterr").val(),cgpt:$("#dlg_sel_gpocatterr").val(),otros:nuevo_otros_pr,uc:$("#dlg_inp_uc").val()},
         success: function(r) 
         {
             MensajeExito("Modificó Correctamente","Su Registro Fue Insertado con Éxito...",4000);

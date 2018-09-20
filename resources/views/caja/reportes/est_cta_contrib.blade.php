@@ -64,7 +64,24 @@
                 <div class="sub2" style="font-size:0.7em"><b>CODIGO:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </b>{{ $contrib1[0]->id_persona}}</div>
                 <div class="sub2" style="font-size:0.7em"><b>CONTRIBUYENTE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </b>{{ $contrib1[0]->contribuyente}}</div>
                 <div class="sub2" style="font-size:0.7em"><b>DNI:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </b>{{ $contrib1[0]->nro_doc}}</div>
-                <div class="sub2" style="font-size:0.7em"><b>DOMICILIO FISCAL:&nbsp;&nbsp;&nbsp; </b>{{ strtoUpper($contrib1[0]->dom_fis)}}</div>
+                <div class="sub2" style="font-size:0.7em"><b>DOMICILIO FISCAL:&nbsp;&nbsp;&nbsp; </b>
+                    {{ strtoUpper($contrib1[0]->dom_fis)}}
+                    @if($contrib1[0]->nro_mun!="")
+                        N° {{$contrib1[0]->nro_mun}}
+                    @endif
+                    @if($contrib1[0]->manz!="")
+                        Manz. {{$contrib1[0]->manz}}
+                    @endif
+                    @if($contrib1[0]->lote!="")
+                        Lt. {{$contrib1[0]->lote}}
+                    @endif
+                    @if($contrib1[0]->distrit!="")
+                        Dist. {{strtoUpper($contrib1[0]->distrit)}}
+                    @endif
+                    @if($contrib1[0]->ref_dom_fis!="")
+                        {{strtoUpper($contrib1[0]->ref_dom_fis)}}
+                    @endif
+                </div>
              <br>
              
         </div>
@@ -139,9 +156,7 @@
                     <div class="contenedor" style="left: 0px;top: 280px;height: 43px;"><center><h2 style="margin-top:6px"></h2></center></div>
                 @endif
             @endif
-            
         </div>        
-        
         <script src="{{ asset('archivos_js/reportes/est_cta.js') }}"></script>
         <script src="{{ asset('js/libs/jquery-2.1.1.min.js') }}"></script>
         <script type="text/javascript">            

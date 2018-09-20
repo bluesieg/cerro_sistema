@@ -13,7 +13,7 @@
             <div class="input-group input-group-md">
                 <span class="input-group-addon">Año de Trabajo <i class="fa fa-cogs"></i></span>
                 <div class="icon-addon addon-md">
-                    <select id='selantra' class="form-control col-lg-8" style="height: 32px;" onchange="call_list_contrib_carta(0)">
+                    <select id='selantra' class="form-control col-lg-8" style="height: 32px;" onchange="callfilltab(0)">
                     @foreach ($anio_tra as $anio)
                     <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
                     @endforeach
@@ -348,10 +348,16 @@
                                             <input id="dlg_inp_valle" type="text"  class="input-sm" maxlength="100">
                                         </label>
                                     </div>
-                                    <div class="col col-3 pdboth_dlg_cr">
+                                    <div class="col col-2 pdboth_dlg_cr">
                                         <label class="label">Carretera:</label>
                                         <label class="input">
                                             <input id="dlg_inp_carre" type="text"  class="input-sm" maxlength="100">
+                                        </label>
+                                    </div>
+                                    <div class="col col-1 pdboth_dlg_cr">
+                                        <label class="label">U.C.:</label>
+                                        <label class="input">
+                                            <input id="dlg_inp_uc" type="text"  class="input-sm" maxlength="6">
                                         </label>
                                     </div>
                                     <div class="col col-1 pdboth_dlg_cr">

@@ -411,12 +411,26 @@ function validarvalter(tp)
 {
     if(tp==1)
     {
-     if($("#dlg_inp_aranc").val()==""||$("#dlg_inp_areter").val()==""){$("#dlg_inp_valterr").val(0);return false;}
+//     if($("#dlg_inp_aranc").val()==""||$("#dlg_inp_areter").val()==""){$("#dlg_inp_valterr").val(0);return false;}
+//        if($("#dlg_inp_arecomter").val()==""){
+//            comun=0;}
+//        else{
+//            comun=$("#dlg_inp_arecomter").val();}
+//        $("#dlg_inp_valterr").val(formato_numero($("#dlg_inp_aranc").val()*(parseFloat($("#dlg_inp_areter").val())+parseFloat(comun)),3,".",","));
+//        
+        if($("#dlg_inp_aranc").val()==""||$("#dlg_inp_areter").val()==""){$("#dlg_inp_valterr").val(0);return false;}
         if($("#dlg_inp_arecomter").val()==""){
             comun=0;}
         else{
             comun=$("#dlg_inp_arecomter").val();}
-        $("#dlg_inp_valterr").val(formato_numero($("#dlg_inp_aranc").val()*(parseFloat($("#dlg_inp_areter").val())+parseFloat(comun)),3,".",","));
+        if(comun>0)
+        {
+            $("#dlg_inp_valterr").val(formato_numero($("#dlg_inp_aranc").val()*(parseFloat($("#dlg_inp_areter").val())*parseFloat(comun)/100),3,".",","));
+        }
+        else
+        {
+            $("#dlg_inp_valterr").val(formato_numero($("#dlg_inp_aranc").val()*(parseFloat($("#dlg_inp_areter").val())),3,".",","));
+        }
     }
     if(tp==2)
     {
@@ -424,6 +438,8 @@ function validarvalter(tp)
         $("#dlg_inp_valterr").val( formato_numero($("#dlg_inp_aranc").val()*$("#dlg_inp_hectarea").val(),2,".",","));
     
     }
+    
+    
    
 }
 
@@ -517,7 +533,7 @@ function clickmodpiso()
         traerpisofic(id_pisos_fic);
     }
     else
-     {
+    {
         $("#btnpissave").show();
         $("#btnpismod").hide();
         $("#dlg_idpiso_fis").val(0);
@@ -543,12 +559,10 @@ function clickmodpiso()
             callchangeoption("rpiso_inp_mat",0);
             callchangeoption("rpiso_inp_econserv",0);
             callchangeoption("rpiso_inp_econstr",0);
-            
             callchangeoption("rpiso_inp_clasi_fis",0);
             callchangeoption("rpiso_inp_mat_fis",0);
             callchangeoption("rpiso_inp_econserv_fis",0);
             callchangeoption("rpiso_inp_econstr_fis",0);
-
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");

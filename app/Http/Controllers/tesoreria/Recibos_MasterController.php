@@ -842,6 +842,4 @@ class Recibos_MasterController extends Controller
         }
     }
     
-    
-    
 }
