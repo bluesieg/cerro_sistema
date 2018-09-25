@@ -77,11 +77,16 @@ class Recibos_MasterController extends Controller
         if($request['montoform']>0&&$request['acuenta']==0)
         {
             $count=$this->edit_cta_cte('1-2-3-4',$data->id_rec_mtr,$request['id_pers'],$request['periodo'],$request['id_trib_form']);
-            $this->detalle_create($request['periodo'],$data->id_rec_mtr,$request['id_trib_form'],$request['montoform'],$count,'del '.$request['periodo']);
+            $this->detalle_create($request['periodo'],$data->id_rec_mtr,$request['id_trib_form'],$request['montoform'],1,'del '.$request['periodo']);
         }
         if($request['acuenta']==1)
         {
             $this->detalle_create($request['periodo'],$data->id_rec_mtr,$request['id_trib_pred'],$request['monto_acuenta'],1,'PAGO A CUENTA PREDIAL');
+        }
+        if($request['tim']>0)
+        {
+            $trib_tim = DB::select('SELECT * from presupuesto.vw_tim where anio='.$request['periodo']);
+            $this->detalle_create($request['periodo'],$data->id_rec_mtr,$trib_tim[0]->id_tributo,$request['tim'],1,'del '.$request['periodo']);
         }
         return $data->id_rec_mtr;
     }
@@ -190,30 +195,66 @@ class Recibos_MasterController extends Controller
         $Lista->total = $total_pages;
         $Lista->records = $count;
         
-        foreach ($sql as $Index => $Datos) {    
+        foreach ($sql as $Index => $Datos) {  
+            $saldo=number_format(($Datos->car1_cta-$Datos->abo1_cta)+($Datos->car2_cta-$Datos->abo2_cta)+($Datos->car3_cta-$Datos->abo3_cta)+($Datos->car4_cta-$Datos->abo4_cta),2,".",",");
+            if($saldo<0){
+                $saldo=0;
+            }
             if($Datos->flg_rec_trim1==1)
             {   $Datos->abo1_cta='Recibo Pendiente:'.$Datos->id_rec_trim1; }
+            else{
+                $Datos->abo1_cta=trim($Datos->car1_cta-$Datos->abo1_cta);
+                if($Datos->abo1_cta<0){
+                    $Datos->abo1_cta=0;
+                }
+            }
             if($Datos->flg_rec_trim2==1)
             {   $Datos->abo2_cta='Recibo Pendiente:'.$Datos->id_rec_trim2; }
+            else
+            {
+                $Datos->abo2_cta=trim($Datos->car2_cta-$Datos->abo2_cta);
+                 if($Datos->abo2_cta<0){
+                    $Datos->abo2_cta=0;
+                }
+            }
             if($Datos->flg_rec_trim3==1)
             {   $Datos->abo3_cta='Recibo Pendiente:'.$Datos->id_rec_trim3; }
+            else
+            {
+                $Datos->abo3_cta=trim($Datos->car3_cta-$Datos->abo3_cta);
+                 if($Datos->abo3_cta<0){
+                    $Datos->abo3_cta=0;
+                }
+            }
             if($Datos->flg_rec_trim4==1)
             {   $Datos->abo4_cta='Recibo Pendiente:'.$Datos->id_rec_trim4; }
+            else
+            {
+                $Datos->abo4_cta=trim($Datos->car4_cta-$Datos->abo4_cta);
+                 if($Datos->abo4_cta<0){
+                    $Datos->abo4_cta=0;
+                }
+            }
             $Lista->rows[$Index]['id'] = $Datos->id_tribu;
             $Lista->rows[$Index]['cell'] = array(
                 $Datos->id_tribu,
                 //$Datos->id_contrib,
                 trim($Datos->descrip_tributo),
                 //trim($Datos->ivpp),
-                $Datos->car1_cta+$Datos->car2_cta+$Datos->car3_cta+$Datos->car4_cta,
-                //trim($Datos->saldo),   
-                ($Datos->car1_cta-$Datos->abo1_cta)+($Datos->car2_cta-$Datos->abo2_cta)+($Datos->car3_cta-$Datos->abo3_cta)+($Datos->car4_cta-$Datos->abo4_cta),
-                trim($Datos->car1_cta-$Datos->abo1_cta),                
-                trim($Datos->car2_cta-$Datos->abo2_cta),
-                trim($Datos->car3_cta-$Datos->abo3_cta),
-                trim($Datos->car4_cta-$Datos->abo4_cta),
+                number_format($Datos->car1_cta+$Datos->car2_cta+$Datos->car3_cta+$Datos->car4_cta,2,".",","),
+                //trim($Datos->saldo), 
+                $saldo,
+                //number_format(($Datos->car1_cta-$Datos->abo1_cta)+($Datos->car2_cta-$Datos->abo2_cta)+($Datos->car3_cta-$Datos->abo3_cta)+($Datos->car4_cta-$Datos->abo4_cta),2,".",","),
+                $Datos->abo1_cta,                
+                $Datos->abo2_cta,
+                $Datos->abo3_cta,
+                $Datos->abo4_cta,
                 $Datos->id_conv_mtr,
-                $Datos->id_coa_mtr                
+                $Datos->id_coa_mtr,
+                trim($Datos->tim1_cta),                
+                trim($Datos->tim2_cta),
+                trim($Datos->tim3_cta),
+                trim($Datos->tim4_cta),
             );
         }        
         return response()->json($Lista);

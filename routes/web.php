@@ -646,7 +646,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('listar_beneficios_tributarios','Beneficios_TributariosController@getBeneficiosTributarios');
         Route::get('actualizar_estado','Beneficios_TributariosController@actualizar_estado');
     });
-    
+    Route::group(['namespace' => 'ordenanzas'], function() {
+        Route::resource('ordenanzas', 'ordenanza_Controller');
+    });
     
     Route::group(['namespace' => 'registro_tributario'], function() {
        
@@ -672,6 +674,7 @@ Route::group(['middleware' => 'auth'], function() {
         
 
     });
+    
     
     Route::get('sendemail', function () {
 

@@ -142,7 +142,7 @@
             datatype: 'json', mtype: 'GET',
             height: '120px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_tribu', 'Descripción', 'Total a Pagar', 'Saldo S/.', 'Trim I', 'Trim II', 'Trim III', 'Trim IV','con','coa','Todo'],
+            colNames: ['id_tribu', 'Descripción', 'Total a Pagar', 'Saldo S/.', 'Trim I', 'Trim II', 'Trim III', 'Trim IV','con','coa','tim1_cta','tim2_cta','tim3_cta','tim4_cta','Todo'],
             rowNum: 5, sortname: 'descrip_tributo', sortorder: 'asc', viewrecords: true, align: "center",
             colModel: [
                 {name: 'id_tribu', index: 'id_tribu', hidden:true},
@@ -155,6 +155,10 @@
                 {name: 'abo4_cta', index: 'abo4_cta', align: 'right', width: 100},
                 {name: 'conv', index: 'conv', hidden: true},
                 {name: 'coa', index: 'coa', hidden: true},
+                {name: 'tim1_cta', index: 'tim1_cta', hidden: true},
+                {name: 'tim2_cta', index: 'tim2_cta', hidden: true},
+                {name: 'tim3_cta', index: 'tim3_cta', hidden: true},
+                {name: 'tim4_cta', index: 'tim4_cta', hidden: true},
                 {name: 'total', index: 'total', align: 'right', width: 100},
             ],
             pager: '#pager_table_cta_cte2',
@@ -184,11 +188,12 @@
                     }
                     for (var a = 1; a <= 4; a++) {
                         var val = $("#table_cta_cte2").getCell(idarray[i], 'abo' + a + '_cta');
+                        var tim = $("#table_cta_cte2").getCell(idarray[i], 'tim' + a + '_cta');
                         if (parseFloat(val) > 0 && idarray[i] == predial) {
                             $("#table_cta_cte2").jqGrid("setCell", idarray[i], 'abo' + a + '_cta',
-                                    "<input type='checkbox' name='chk_trim' value='" + a + "' id='chk_calc_pag_" + a + "' cantidad='"+val+"' onchange='calc_tot_a_pagar_predial(" + a + ",this,"+val+")'>"+val, {'text-align': 'center'});
+                                    "<input type='checkbox' name='chk_trim' value='" + a + "' id='chk_calc_pag_" + a + "' cantidad='"+val+"' tim='"+tim+"' onchange='calc_tot_a_pagar_predial(" + a + ",this,"+val+")'>"+val, {'text-align': 'center'});
                         }
-                        if (val == '0.000' && idarray[i] == formatos) {
+                        if (parseFloat(val) == 0 && idarray[i] == formatos) {
                             $("#table_cta_cte2").jqGrid("setCell", idarray[i], 'abo' + a + '_cta',
                                     "<input type='checkbox' name='chk_trim_form' value='" + a + "' id='chk_calc_form_imp_" + a + "' cantidad='"+val+"' onchange='calc_tot_a_pagar_predial(" + a + ",this,"+val+")' disabled='disabled' checked>", {'text-align': 'center'});
                         }
@@ -200,6 +205,7 @@
                 $("#vw_emis_re_pag_pre_x_trim").val(pre_x_trim);
                 form = $("#table_cta_cte2").getCell(formatos, 'saldo') || '0.00';
                 $("#vw_emision_rec_pago_imp_pred_total_trimestre").val(form);
+                $("#input_interes_tot").val('0.00');
                 if (idarray.length > 0) {
                     var firstid = jQuery('#table_cta_cte2').jqGrid('getDataIDs')[1];
                     $("#table_cta_cte2").setSelection(firstid);

@@ -135,7 +135,8 @@ function gen_rec_imp_pred(ss_checks){
                         t3:t3,
                         t4:t4,
                         acuenta:$('#check_pago_cuenta').is(':checked')?1:0,
-                        monto_acuenta:$("#vw_emision_rec_pago_imp_pred_total_trimestre").val().replace(',', '')
+                        monto_acuenta:$("#vw_emision_rec_pago_imp_pred_total_trimestre").val().replace(',', ''),
+                        tim:$("#input_interes_tot").val().replace(',', '')
                     },
                     success: function (data) {
                         if (data) {
@@ -183,19 +184,20 @@ function calc_tot_a_pagar_predial(num,esto,val){
        $("#vw_emi_rec_imp_pred_t"+num).val("0");
     }
 
-    rowId=($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("predial"));
-//    pre_x_trim = parseFloat($("#table_cta_cte2").getCell(rowId, 'saldo'));
+    //rowId=($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("predial"));
     
-    pre_x_trim = parseFloat(val);
+    //pre_x_trim = parseFloat(val);
    
     total=0;
+    totaltim=0;
     $('input[type=checkbox][name=chk_trim]:checked').each(function() {
         total=parseFloat(total)+parseFloat($(this).attr("cantidad"));
-       
+        totaltim=parseFloat(totaltim)+parseFloat($(this).attr("tim"));
     });
+    $("#input_interes_tot").val(formato_numero(parseFloat(totaltim),2,'.',','));
     var formatos = ($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("formatos"));
     form = $("#table_cta_cte2").getCell(formatos, 'saldo') || '0.00';
-    $("#vw_emision_rec_pago_imp_pred_total_trimestre").val(formato_numero(parseFloat(total)+parseFloat(form),2,'.',','));
+    $("#vw_emision_rec_pago_imp_pred_total_trimestre").val(formato_numero(parseFloat(total)+parseFloat(form)+parseFloat(totaltim),2,'.',','));
 
 }
 var select_check_2=0;
@@ -261,17 +263,19 @@ function limpiar_form_rec_imp_predial(){
     $("#vw_emision_rec_pago_imp_pred_total_trimestre").prop( "disabled", true );
 }
 
-function marcar_todos_predial(valor,esto,id){
+function marcar_todos_predial(valor,esto,id){ 
     if($(esto).is(':checked')){
         $('input[type=checkbox][name=chk_trim]').prop('checked', true);
     }
     $total=0;
+    totaltim=0;
     $('input[type=checkbox][name=chk_trim]:checked').each(function(){
         $total=parseFloat(redondeo($total,2))+parseFloat(redondeo($(this).val(),2));
+        totaltim=parseFloat(totaltim)+parseFloat($(this).attr("tim"));
     });
-
+    $("#input_interes_tot").val(formato_numero(parseFloat(totaltim),2,'.',','));
     var formatos = ($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("formatos"));
     form = $("#table_cta_cte2").getCell(formatos, 'saldo') || '0.00';
-    $("#vw_emision_rec_pago_imp_pred_total_trimestre").val(formato_numero(parseFloat(valor)+parseFloat(form),2,'.',','));
+    $("#vw_emision_rec_pago_imp_pred_total_trimestre").val(formato_numero(parseFloat(valor)+parseFloat(form)+parseFloat(totaltim),2,'.',','));
 
 }
