@@ -300,7 +300,7 @@ class ReportesController extends Controller
             }
         }
         if($tip==0){
-            $sql=DB::table('reportes.vw_02_contri_predios')->where('anio',$anio)->where('id_hab_urb',$hab_urb1)->orderBy('contribuyente')->get();
+            $sql=DB::table('reportes.vw_03_contri_predios_det')->where('anio',$anio)->where('id_hab_urb',$hab_urb1)->orderBy('contribuyente')->get();
             $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
             $fecha = (date('d/m/Y H:i:s'));
             $institucion = DB::select('SELECT * FROM maysa.institucion');
@@ -308,7 +308,7 @@ class ReportesController extends Controller
             {
                 set_time_limit(0);
                 ini_set('memory_limit', '2G');
-                $view =  \View::make('reportes_gonzalo.reportes.listado_contribuyentes_predios_det', compact('sql','anio','hab_urb','usuario','fecha'))->render();
+                $view =  \View::make('reportes_gonzalo.reportes.listado_contribuyentes_predios_det', compact('sql','anio','hab_urb','usuario','fecha','institucion'))->render();
                 $pdf = \App::make('dompdf.wrapper');
                 $pdf->loadHTML($view)->setPaper('a4','landscape');
                 return $pdf->stream("Lista Contribuyentes y Predios, Pisos, Instalaciones e Inafectación".".pdf");

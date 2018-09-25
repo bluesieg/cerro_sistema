@@ -26,12 +26,11 @@ class GenericaController extends Controller
     public function create(Request $request){
         $data = new Generica();
         $data->descr_gen = $request['gen_desc'];
-        $data->anio = date('Y');
-        $data->id_tip_trans = 1;
+        $data->anio = $request['anio'];
+        $data->id_tip_trans = $request['tipo_transaccion'];
         $data->cod_generica = $request['gen_cod'];        
         $data->save();
         return $data->id_gener;
-
     }
 
     public function store(Request $request){}
@@ -42,9 +41,9 @@ class GenericaController extends Controller
         $data = new Generica();        
         $val = $data::where("id_gener", "=", $id)->first();
         if (count($val) >= 1) {
-            $val->descr_gen=$request['gen_desc'];            
-            $val->anio=date('Y');            
-            $val->id_tip_trans=1;
+            $val->descr_gen = $request['gen_desc'];            
+            $val->anio = $request['anio'];         
+            $val->id_tip_trans = $request['tipo_transaccion'];
             $val->cod_generica = $request['gen_cod'];
             $val->save();  
             return $val->id_gener;

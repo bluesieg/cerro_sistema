@@ -145,8 +145,23 @@ class Recibos_MasterController extends Controller
     {
     }
    
-    public function show($id)
+    public function show($id, Request $request)
     {
+        if ($id > 0) 
+        {
+            
+        }
+        else
+        {
+            if ($request['tipo'] == 1) 
+            {
+                return $this->validaciones($request);
+            }
+            if ($request['tipo'] == 2) 
+            {
+                return $this->validar_alcabala($request);
+            }
+        }
     }
 
     public function edit($id)
@@ -807,24 +822,7 @@ class Recibos_MasterController extends Controller
         }
         return $total;
     }
-    public function traer_alcabala(Request $request){
         
-        $sql= DB::select("select * from presupuesto.vw_tributos_vladi where descrip_tributo like " . "'%".'ALCABALA'."%'" . " and anio = (select date_part('year',current_date))");
-               
-        if (count($sql)>0) {
-            
-            if ($sql[0]->id_tributo == $request['alcabala']) {
-                return response()->json([
-                'msg' => 'si',
-                ]);
-            }  
-        }else{
-            return response()->json([
-                'msg' => 'no',
-            ]);
-        }
-    }
-    
     public function validar_alcabala(Request $request){
         $id_alcabala = $request['nro_recibo'];
         
@@ -835,10 +833,12 @@ class Recibos_MasterController extends Controller
             if ($sql->estado == 1) {
                 return response()->json([
                 'msg' => 'PAGADO',
+                'glosa' => 'RECIBO PAGADO',
                 ]);
             }elseif ($sql->estado == 0){
                 return response()->json([
                 'msg' => 'VIGENTE',
+                'glosa' => $sql->nro_alcab . "-" . $sql->anio,
                 ]);
             }else{
                 return response()->json([
@@ -853,34 +853,36 @@ class Recibos_MasterController extends Controller
         }
     }
     
-    public function traer_glosa(Request $request){
-        $nro_recibo = $request['nro_recibo'];
-        
-        $sql = DB::table("alcabala.alcabala")->where('id_alcab',$nro_recibo)->first();
-
-        if (count($sql)>0) {
-            $glosa = $sql->nro_alcab . "-" . $sql->anio;
-            return $glosa;
-        }else{
-            return 'no-existe';
-        }
-    }
-    
-    public function traer_tributos_sin_valor(Request $request){
+    public function validaciones(Request $request){
         
         $valor = $request['valor'];
         
-        $sql= DB::select("select * from presupuesto.vw_tributos_vladi where id_tributo = '$valor' and soles = '0' and anio = (select date_part('year',current_date))");
+        $sql= DB::select("select * from presupuesto.vw_tributos_vladi where id_tributo = '$valor' and soles = '0' and anio = (select date_part('year',current_date)) and descrip_tributo not like " . "'%".'ALCABALA'."%'" . "");
                     
-        if (count($sql)>0) {
+        if (count($sql)>0) 
+        {
             return response()->json([
             'msg' => 'si',
             ]);  
-        }else{
-            return response()->json([
-            'msg' => 'no',
-            ]);
         }
-    }
-    
+        else
+        {
+            $sql_alcabala = DB::select("select * from presupuesto.vw_tributos_vladi where descrip_tributo like " . "'%".'ALCABALA'."%'" . " and anio = (select date_part('year',current_date))");
+            if (count($sql_alcabala)>0) 
+            {
+                if ($sql_alcabala[0]->id_tributo == $valor) 
+                {
+                    return response()->json([
+                            'msg' => 'alcabala_si',
+                    ]);
+                }
+                else
+                {
+                    return response()->json([
+                        'msg' => 'alcabala_no',
+                    ]);
+                }
+            }
+        }
+    }   
 }

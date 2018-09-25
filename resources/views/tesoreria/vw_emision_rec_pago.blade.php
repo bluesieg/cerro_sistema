@@ -233,7 +233,6 @@
         $("#vw_emi_rec_txt_nrecibo").keypress(function (e) {
             if (e.which == 13 && !e.shiftKey) {
                 event.preventDefault();
-                traer_glosa();
                 validacion_alcabala();
                 
             }

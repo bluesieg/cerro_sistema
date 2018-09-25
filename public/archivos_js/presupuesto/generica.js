@@ -20,6 +20,8 @@ function dlg_generica(){
 function new_generica(){
     gen_cod = $("#gen_cod").val();
     gen_desc = $("#gen_desc").val();
+    tipo_transaccion = $("#gen_tip_trans").val();
+    anio = $("#vw_gen_anio").val();
     if(gen_cod==""){
         mostraralertasconfoco('Ingrese Codigo','#gen_cod');
         return false;
@@ -33,7 +35,9 @@ function new_generica(){
         type: 'GET',
         data: {            
             gen_cod:gen_cod,
-            gen_desc:gen_desc.toUpperCase()
+            gen_desc:gen_desc.toUpperCase(),
+            tipo_transaccion:tipo_transaccion,
+            anio:anio
         },
         success: function (data) {
             if(data){
@@ -71,6 +75,8 @@ function up_dlg_generica(){
 function up_generica(){
     gen_cod = $("#gen_cod").val();
     gen_desc = $("#gen_desc").val();
+    tipo_transaccion = $("#gen_tip_trans").val();
+    anio = $("#vw_gen_anio").val();
     if(gen_cod==""){
         mostraralertasconfoco('Ingrese Codigo','#gen_cod');
         return false;
@@ -85,7 +91,9 @@ function up_generica(){
         type: 'GET',
         data: {            
             gen_cod:gen_cod,
-            gen_desc:gen_desc.toUpperCase()
+            gen_desc:gen_desc.toUpperCase(),
+            tipo_transaccion:tipo_transaccion,
+            anio:anio
         },
         success: function (data) {
             if(data){
