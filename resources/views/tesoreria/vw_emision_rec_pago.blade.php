@@ -388,7 +388,7 @@
                                     </label>                      
                                 </section>
                                 <section class="col col-2" style="padding-left: 5px;padding-right: 5px">
-                                    <label class="label">Nº Recibo.:</label>
+                                    <label class="label">Nº Recibo Alcabala:</label>
                                     <label class="input">
                                         <input id="vw_emi_rec_txt_nrecibo" type="text" placeholder="0" class="input-sm" onkeypress="return soloNumeroTab(event);" disabled="">
                                     </label>                      

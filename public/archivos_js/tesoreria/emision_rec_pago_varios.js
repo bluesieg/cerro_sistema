@@ -117,12 +117,15 @@ function validacion_alcabala(){
                 }else if (data.msg === 'VIGENTE'){
                     MensajeExito('Estado del Recibo: ', data.msg);
                     MensajeDialogLoadAjaxFinish('vw_emision_rec_pag_varios');
-                    $("#vw_emi_rec_txt_glosa").val("IMPUESTO DE ALCABALA N° " + data.glosa); 
+                    $("#vw_emi_rec_txt_glosa").val("IMPUESTO DE ALCABALA N° " + data.glosa);
+                    $("#vw_emi_rec_txt_valor").val(data.valor);
+                    $("#vw_emi_rec_txt_valor").attr('disabled', 'disabled');
                     $("#btn_agregar_insertar").removeAttr('disabled');
                 }else if(data.msg === 'no-existe'){
                     mostraralertasconfoco("EL NUMERO DE RECIBO NO EXISTE","#vw_emi_rec_txt_nrecibo");
                     $("#vw_emi_rec_txt_glosa").val('EL NUMERO DE RECIBO NO EXISTE');
                     MensajeDialogLoadAjaxFinish('vw_emision_rec_pag_varios');
+                    $("#vw_emi_rec_txt_valor").val('');
                     $("#btn_agregar_insertar").attr('disabled', 'disabled');    
                 }else{
                     mostraralertasconfoco("EL NUMERO DE RECIBO NO EXISTE","#vw_emi_rec_txt_nrecibo");
