@@ -29,27 +29,71 @@ function fn_bus_ani(id,tip)
     }
     jQuery("#table_alcab").jqGrid('setGridParam', {url: 'trae_acabala/'+$("#selan").val()+'/'+id+'/'+tip+'/'+num+'/'+ini+'/'+fin}).trigger('reloadGrid');
 }
-function fn_new()
+function fn_new(tip)
 {
     limpiar('dlg_new_ordenanza');
-    $("#dlg_new_ordenanza").dialog({
-        autoOpen: false, modal: true, width: 1100, 
-        show:{ effect: "explode", duration: 500},
-        hide:{ effect: "explode", duration: 800}, resizable: false,
-        title: "<div class='widget-header'><h4><span class='widget-icon'> <i class='fa fa-align-justify'></i> </span> Registrar Nueva Ordenaza</h4></div>"
-        }).dialog('open');
+    if(tip==1)
+    {
+        $("#dlg_orde_hidden").val(0);
+        $("#btn_save_div").show();
+        $("#btn_mod_div").hide();
+    }
+    if(tip==2)
+    {
+        $("#btn_save_div").hide();
+        $("#btn_mod_div").show();
+    }
+    crear_dlg('dlg_new_ordenanza',1100,'Registrar Nueva Ordenaza');
+}
+function new_desc_pred()
+{
+    if($("#dlg_orde_hidden").val()==0)
+    {
+        mostraralertasconfoco('Grabar Ordenaza Primero',"#dlg_orde_hidden");
+        return false;
+    }
+    limpiar('dlg_new_ordenanza_predial');
+    $("#dlg_new_ordenanza_predial").dialog({
+    autoOpen: false, modal: true, width: 800, show: {effect: "fade", duration: 300}, resizable: false,
+    title: "<div class='widget-header'><h4>.: Registrar Descuento Predial :.</h4></div>",
+    buttons: [{
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Grabar",
+                "class": "btn btn-primary bg-color-green",
+                click: function () {save_desc_pred();}
+            },
+            {
+                html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+                "class": "btn btn-primary bg-color-red",
+                click: function () {$(this).dialog("close");}
+            }]
+    }).dialog('open');
 }
 
-function fn_confirmar()
+function save_ordenanza()
 {
+    if($("#dlg_orde_refe").val()=="")
+    {
+        mostraralertasconfoco('Ingresar Referencia',"#dlg_orde_refe");
+        return false;
+    }
+    if($("#dlg_fec_ini").val()=="")
+    {
+        mostraralertasconfoco('Ingresar fecha inicio',"#dlg_fec_ini");
+        return false;
+    }
+    if($("#dlg_fec_fin").val()=="")
+    {
+        mostraralertasconfoco('Ingresar fecha fin',"#dlg_fec_fin");
+        return false;
+    }
     $.SmartMessageBox({
             title : "Confirmación Final!",
-            content : "Está por generar impuesto de Alcabala para este Contribuyente, desea Grabar la información",
+            content : "Está por generar una Nueva Ordenanza, desea Grabar la información",
             buttons : '[Cancelar][Aceptar]'
     }, function(ButtonPressed) {
             if (ButtonPressed === "Aceptar") {
 
-                    fn_save_alcab();
+                    fn_save_ordenanza();
             }
             if (ButtonPressed === "Cancelar") {
                     $.smallBox({
@@ -60,44 +104,93 @@ function fn_confirmar()
                             timeout : 3000
                     });
             }
-
     });
 }
-function fn_save_alcab()
+function fn_save_ordenanza()
 {
-    MensajeDialogLoadAjax('dlg_new_alcabala', '.:: CARGANDO ...');
-   $.ajax({url: 'alcabala/create',
+    MensajeDialogLoadAjax('dlg_new_ordenanza', '.:: CARGANDO ...');
+   $.ajax({url: 'ordenanzas/create?tipo=ordenanza',
         type: 'GET',
-        data:{pred:$("#selpredios").val(),adqui:$("#dlg_adquire_hidden").val(),adqui_rl:$("#dlg_adquire_rep").val(),
-              trans:$("#dlg_trans_hidden").val(),trans_rl:$("#dlg_trans_rep").val(),
-          contra:$("#selcontrato").val(),doctrans:$("#selcontrato").val(),fectrans:$("#dlg_fec_trans").val(),
-            notaria:$("#dlg_notaria").val(),bimpo:$("#dlg_autovaluo").val().replace(/,/g,""),
-            vtrans:$("#dlg_pre_trans").val().replace(/,/g,""),poradq:$("#dlg_por_aplicado").val().replace(/,/g,""),
-        bafecta:$("#dlg_fin_afecta").val().replace(/,/g,""),imp_tot:$("#dlg_fin_pagar").val().replace(/,/g,""),tip_camb:$("#dlg_tip_cam").val().replace(/,/g,""),
-        id_tip_camb:$("#selmonedas").val(),inafec:$("#selinafec").val()},
+        data:{refe:$("#dlg_orde_refe").val(),
+            fec_ini:$("#dlg_fec_ini").val(),
+            fec_fin:$("#dlg_fec_fin").val(),
+            glosa:$("#dlg_glosa_orde").val()
+        },
         success: function(r) 
         {
-            
+            $("#btn_save_div").hide();
+            $("#btn_mod_div").show();
+            $("#dlg_orde_hidden").val(r);
             MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
-            MensajeDialogLoadAjaxFinish("dlg_new_alcabala");
-            $("#dlg_new_alcabala").dialog("close");
-            veralcab(r)
-            fn_bus_ani(0,0)
+            MensajeDialogLoadAjaxFinish("dlg_new_ordenanza");
+         
         },
         error: function(data) {
             MensajeAlerta("hubo un error, Comunicar al Administrador","",4000);
-            MensajeDialogLoadAjaxFinish("dlg_new_alcabala");
+            MensajeDialogLoadAjaxFinish("dlg_new_ordenanza");
             console.log('error');
             console.log(data);
         }
         });
 }
-function veralcab(r)
+function save_desc_pred()
 {
-    if($("#per_imp").val()==0)
+    if($("#dlg_desc_ip_nat").val()=="")
     {
-        sin_permiso();
+        mostraralertasconfoco('Ingresar Descuento Impuesto Predial Persona Natural',"#dlg_desc_ip_nat");
         return false;
     }
-    window.open('alcab_rep/'+r);
+    if($("#dlg_desc_ip_jur").val()=="")
+    {
+        mostraralertasconfoco('Ingresar Descuento Impuesto Predial Persona Juridica',"#dlg_desc_ip_jur");
+        return false;
+    }
+    if($("#dlg_desc_multa_nat").val()=="")
+    {
+        mostraralertasconfoco('Ingresar Monto de Multa',"#dlg_desc_multa_nat");
+        return false;
+    }
+    if($("#dlg_desc_multa_jur").val()=="")
+    {
+        mostraralertasconfoco('Ingresar Monto de Multa',"#dlg_desc_multa_jur");
+        return false;
+    }
+    if($("#dlg_desc_im_nat").val()=="")
+    {
+        mostraralertasconfoco('Ingresar Descuento Impuesto de Multa Perona natural',"#dlg_desc_im_nat");
+        return false;
+    }
+    if($("#dlg_desc_im_jur").val()=="")
+    {
+        mostraralertasconfoco('Ingresar Descuento Impuesto de Multa Perona Juridica',"#dlg_desc_im_jur");
+        return false;
+    }
+    MensajeDialogLoadAjax('dlg_new_ordenanza_predial', '.:: CARGANDO ...');
+   $.ajax({url: 'ordenanzas/create?tipo=predial',
+        type: 'GET',
+        data:{
+            porcent_desc_ip_nat:$("#dlg_desc_ip_nat").val(),
+            pocent_desc_ip_jur:$("#dlg_desc_ip_jur").val(),
+            monto_multa_nat:$("#dlg_desc_multa_nat").val(),
+            monto_multa_jur:$("#dlg_desc_multa_jur").val(),
+            pocent_desc_im_nat:$("#dlg_desc_im_nat").val(),
+            porcent_desc_im_jur:$("#dlg_desc_im_jur").val(),
+            anio_ini:$("#anio_ini").val(),
+            anio_fin:$("#anio_fin").val(),
+            id_orde:$("#dlg_orde_hidden").val(),
+        },
+        success: function(r) 
+        {
+            $("#dlg_new_ordenanza_predial").dialog('close');
+            MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
+            MensajeDialogLoadAjaxFinish("dlg_new_ordenanza_predial");
+         
+        },
+        error: function(data) {
+            MensajeAlerta("hubo un error, Comunicar al Administrador","",4000);
+            MensajeDialogLoadAjaxFinish("dlg_new_ordenanza_predial");
+            console.log('error');
+            console.log(data);
+        }
+        });
 }

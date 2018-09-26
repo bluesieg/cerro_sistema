@@ -72,12 +72,12 @@ class Recibos_MasterController extends Controller
         if($request['montopre']>0&&$request['acuenta']==0)
         {
             $count=$this->edit_cta_cte($request['trimestres'],$data->id_rec_mtr,$request['id_pers'],$request['periodo'],$request['id_trib_pred']);
-            $this->detalle_create($request['periodo'],$data->id_rec_mtr,$request['id_trib_pred'],$request['montopre'],$count,$request['detalle_trimestres'].' del '.$request['periodo']);
+            $this->detalle_create($request['periodo'],$data->id_rec_mtr,$request['id_trib_pred'],$request['montopre'],1,$request['detalle_trimestres'].' del '.$request['periodo']);
         }
         if($request['montoform']>0&&$request['acuenta']==0)
         {
             $count=$this->edit_cta_cte('1-2-3-4',$data->id_rec_mtr,$request['id_pers'],$request['periodo'],$request['id_trib_form']);
-            $this->detalle_create($request['periodo'],$data->id_rec_mtr,$request['id_trib_form'],$request['montoform'],1,'del '.$request['periodo']);
+            $this->detalle_create($request['periodo'],$data->id_rec_mtr,$request['id_trib_form'],$request['montoform'],$count,'del '.$request['periodo']);
         }
         if($request['acuenta']==1)
         {
@@ -622,41 +622,50 @@ class Recibos_MasterController extends Controller
         $totalrecojo=0;
         $totalseguridad=0;
         $totalparques=0;
+        $des_barrido="";
+        $des_recojo="";
+        $des_serenazgo="";
+        $des_parque="";
         foreach($check as $arbitrios)
         {
             $pago=explode("-",$arbitrios); 
             if($trib_barrido->id_tributo==$pago[2])
             {
                 $totalbarrido+=$this->edit_pgo_arbtrio($pago[0],$pago[1],$idmaster);
+                $des_barrido=$des_barrido.",".$pago[1];
             }
             if($trib_recojo->id_tributo==$pago[2])
             {
                 $totalrecojo+=$this->edit_pgo_arbtrio($pago[0],$pago[1],$idmaster);
+                $des_recojo=$des_recojo.",".$pago[1];
             }
             if($trib_seguridad->id_tributo==$pago[2])
             {
                 $totalseguridad+=$this->edit_pgo_arbtrio($pago[0],$pago[1],$idmaster);
+                $des_serenazgo=$des_serenazgo.",".$pago[1];
             }
             if($trib_parques->id_tributo==$pago[2])
             {
                 $totalparques+=$this->edit_pgo_arbtrio($pago[0],$pago[1],$idmaster);
+                $des_parque=$des_parque.",".$pago[1];
             }
         }
+        
         if($totalbarrido>0)
         {
-            $this->create_rec_det_arb($idmaster,$anio,$totalbarrido,$trib_barrido->id_tributo,0);
+            $this->create_rec_det_arb($idmaster,$anio,$totalbarrido,$trib_barrido->id_tributo,0,$des_barrido);
         }
         if($totalrecojo>0)
         {
-            $this->create_rec_det_arb($idmaster,$anio,$totalrecojo,$trib_recojo->id_tributo,0);
+            $this->create_rec_det_arb($idmaster,$anio,$totalrecojo,$trib_recojo->id_tributo,0,$des_recojo);
         }
         if($totalseguridad>0)
         {
-            $this->create_rec_det_arb($idmaster,$anio,$totalseguridad,$trib_seguridad->id_tributo,0);
+            $this->create_rec_det_arb($idmaster,$anio,$totalseguridad,$trib_seguridad->id_tributo,0,$des_serenazgo);
         }
         if($totalparques>0)
         {
-            $this->create_rec_det_arb($idmaster,$anio,$totalparques,$trib_parques->id_tributo,0);
+            $this->create_rec_det_arb($idmaster,$anio,$totalparques,$trib_parques->id_tributo,0,$des_parque);
         }
         return $idmaster;
     }
@@ -704,7 +713,7 @@ class Recibos_MasterController extends Controller
         $data->save();        
         return $data->id_rec_mtr;
     }
-    public function create_rec_det_arb($id,$anio,$total,$tributo,$id_aper)
+    public function create_rec_det_arb($id,$anio,$total,$tributo,$id_aper,$des)
     {
         $rec_det = new Recibos_Detalle(); 
         $rec_det->id_rec_master=$id;
@@ -714,6 +723,7 @@ class Recibos_MasterController extends Controller
         $rec_det->monto=$total;
         $rec_det->cant=1;
         $rec_det->p_unit=$total;
+        $rec_det->detalle_trimestres=$des;
         if($id_aper>0)
         {
             $periodo_real= DB::select("select doc_ini,id_doc_ini from coactiva.vw_apersonamiento_reporte where id_aper=".$id_aper);
@@ -727,7 +737,6 @@ class Recibos_MasterController extends Controller
                 $rp=DB::select("select anio from fiscalizacion.resolucion_determinacion where id_rd=".$periodo_real[0]->id_doc_ini);
                 $rec_det->periodo=$rp[0]->anio;
             }
-            
         }
         else
         {
@@ -827,7 +836,8 @@ class Recibos_MasterController extends Controller
         $id_alcabala = $request['nro_recibo'];
         
         $sql= DB::table("alcabala.alcabala")->where('id_alcab',$id_alcabala)->first();
-              
+        $funcion= DB::select("select alcabala.fn_alcab_tim(".$id_alcabala.")");
+             
         if (count($sql)>0) {
             
             if ($sql->estado == 1) {
@@ -838,6 +848,7 @@ class Recibos_MasterController extends Controller
             }elseif ($sql->estado == 0){
                 return response()->json([
                 'msg' => 'VIGENTE',
+                'valor'=> $funcion[0]->fn_alcab_tim,
                 'glosa' => $sql->nro_alcab . "-" . $sql->anio,
                 ]);
             }else{
@@ -884,5 +895,45 @@ class Recibos_MasterController extends Controller
                 }
             }
         }
-    }   
+    }
+    
+    public function devuelve_mes($num)
+    {
+        if($num==1){
+            return "Ene";
+        }
+        if($num==2){
+            return "Feb";
+        }
+        if($num==3){
+            return "Mar";
+        }
+        if($num==4){
+            return "Abr";
+        }
+        if($num==5){
+            return "May";
+        }
+        if($num==6){
+            return "Jun";
+        }
+        if($num==7){
+            return "Jul";
+        }
+        if($num==8){
+            return "Ago";
+        }
+        if($num==9){
+            return "Sep";
+        }
+        if($num==10){
+            return "Oct";
+        }
+        if($num==11){
+            return "Nov";
+        }
+        if($num==12){
+            return "Dic";
+        }
+    }
 }
