@@ -13,12 +13,13 @@ class Esp_DetalleController extends Controller
     public function index(){
         $permisos = DB::select("SELECT * from permisos.vw_permisos where id_sistema='li_pres_especideta' and id_usu=".Auth::user()->id);
         $menu = DB::select('SELECT * from permisos.vw_permisos where id_usu='.Auth::user()->id);
+        $fte_financiamiento = DB::select('select * from presupuesto.vw_fte_financiamiento  order by id_fte_fto asc');
         if(count($permisos)==0)
         {
             return view('errors/sin_permiso',compact('menu','permisos'));
         }
         $anio = DB::select('select anio from adm_tri.uit order by anio desc');
-        return view('presupuesto/vw_especif_det',compact('anio','menu','permisos'));
+        return view('presupuesto/vw_especif_det',compact('anio','menu','permisos','fte_financiamiento'));
     }
 
     public function create(Request $request){
@@ -26,15 +27,20 @@ class Esp_DetalleController extends Controller
         $data->id_espec = $request['id_espec'];
         $data->cod_esp_det =$request['cod'];
         $data->desc_espec_detalle = $request['desc'];
+        $data->cod_pat_debe = $request['cod_pat_debe'];
+        $data->cod_pat_haber = $request['cod_pat_haber'];
+        $data->id_fte = $request['id_fte'];
         $data->save();
         return $data->id_espec_det;
     }
-
     public function edit(Request $request,$id){
         $data = new EspecificaDetalle();
         $val = $data::where("id_espec_det", "=", $id)->first();
         if (count($val) >= 1) {
             $val->desc_espec_detalle=$request['desc'];
+            $val->cod_pat_debe=$request['cod_pat_debe'];
+            $val->cod_pat_haber=$request['cod_pat_haber'];
+            $val->id_fte=$request['id_fte'];
             $val->save();  
             return $val->id_espec_det;
         }
@@ -91,5 +97,18 @@ class Esp_DetalleController extends Controller
             );
         }        
         return response()->json($Lista);
+    }
+    public function show($id,Request $request)
+    {        
+        if($id>0)
+        {
+            if($request['show']=='esp_detalle' ){
+                return $this->show_esp_detalle($id);
+            }             
+        }
+    }
+    public function show_esp_detalle($id) {
+        $fte_financiamiento = DB::table('presupuesto.especifica_detalle')->where('id_espec_det',$id)->get();
+            return $fte_financiamiento;
     }
 }

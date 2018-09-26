@@ -21,12 +21,27 @@ function dlg_esp_detalle(){
 function new_esp_detalle(){
     cod = $("#esp_det_cod").val();
     desc = $("#esp_det_desc").val();
+    cod_pat_debe = $("#inp_cod_pat_debe").val();
+    cod_pat_haber = $("#inp_cod_pat_haber").val();
+    id_fte = $("#sel_id_fte").val();
     if(cod==""){
         mostraralertasconfoco('Ingrese Codigo','#esp_det_cod');
         return false;
     }    
     if(desc==""){
         mostraralertasconfoco('Ingrese Descripción','#esp_det_desc');
+        return false;
+    }
+    if(cod_pat_debe==""){
+        mostraralertasconfoco('Ingrese cod. patrimonial DEBE','#cod_pat_debe');
+        return false;
+    }
+    if(cod_pat_haber==""){
+        mostraralertasconfoco('Ingrese cod. patrimonial HABER','#cod_pat_haber');
+        return false;
+    }
+    if(id_fte==""){
+        mostraralertasconfoco('Ingrese fuente de financiamiento','#id_fte');
         return false;
     }
     id_espec = $('#table_Especifica').jqGrid ('getGridParam', 'selrow');
@@ -36,7 +51,10 @@ function new_esp_detalle(){
         data: { 
             id_espec:id_espec,
             cod:cod,
-            desc:desc.toUpperCase()
+            desc:desc.toUpperCase(),
+            cod_pat_debe:cod_pat_debe,
+            cod_pat_haber:cod_pat_haber,
+            id_fte:id_fte
         },
         success: function (data) {
             if(data){
@@ -56,10 +74,39 @@ function up_dlg_esp_detalle(){
     id=$('#table_Esp_Detalle').jqGrid ('getGridParam', 'selrow');    
     $("#esp_det_cod").val($("#table_Esp_Detalle").getCell(id, 'cod_esp_det'));
     $("#esp_det_desc").val($("#table_Esp_Detalle").getCell(id, 'desc'));
+    
+    
+    if (id)
+    {
+        MensajeDialogLoadAjax('dlg_esp_detalle', '.:: Cargando ...');
+
+        $.ajax({url: 'especifica_detalle/'+id+'?show=esp_detalle',
+            type: 'GET',
+            success: function(data)
+            {          
+                $("#inp_cod_pat_debe").val(data[0].cod_pat_debe);
+                $("#inp_cod_pat_haber").val(data[0].cod_pat_haber);
+                $("#sel_id_fte").val(data[0].id_fte);
+                MensajeDialogLoadAjaxFinish('dlg_esp_detalle');
+            },
+            error: function(data) {
+                mostraralertas("Hubo un Error, Comunicar al Administrador");
+                console.log('error');
+                console.log(data);
+                MensajeDialogLoadAjaxFinish('dlg_esp_detalle');
+            }
+        });
+    }
+    else{
+        mostraralertasconfoco("No Hay Registros Seleccionados","#table_Esp_Detalle");
+    }
 }
 function up_esp_detalle(){
     cod = $("#esp_det_cod").val();
     desc = $("#esp_det_desc").val();
+    cod_pat_debe = $("#inp_cod_pat_debe").val();
+    cod_pat_haber = $("#inp_cod_pat_haber").val();
+    id_fte = $("#sel_id_fte").val();
     if(cod==""){
         mostraralertasconfoco('Ingrese Codigo','#esp_det_cod');
         return false;
@@ -68,14 +115,28 @@ function up_esp_detalle(){
         mostraralertasconfoco('Ingrese Descripción','#esp_det_desc');
         return false;
     }
-    
+    if(cod_pat_debe==""){
+        mostraralertasconfoco('Ingrese cod. patrimonial DEBE','#cod_pat_debe');
+        return false;
+    }
+    if(cod_pat_haber==""){
+        mostraralertasconfoco('Ingrese cod. patrimonial HABER','#cod_pat_haber');
+        return false;
+    }
+    if(id_fte==""){
+        mostraralertasconfoco('Ingrese fuente de financiamiento','#id_fte');
+        return false;
+    }
     id_espec=$('#table_Especifica').jqGrid ('getGridParam', 'selrow');
     id_esp_det = $('#table_Esp_Detalle').jqGrid ('getGridParam', 'selrow');
     $.ajax({
         url: 'especifica_detalle/'+id_esp_det+'/edit',
         type: 'GET',
         data: {
-            desc:desc.toUpperCase()
+            desc:desc.toUpperCase(),
+            cod_pat_debe:cod_pat_debe,
+            cod_pat_haber:cod_pat_haber,
+            id_fte:id_fte
         },
         success: function (data) {
             if(data){
@@ -109,7 +170,7 @@ function del_esp_detalle(){
 }
 
 function limpiar_form_esp_det(){
-    $("#esp_det_cod,#esp_det_desc").val('');    
+    $("#esp_det_cod,#esp_det_desc,#inp_cod_pat_debe,#inp_cod_pat_haber,#sel_id_fte").val('');    
 }
 
 function selecciona_anio(){
@@ -118,4 +179,3 @@ function selecciona_anio(){
          url: 'get_generica?anio='+$("#vw_esp_det_anio").val()
     }).trigger('reloadGrid');
 }
-

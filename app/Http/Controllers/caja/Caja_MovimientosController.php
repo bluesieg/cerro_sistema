@@ -426,7 +426,7 @@ class Caja_MovimientosController extends Controller {
 //        return $view;
         if (count($recibo) >= 1) {
             $pdf = \App::make('dompdf.wrapper');
-            $pdf->loadHTML($view)->setPaper('a5','landscape');
+            $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream();
         }
     }

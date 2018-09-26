@@ -67,6 +67,18 @@
           
                          
                         </tr>
+                        <tr>
+                            <td class="text-center" style="width: 80px;"><i class="fa fa-file-o fa-2x text-muted"></i></td>
+                            <td>
+                                <h4><a href="#" onclick="dlg_teso_reportes(5);" >
+                                       Reporte Recibo de Ingresos
+                                    </a>
+                                    <small>Descripción reporte: Lista de todos los Ingresos por Partida</small>
+                                </h4>
+                            </td>
+          
+                         
+                        </tr>
                         
                                                                       
                         <!-- end TR -->
@@ -248,6 +260,45 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <!-- end widget div -->
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dialog_recibo_ingresos" style="display: none">
+    <div class="widget-body">
+        <div  class="smart-form">
+            <div class="panel-group">
+                <!-- widget div-->
+                <div class="row" style="padding: 10px 30px;">
+                    
+                   
+                    <div class="col-xs-12" style="padding: 0px; margin-top: 10px;">
+                        <div class="input-group input-group-md" style="width: 100%">
+                            <span class="input-group-addon" style="width: 165px">Fecha inicio &nbsp;<i class="fa fa-calendar"></i></span>
+                            <div>
+                            <input id="fec_ini_ri" name="fec_ini_ri" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('01/m/Y')}}">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xs-12" style="padding: 0px; margin-top: 10px; ">
+                        <div class="input-group input-group-md" style="width: 100%">
+                            <span class="input-group-addon" style="width: 165px">Agencia &nbsp;<i class="fa fa-users"></i></span>
+                            <div>
+                                <label class="select" >
+                                    <select id='select_agencia_ri' class="form-control col-lg-8" >
+                                <option value='0'>-- TODOS --</option>
+                                @foreach ($agencias as $agencias_caja)
+                                    <option value='{{$agencias_caja->id_caj}}' >{{$agencias_caja->descrip_caja}}</option>
+                                @endforeach
+                            </select><i></i> </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
                 </div>
                 <!-- end widget div -->
             </div>

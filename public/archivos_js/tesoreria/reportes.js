@@ -22,6 +22,10 @@ function dlg_teso_reportes(tipo)
        window.open('ver_rep_tesoreria/4');
        return false;
     }
+    if(tipo == 5)
+    {
+       crear_dialogo_recibo_ingresos();
+    }
             
 }
 function crear_dialogo_por_partida()
@@ -105,7 +109,22 @@ function selecciona_anio(){
         });
 
 }
-
+function crear_dialogo_recibo_ingresos()
+{
+    $("#dialog_recibo_ingresos").dialog({
+        autoOpen: false, modal: true, width: 600, show: {effect: "fade", duration: 300}, resizable: false,
+        title: "<div class='widget-header'><h4>.:RECIBO / INGRESOS:</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-save'></i>&nbsp; Ver Reporte"  ,
+            "class": "btn btn-success bg-color-green",
+            click: function () { abrir_reporte(5); }
+        }, {
+            html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
+            "class": "btn btn-danger",
+            click: function () { $(this).dialog("close"); }
+        }]
+    }).dialog('open');
+}
 function abrir_reporte(tipo)
 {
     if(tipo==1)
@@ -136,6 +155,16 @@ function abrir_reporte(tipo)
     {
      
        window.open('ver_rep_tesoreria/3?ini='+$("#fec_ini_ope_reci").val()+'&fin='+$("#fec_fin_ope_reci").val());
+       return false;
+    }
+    if(tipo==5)
+    {
+        if($("#fec_ini_ri").val()==""||$("#select_agencia_ri").val()=="")
+        {
+            mostraralertasconfoco("Ingresar datos correctamente","#fec_ini_ri");
+            return false;
+        }
+       window.open('ver_rep_tesoreria/5?ini='+$("#fec_ini_ri").val()+'&caja='+$("#select_agencia_ri").val());
        return false;
     }
    

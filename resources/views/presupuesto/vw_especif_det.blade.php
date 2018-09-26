@@ -276,6 +276,28 @@ $(document).ready(function () {
                                     <input id="esp_det_desc" type="text" placeholder="Descripción" class="input-sm text-uppercase">
                                 </label>                      
                             </section>
+                            <section>
+                                <label class="label">Cod. Patrimonial Debe:</label>
+                                <label class="input">
+                                    <input id="inp_cod_pat_debe" type="text" placeholder="Ingrese código patrimonial DEBE" class="input-sm " onkeypress="return soloNumeroTab(event);">
+                                </label>                      
+                            </section>
+                            <section>
+                                <label class="label">Cod. Patrimonial Haber:</label>
+                                <label class="input">
+                                    <input id="inp_cod_pat_haber" type="text" placeholder="Ingrese código patrimonial HABER" class="input-sm" onkeypress="return soloNumeroTab(event);">
+                                </label>                      
+                            </section>
+                            <section>
+                                <label class="label">Fuente de Financiamiento:</label>
+                                <label class="input">
+                                   <select id='sel_id_fte' class="form-control" style="height: 32px;" >
+                                        @foreach ($fte_financiamiento as $fte)
+                                        <option value='{{$fte->id_fte_fto}}' >{{$fte->descripcion}}</option>
+                                        @endforeach
+                                   </select>
+                                </label>                      
+                            </section>
                         </fieldset>
                     </div>
                 </div>               

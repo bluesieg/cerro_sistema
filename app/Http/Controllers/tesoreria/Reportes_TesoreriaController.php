@@ -45,6 +45,10 @@ class Reportes_TesoreriaController extends Controller
         {
             return $this->rep_entidades_estado($request);
         }
+        if($tip=='5')
+        {
+            return $this->rep_recibo_ingresos($request);
+        }
        
     }
     
@@ -166,5 +170,30 @@ class Reportes_TesoreriaController extends Controller
             array_push($todo, $Lista);
         }
         return response()->json($todo);
+    }
+    public function rep_recibo_ingresos(Request $request)
+    {
+        $caja = $request['caja'];
+        $fecha = $request['ini'];
+        $institucion = DB::select('SELECT * FROM maysa.institucion');
+        
+            $sqldebe = DB::table("tesoreria.vw_ctas_patrimoniales_debe")->where('fecha',$fecha)->where('id_caja',$caja)->get();
+            $sqlhaber = DB::table("tesoreria.vw_ctas_patrimoniales_haber")->where('fecha',$fecha)->where('id_caja',$caja)->get();
+            if(count($sqldebe)>0 &&  count($sqlhaber)>0)
+            {
+                $aux='0';
+                $view =  \View::make('tesoreria.reportes.rep_recibo_ingresos', compact('sqldebe','fecha','sqlhaber','caja','institucion'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4');
+                return $pdf->stream("RECIBO DE INGRESOS".".pdf");
+            }
+            else
+            {
+                return 'NO HAY RESULTADOS';
+            }
+        
+        
+        
+        
     }
 }
