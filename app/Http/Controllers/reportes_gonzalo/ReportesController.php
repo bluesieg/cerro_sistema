@@ -1352,7 +1352,7 @@ class ReportesController extends Controller
             {
                 set_time_limit(0);
                 ini_set('memory_limit', '2G');
-                $view = \View::make('reportes_gonzalo.reportes.reporte_cajas', compact('sql','sql1'))->render();
+                $view = \View::make('reportes_gonzalo.reportes.reporte_cajas', compact('sql','sql1','institucion','id_agencia'))->render();
                 $pdf = \App::make('dompdf.wrapper');
                 $pdf->loadHTML($view)->setPaper('a4');
                 return $pdf->stream("PRUEBA".".pdf");

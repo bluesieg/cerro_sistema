@@ -276,7 +276,7 @@
                    
                     <div class="col-xs-12" style="padding: 0px; margin-top: 10px;">
                         <div class="input-group input-group-md" style="width: 100%">
-                            <span class="input-group-addon" style="width: 165px">Fecha inicio &nbsp;<i class="fa fa-calendar"></i></span>
+                            <span class="input-group-addon" style="width: 165px">Fecha  &nbsp;<i class="fa fa-calendar"></i></span>
                             <div>
                             <input id="fec_ini_ri" name="fec_ini_ri" type="text"   class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('01/m/Y')}}">
                             </div>
@@ -289,9 +289,9 @@
                             <div>
                                 <label class="select" >
                                     <select id='select_agencia_ri' class="form-control col-lg-8" >
-                                <option value='0'>-- TODOS --</option>
+                                <option value='0' descripcion='TODOS'>-- TODOS --</option>
                                 @foreach ($agencias as $agencias_caja)
-                                    <option value='{{$agencias_caja->id_caj}}' >{{$agencias_caja->descrip_caja}}</option>
+                                    <option value='{{$agencias_caja->id_caj}}' descripcion='{{$agencias_caja->descrip_caja}}'>{{$agencias_caja->descrip_caja}}</option>
                                 @endforeach
                             </select><i></i> </label>
                             </div>

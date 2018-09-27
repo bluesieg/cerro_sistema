@@ -176,16 +176,17 @@ class Reportes_TesoreriaController extends Controller
         $caja = $request['caja'];
         $fecha = $request['ini'];
         $institucion = DB::select('SELECT * FROM maysa.institucion');
-        
-            $sqldebe = DB::table("tesoreria.vw_ctas_patrimoniales_debe")->where('fecha',$fecha)->where('id_caja',$caja)->get();
-            $sqlhaber = DB::table("tesoreria.vw_ctas_patrimoniales_haber")->where('fecha',$fecha)->where('id_caja',$caja)->get();
-            $sqlpresdebe = DB::table("tesoreria.vw_ctas_presupuestales_debe")->where('fecha',$fecha)->where('id_caja',$caja)->get();
-            $sqlpreshaber = DB::table("tesoreria.vw_ctas_presupuestales_haber")->where('fecha',$fecha)->where('id_caja',$caja)->get();
-            
-            if(count($sqldebe)>0 &&  count($sqlhaber)>0)
+        $descrip_caja =$request['descripcion'];  
+        if ($caja == 0) 
+        {
+        $sqldebe = DB::table("tesoreria.vw_ctas_patrimoniales_debe")->where('fecha',$fecha)->get();
+        $sqlhaber = DB::table("tesoreria.vw_ctas_patrimoniales_haber")->where('fecha',$fecha)->get();
+        $sqlpresdebe = DB::table("tesoreria.vw_ctas_presupuestales_debe")->where('fecha',$fecha)->get();
+        $sqlpreshaber = DB::table("tesoreria.vw_ctas_presupuestales_haber")->where('fecha',$fecha)->get();
+            if(count($sqldebe)>0 &&  count($sqlhaber)>0 && count($sqlpresdebe)>0 && count($sqlpreshaber)>0)
             {
                 $aux='0';
-                $view =  \View::make('tesoreria.reportes.rep_recibo_ingresos', compact('sqldebe','fecha','sqlhaber','caja','institucion'))->render();
+                $view =  \View::make('tesoreria.reportes.rep_recibo_ingresos', compact('sqldebe','fecha','sqlhaber','caja','institucion','sqlpresdebe','sqlpreshaber','descrip_caja'))->render();
                 $pdf = \App::make('dompdf.wrapper');
                 $pdf->loadHTML($view)->setPaper('a4');
                 return $pdf->stream("RECIBO DE INGRESOS".".pdf");
@@ -194,6 +195,27 @@ class Reportes_TesoreriaController extends Controller
             {
                 return 'NO HAY RESULTADOS';
             }
+        }
+        else
+        {
+        $sqldebe = DB::table("tesoreria.vw_ctas_patrimoniales_debe")->where('fecha',$fecha)->where('id_caja',$caja)->get();
+        $sqlhaber = DB::table("tesoreria.vw_ctas_patrimoniales_haber")->where('fecha',$fecha)->where('id_caja',$caja)->get();
+        $sqlpresdebe = DB::table("tesoreria.vw_ctas_presupuestales_debe")->where('fecha',$fecha)->where('id_caja',$caja)->get();
+        $sqlpreshaber = DB::table("tesoreria.vw_ctas_presupuestales_haber")->where('fecha',$fecha)->where('id_caja',$caja)->get();
+            if(count($sqldebe)>0 &&  count($sqlhaber)>0 && count($sqlpresdebe)>0 && count($sqlpreshaber)>0)
+            {
+                $aux='0';
+                $view =  \View::make('tesoreria.reportes.rep_recibo_ingresos', compact('sqldebe','fecha','sqlhaber','caja','institucion','sqlpresdebe','sqlpreshaber','descrip_caja'))->render();
+                $pdf = \App::make('dompdf.wrapper');
+                $pdf->loadHTML($view)->setPaper('a4');
+                return $pdf->stream("RECIBO DE INGRESOS".".pdf");
+            }
+            else
+            {
+                return 'NO HAY RESULTADOS';
+            }
+        }
+            
         
         
         

@@ -159,12 +159,15 @@ function abrir_reporte(tipo)
     }
     if(tipo==5)
     {
+        var descripcion = ($("#select_agencia_ri option:selected").attr("descripcion"));
+
+        
         if($("#fec_ini_ri").val()==""||$("#select_agencia_ri").val()=="")
         {
             mostraralertasconfoco("Ingresar datos correctamente","#fec_ini_ri");
             return false;
         }
-       window.open('ver_rep_tesoreria/5?ini='+$("#fec_ini_ri").val()+'&caja='+$("#select_agencia_ri").val());
+       window.open('ver_rep_tesoreria/5?ini='+$("#fec_ini_ri").val()+'&caja='+$("#select_agencia_ri").val()+'&descripcion='+descripcion);
        return false;
     }
    

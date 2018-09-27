@@ -38,7 +38,8 @@
          
     </div>
     <div class="sub2">Recibo de Ingresos del día : {{$fecha}}</div>
-                  
+  
+     <div class="sub2">Caja : {{$descrip_caja}}</div>              
     <input type="hidden" value=" {{$num= 1}}">
 
     <div class="lado3" style="height: 435px; border-bottom: 0px solid #333">
@@ -71,9 +72,12 @@
 
           </tr>
           @endforeach
-            <tr>
-                <td colspan="3" style="border-left:0px; border-bottom: 0px;border-right: 0px"></td>
-            </tr>
+           <tr>
+              <td style="border-bottom: hidden;border-left:hidden; text-align: right;font-size: 0.7em; padding: 0px;"><b>TOTAL:&nbsp;&nbsp;&nbsp; </b></td>
+              <td style="text-align: right;font-size: 0.7em; padding-right: 10px;">{{ number_format($sqldebe->sum('debe'),2,'.',',')  }}</td>
+              <td style="text-align: right;font-size: 0.7em; padding-right: 10px;">{{ number_format($sqlhaber->sum('haber'),2,'.',',')  }}</td>
+
+          </tr>
             </tbody>
         </table>
         <br>
@@ -90,26 +94,32 @@
             <tbody>
             @foreach ($sqlpresdebe as $presdebe)
           <tr>
-              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$presdebe->cta_pres}}</td>
+              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$presdebe->cta_presup_debe}}</td>
               <td style="text-align: right;font-size: 0.7em; padding-right: 10px;">{{ number_format($presdebe->debe,2,".",",")}}</td>
               <td style="text-align: right;font-size: 0.7em; padding-right: 10px;"></td>
 
           </tr>
           @endforeach
+          
           @foreach ($sqlpreshaber as $preshaber)
           <tr>
-              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$preshaber->cta_pat}}</td>
+              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$preshaber->cta_presup_haber}}</td>
               <td style="text-align: right;font-size: 0.7em; padding-right: 10px;"></td>
               <td style="text-align: right;font-size: 0.7em; padding-right: 10px;">{{ number_format($preshaber->haber,2,".",",")}}</td>
 
           </tr>
           @endforeach
-            <tr>
-                <td colspan="3" style="border-left:0px; border-bottom: 0px;border-right: 0px"></td>
-            </tr>
+            
+          <tr>
+              <td style="border-bottom: hidden;border-left:hidden; text-align: right;font-size: 0.7em; padding: 0px;"><b>TOTAL:&nbsp;&nbsp;&nbsp; </b></td>
+              <td style="text-align: right;font-size: 0.7em; padding-right: 10px;">{{ number_format($sqlpresdebe->sum('debe'),2,'.',',')  }}</td>
+              <td style="text-align: right;font-size: 0.7em; padding-right: 10px;">{{ number_format($sqlpreshaber->sum('haber'),2,'.',',')  }}</td>
+
+          </tr>
             </tbody>
+          
         </table>
-      
+
         
         
         
