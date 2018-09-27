@@ -179,6 +179,9 @@ class Reportes_TesoreriaController extends Controller
         
             $sqldebe = DB::table("tesoreria.vw_ctas_patrimoniales_debe")->where('fecha',$fecha)->where('id_caja',$caja)->get();
             $sqlhaber = DB::table("tesoreria.vw_ctas_patrimoniales_haber")->where('fecha',$fecha)->where('id_caja',$caja)->get();
+            $sqlpresdebe = DB::table("tesoreria.vw_ctas_presupuestales_debe")->where('fecha',$fecha)->where('id_caja',$caja)->get();
+            $sqlpreshaber = DB::table("tesoreria.vw_ctas_presupuestales_haber")->where('fecha',$fecha)->where('id_caja',$caja)->get();
+            
             if(count($sqldebe)>0 &&  count($sqlhaber)>0)
             {
                 $aux='0';

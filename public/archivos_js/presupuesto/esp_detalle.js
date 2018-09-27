@@ -24,6 +24,8 @@ function new_esp_detalle(){
     cod_pat_debe = $("#inp_cod_pat_debe").val();
     cod_pat_haber = $("#inp_cod_pat_haber").val();
     id_fte = $("#sel_id_fte").val();
+    cta_presup_debe = $("#inp_cta_presup_debe").val();
+    cta_presup_haber = $("#inp_cta_presup_haber").val();
     if(cod==""){
         mostraralertasconfoco('Ingrese Codigo','#esp_det_cod');
         return false;
@@ -33,15 +35,23 @@ function new_esp_detalle(){
         return false;
     }
     if(cod_pat_debe==""){
-        mostraralertasconfoco('Ingrese cod. patrimonial DEBE','#cod_pat_debe');
+        mostraralertasconfoco('Ingrese cod. patrimonial DEBE','#inp_cod_pat_debe');
         return false;
     }
     if(cod_pat_haber==""){
-        mostraralertasconfoco('Ingrese cod. patrimonial HABER','#cod_pat_haber');
+        mostraralertasconfoco('Ingrese cod. patrimonial HABER','#inp_cod_pat_haber');
         return false;
     }
     if(id_fte==""){
-        mostraralertasconfoco('Ingrese fuente de financiamiento','#id_fte');
+        mostraralertasconfoco('Ingrese fuente de financiamiento','#sel_id_fte');
+        return false;
+    }
+    if(cta_presup_debe==""){
+        mostraralertasconfoco('Ingrese cta. presupuestal DEBE','#inp_cta_presup_debe');
+        return false;
+    }
+    if(cta_presup_haber==""){
+        mostraralertasconfoco('Ingrese cta. presupuestal HABER','#inp_cta_presup_haber');
         return false;
     }
     id_espec = $('#table_Especifica').jqGrid ('getGridParam', 'selrow');
@@ -54,7 +64,9 @@ function new_esp_detalle(){
             desc:desc.toUpperCase(),
             cod_pat_debe:cod_pat_debe,
             cod_pat_haber:cod_pat_haber,
-            id_fte:id_fte
+            id_fte:id_fte,
+            cta_presup_debe:cta_presup_debe,
+            cta_presup_haber:cta_presup_haber
         },
         success: function (data) {
             if(data){
@@ -87,6 +99,8 @@ function up_dlg_esp_detalle(){
                 $("#inp_cod_pat_debe").val(data[0].cod_pat_debe);
                 $("#inp_cod_pat_haber").val(data[0].cod_pat_haber);
                 $("#sel_id_fte").val(data[0].id_fte);
+                $("#inp_cta_presup_debe").val(data[0].cta_presup_debe);
+                $("#inp_cta_presup_haber").val(data[0].cta_presup_haber);
                 MensajeDialogLoadAjaxFinish('dlg_esp_detalle');
             },
             error: function(data) {
@@ -107,6 +121,8 @@ function up_esp_detalle(){
     cod_pat_debe = $("#inp_cod_pat_debe").val();
     cod_pat_haber = $("#inp_cod_pat_haber").val();
     id_fte = $("#sel_id_fte").val();
+    cta_presup_debe = $("#inp_cta_presup_debe").val();
+    cta_presup_haber = $("#inp_cta_presup_haber").val();
     if(cod==""){
         mostraralertasconfoco('Ingrese Codigo','#esp_det_cod');
         return false;
@@ -116,15 +132,23 @@ function up_esp_detalle(){
         return false;
     }
     if(cod_pat_debe==""){
-        mostraralertasconfoco('Ingrese cod. patrimonial DEBE','#cod_pat_debe');
+        mostraralertasconfoco('Ingrese cod. patrimonial DEBE','#inp_cod_pat_debe');
         return false;
     }
     if(cod_pat_haber==""){
-        mostraralertasconfoco('Ingrese cod. patrimonial HABER','#cod_pat_haber');
+        mostraralertasconfoco('Ingrese cod. patrimonial HABER','#inp_cod_pat_haber');
         return false;
     }
     if(id_fte==""){
         mostraralertasconfoco('Ingrese fuente de financiamiento','#id_fte');
+        return false;
+    }
+    if(cta_presup_debe==""){
+        mostraralertasconfoco('Ingrese cta. presupuestal DEBE','#inp_cta_presup_debe');
+        return false;
+    }
+    if(cta_presup_haber==""){
+        mostraralertasconfoco('Ingrese cta. presupuestal HABER','#inp_cta_presup_haber');
         return false;
     }
     id_espec=$('#table_Especifica').jqGrid ('getGridParam', 'selrow');
@@ -136,7 +160,9 @@ function up_esp_detalle(){
             desc:desc.toUpperCase(),
             cod_pat_debe:cod_pat_debe,
             cod_pat_haber:cod_pat_haber,
-            id_fte:id_fte
+            id_fte:id_fte,
+            cta_presup_debe:cta_presup_debe,
+            cta_presup_haber:cta_presup_haber
         },
         success: function (data) {
             if(data){
@@ -170,7 +196,7 @@ function del_esp_detalle(){
 }
 
 function limpiar_form_esp_det(){
-    $("#esp_det_cod,#esp_det_desc,#inp_cod_pat_debe,#inp_cod_pat_haber,#sel_id_fte").val('');    
+    $("#esp_det_cod,#esp_det_desc,#inp_cod_pat_debe,#inp_cod_pat_haber,#sel_id_fte,#inp_cta_presup_debe,#inp_cta_presup_haber").val('');    
 }
 
 function selecciona_anio(){

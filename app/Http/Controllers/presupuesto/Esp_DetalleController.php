@@ -30,6 +30,8 @@ class Esp_DetalleController extends Controller
         $data->cod_pat_debe = $request['cod_pat_debe'];
         $data->cod_pat_haber = $request['cod_pat_haber'];
         $data->id_fte = $request['id_fte'];
+        $data->cta_presup_debe = $request['cta_presup_debe'];
+        $data->cta_presup_haber = $request['cta_presup_haber'];
         $data->save();
         return $data->id_espec_det;
     }
@@ -41,6 +43,8 @@ class Esp_DetalleController extends Controller
             $val->cod_pat_debe=$request['cod_pat_debe'];
             $val->cod_pat_haber=$request['cod_pat_haber'];
             $val->id_fte=$request['id_fte'];
+            $val->cta_presup_debe=$request['cta_presup_debe'];
+            $val->cta_presup_haber=$request['cta_presup_haber'];
             $val->save();  
             return $val->id_espec_det;
         }

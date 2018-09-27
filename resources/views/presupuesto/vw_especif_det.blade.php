@@ -298,6 +298,18 @@ $(document).ready(function () {
                                    </select>
                                 </label>                      
                             </section>
+                            <section>
+                                <label class="label">Cta. Presupuestal Debe:</label>
+                                <label class="input">
+                                    <input id="inp_cta_presup_debe" type="text" placeholder="Ingrese cuenta Presupuestal  DEBE" class="input-sm " onkeypress="return soloNumeroTab(event);">
+                                </label>                      
+                            </section>
+                            <section>
+                                <label class="label">Cta. Presupuestal Haber:</label>
+                                <label class="input">
+                                    <input id="inp_cta_presup_haber" type="text" placeholder="Ingrese cuenta Presupuestal HABER" class="input-sm" onkeypress="return soloNumeroTab(event);">
+                                </label>                      
+                            </section>
                         </fieldset>
                     </div>
                 </div>               

@@ -48,7 +48,7 @@
             <thead>
             
             <tr>
-                <th style="width: 10%;">Cta pat</th>
+                <th style="width: 10%;">Cta patrimonial</th>
                 <th style="width: 10%">Debe</th>
                 <th style="width: 10%">Haber</th>
                 
@@ -76,33 +76,31 @@
             </tr>
             </tbody>
         </table>
-         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px; font-size: 1.3em;">
+        <br>
+        <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px; font-size: 1.3em;">
             <thead>
             
             <tr>
-                <th style="width: 10%;">Cta pat</th>
+                <th style="width: 10%;">Cta presupuestal</th>
                 <th style="width: 10%">Debe</th>
                 <th style="width: 10%">Haber</th>
-                <th style="width: 10%;margin-right: 10px;">Cta pat</th>
-                <th style="width: 10%">Debe</th>
-                <th style="width: 10%;">Haber</th>
                 
             </tr>
             </thead>
             <tbody>
-            @foreach ($sqldebe as $debe)
+            @foreach ($sqlpresdebe as $presdebe)
           <tr>
-              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$debe->cta_pat}}</td>
-              <td style="text-align: right;font-size: 0.7em; padding-right: 10px;">{{ number_format($debe->debe,2,".",",")}}</td>
+              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$presdebe->cta_pres}}</td>
+              <td style="text-align: right;font-size: 0.7em; padding-right: 10px;">{{ number_format($presdebe->debe,2,".",",")}}</td>
               <td style="text-align: right;font-size: 0.7em; padding-right: 10px;"></td>
 
           </tr>
           @endforeach
-          @foreach ($sqlhaber as $haber)
+          @foreach ($sqlpreshaber as $preshaber)
           <tr>
-              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$haber->cta_pat}}</td>
+              <td style="text-align: center;font-size: 0.7em; padding: 0px;">{{$preshaber->cta_pat}}</td>
               <td style="text-align: right;font-size: 0.7em; padding-right: 10px;"></td>
-              <td style="text-align: right;font-size: 0.7em; padding-right: 10px;">{{ number_format($haber->haber,2,".",",")}}</td>
+              <td style="text-align: right;font-size: 0.7em; padding-right: 10px;">{{ number_format($preshaber->haber,2,".",",")}}</td>
 
           </tr>
           @endforeach
@@ -111,6 +109,7 @@
             </tr>
             </tbody>
         </table>
+      
         
         
         
