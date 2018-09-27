@@ -173,6 +173,7 @@ class Reportes_TesoreriaController extends Controller
     }
     public function rep_recibo_ingresos(Request $request)
     {
+        
         $caja = $request['caja'];
         $fecha = $request['ini'];
         $institucion = DB::select('SELECT * FROM maysa.institucion');
