@@ -238,6 +238,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('insert_valor_arancel', 'Valores_Arancelarios@insert_valor_arancel');
         Route::post('update_valor_arancel', 'Valores_Arancelarios@update_valor_arancel');
         Route::post('delete_valor_arancel', 'Valores_Arancelarios@delete_valor_arancel');
+        
+        Route::resource('cajas','CajasController');
+        Route::resource('confg_ipm_tim','Configuracion_Ipm_TimController');
     });
     /*     * ****************************************   VALORES UNITARIOS    ************************************************************** */
     Route::group(['namespace' => 'configuracion'], function() {

@@ -91,7 +91,7 @@ function validaciones()
             }
         },
         error: function (data) {
-            mostraralertas('* Error al Generar Recibo.<br>* Contactese con el Administrador.');
+            mostraralertas('* ERROR DE RED.<br>* Contactese con el Administrador.');
             MensajeDialogLoadAjaxFinish('vw_emision_rec_pag_varios');
         }
     }); 
@@ -135,7 +135,7 @@ function validacion_alcabala(){
                 }
         },
         error: function (data) {
-            mostraralertas('* Error al Generar Recibo.<br>* Contactese con el Administrador.');
+            mostraralertas('* ERROR DE RED.<br>* Contactese con el Administrador.');
             MensajeDialogLoadAjaxFinish('vw_emision_rec_pag_varios');
         }
     }); 
