@@ -29,15 +29,15 @@
             
         </table>
         
-        <center><div Class="asunto" style="margin-top: 10px;"><b>CARTA DE PRESENTACION Y REQUERIMIENTO DE FISCALIZACION N° {{$sql->nro_car}}-{{$sql->anio}}<br>SGFT-GAT-MDCC</b></div></center>
-        <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px;">Cerro Colorado, {{$sql->fec_reg}}</div>
+        <center><div Class="asunto" style="margin-top: 10px; font-size: 0.9em"><b>CARTA DE PRESENTACION Y REQUERIMIENTO DE FISCALIZACION N° {{$sql->nro_car}}-{{$sql->anio}}-SGFT-GAT-MDCC</b></div></center>
+        <div class="subasunto" style="text-align: right;  margin-top: 10px;">Cerro Colorado, {{$sql->fec_reg}}</div>
 
-        <table style="margin-top: 10px; margin-bottom: 5px !important font-weight: bold">
+        <table CELLPADDING ='0' CELLSPACING ='0' style="margin-top: 10px; margin-bottom: 5px !important font-weight: bold">
             <tr>
-                <td style="border:0px; width: 17%">
+                <td style="border:0px; width: 22%">
                     NOMBRE/ RAZÓN SOCIAL
                 </td>
-                <td style="border:0px; width: 50%">
+                <td style="border:0px; width: 78%">
                     : {{$sql->pers_nro_doc}} {{$sql->contribuyente}}
                 </td>
             </tr>
@@ -68,23 +68,40 @@
         </table>
         </b>
         <div style="width: 100%; text-align: justify; font-size: 0.9em; margin-top: 0px;">
-            Previo saludo, vecino cotribuyente, de conformidad con el Capítulo II Art. 60° 61° y 62° del Texto Único Ordenado del Código
-            Tributario aprobado por el D.S. 133-2013-EF y en concordancia con la Ley N° 27972 y el D.S. N° 156-2004-EF, TUO de la Ley de Tributación
-            Municipal, se le comunica que el día {{$sql->fec_fis}} a Horas {{$sql->hora_fis}}, se constituirá un
-            equipo de fiscalizadores integrados por: 
+            <b>Presente. -</b><br>
+            Es grato dirigirme a Usted, con el objeto de saludarlo cordialmente a nombre de la Sub Gerencia de Fiscalización
+            Tributaria de la Municipalidad Distrital de Cerro Colorado y poner de su conocimiento que:<br>
+            <br>
+            Los artículos 61°, 62° y 62°-A del TUO del Código Tributario a esta Administración , confiere a esta administración 
+            las facultades de fiscalización y determinación; pudiendo solicitar la comparecencia de los deudores tributarios o 
+            terceros para que proporcionen la información que se estime necesaria, otorgando un plazo no menor de cinco (5) días 
+            hábiles, más el término de la distancia de ser el caso. <br>
+            <br>
+            @if(count($adjuntas)>0)
+            En ejercicio de dichas facultades, es que a través de la Carta de Presentación y Requerimiento de Fiscalización 
+            @foreach ($adjuntas as $adj)
+                    {{'N°'.$adj->nro_car_adj.'-'.$adj->anio_adj.'-SGFT-GAT-MDCC Notificada '.$adj->fecha_notificacion_adj}},  
+            @endforeach
+            es que se inicia el proceso de fiscalización para verificar el correcto cumplimiento de las obligaciones 
+            formales y materiales con respecto del impuesto predial. 
+            @else
+                En ejercicio de dichas facultades, es que a través de la Presente Carta de Presentación y Requerimiento de Fiscalización 
+                se inicia el proceso de fiscalización para verificar el correcto cumplimiento de las obligaciones 
+                formales y materiales con respecto del impuesto predial.   
+            @endif
+            <br>
+            @php echo $sql->texto_1 @endphp
+            A tenor de lo anterior, se requiere conforme a las atribuciones de esta área, dar las facilidades del caso
+            a el/los agentes fiscalizadores: 
             @foreach ($fiscalizadores as $fis)
                     {{$fis->fiscalizador}} / DNI: {{$fis->pers_nro_doc}}, 
             @endforeach
-            respectivamente, para verificar el cabal cumplimiento de sus obligaciones tributarias relacionadas con el
-            Impuesto Predial y otros tributos que administra y recauda esta Municipalidad, por lo que le exhortamos se sirva brindar las facilidades
-            necesarias según lo establecido en el Art. 87° del D.S. 135-99-EF, para la inspección del/los siguiente/s predio/s.
+            para que realicen el proceso de fiscalización en fecha {{$sql->fec_fis}} a Horas {{$sql->hora_fis}} del/los siguiente/s predio/s:
         </div>
-        
         <table border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;margin-bottom: 5px;">
             <thead>
               <tr>
-                  <th style="width: 10%">Cod. Catastral</th>
-                  <th style="width: 70%">Ubicación del predio</th>
+                  <th style="width: 80%">Ubicación del predio</th>
                   <th style="width: 4%">N°</th>
                   <th style="width: 5%">Zona</th>
                   <th style="width: 6%">Manzana</th>
@@ -94,11 +111,9 @@
             <tbody>
                 @foreach ($predios as $pre)
                     <tr>
+                         
                         <td>
-                            {{$pre->cod_cat}}
-                        </td> 
-                        <td>
-                            {{$pre->nom_via."-".$pre->habilitacion}}
+                            {{$pre->nom_via."-".$pre->habilitacion." ".trim($pre->referencia)}}
                         </td> 
                         <td style="text-align: center">
                             {{$pre->nro_mun}}
@@ -118,39 +133,77 @@
             </tbody>
         </table>
         <div style="width: 100%; text-align: justify; font-size: 0.9em; margin-top: 0px;">
-            Para los fines del proceso de <b>Fiscalización Tributaria</b> se requiere al momento de la inspección presente la siguiente Informacion:<br>
+
+            En caso que Ud., 
+            no pueda estar presente podrá nombrar un representante legal mediante Carta Poder simple, quien podrá acompañar y verificar el 
+            respectivo proceso de inspección.
+            <br>
+            <br>
+            
+            De llevarse a cabo la verificación a su predio se ejecutará las labores que a continuación se detallan:<br>
             <table style="margin-top: 5px; margin-bottom: 5px;">
                 <tr>
                     <td style="width: 50%; font-size: 1.0em; border:0px;">
-                        @if ($sql->soli_contra == "1")
-                        <span style="padding-left: 15px;">-Contrato de Compra Venta y Título de Propiedad</span><br>
-                        @endif
-                        @if ($sql->soli_licen == "1")
-                        <span style="padding-left: 15px;">-Licencia de Construcción</span><br>
-                        @endif
+                        <span style="padding-left: 15px;">-Toma de medidas de los perímetros del terreno, construcciones y obras complementarias.</span><br>
                     </td>
+                </tr>
+                <tr>
                     <td style="width: 50%; font-size: 1.0em; border:0px;">
-                        @if ($sql->soli_dercl == "1")
-                        <span style="padding-left: 15px;">-Última Declaración Jurada</span><br>
-                        @endif
-                        @if ($sql->soli_otro == "1")
-                        <span style="padding-left: 15px;">-{{$sql->otro_text}}</span><br>
-                        @endif
+                        <span style="padding-left: 15px;">-Verificación de las categorías respecto de la construcción de los predios.</span><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50%; font-size: 1.0em; border:0px;">
+                        <span style="padding-left: 15px;">-Toma de fotografías a las características de los predios.</span><br>
                     </td>
                 </tr>
             </table>
+        </div>
+        <div style="width: 100%; text-align: justify; font-size: 0.9em; margin-top: 0px;">
+            Para los fines del proceso de <b>Fiscalización Tributaria</b> se requiere al momento de la inspección presente la siguiente Informacion:<br>
+            <table style="margin-top: 5px;">
+                @if ($sql->soli_contra == "1")
+                <tr>
+                    <td style="width: 50%; font-size: 1.0em; border:0px;">
+                        
+                        <span style="padding-left: 15px;">-Contrato de Compra Venta y Título de Propiedad</span><br>
+                        
+                    </td>
+                </tr>
+                @endif
+                @if ($sql->soli_licen == "1")
+                <tr>
+                    <td style="width: 50%; font-size: 1.0em; border:0px;">
+                        <span style="padding-left: 15px;">-Licencia de Construcción</span><br>
+                        
+                    </td>
+                </tr>
+                @endif
+                @if ($sql->soli_dercl == "1")
+                <tr>
+                    <td style="width: 50%; font-size: 1.0em; border:0px;">
+                        <span style="padding-left: 15px;">-Última Declaración Jurada</span><br>
+                    </td>
+                </tr>
+                @endif
+                @if ($sql->soli_otro == "1")
+                <tr>
+                    <td style="width: 50%; font-size: 1.0em; border:0px;">
+                        
+                        <span style="padding-left: 15px;">-{{$sql->otro_text}}</span><br>
+                        
+                    </td>
+                </tr>
+                @endif
+            </table>
             
-            
-            Los documentos requeridos y <b>No</b> presentados o exhibidos en la etapa de fiscalización no serán admitidos como medios probatorios en
-            un eventual reclamo por parte del contribuyente de conformidad con el Art. 141° del Código Tributario. Este pedido se realizara en uso
-            de las facultades discrecionales de fiscalización que posee la Administración Tributaria y que se encuentran reguladas en el Art. 62° del 
-            TUO del Código Tributario aprobado por el D.S. 133-2013-EF y modificatorias. Asimismo le informamos que en caso que usted no pueda
-            estar presente, podrá nombrar a un representante que acompañe y verifique el proceso de inspección.<br>
-            También la Administración Tributaria de la Municipalidad Distrital de Cerro Colorado, se encuentra facultada a exigir al contribuyente
-            citado, la exhibición y/o presentación de informes y análisis relacionados con hechos susceptibles de generar obligaciones tributarias
-            en la forma y condiciones requeridas.<br>
+            Agradeciendo anticipadamente por la atención que dispense al presente de ser necesario podrá comunicarse al teléfono 054-382890 anexo 762 o ubicarnos en las oficinas cito en la calle Francisco Bolognesi Nº 227 con Calle Mariano Melgar 3° Piso, Plaza las Américas Cerro Colorado.
             <br>
-            Atentamente.-
+            Sin otro particular quedo de usted.
+            <br>
+            <br>
+            Atentamente. -
+
             
         </div>
         <div style="page-break-before:always;"></div>

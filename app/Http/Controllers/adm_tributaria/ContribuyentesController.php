@@ -453,6 +453,28 @@ class ContribuyentesController extends Controller
         
         
         foreach ($sql as $Index => $Datos) {
+            $dir=$Datos->nom_via;
+            if($Datos->nro_mun!=null&&$Datos->nro_mun!="-")
+            {
+                $dir=$dir." ".$Datos->nro_mun;
+            }
+            if($Datos->manz!=null&&$Datos->manz!="-")
+            {
+                $dir=$dir." Mzna ".$Datos->manz;
+            }
+            if($Datos->lote!=null&&$Datos->lote!="-")
+            {
+                $dir=$dir." Lt ".$Datos->lote;
+            }
+            if($Datos->dpto!=null&&$Datos->dpto!="-")
+            {
+                $dir=$dir." Dpto ".$Datos->dpto;
+            }
+            if($Datos->ref_dom_fis!=null&&$Datos->ref_dom_fis!="-")
+            {
+                $dir=$dir." ".trim($Datos->ref_dom_fis);
+            }
+            $dir=$dir." ".$Datos->distrit;
             $Lista->rows[$Index]['id'] = $Datos->id_contrib;            
             $Lista->rows[$Index]['cell'] = array(
                 trim($Datos->id_contrib),
@@ -460,7 +482,7 @@ class ContribuyentesController extends Controller
                 trim($Datos->nro_doc),
                 trim(str_replace("-", "",$Datos->contribuyente)),
                 trim($Datos->email),
-                trim($Datos->dom_fis),               
+                trim($dir),               
             );
         }
         return response()->json($Lista);

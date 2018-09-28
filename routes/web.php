@@ -435,12 +435,15 @@ Route::group(['middleware' => 'auth'], function() {
         /////carta de requerimiendo
         Route::resource('carta_reque', 'Carta_RequerimientoController');
         Route::get('carta_set_fisca', 'Carta_RequerimientoController@fisca_enviados_create'); //
+        Route::get('carta_set_adjunta', 'Carta_RequerimientoController@carta_adjunta_create'); //
         Route::get('car_req_rep/{id}', 'Carta_RequerimientoController@carta_repo'); //
         Route::get('trae_cartas/{an}/{contr}/{ini}/{fin}/{num}', 'Carta_RequerimientoController@get_cartas_req'); //
         Route::get('trae_pred_carta/{car}', 'Carta_RequerimientoController@get_predios_carta'); //
         Route::get('trae_fisca_carta/{car}', 'Carta_RequerimientoController@get_fisca_enviados'); //
+        Route::get('trae_fisca_carta_adjuntas/{car}', 'Carta_RequerimientoController@get_fisca_cartas_adjuntas'); //
         Route::get('fis_env_del', 'Carta_RequerimientoController@fisca_enviado_destroy'); //
-        Route::get('carta_anula', 'Carta_RequerimientoController@fisca_enviado_destroy'); //
+        Route::get('carta_adjunta_del', 'Carta_RequerimientoController@carta_adjunta_destroy'); //
+        Route::get('carta_anula', 'Carta_RequerimientoController@anular_carta'); //
         //// ficha de verificacion
         Route::resource('ficha_veri', 'Ficha_verificacionController');
         Route::resource('piso_fisca', 'Pisos_ficController');

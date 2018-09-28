@@ -10,6 +10,7 @@ use App\Traits\DatesTranslator;
 use App\Models\fiscalizacion\Puente_Carta_Predios;
 use App\Models\fiscalizacion\Fisca_Enviados;
 use Illuminate\Support\Facades\Auth;
+use App\Models\fiscalizacion\cartas_adjuntas_referencia;
 class Carta_RequerimientoController extends Controller
 {
     use DatesTranslator;
@@ -36,6 +37,7 @@ class Carta_RequerimientoController extends Controller
         }
         $carta=new Carta_Requerimiento;
         $carta->id_contrib=$request['contri'];
+        $carta->texto_1=$request['contenido'];
         $carta->soli_contra=$request['con'];
         $carta->soli_licen=$request['lic'];
         $carta->soli_dercl=$request['der'];
@@ -56,22 +58,69 @@ class Carta_RequerimientoController extends Controller
     {
     }
 
-    public function show($id)
+    public function show($id,Request $request)
     {
-        $carta=DB::table('fiscalizacion.vw_carta_requerimiento')->where('id_car',$id)->get();
-        $carta[0]->fec_fis_ini=$this->getCreatedAtAttribute($carta[0]->fec_fis)->format('d/m/Y');
-        $carta[0]->fec_fis=$this->getCreatedAtAttribute($carta[0]->fec_fis)->format('l d \d\e F \d\e\l Y ');
-        return $carta;
+        if($id==0)
+        {
+            if($request['grid']=='adjuntos')
+            {
+                return $this->show_adjuntos($id,$request);
+            }
+            
+        }
+        else
+        {
+            $carta=DB::table('fiscalizacion.vw_carta_requerimiento')->where('id_car',$id)->get();
+            $carta[0]->fec_fis_ini=$this->getCreatedAtAttribute($carta[0]->fec_fis)->format('d/m/Y');
+            $carta[0]->fec_fis=$this->getCreatedAtAttribute($carta[0]->fec_fis)->format('l d \d\e F \d\e\l Y ');
+            return $carta;
+        }
+    }
+     public function show_adjuntos($id,Request $request)
+    {
+            $carta=DB::table('fiscalizacion.carta_requerimiento')->where('nro_car',$request['carta'])->where('anio',$request['anio'])->get();
+            if(count($carta)>=1)
+            {
+                if($carta[0]->id_car_referenciado>0)
+                {
+                    $adjunta=DB::table('fiscalizacion.carta_requerimiento')->where('id_car',$carta[0]->id_car_referenciado)->get();
+                    return 'Ya Relacionada a la carta '.$adjunta[0]->nro_car."-".$adjunta[0]->anio;
+                }
+                else
+                {
+                    return $carta[0]->id_car;
+                }
+            }
+            else
+            {
+                Return "No Existe";
+            }
+            
     }
     public function get_fisca_enviados($id)
     {
         $fiscalizadores=DB::table('fiscalizacion.vw_fisca_enviados')->where('id_car',$id)->get();
         return $fiscalizadores;
     }
+    public function get_fisca_cartas_adjuntas($id)
+    {
+        $cartas=DB::table('fiscalizacion.vw_cartas_adjuntas_referencia')->where('id_car_principal',$id)->get();
+        return $cartas;
+    }
     public function fisca_enviado_destroy(Request $request)
     {
         $fisca=new Fisca_Enviados;
         $val=  $fisca::where("id_fis_env","=",$request['id'] )->first();
+        if(count($val)>=1)
+        {
+            $val->delete();
+        }
+        return "destroy ".$request['id'];
+    }
+    public function carta_adjunta_destroy(Request $request)
+    {
+        $carta=new cartas_adjuntas_referencia;
+        $val=  $carta::where("id_car_adj_ref","=",$request['id'] )->first();
         if(count($val)>=1)
         {
             $val->delete();
@@ -99,6 +148,7 @@ class Carta_RequerimientoController extends Controller
             $val->fec_fis=$request['fec'];
             $val->hora_fis=$request['hor'];
             $val->anio_fis=$request['anfis'];
+            $val->texto_1=$request['contenido'];
             $val->save();
         }
         return $id;
@@ -234,10 +284,11 @@ class Carta_RequerimientoController extends Controller
         if(count($sql)>=1)
         {
             $fiscalizadores=DB::table('fiscalizacion.vw_fisca_enviados')->where('id_car',$id)->get();
+            $adjuntas=DB::table('fiscalizacion.vw_cartas_adjuntas_referencia')->where('id_car_principal',$id)->get();
             $predios=DB::table('fiscalizacion.vw_puente_carta_predios')->where('id_car',$id)->get();
             $sql->fec_fis=$this->getCreatedAtAttribute($sql->fec_fis)->format('l d \d\e F \d\e\l Y ');
             $sql->fec_reg=$this->getCreatedAtAttribute($sql->fec_reg)->format('l d \d\e F \d\e\l Y ');
-            $view =  \View::make('fiscalizacion.reportes.carta_req', compact('sql','fiscalizadores','predios'))->render();
+            $view =  \View::make('fiscalizacion.reportes.carta_req', compact('sql','fiscalizadores','predios','adjuntas'))->render();
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($view)->setPaper('a4');
             return $pdf->stream("alcabala.pdf");
@@ -327,21 +378,25 @@ class Carta_RequerimientoController extends Controller
     }
      public function puente_carta_predios_create($carta,$contrib,$aniofis)
     {
-        $prediosactuales=DB::table('adm_tri.vw_predi_urba')->select('id_pred')->where('id_contrib',$contrib)->where('anio',date("Y"))->where('pred_anio_activo',1)->where('pred_contrib_activo',1)->get();
-        $info = array();
+        $prediosactuales=DB::table('adm_tri.vw_grid_predios')->where('id_contrib',$contrib)->where('anio',date("Y"))->where('pred_anio_activo',1)->where('pred_contrib_activo',1)->get();
+       // $info = array();
         foreach($prediosactuales as $actual)
         {
-            $info[]=$actual->id_pred;
-        }
-        
-        $predios=DB::table('adm_tri.vw_predi_urba')->where('id_contrib',$contrib)->where('anio',$aniofis)->wherein('id_pred',$info)->get();
-        foreach($predios as $pre)
-        {
+           // $info[]=$actual->id_pred;
             $puente=new Puente_Carta_Predios;
-            $puente->id_pred_anio=$pre->id_pred_anio;
+            $puente->id_pred_anio=$actual->id_pred_anio;
             $puente->id_car=$carta;
             $puente->save();
         }
+//        
+//        $predios=DB::table('adm_tri.vw_grid_predios')->where('id_contrib',$contrib)->where('anio',$aniofis)->wherein('id_pred',$info)->get();
+//        foreach($predios as $pre)
+//        {
+//            $puente=new Puente_Carta_Predios;
+//            $puente->id_pred_anio=$pre->id_pred_anio;
+//            $puente->id_car=$carta;
+//            $puente->save();
+//        }
     }
 
     public function fisca_enviados_create(Request $request)
@@ -351,6 +406,21 @@ class Carta_RequerimientoController extends Controller
         $fisca->id_user_fis=$request['fis'];
         $fisca->save();
         return $fisca->id_fis_env;
+    }
+    public function carta_adjunta_create(Request $request)
+    {
+        $adj=new cartas_adjuntas_referencia;
+        $adj->id_car_principal=$request['car'];
+        $adj->id_car_adjunta=$request['adjunta'];
+        $adj->save();
+        $carta=new Carta_Requerimiento;
+        $val=  $carta::where("id_car","=",$request['adjunta'] )->first();
+        if(count($val)>=1)
+        {
+            $val->id_car_referenciado=$request['car'];
+            $val->save();
+        }
+        return $adj->id_car_adj_ref;
     }
     public function edit_carta_fec(Request $request)
     {

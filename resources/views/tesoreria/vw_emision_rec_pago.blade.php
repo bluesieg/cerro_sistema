@@ -368,11 +368,17 @@
                                 </label>                      
                             </section>
                             <div class="row">
-                                <section class="col col-3" style="padding-right: 5px">                                    
+                                <section class="col col-2" style="padding-right: 5px">                                    
                                     <label class="label">Cod. Tributo:</label>
                                     <label class="input">
                                         <input id="hiddenvw_emi_rec_txt_tributo" type="text" placeholder="000000" class="input-sm" disabled="">
                                     </label>                        
+                                </section>
+                                <section class="col col-2" style="padding-left: 5px;padding-right: 5px">
+                                    <label class="label">Nº Recibo Alcabala:</label>
+                                    <label class="input">
+                                        <input id="vw_emi_rec_txt_nrecibo" type="text" placeholder="0" class="input-sm" onkeypress="return soloNumeroTab(event);" disabled="">
+                                    </label>                      
                                 </section>
                                 <section class="col col-2" style="padding-left: 5px;padding-right: 5px">
                                     <input type="hidden">
@@ -387,13 +393,15 @@
                                         <input id="vw_emi_rec_txt_valor" type="text" placeholder="000.00" class="input-sm" disabled="">
                                     </label>                      
                                 </section>
-                                <section class="col col-2" style="padding-left: 5px;padding-right: 5px">
-                                    <label class="label">Nº Recibo Alcabala:</label>
+                                
+                                <section id="sec_tim_alc" class="col col-2" style="padding-left: 5px;padding-right: 5px">
+                                    <label class="label">TIM S/.:</label>
                                     <label class="input">
-                                        <input id="vw_emi_rec_txt_nrecibo" type="text" placeholder="0" class="input-sm" onkeypress="return soloNumeroTab(event);" disabled="">
+                                        <input id="vw_emi_rec_txt_tim" type="text" placeholder="000.00" class="input-sm" disabled="">
                                     </label>                      
                                 </section>
-                                <section class="col col-3 text-center" style="padding-left: 5px">
+                                
+                                <section class="col col-2 text-center" style="padding-left: 5px">
                                     <label class="label">&nbsp;</label>
                                     <button onclick="detalle_recibo();" class="btn btn-primary btn-sm" id="btn_agregar_insertar">Agregar / Insertar</button>                    
                                 </section>                                
@@ -408,8 +416,10 @@
                                                 <thead>
                                                     <tr>
                                                         <th width="1%" align="center">N</th>
-                                                        <th width="79%">Tributo</th>
+                                                        <th width="49%">Tributo</th>
                                                         <th width="15%" align="right">Costo</th>
+                                                        <th width="15%" align="right">Interes</th>
+                                                        <th width="15%" align="right">Total</th>
                                                         <th width="5%" align="center">Elim.</th>
                                                     </tr>
                                                 </thead>

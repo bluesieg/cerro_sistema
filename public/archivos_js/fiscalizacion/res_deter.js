@@ -128,7 +128,7 @@ function genera_rd(id)
                 iniciar=1;
                 CKEDITOR.replace('ckeditor');
             }
-            CKEDITOR.instances['ckeditor'].setData(r)
+            CKEDITOR.instances['ckeditor'].setData(r);
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");

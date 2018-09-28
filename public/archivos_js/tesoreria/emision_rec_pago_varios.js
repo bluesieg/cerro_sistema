@@ -57,6 +57,8 @@ function autocomplete_tributo(textbox, soles) {
                     $("#vw_emi_rec_txt_nrecibo").val('0');
                     $("#vw_emi_rec_txt_glosa").val('');
                     $("#vw_emi_rec_txt_direc").val('');
+                    $("#sec_tim_alc").hide();
+                    $("#vw_emi_rec_txt_tim").val(0);
                     validaciones();
                     return false;
                 }
@@ -91,7 +93,7 @@ function validaciones()
             }
         },
         error: function (data) {
-            mostraralertas('* ERROR DE RED.<br>* Contactese con el Administrador.');
+            mostraralertas('* Error al Generar Recibo.<br>* Contactese con el Administrador.');
             MensajeDialogLoadAjaxFinish('vw_emision_rec_pag_varios');
         }
     }); 
@@ -119,6 +121,8 @@ function validacion_alcabala(){
                     MensajeDialogLoadAjaxFinish('vw_emision_rec_pag_varios');
                     $("#vw_emi_rec_txt_glosa").val("IMPUESTO DE ALCABALA N° " + data.glosa);
                     $("#vw_emi_rec_txt_valor").val(data.valor);
+                    $("#vw_emi_rec_txt_tim").val(data.tim);
+                    $("#sec_tim_alc").show();
                     $("#vw_emi_rec_txt_valor").attr('disabled', 'disabled');
                     $("#btn_agregar_insertar").removeAttr('disabled');
                 }else if(data.msg === 'no-existe'){
@@ -135,7 +139,7 @@ function validacion_alcabala(){
                 }
         },
         error: function (data) {
-            mostraralertas('* ERROR DE RED.<br>* Contactese con el Administrador.');
+            mostraralertas('* Error al Generar Recibo.<br>* Contactese con el Administrador.');
             MensajeDialogLoadAjaxFinish('vw_emision_rec_pag_varios');
         }
     }); 
@@ -145,6 +149,7 @@ cont = 0;
 detalle_total = 0;
 function detalle_recibo() {
     val_soles = parseFloat($("#vw_emi_rec_txt_valor").val()) || 0.00;
+    interes = parseFloat($("#vw_emi_rec_txt_tim").val()) || 0.00;
     cantidad = parseFloat($("#vw_emi_rec_txt_cantidad").val());
     tributo = $("#vw_emi_rec_txt_tributo").val();
     id_tributo = $("#hiddenvw_emi_rec_txt_tributo").val();
@@ -168,7 +173,7 @@ function detalle_recibo() {
         mostraralertasconfoco('La Cantidad Debe ser mayor a cero...', '#vw_emi_rec_txt_cantidad');
         return false;
     }
-    total = val_soles * cantidad;
+    total = (parseFloat(val_soles)+parseFloat(interes)) * cantidad;
 
     cont++;
     $('#t_dina_det_recibo').append(
@@ -177,7 +182,9 @@ function detalle_recibo() {
             <td><label class='input'>\n\
             <input id='id_tributo_" + cont + "' type='hidden' value='" + id_tributo + "'>\n\
             <input id='glosa_din_" + cont + "' type='text' value='" + (tributo).toUpperCase() + "' disabled='' class='input-xs'></label></td>\n\
-            <td><label class='input'><input id='sub_tot_din_" + cont + "' type='text' value='" + formato_numero(total, 3, '.', '') + "' disabled='' class='input-xs text-align-right' style='font-size:12px'></label></td>\n\
+            <td><label class='input'><input id='sub_val_din_" + cont + "' type='text' value='" + formato_numero(val_soles, 2, '.', '') + "' disabled='' class='input-xs text-align-right' style='font-size:12px'></label></td>\n\
+            <td><label class='input'><input id='sub__tim_tot_din_" + cont + "' type='text' value='" + formato_numero(interes, 2, '.', '') + "' disabled='' class='input-xs text-align-right' style='font-size:12px'></label></td>\n\
+            <td><label class='input'><input id='sub_tot_din_" + cont + "' type='text' value='" + formato_numero(total, 2, '.', '') + "' disabled='' class='input-xs text-align-right' style='font-size:12px'></label></td>\n\
             <td align='center'><button onclick='btn_borrar_detalle(" + cont + ");' class='btn_din' id='btn_eliminar_din_" + cont + "' title='Eliminar'> <img src='img/trash.png' style='width:19px' ></img></button></td>\n\
         </tr>"
             );
@@ -247,10 +254,12 @@ function btn_insert_detalle(num, id_recibo) {
     $.ajax({
         url: 'emi_recibo_detalle/create',
         type: 'GET',
-        data: {
+        data: { 
             id_rec_master: id_recibo,
             id_trib: $("#id_tributo_" + num).val(),
-            monto: $("#sub_tot_din_" + num).val(),
+            monto: $("#sub_val_din_" + num).val(),
+            tim: $("#sub__tim_tot_din_" + num).val(),
+            total: $("#sub_tot_din_"+num).val(),
             cant: $("#vw_emi_rec_txt_cantidad").val(),
             p_unit:$("#vw_emi_rec_txt_valor").val()
         },
@@ -409,4 +418,3 @@ function limpiar_form_rec_varios() {
     $("#vw_emi_rec_txt_nrecibo").attr('disabled', 'disabled'); 
     
 }
-

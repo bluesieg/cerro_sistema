@@ -525,19 +525,7 @@ function clickmodpiso()
     $('#dlg_idpiso').val(Id);
     creardlgpiso();
     id_pisos_fic=$('#table_pisos').jqGrid('getCell',Id,'id_pisos_fic');
-    if(id_pisos_fic>0)
-    {
-        $("#btnpissave").hide();
-        $("#btnpismod").show();
-        $("#dlg_idpiso_fis").val(id_pisos_fic);
-        traerpisofic(id_pisos_fic);
-    }
-    else
-    {
-        $("#btnpissave").show();
-        $("#btnpismod").hide();
-        $("#dlg_idpiso_fis").val(0);
-    } 
+    
     MensajeDialogLoadAjax('dlg_reg_piso', '.:: Cargando ...');
     if(Id.slice(0,1)>0)
     {
@@ -563,6 +551,22 @@ function clickmodpiso()
             callchangeoption("rpiso_inp_mat_fis",0);
             callchangeoption("rpiso_inp_econserv_fis",0);
             callchangeoption("rpiso_inp_econstr_fis",0);
+            if(id_pisos_fic>0)
+            {
+                $("#btnpissave").hide();
+                $("#btnpismod").show();
+                $("#dlg_idpiso_fis").val(id_pisos_fic);
+                
+                traerpisofic(id_pisos_fic);
+            }
+            else
+            {
+                $("#btnpissave").show();
+                $("#btnpismod").hide();
+                $("#dlg_idpiso_fis").val(0);
+                $("#rpiso_inp_fech_demoli_fis").val('');
+
+            } 
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");
@@ -589,6 +593,7 @@ function traerpisofic(Id)
         $("#rpiso_inp_estruc_fis").val(r[0].est_mur+r[0].est_tch+r[0].aca_pis+r[0].aca_pta+r[0].aca_rev+r[0].aca_ban+r[0].ins_ele);
         $("#rpiso_inp_aconst_fis").val(r[0].area_const);
         $("#rpiso_inp_acomun_fis").val(r[0].val_areas_com);
+        $("#rpiso_inp_fech_demoli_fis").val(r[0].anio_demolicion);
         MensajeDialogLoadAjaxFinish('dlg_reg_piso');
         callchangeoption("rpiso_inp_clasi_fis",0);
         callchangeoption("rpiso_inp_mat_fis",0);
@@ -637,7 +642,8 @@ function pisoSave()
     type: 'GET',
     data:{nro:$("#rpiso_inp_nro_fis").val(),fech:$("#rpiso_inp_fech_fis").val(),clasi:$("#rpiso_inp_clasi_fis").val(),
     mep:$("#rpiso_inp_mat_fis").val(),estconserv:$("#rpiso_inp_econserv_fis").val(),estconst:$("#rpiso_inp_econstr_fis").val(),
-    estru:$("#rpiso_inp_estruc_fis").val().toUpperCase(),aconst:$("#rpiso_inp_aconst_fis").val(),acomun:$("#rpiso_inp_acomun_fis").val(),id_fic:Id_fic,id_pis:id_pis,carta:carta},
+    estru:$("#rpiso_inp_estruc_fis").val().toUpperCase(),aconst:$("#rpiso_inp_aconst_fis").val(),acomun:$("#rpiso_inp_acomun_fis").val(),id_fic:Id_fic,id_pis:id_pis,carta:carta,
+    anio_demolicion:$("#rpiso_inp_fech_demoli_fis").val()},
     success: function(r) 
     {
         if(r==0)
@@ -686,7 +692,8 @@ function pisoUpdate()
         type: 'GET',
         data:{nro:$("#rpiso_inp_nro_fis").val(),fech:$("#rpiso_inp_fech_fis").val(),clasi:$("#rpiso_inp_clasi_fis").val(),
         mep:$("#rpiso_inp_mat_fis").val(),estconserv:$("#rpiso_inp_econserv_fis").val(),estconst:$("#rpiso_inp_econstr_fis").val(),
-        estru:$("#rpiso_inp_estruc_fis").val().toUpperCase(),aconst:$("#rpiso_inp_aconst_fis").val(),acomun:$("#rpiso_inp_acomun_fis").val(),carta:carta},
+        estru:$("#rpiso_inp_estruc_fis").val().toUpperCase(),aconst:$("#rpiso_inp_aconst_fis").val(),acomun:$("#rpiso_inp_acomun_fis").val(),carta:carta,
+        anio_demolicion:$("#rpiso_inp_fech_demoli_fis").val()},
         success: function(r) 
         {
             if(r==0)

@@ -62,12 +62,13 @@ function call_list_contrib_carta(tip)
             mostraralertasconfoco("Ingresar Numero","#dlg_bus_num"); 
             return false;
         }
-        ajustar(6,'dlg_bus_num')
+        ajustar(6,'dlg_bus_num');
         num=$("#dlg_bus_num").val();
         jQuery("#table_cartas").jqGrid('setGridParam', {url: 'trae_cartas/'+$("#selantra").val()+'/0/0/0/'+num}).trigger('reloadGrid');
     }
     
 }
+iniciar=0;
 function fn_new_carta(id)
 {
     limpiar_carta_req()
@@ -77,6 +78,12 @@ function fn_new_carta(id)
         hide:{ effect: "explode", duration: 800}, resizable: false,
         title: "<div class='widget-header'><h4><span class='widget-icon'> <i class='fa fa-align-justify'></i> </span> Generar Nueva Carta de Requerimiento</h4></div>"
         }).dialog('open');
+        if(iniciar==0)
+        {
+            iniciar=1;
+            CKEDITOR.replace('ckeditor');
+        }
+        CKEDITOR.instances['ckeditor'].setData('Texto extra');
     if(id>0)
     {
         llenar_carta_mod(id);
@@ -124,8 +131,13 @@ function llenar_carta_mod(id)
                 $("#btn_save").hide();
                 $("#btn_mod,#btn_anular").show();
             }
+            if(r[0].texto_1!='')
+            {
+                CKEDITOR.instances['ckeditor'].setData(r[0].texto_1);
+            }
             MensajeDialogLoadAjaxFinish('dlg_new_carta');
             llamar_get_fisca(id);
+            llamar_get_adjuntos(id);
         },
         error: function(data) {
             mostraralertas("hubo un error, Comunicar al Administrador");
@@ -222,6 +234,7 @@ function llamar_get_fisca(id)
         }
         }); 
 }
+
 function del_fis_bd(id,carta)
 {
     MensajeDialogLoadAjax('table_fiscalizadores', '.:: Eliminando ...');
@@ -243,14 +256,63 @@ function del_fis_bd(id,carta)
         }
     });
 }
+function del_car_adjunta_bd(id,carta)
+{
+    MensajeDialogLoadAjax('table_cartas_adjuntas', '.:: Eliminando ...');
+    $.ajax({
+        url: 'carta_adjunta_del',
+        type: 'GET',
+        data: {id:id},
+        success: function(r) 
+        {
+            llamar_get_adjuntos(carta);            
+            MensajeAlerta("Se Eliminó Correctamente","Su Registro Fue eliminado Correctamente...",4000)
+            MensajeDialogLoadAjaxFinish('table_cartas_adjuntas');
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            MensajeDialogLoadAjaxFinish('table_cartas_adjuntas');
+            console.log('error');
+            console.log(data);
+        }
+    });
+}
+
+function llamar_get_adjuntos(id)
+{
+   $('#table_cartas_adjuntas tbody tr').each(function() {$(this).remove();});
+   MensajeDialogLoadAjax('table_cartas_adjuntas', '.:: CARGANDO ...');
+    $.ajax({url: 'trae_fisca_carta_adjuntas/'+id,
+        type: 'GET',
+        success: function(r) 
+        {
+            for(i=0;i<(r.length);i++)
+            {
+                $('#table_cartas_adjuntas > tbody').append('<tr id="'+r[i].id_car_adjunta+'"><td style="border: 1px solid #bbb">'+r[i].id_car_adjunta+'</td>\n\
+                                                           <td style="border: 1px solid #bbb">'+r[i].nro_car_adj+'</td>\n\
+                                                           <td style="border: 1px solid #bbb">'+r[i].anio_adj+'</td>\n\
+                                                           <td class="text-center" style="border: 1px solid #bbb"><i class="fa fa-close" style="color:red; cursor:pointer" onclick="del_car_adjunta_bd('+r[i].id_car_adj_ref+','+id+')"></i></td></tr>');
+            }
+            MensajeDialogLoadAjaxFinish('table_cartas_adjuntas');
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            console.log('error');
+            console.log(data);
+            MensajeDialogLoadAjaxFinish('table_cartas_adjuntas');
+            $("#dlg_new_carta").dialog('close');
+        }
+        }); 
+}
 function limpiar_carta_req()
 {
     
     $("#hidden_id_carta,#dlg_contri_carta_hidden").val(0);
     $("#btn_save").show();
     $("#btn_mod,#div_anulado,#btn_anular").hide();
-    $("#dlg_contri_carta_doc,#dlg_contri_carta,#dlg_contri_carta_dom,#dlg_hor_fis,#dlg_otros").val("");
+    $("#dlg_contri_carta_doc,#dlg_contri_carta,#dlg_contri_carta_dom,#dlg_hor_fis,#dlg_otros,#dlg_nro_carta_adjunta").val("");
     $('#table_fiscalizadores tbody tr').each(function() {$(this).remove();});
+    $('#table_cartas_adjuntas tbody tr').each(function() {$(this).remove();});
     $('#cbx_con,#cbx_lic,#cbx_der').prop('checked', true);
     $('#cbx_otr').prop('checked', false);
     $('#dlg_otros').prop('disabled', true);
@@ -312,10 +374,88 @@ function poner_fisca_bd(car,fisca)
     }
     }); 
 }
+function poner_carta_bd(car,adj)
+{
+    MensajeDialogLoadAjax('dlg_new_carta', '.:: CARGANDO ...');
+   $.ajax({url: 'carta_set_adjunta',
+    type: 'GET',
+    data:{car:car,adjunta: adj},
+    success: function(data) 
+    {
+        MensajeDialogLoadAjaxFinish('dlg_new_carta');
+        MensajeExito("Carta Adjunta Insertado","Su Registro Fue Insertado con Éxito...",4000);
+        llamar_get_adjuntos(car);   
+    },
+    error: function(data) {
+        mostraralertas("no inserto Carta, Comunicar al Administrador");
+        MensajeDialogLoadAjaxFinish('dlg_new_carta');
+        console.log('error');
+        console.log(data);
+    }
+    }); 
+}
 function del_fis(fis)
 {
     $("#table_fiscalizadores tr#"+fis+"").remove();
 }
+
+
+function adjuntar_carta()
+{
+    if($("#dlg_nro_carta_adjunta").val()=='')
+    {
+        mostraralertasconfoco("Ingresar Numero de Carta","#dlg_nro_carta_adjunta");
+        return false;
+    }
+    ajustar(6,'dlg_nro_carta_adjunta');
+    $.ajax({url: 'carta_reque/0?grid=adjuntos',
+    type: 'GET',
+    data:{carta:$("#dlg_nro_carta_adjunta").val(),anio: $("#sel_anio_carta_adjunta").val()},
+    success: function(data) 
+    {
+        
+        if(data=='No Existe')
+        {
+            mostraralertasconfoco("Carta "+$("#dlg_nro_carta_adjunta").val()+"-"+$("#sel_anio_carta_adjunta").val()+" "+data,"#dlg_nro_carta_adjunta");
+        }
+        else
+        {
+            if(data>0)
+            {
+                if ( $("#table_cartas_adjuntas tr#"+data).length==0 ) {
+                    if($("#hidden_id_carta").val()==0)
+                    {
+                        $('#table_cartas_adjuntas > tbody').append('\
+                                <tr id="'+data+'"><td style="border: 1px solid #bbb">'+data+'</td>\n\
+                                <td style="border: 1px solid #bbb">'+$("#dlg_nro_carta_adjunta").val()+'</td>\n\
+                                <td style="border: 1px solid #bbb">'+$("#sel_anio_carta_adjunta").val()+'</td>\n\
+                                <td class="text-center" style="border: 1px solid #bbb"><i class="fa fa-close" style="color:red; cursor:pointer" onclick="del_carta_adjunta('+data+')"></i></td></tr>');
+                    }
+                    else
+                    {
+                        poner_carta_bd($("#hidden_id_carta").val(),data);
+                    }
+                }
+                MensajeExito("Carta Adjunta","Su Registro Fue Insertado con Éxito...",4000);
+            }
+            else
+            {
+                mostraralertasconfoco(data,"#dlg_nro_carta_adjunta");
+            }
+        }
+    },
+    error: function(data) {
+        mostraralertas("no inserto Fiscalizador, Comunicar al Administrador");
+        console.log('error');
+        console.log(data);
+    }
+    });
+}
+function del_carta_adjunta(car)
+{
+    $("#table_cartas_adjuntas tr#"+car+"").remove();
+}
+
 function fn_confirmar_carta()
 {
 
@@ -373,11 +513,25 @@ function fn_save_carta()
     if($('#cbx_lic').prop('checked')){lic=1;}
     if($('#cbx_der').prop('checked')){der=1;}
     if($('#cbx_otr').prop('checked')){otro=1;otrotext=$("#dlg_otros").val()}
-    
+    var contenido = CKEDITOR.instances['ckeditor'].getData();
+    if(contenido=='Texto Extra')
+    {
+        contenido="";
+    }
     MensajeDialogLoadAjax('dlg_new_carta', '.:: CARGANDO ...');
         $.ajax({url: 'carta_reque/create',
         type: 'GET',
-        data:{contri:$("#dlg_contri_carta_hidden").val(),fec:$("#dlg_fec_fis").val(),hor:$("#dlg_hor_fis").val(),con:con,lic:lic,der:der,otro:otro,otrotext:otrotext,anfis:$("#selanafis").val()},
+        data:{contri:$("#dlg_contri_carta_hidden").val(),
+            fec:$("#dlg_fec_fis").val(),
+            hor:$("#dlg_hor_fis").val(),
+            con:con,
+            lic:lic,
+            der:der,
+            otro:otro,
+            otrotext:otrotext,
+            anfis:$("#selanafis").val(),
+            contenido:contenido
+        },
         success: function(r) 
         {
             if(r>0)
@@ -390,6 +544,22 @@ function fn_save_carta()
                     success: function(data) 
                     {
                         MensajeExito("Fiscalizador Insertado","Su Registro Fue Insertado con Éxito...",4000);
+                    },
+                    error: function(data) {
+                        mostraralertas("no inserto Fiscalizador, Comunicar al Administrador");
+                        console.log('error');
+                        console.log(data);
+                    }
+                    });
+                });
+                $('#table_cartas_adjuntas tbody tr').each(function() {
+                    carta_adjunta=$(this).attr("id");
+                    $.ajax({url: 'carta_set_adjunta',
+                    type: 'GET',
+                    data:{car:r,adjunta: carta_adjunta},
+                    success: function(data) 
+                    {
+                        MensajeExito("Carta Adjuntada","Su Registro Fue Insertado con Éxito...",4000);
                     },
                     error: function(data) {
                         mostraralertas("no inserto Fiscalizador, Comunicar al Administrador");
@@ -421,10 +591,24 @@ function fn_mod_carta()
     if($('#cbx_der').prop('checked')){der=1;}
     if($('#cbx_otr').prop('checked')){otro=1;otrotext=$("#dlg_otros").val()}
     id=$("#hidden_id_carta").val();
+    var contenido = CKEDITOR.instances['ckeditor'].getData();
+    if(contenido=='Texto Extra')
+    {
+        contenido="";
+    }
     MensajeDialogLoadAjax('dlg_new_carta', '.:: CARGANDO ...');
         $.ajax({url: 'carta_reque/'+id+'/edit',
         type: 'GET',
-        data:{fec:$("#dlg_fec_fis").val(),hor:$("#dlg_hor_fis").val(),con:con,lic:lic,der:der,otro:otro,otrotext:otrotext,anfis:$("#selanafis").val()},
+        data:{fec:$("#dlg_fec_fis").val(),
+            hor:$("#dlg_hor_fis").val(),
+            con:con,
+            lic:lic,
+            der:der,
+            otro:otro,
+            otrotext:otrotext,
+            anfis:$("#selanafis").val(),
+            contenido:contenido
+        },
         success: function(r) 
         {
             MensajeExito("Se Modificó Correctamente","Su Registro Fue Cambiado con Éxito...",4000);

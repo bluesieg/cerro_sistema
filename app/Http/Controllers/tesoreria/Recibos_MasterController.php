@@ -284,7 +284,7 @@ class Recibos_MasterController extends Controller
         }
         else
         {
-            $totalg = DB::select("select count(id_contrib) as total from adm_tri.vw_predi_urba where id_contrib='".$id_contrib."' and tip_pre_u_r=1 and anio=".$anio);
+            $totalg = DB::select("select count(id_contrib) as total from adm_tri.vw_grid_predios where id_contrib='".$id_contrib."' and tip_pre_u_r=1 and anio=".$anio);
         $page = $_GET['page'];
         $limit = $_GET['rows'];
         $sidx = $_GET['sidx'];
@@ -306,7 +306,7 @@ class Recibos_MasterController extends Controller
             $start = 0;
         }
 
-            $sql = DB::table('adm_tri.vw_predi_urba')->where('id_contrib',$id_contrib)->where('tip_pre_u_r',1)->where('anio',$anio)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+            $sql = DB::table('adm_tri.vw_grid_predios')->where('id_contrib',$id_contrib)->where('tip_pre_u_r',1)->where('anio',$anio)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
         
         $Lista = new \stdClass();
         $Lista->page = $page;
@@ -314,14 +314,30 @@ class Recibos_MasterController extends Controller
         $Lista->records = $count;
         $cont=0;
         foreach ($sql as $Index => $Datos) {
+            $dir=$Datos->nom_via;
+            if($Datos->nro_mun!=null&&$Datos->nro_mun!="-")
+            {
+                $dir=$dir." ".$Datos->nro_mun;
+            }
+            if($Datos->mzna_dist!=null&&$Datos->mzna_dist!="-")
+            {
+                $dir=$dir." Mzna ".$Datos->mzna_dist;
+            }
+            if($Datos->lote_dist!=null&&$Datos->lote_dist!="-")
+            {
+                $dir=$dir." Lt ".$Datos->lote_dist;
+            }
+            if($Datos->referencia!=null&&$Datos->referencia!="-")
+            {
+                $dir=$dir." ".$Datos->referencia;
+            }
             $cont++;
                 $Lista->rows[$Index]['id'] = $Datos->id_pred_anio;
             $Lista->rows[$Index]['cell'] = array(
                     $Datos->id_pred_anio,
-                trim($Datos->id_contrib),                
-                $Datos->sec,
-                $Datos->mzna,
-                $Datos->lote,
+                trim($Datos->id_contrib), 
+                $Datos->sec.$Datos->mzna.$Datos->lote,
+                trim($dir),
                 trim($Datos->contribuyente),
                 trim($Datos->tp),
                 trim($Datos->descripcion),                
@@ -834,9 +850,8 @@ class Recibos_MasterController extends Controller
         
     public function validar_alcabala(Request $request){
         $id_alcabala = $request['nro_recibo'];
-        
-        $sql= DB::table("alcabala.alcabala")->where('id_alcab',$id_alcabala)->first();
         $funcion= DB::select("select alcabala.fn_alcab_tim(".$id_alcabala.")");
+        $sql= DB::table("alcabala.alcabala")->where('id_alcab',$id_alcabala)->first();
              
         if (count($sql)>0) {
             
@@ -848,7 +863,8 @@ class Recibos_MasterController extends Controller
             }elseif ($sql->estado == 0){
                 return response()->json([
                 'msg' => 'VIGENTE',
-                'valor'=> $funcion[0]->fn_alcab_tim,
+                'valor'=> $sql->impuesto_tot,
+                'tim'=> $sql->tim_alc,
                 'glosa' => $sql->nro_alcab . "-" . $sql->anio,
                 ]);
             }else{

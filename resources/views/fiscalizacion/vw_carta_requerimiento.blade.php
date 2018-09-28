@@ -151,6 +151,7 @@
     
 </section>
 @section('page-js-script')
+<script src="js/plugin/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
     $(document).ready(function (){
         $("#menu_fisca").show();
@@ -258,6 +259,7 @@
 </script>
 @stop
 <script src="{{ asset('archivos_js/fiscalizacion/carta_reque.js') }}"></script>
+
 <div id="dlg_bus_contr" style="display: none;">
     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top:5px; margin-bottom: 10px; padding: 0px !important">
         <table id="table_contrib"></table>
@@ -278,17 +280,17 @@
                         </header>
                     </div>
                 </section>
-                <div class="col-xs-3" style="padding: 0px;">
-                    <div class="input-group input-group-md">
-                        <span class="input-group-addon">N° Doc. &nbsp;<i class="fa fa-hashtag"></i></span>
+                <div class="col-xs-4" style="padding: 0px;">
+                    <div class="input-group input-group-md"  style="width: 100%">
+                        <span class="input-group-addon" style="width: 186px">N° Doc. &nbsp;<i class="fa fa-hashtag"></i></span>
                         <div class=""  >
                             <input id="dlg_contri_carta_doc" type="text"  class="form-control" style="height: 32px; " disabled="" >
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-9" style="padding: 0px; ">
-                    <div class="input-group input-group-md">
-                        <span class="input-group-addon">Contribuyente a Fiscalizar &nbsp;<i class="fa fa-male"></i></span>
+                <div class="col-xs-8" style="padding: 0px; ">
+                    <div class="input-group input-group-md"  style="width: 100%">
+                        <span class="input-group-addon"  style="width: 186px">Contribuyente a Fiscalizar &nbsp;<i class="fa fa-male"></i></span>
                         <div>
                             <input id="dlg_contri_carta_hidden" type="hidden" value="0">
                             <input id="dlg_contri_carta" type="text"  class="form-control" style="height: 32px;font-size: 0.9em;width: 102% !important" autofocus="focus" >
@@ -303,15 +305,15 @@
                 <div class="col-xs-12" style="margin-top: 10px;"></div>
                 
                 <div class="col-xs-12" style="padding: 0px; ">
-                    <div class="input-group input-group-md">
-                        <span class="input-group-addon">Domicilio Fiscal &nbsp;<i class="fa fa-map"></i></span>
+                    <div class="input-group input-group-md"  style="width: 100%">
+                        <span class="input-group-addon"  style="width: 186px">Domicilio Fiscal &nbsp;<i class="fa fa-map"></i></span>
                         <div>
                             <input id="dlg_contri_carta_dom" type="text"  class="form-control" style="height: 32px;font-size: 0.9em;" disabled="">
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 10px;">
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px; margin-top: 10px">
                 <section>
                     <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
                         <header>
@@ -322,24 +324,24 @@
                 </section>
                 
                 <div class="col-xs-4" style="padding: 0px;">
-                    <div class="input-group input-group-md">
-                        <span class="input-group-addon">Fecha Fizcalizacion &nbsp;<i class="fa fa-calendar"></i></span>
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 211px">Fecha Fizcalizacion &nbsp;<i class="fa fa-calendar"></i></span>
                         <div class=""  >
                             <input id="dlg_fec_fis" type="text" class="datepicker text-center" data-dateformat='dd/mm/yy' data-mask="99/99/9999" style="height: 32px; width: 100%" placeholder="--/--/----" value="{{date('d/m/Y')}}">
                         </div>
                     </div>
                 </div>
                 <div class="col-xs-4" style="padding: 0px;">
-                    <div class="input-group input-group-md">
-                        <span class="input-group-addon">Hora de Fizcalizacion &nbsp;<i class="fa fa-clock-o"></i></span>
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 211px">Hora de Fizcalizacion &nbsp;<i class="fa fa-clock-o"></i></span>
                         <div class=""  >
                             <input id="dlg_hor_fis" type="text" class="form-control" data-mask="99:99" style="height: 32px; width: 100%" placeholder="--:--">
                         </div>
                     </div>
                 </div>
                  <div class="col-xs-4" style="padding: 0px;">
-                    <div class="input-group input-group-md">
-                        <span class="input-group-addon">Año a Fiscalizar <i class="fa fa-cogs"></i></span>
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 211px">Año Desde Cuando Fiscalizar <i class="fa fa-cogs"></i></span>
                         <div class="icon-addon addon-md">
                             <select id='selanafis' class="form-control col-lg-8" style="height: 32px;" onchange="call_list_contrib_carta(0)">
                             @foreach ($anio_tra as $anio)
@@ -397,12 +399,87 @@
                     <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
                         <header>
                                 <span class="widget-icon"> <i class="fa fa-users"></i> </span>
+                                <h2>Texto extra ::..</h2>
+                        </header>
+                    </div>
+                </section>
+    
+                    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
+                        <div class="col-xs-12 cr-body" style="padding-left: 0px;padding-right: 10px;" >
+                            <div class="col-xs-12" style="padding: 0px; margin-top: 0px;">
+                                <textarea name="ckeditor" id="ckeditor" >
+                                    Este es el textarea que es modificado por la clase ckeditor
+                                </textarea> 
+                            </div>
+                        </div>
+                    </div>
+               
+                   
+            </div>
+            <div class="col-xs-6 col-md-6 col-lg-6" style="padding: 0px; margin-top: 10px;margin-bottom: 10px;">
+                <section>
+                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-users"></i> </span>
+                                <h2>Cartas de Req. Referencia ::..</h2>
+                        </header>
+                    </div>
+                </section>
+
+               <div class="col-xs-4" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">N° &nbsp;<i class="fa fa-hashtag"></i></span>
+                        <div class=""  >
+                            <input id="dlg_nro_carta_adjunta" type="text" class="form-control text-center"   style="height: 32px; width: 100%" maxlength="7" onkeypress="return soloNumeroTab(event);" >
+                        </div>
+                    </div>
+                </div>
+               <div class="col-xs-4" style="padding: 0px;">
+                    <div class="input-group input-group-md">
+                        <span class="input-group-addon">Año &nbsp;<i class="fa fa-year"></i></span>
+                        <div class=""  >
+                            <select id='sel_anio_carta_adjunta' class="form-control col-lg-8" style="height: 32px;">
+                                @foreach ($anio_tra as $anio)
+                                <option value='{{$anio->anio}}' >{{$anio->anio}}</option>
+                                @endforeach
+                            </select>                        </div>
+                    </div>
+                </div>
+                <button  type="button" class="btn btn-labeled bg-color-green txt-color-white col-xs-3" onclick="adjuntar_carta()">
+                    <span class="cr-btn-label"><i class="glyphicon glyphicon-plus"></i></span>Adjuntar
+                </button>
+                
+                    <div id="div_table_fis" class="table-responsive col-xs-12" style="margin-top: 10px; height: 130px; border: 1px solid #bbb; padding:10px;">
+
+                        <table class="table " id="table_cartas_adjuntas" >
+                                <thead>
+                                        <tr>
+                                            <th class="text-center" style="border: 1px solid #bbb; width: 10%; height: 30px">Codigo</th>
+                                            <th class="text-center"  style="border: 1px solid #bbb; width: 40%; height: 30px">Carta</th>
+                                            <th class="text-center"  style="border: 1px solid #bbb; width: 40%;height: 30px">Año</th>
+                                            <th class="text-center"  style="border: 1px solid #bbb; width: 10%; height: 30px">Borrar</th>
+
+                                        </tr>
+                                </thead>
+                                <tbody>
+                                 
+
+                                </tbody>
+                        </table>
+
+                    </div>
+            </div>
+            <div class="col-xs-6 col-md-6 col-lg-6" style="padding: 0px; margin-top: 10px;margin-bottom: 10px;">
+                <section>
+                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-users"></i> </span>
                                 <h2>Seleccion de Fizcalizadores ::..</h2>
                         </header>
                     </div>
                 </section>
 
-                <div class="col-xs-10" style="padding: 0px; ">
+                <div class="col-xs-8" style="padding: 0px; ">
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Fiscalizadores &nbsp;<i class="fa fa-list"></i></span>
                         <div>
@@ -415,7 +492,7 @@
                         </div>
                     </div>
                 </div>
-                <button id="btn_pon_fiscalizador" type="button" class="btn btn-labeled bg-color-green txt-color-white col-xs-2" onclick="poner_fisca()">
+                <button id="btn_pon_fiscalizador" type="button" class="btn btn-labeled bg-color-green txt-color-white col-xs-4" onclick="poner_fisca()">
                     <span class="cr-btn-label"><i class="glyphicon glyphicon-plus"></i></span>Poner Fiscalizador
                 </button>
                 

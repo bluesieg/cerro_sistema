@@ -965,10 +965,16 @@
                                 <input id="rpiso_inp_nro_fis" type="text"  class="input-sm" maxlength="5" >
                             </label>
                         </div>
-                        <div class='col-lg-6 '>
+                        <div class='col-lg-3 '>
                             <label class="label">Año de construccion:</label>
                             <label class="input">
                                 <input id="rpiso_inp_fech_fis" type="text"  class="input-sm" maxlength="4" >
+                            </label>
+                        </div>
+                        <div class='col-lg-3 '>
+                            <label class="label">Año de Demolición:</label>
+                            <label class="input">
+                                <input id="rpiso_inp_fech_demoli_fis" type="text"  class="input-sm" maxlength="4" >
                             </label>
                         </div>
                         <div class="col-xs-12"></div>

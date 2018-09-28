@@ -43,6 +43,7 @@ class Pisos_FicController extends Controller
         $pisos->ins_ele = substr($request['estru'],6,1);
         $pisos->area_const = $request['aconst'];
         $pisos->val_areas_com = $request['acomun'];
+        $pisos->anio_demolicion = $request['anio_demolicion'];
         $pisos->id_fic = $request['id_fic'];
         $pisos->id_pisos = $request['id_pis'];
         $pisos->num_pis = $totapisos[0]->total+1;
@@ -89,6 +90,7 @@ class Pisos_FicController extends Controller
             $val->ins_ele = substr($request['estru'],6,1);
             $val->area_const = $request['aconst'];
             $val->val_areas_com = $request['acomun'];
+            $val->anio_demolicion = $request['anio_demolicion'];
             $val->save();
         }
         return $id;

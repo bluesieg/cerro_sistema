@@ -42,10 +42,28 @@ class Recibos_DetalleController extends Controller
         $rec_det->cant=$request->cant;
         $rec_det->p_unit=$request->p_unit;
         $rec_det->save();
-        
+        if($request['tim']>0)
+        {
+            $trib_tim = DB::select('SELECT * from presupuesto.vw_tim where anio='.$rec_det->periodo);
+            $this->detalle_create($rec_det->periodo,$request->id_rec_master,$trib_tim[0]->id_tributo,$request['tim'],1,'del '.$rec_det->periodo);
+        }
         return $rec_det->id_rec_det;
     }
-
+    public function detalle_create($periodo,$id_rec_mtr,$id_trib,$monto,$cant,$detalle_trimestres)
+    {
+        date_default_timezone_set('America/Lima');
+        $rec_det = new Recibos_Detalle(); 
+        $rec_det->id_rec_master=$id_rec_mtr;
+        $rec_det->periodo=$periodo;
+        $rec_det->id_ofi=0;
+        $rec_det->id_trib=$id_trib;
+        $rec_det->monto=$monto;
+        $rec_det->cant=$cant;
+        $rec_det->p_unit=$monto/$cant;
+        $rec_det->detalle_trimestres=$detalle_trimestres;
+        $rec_det->save();
+        return $rec_det->id_rec_det;
+    }    
     /**
      * Store a newly created resource in storage.
      *

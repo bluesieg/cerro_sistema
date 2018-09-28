@@ -53,7 +53,7 @@
                     <div id="pager_table_ordenanzas"></div>
             </article>
             <div class="col-xs-1 text-center" style="padding-right: 0px;">
-                @if( $permisos[0]->btn_new ==1 )
+                @if( $permisos[0]->btn_new ==1 ) 
                     <button class="btn bg-color-green txt-color-white btn-circle btn-xl" onclick="fn_new(1);" >
                         <span  >
                             <i class="glyphicon glyphicon-plus"></i>
@@ -94,21 +94,18 @@
         $("#menu_configuracion").show();
         $("#li_mod_orde").addClass('cr-active')
         jQuery("#table_ordenanzas").jqGrid({
-            url: '',
+            url: 'ordenanzas/0?grid=ordenanzas',
             datatype: 'json', mtype: 'GET',
             height: '320px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_alcab', 'N° Alcabala', 'Comprador', 'Vendedor','Predio', 'Fec. Alcab','Estado','Ver'],
-            rowNum: 20, sortname: 'id_alcab', sortorder: 'desc', viewrecords: true, caption: 'Lista de Ordenanzas', align: "center",
+            colNames: ['id_alcab', 'Referencia', 'Inicio', 'Fin','Activo'],
+            rowNum: 20, sortname: 'flg_act', sortorder: 'desc', viewrecords: true, caption: 'Lista de Ordenanzas', align: "center",
             colModel: [
-                {name: 'id_alcab', index: 'id_alcab', hidden: true},
-                {name: 'nro_alcab', index: 'nro_alcab', align: 'left', width: 30},
-                {name: 'id_adqui', index: 'id_cont_compr', align: 'left', width: 120},
-                {name: 'id_trans', index: 'id_cont_vend', align: 'left', width: 120},
-                {name: 'id_pred', index: 'id_pred', align: 'left', width: 100},
-                {name: 'fecha_reg', index: 'fecha_reg', align: 'center', width: 37},
-                {name: 'estado', index: 'estado', align: 'center', width: 38},
-                {name: 'ver', index: 'ver', align: 'center', width: 50},
+                {name: 'id_orde', index: 'id_orde', hidden: true},
+                {name: 'refe_orde', index: 'refe_orde', align: 'left', width: 60},
+                {name: 'fec_ini', index: 'fec_ini', align: 'left', width: 15},
+                {name: 'fec_fin', index: 'fec_fin', align: 'left', width: 15},
+                {name: 'flg_act', index: 'flg_act', align: 'left', width: 10},
             ],
             pager: '#pager_table_ordenanzas',
             rowList: [13, 20],
@@ -120,24 +117,24 @@
                         }
                 },
             onSelectRow: function (Id){},
-            ondblClickRow: function (Id){}
+            ondblClickRow: function (Id){fn_new(2)}
         });
         jQuery("#table_ordenanzas_predial").jqGrid({
             url: '',
             datatype: 'json', mtype: 'GET',
             height: '100px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_alcab', 'Periodos', 'Desc. Int.Pred. Nat','Desc. Int.Pred. Jur', 'Multa Nat','Multa Jur','Desc. Int.Multa Nat', 'Desc. Int.Multa Jur'],
-            rowNum: 20, sortname: 'id_alcab', sortorder: 'desc', viewrecords: true, caption: 'Lista de Descuento Predial', align: "center",
+            colNames: ['id_orde_pred', 'Periodos', 'Desc. Int.Pred. Nat','Desc. Int.Pred. Jur', 'Multa Nat','Multa Jur','Desc. Int.Multa Nat', 'Desc. Int.Multa Jur'],
+            rowNum: 20, sortname: 'id_orde_pred', sortorder: 'desc', viewrecords: true, caption: 'Lista de Descuento Predial', align: "center",
             colModel: [
-                {name: 'id_alcab', index: 'id_alcab', hidden: true},
-                {name: 'nro_alcab', index: 'nro_alcab', align: 'left', width: 80},
-                {name: 'id_adqui', index: 'id_cont_compr', align: 'left', width: 120},
-                {name: 'id_trans', index: 'id_cont_vend', align: 'left', width: 120},
-                {name: 'id_pred', index: 'id_pred', align: 'left', width: 120},
-                {name: 'id_pred', index: 'id_pred', align: 'left', width: 120},
-                {name: 'id_pred', index: 'id_pred', align: 'left', width: 120},
-                {name: 'id_pred', index: 'id_pred', align: 'left', width: 120}
+                {name: 'id_orde_pred', index: 'id_orde_pred', hidden: true},
+                {name: 'anio_ini', index: 'anio_ini', align: 'left', width: 80},
+                {name: 'porcent_desc_ip_nat', index: 'porcent_desc_ip_nat', align: 'right', width: 120},
+                {name: 'pocent_desc_ip_jur', index: 'pocent_desc_ip_jur', align: 'right', width: 120},
+                {name: 'monto_multa_nat', index: 'monto_multa_nat', align: 'right', width: 120},
+                {name: 'monto_multa_jur', index: 'pocent_desc_im_nat', align: 'right', width: 120},
+                {name: 'pocent_desc_im_nat', index: 'porcent_desc_im_jur', align: 'right', width: 120},
+                {name: 'porcent_desc_im_jur', index: 'id_pred', align: 'right', width: 120}
             ],
             pager: '#pager_table_ordenanzas_predial',
             rowList: [13, 20],
@@ -156,18 +153,19 @@
             datatype: 'json', mtype: 'GET',
             height: '100px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_alcab', 'desc. Arb Nat', 'desc. Arb Jur', 'desc. Int.Arb Nat', 'desc. Int.Arb Nat','Barrido','Recojo','Seguridad','Parques'],
-            rowNum: 20, sortname: 'id_alcab', sortorder: 'desc', viewrecords: true, caption: 'Lista de Descuentos Arbitrios', align: "center",
+            colNames: ['id_orde_arb','Condición', 'desc. Arb Nat', 'desc. Arb Jur', 'desc. Int.Arb Nat', 'desc. Int.Arb Nat','Barrido','Recojo','Seguridad','Parques'],
+            rowNum: 20, sortname: 'id_orde_arb', sortorder: 'desc', viewrecords: true, caption: 'Lista de Descuentos Arbitrios', align: "center",
             colModel: [
-                {name: 'id_alcab', index: 'id_alcab', hidden: true},
-                {name: 'nro_alcab', index: 'nro_alcab', align: 'left', width: 120},
-                {name: 'id_adqui', index: 'id_cont_compr', align: 'left', width: 120},
-                {name: 'id_trans', index: 'id_cont_vend', align: 'left', width: 120},
-                {name: 'id_pred', index: 'id_pred', align: 'left', width: 120},
-                {name: 'fecha_reg', index: 'fecha_reg', align: 'center', width: 80},
-                {name: 'estado', index: 'estado', align: 'center', width: 80},
-                {name: 'ver', index: 'ver', align: 'center', width: 80},
-                {name: 'ver', index: 'ver', align: 'center', width: 80}
+                {name: 'id_orde_arb', index: 'id_orde_arb', hidden: true},
+                {name: 'des_cond_arb', index: 'des_cond_arb', align: 'left', width: 160},
+                {name: 'porcent_desc_arb_nat', index: 'porcent_desc_arb_nat', align: 'right', width: 100},
+                {name: 'porcent_desc_arb_jur', index: 'porcent_desc_arb_jur', align: 'right', width: 100},
+                {name: 'porcent_desc_ia_nat', index: 'porcent_desc_ia_nat', align: 'right', width: 100},
+                {name: 'porcent_desc_ia_jur', index: 'porcent_desc_ia_jur', align: 'right', width: 100},
+                {name: 'flg_barrido', index: 'flg_barrido', align: 'center', width: 60},
+                {name: 'flg_recojo', index: 'flg_recojo', align: 'center', width: 60},
+                {name: 'flg_seguridad', index: 'flg_seguridad', align: 'center', width: 60},
+                {name: 'flg_parques', index: 'flg_parques', align: 'center', width: 60}
             ],
             pager: '#pager_table_ordenanzas_arbitrios',
             rowList: [13, 20],
@@ -239,16 +237,54 @@
                 <div class="col-xs-12" style="margin-top: 10px;"></div>
                 
             </div>
-            <div id="btn_save_div" class="col-xs-2 text-align-right" style="padding: 0px;padding-top: 153px;">
-                <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="save_ordenanza()">
-                    <span class="cr-btn-label"><i class="glyphicon glyphicon-save"></i></span>Grabar Ordenanza
-                </button>
-            </div>
-            <div id="btn_mod_div" class="col-xs-2 text-align-right" style="padding: 0px;padding-top: 153px;">
-                <button type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="mod_ordenanza()">
-                    <span class="cr-btn-label"><i class="glyphicon glyphicon-save"></i></span>Modificar Ordenanza
-                </button>
-            </div>
+            <div class="col-xs-2 text-align-right" style="padding: 0px">
+                <div class="col-xs-12" style="padding: 0px">
+                    <form class="smart-form">
+                    <fieldset>
+                        <section>
+                            <div class="inline-group">
+                                <label class="checkbox" style="    margin: 0px;">
+                                     @if( $permisos[0]->btn_edit ==1 )
+                                        <input id="cbx_act_orde" type="checkbox" onclick="activar_orde(this)">
+                                    @else
+                                        <input id="cbx_act_orde" type="checkbox" onclick="sin_permiso()">
+                                    @endif
+                                    <i></i>Activar Ordenanza
+                                    
+                                </label>
+                            </div>
+                        </section>
+                    </fieldset>
+                    </form>
+                </div>
+            
+            @if( $permisos[0]->btn_new ==1 )
+                <div id="btn_save_div" class="col-xs-12 text-align-right" style="padding: 0px;padding-top: 125px;">
+                    <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="save_ordenanza(1)">
+                        <span class="cr-btn-label"><i class="glyphicon glyphicon-save"></i></span>Grabar Ordenanza
+                    </button>
+                </div>
+            @else
+                 <div id="btn_save_div" class="col-xs-12 text-align-right" style="padding: 0px;padding-top: 125px;">
+                     <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="sin_permiso()">
+                        <span class="cr-btn-label"><i class="glyphicon glyphicon-save"></i></span>Grabar Ordenanza
+                    </button>
+                </div>
+            @endif
+             @if( $permisos[0]->btn_edit ==1 )
+                <div id="btn_mod_div" class="col-xs-12 text-align-right" style="padding: 0px;padding-top: 125px;">
+                    <button type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="save_ordenanza(2)">
+                        <span class="cr-btn-label"><i class="glyphicon glyphicon-save"></i></span>Modificar Ordenanza
+                    </button>
+                </div>
+             @else
+                <div id="btn_mod_div" class="col-xs-12 text-align-right" style="padding: 0px;padding-top: 125px;">
+                    <button type="button" class="btn btn-labeled bg-color-blue txt-color-white" onclick="sin_permiso()">
+                        <span class="cr-btn-label"><i class="glyphicon glyphicon-save"></i></span>Modificar Ordenanza
+                    </button>
+                </div>
+             @endif
+             </div>
             <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px;">
                 <section>
                     <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
@@ -265,9 +301,15 @@
                     </article>
                 </div>
                 <div class="col-xs-2 text-align-right" style="padding: 0px;">
-                    <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="new_desc_pred()">
-                        <span class="cr-btn-label"><i class="glyphicon glyphicon-new-window"></i></span>Nuevo Descuento
-                    </button>
+                    @if( $permisos[0]->btn_new ==1 )
+                        <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="new_desc_pred()">
+                            <span class="cr-btn-label"><i class="glyphicon glyphicon-new-window"></i></span>Nuevo Descuento
+                        </button>
+                    @else
+                        <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="sin_permiso()">
+                            <span class="cr-btn-label"><i class="glyphicon glyphicon-new-window"></i></span>Nuevo Descuento
+                        </button>
+                    @endif
                 </div>
             </div>
             <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px;">
@@ -286,9 +328,15 @@
                     </article>
                 </div>
                 <div class="col-xs-2 text-align-right" style="padding: 0px;">
-                    <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="">
-                        <span class="cr-btn-label"><i class="glyphicon glyphicon-new-window"></i></span>Nuevo Descuento
-                    </button>
+                    @if( $permisos[0]->btn_new ==1 )
+                        <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="new_desc_arb()">
+                            <span class="cr-btn-label"><i class="glyphicon glyphicon-new-window"></i></span>Nuevo Descuento
+                        </button>
+                    @else
+                        <button type="button" class="btn btn-labeled bg-color-green txt-color-white" onclick="sin_permiso()">
+                            <span class="cr-btn-label"><i class="glyphicon glyphicon-new-window"></i></span>Nuevo Descuento
+                        </button>
+                    @endif
                 </div>
             </div>
             
@@ -340,7 +388,7 @@
                     <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
                         <header>
                                 <span class="widget-icon"> <i class="fa fa-cogs"></i> </span>
-                                <h2>Datos de Descuento Inpuesto Predial ::..</h2>
+                                <h2>Datos de Descuento Impuesto Predial ::..</h2>
                         </header>
                     </div>
                 </section>
@@ -394,7 +442,7 @@
                     <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
                         <header>
                                 <span class="widget-icon"> <i class="fa fa-cogs"></i> </span>
-                                <h2>Datos de Descuento Inpuesto Multa ::..</h2>
+                                <h2>Datos de Descuento Impuesto Multa ::..</h2>
                         </header>
                     </div>
                 </section>
@@ -417,6 +465,131 @@
                 <div class="col-xs-12" style="margin-top: 10px;"></div>
             </div>
             
+        </div>
+        
+    </div>
+</div> 
+<div id="dlg_new_ordenanza_arbitrios" style="display: none;">
+    <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
+        <div  class="col-xs-12 cr-body" >
+            
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px;">
+                <section>
+                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-cogs"></i> </span>
+                                <h2>Datos de Descuento Arbitrios ::..</h2>
+                        </header>
+                    </div>
+                </section>
+                <div class="col-xs-6" style="padding: 0px;">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 100px"> Persona Natural&nbsp;<i class="fa fa-percent"></i></span>
+                        <div class="">
+                            <input id="dlg_desc_arb_nat" type="text"  class="form-control" style="height: 32px; " placeholder="Porcentaje" onkeypress="return soloNumeroTab(event);">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6" style="padding: 0px;">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 100px"> Persona Juridica&nbsp;<i class="fa fa-percent"></i></span>
+                        <div class=""   >
+                            <input id="dlg_desc_arb_jur" type="text"  class="form-control" style="height: 32px; " placeholder="Porcentaje" onkeypress="return soloNumeroTab(event);">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12" style="margin-top: 10px;"></div>
+            </div>
+            
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px;">
+                <section>
+                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-cogs"></i> </span>
+                                <h2>Datos de Descuento Impuesto Arbitrios ::..</h2>
+                        </header>
+                    </div>
+                </section>
+                <div class="col-xs-6" style="padding: 0px;">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 100px"> Persona Natural&nbsp;<i class="fa fa-percent"></i></span>
+                        <div class="">
+                            <input id="dlg_desc_iarb_nat" type="text"  class="form-control" style="height: 32px; " placeholder="Porcentaje" onkeypress="return soloNumeroTab(event);">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6" style="padding: 0px;">
+                    <div class="input-group input-group-md" style="width: 100%">
+                        <span class="input-group-addon" style="width: 100px"> Persona Juridica&nbsp;<i class="fa fa-percent"></i></span>
+                        <div class=""   >
+                            <input id="dlg_desc_iarb_jur" type="text"  class="form-control" style="height: 32px; " placeholder="Porcentaje" onkeypress="return soloNumeroTab(event);">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12" style="margin-top: 10px;"></div>
+            </div>
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px;">
+                <section>
+                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-cogs"></i> </span>
+                                <h2>Aplica a los Arbitrios ::..</h2>
+                        </header>
+                    </div>
+                </section>
+                <div class="col-xs-16" style="padding: 0px;">
+                    <form class="smart-form">
+                        <fieldset>
+                            <section>
+                                <div class="inline-group">
+                                    <label class="checkbox" >
+                                            <input id="cbx_barrido_arb" type="checkbox" >
+                                        <i></i>Barrido
+                                    </label>
+                                
+                                    <label class="checkbox" >
+                                            <input id="cbx_recojo_arb" type="checkbox" >
+                                        <i></i>Recojo
+                                    </label>
+                                
+                                    <label class="checkbox" >
+                                            <input id="cbx_seguridad_arb" type="checkbox" >
+                                        <i></i>Seguridad
+                                    </label>
+                               
+                                    <label class="checkbox" >
+                                            <input id="cbx_parques_arb" type="checkbox" >
+                                        <i></i>Parques
+                                    </label>
+                                </div>
+                            </section>
+                        </fieldset>
+                    </form>
+                </div>
+                
+                <div class="col-xs-12" style="margin-top: 10px;"></div>
+            </div>
+            <div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px;">
+                <section>
+                    <div class="jarviswidget jarviswidget-color-green" style="margin-bottom: 15px;"  >
+                        <header>
+                                <span class="widget-icon"> <i class="fa fa-cogs"></i> </span>
+                                <h2>Aplica para los que Cumplan la Condición ::..</h2>
+                        </header>
+                    </div>
+                </section>
+                <div class="col-xs-12" style="padding: 0px;">
+                    <div class="input-group input-group-md" style="width: 100%">
+                            <select id='sel_condicion_arb' class="form-control col-lg-8" style="height: 32px;">
+                            @foreach ($condiciones_arbitrios as $condicion)
+                                <option value='{{$condicion->id_cond_arb}}' >{{$condicion->des_cond_arb}}</option>
+                            @endforeach
+                            </select>
+                    </div>
+                </div>
+                
+                <div class="col-xs-12" style="margin-top: 10px;"></div>
+            </div>
         </div>
         
     </div>
