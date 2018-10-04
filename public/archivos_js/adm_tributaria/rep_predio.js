@@ -36,8 +36,12 @@ function fn_bus_contrib_predio(per){
 function fn_rep_predio(){
     
     contribuyente = $("#dlg_contribuyente_hidden").val();
-    anio_desde = $("#select_anio_desde").val();
-
+    anio_desde = $('#select_anio_desde').val();
+    anio_hasta = $('#select_anio_hasta').val();
+    
+    id_pred = $('#tabla_predio').jqGrid ('getGridParam', 'selrow');
+    id_pred_anio = $('#tabla_predio').jqGrid ('getCell', id_pred, 'id_pred_anio');
+    
     if (contribuyente == 0) {
         mostraralertasconfoco('* Seleccione un Contribuyente...', 'contribuyente');
         return false;
@@ -51,18 +55,14 @@ function fn_rep_predio(){
         mostraralertasconfoco('* No Existen Registros en la Tabla...');
         }else{
     
-    id_predio = $('#current_id_tabla').val();
-    anio_desde = $('#select_anio_desde').val();
-    anio_hasta = $('#select_anio_hasta').val();
- 
     $.ajax({
-        url: 'replicar_predios?id_predio=' + id_predio + '&anio_desde=' + anio_desde + '&anio_hasta=' + anio_hasta,
+        url: 'replicar_predios?id_predio=' + id_pred + '&anio_desde=' + anio_desde + '&anio_hasta=' + anio_hasta + '&id_pred_anio=' + id_pred_anio,
         type: 'GET',
         success: function (data) {
             if (data.msg == 'si'){
-                  MensajeExito('EL PREDIO FU REPLICADO SATISFACTORIAMNETE');      
+                MensajeExito('EL PREDIO FUE REPLICADO SATISFACTORIAMNETE','OPERACION EXITOSA');      
             }else{
-
+                mostraralertas('* Error al Generar Replica del Predio.<br>* Contactese con el Administrador.');
             }
         },
         error: function (data) {
@@ -79,13 +79,14 @@ jQuery("#tabla_predio").jqGrid({
         datatype: 'json', mtype: 'GET',
         height: 'auto', autowidth: true,
         toolbarfilter: true,
-        colNames: ['ID','CODIGO CATASTRAL', 'DIRECCION', 'NRO PISOS'],
+        colNames: ['ID','CODIGO CATASTRAL', 'DIRECCION', 'NRO PISOS', 'ID_PRED_ANIO'],
         rowNum: 12, sortname: 'id_pred', sortorder: 'asc', viewrecords: true, caption: 'REPLICAR PREDIOS', align: "center",
         colModel: [
             {name: 'id_pred', index: 'id_pred',width: 20,align:'center',hidden:true},
             {name: 'cod_cat', index: 'cod_cat',width: 20,align:'center'},
             {name: 'direccion', index: 'direccion',width: 60,align:'center'},
-            {name: 'nro_pisos', index: 'nro_pisos',width: 30, align:'center'}
+            {name: 'nro_pisos', index: 'nro_pisos',width: 30, align:'center'},
+            {name: 'id_pred_anio', index: 'id_pred_anio',width: 10, align:'center',hidden:true}
         ],
         pager: '#pager_tabla_predio',
         rowList: [10, 20],

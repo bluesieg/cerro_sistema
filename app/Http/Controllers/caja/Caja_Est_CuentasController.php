@@ -188,6 +188,7 @@ class Caja_Est_CuentasController extends Controller
         ///////llamar funcion imp
         for($i=$desde;$i<=$hasta;$i++)
         {
+            $multa=DB::select('select adm_tri.aplicar_multa_por_no_declarar_contrib('.$i.','.$id_contrib.')');
             $imp=DB::select('select adm_tri.calcula_reajuste_ipm('.$id_contrib.','.$i.')');
             $tim=DB::select('select adm_tri.calcula_tim('.$id_contrib.','.$i.')');
         }

@@ -541,7 +541,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('reporte_supervisores/{anio}/{sector}/{manzana}', 'ReportesController@reportes'); 
         Route::get('listado_datos_contribuyentes/{tipo}/{anio}/{hab_urb}', 'ReportesController@listado_contribuyentes'); 
         Route::get('listado_contribuyentes_predios/{tipo}/{anio}/{hab_urb}','ReportesController@listado_contribuyentes_predios');
-        Route::get('listado_contribuyentes_predios_det/{tipo}/{anio}/{hab_urb}','ReportesController@listado_contribuyentes_predios_det');
+        Route::get('listado_contribuyentes_predios_det/{anio}/{hab_urb}','ReportesController@listado_contribuyentes_predios_det');
         Route::get('reporte_contribuyentes_exonerados/{anio}/{hab_urb}/{tipo}','ReportesController@reporte_contribuyentes_exonerados');
         Route::get('reporte_cantidad_contribuyentes/{anio}/{hab_urb}','ReportesController@reporte_cantidad_contribuyentes');
         Route::get('autocomplete_hab_urba', 'ReportesController@autocompletar_haburb');
@@ -575,7 +575,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('reporte_ep_afecto_exonerado/{tipo}/{anio}/{condicion}','ReportesController@reporte_ep_afecto_exonerado');
         Route::get('reporte_monto_cuentas_imp/{hab_urb}/{anio}','ReportesController@reporte_monto_cuentas_imp');
         Route::get('reporte_monto_cuentas_arb/{hab_urb}/{anio}','ReportesController@reporte_monto_cuentas_arb');
- 
+        
     });
     Route::group(['namespace' => 'catastro_gonzalo'], function() {
        
@@ -678,7 +678,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('get_predios', 'BprediosController@get_predios');
         Route::get('get_predios_contribuyente', 'BprediosController@get_predios_contribuyente');
         
-
+        Route::resource('multas_tributarias', 'Multas_Tributarias_Controller');
     });
     
     

@@ -110,6 +110,30 @@ class ReportesController extends Controller
     {
         //
     }
+    
+    public function listado_contribuyentes_predios_det($anio,$id_hab_urb)
+    {
+       
+        $predios = DB::table('reportes.vw_03_contri_predios')->where('anio',$anio)->where('id_hab_urb',$id_hab_urb)->get();
+        set_time_limit(0);
+        ini_set('memory_limit', '3G');
+        
+        if (count($predios) > 0) 
+        { 
+            \Excel::create('Listado de Contribuyentes', function($excel) use ($predios) {
+            $excel->sheet('Contribuyentes', function($sheet) use ($predios) {
+                $sheet->loadView('reportes_gonzalo.reportes.prueba_excel')->with("predios", $predios)->freezeFirstRow();
+            });
+            })->export('xls');
+        }
+        else
+        {
+             return 'NO SE ENCONTRARON DATOS';
+        }
+        
+    }
+    
+    
     //reportes gerenciales
      public function ver_reportes_gerenciales($tip,Request $request)
     {
@@ -269,56 +293,7 @@ class ReportesController extends Controller
             }
         }
     }
-     public function listado_contribuyentes_predios_det($tip,$anio,$hab_urb1)
-    {
-        if($tip==1){
-            if($anio != 0 && $hab_urb1 == 0){
-                set_time_limit(0);
-                ini_set('memory_limit', '1G');
-            \Excel::create('REPORTE DE LISTADO DE CONTRIBUYENTES Y PREDIOS, PISOS, INSTALACIONES E INAFECTACIÓN', function($excel) use ( $anio ) {
-
-                $excel->sheet('CONTRIBUYENTES', function($sheet) use ( $anio ) {
-
-                    $sql = DB::select("select id_persona,nro_doc_contri,contribuyente, (coalesce(cod_via, '') || ' ' || coalesce(nom_via, '') || ' ' || coalesce(nro_mun, '') || ' ' || coalesce(referencia, '')) as list_predio,mzna,lote_cat,are_terr,area_const from reportes.vw_02_contri_predios where anio = '$anio' order by contribuyente asc" );
-
-                    $data= json_decode( json_encode($sql), true);
-
-                    $sheet->fromArray($data);
-                    $sheet->row(1, array("CODIGO", "DNI/RUC", "NOMBRE O RAZON SOCIAL", "LISTADO DE PREDIOS","MZNA","LOTE", "AREA DE TERRENO CONSTRUIDA", "AREA DE TERRENO"))->freezeFirstRow();
-                    $sheet->setWidth(array(
-                        'A'     =>  15,
-                        'B'     =>  20,
-                        'C'     =>  40,
-                        'D'     =>  70,
-                        'E'     =>  10,
-                        'F'     =>  10,
-                        'G'     =>  10,
-                        'H'     =>  10
-                    ));
-                });
-                })->export('xls');
-            }
-        }
-        if($tip==0){
-            $sql=DB::table('reportes.vw_03_contri_predios_det')->where('anio',$anio)->where('id_hab_urb',$hab_urb1)->orderBy('contribuyente')->get();
-            $usuario = DB::select('SELECT * from public.usuarios where id='.Auth::user()->id);
-            $fecha = (date('d/m/Y H:i:s'));
-            $institucion = DB::select('SELECT * FROM maysa.institucion');
-            if(count($sql)>0)
-            {
-                set_time_limit(0);
-                ini_set('memory_limit', '2G');
-                $view =  \View::make('reportes_gonzalo.reportes.listado_contribuyentes_predios_det', compact('sql','anio','hab_urb','usuario','fecha','institucion'))->render();
-                $pdf = \App::make('dompdf.wrapper');
-                $pdf->loadHTML($view)->setPaper('a4','landscape');
-                return $pdf->stream("Lista Contribuyentes y Predios, Pisos, Instalaciones e Inafectación".".pdf");
-            }
-            else
-            {
-                return 'No hay datos';
-            }
-        }
-    }
+    
     
     public function reporte_contribuyentes_exonerados($anio,$sector,$condicion)
     {

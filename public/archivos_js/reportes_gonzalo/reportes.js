@@ -223,11 +223,7 @@ function crear_dialogo_contribuyentes_p_detallado()
         buttons: [{
             html: "<i class='fa fa-save'></i>&nbsp; Ver Hab. Urbana Seleccionada"  ,
             "class": "btn btn-success bg-color-green",
-            click: function () { abrir_reporte_datos_contribuyentes_predios_detallado(0); }
-        },{
-            html: "<i class='fa fa-file-excel-o'></i>&nbsp; Ver Todas",
-            "class": "btn btn-success bg-color-blue",
-            click: function () { abrir_reporte_datos_contribuyentes_predios_detallado(1); }
+            click: function () { abrir_reporte_datos_contribuyentes_predios_detallado(); }
         }, {
             html: "<i class='fa fa-sign-out'></i>&nbsp; Salir",
             "class": "btn btn-danger",
@@ -743,20 +739,14 @@ function abrir_reporte_datos_contribuyentes_predios(tipo)
          window.open('listado_contribuyentes_predios/1'+'/'+$('#select_sup_anio_pred').val()+'/'+'0');
     }
 }
-function abrir_reporte_datos_contribuyentes_predios_detallado(tipo)
-{   if(tipo==0)
-    {
+function abrir_reporte_datos_contribuyentes_predios_detallado()
+{  
         if ($("#hidden_habilitacion_urbana_det").val() == 0){
             mostraralertasconfoco("Debes Ingresar una Habilitacion Urbana","#hidden_habilitacion_urbana_det");
             return false;
         }
-        window.open('listado_contribuyentes_predios_det/0'+'/'+$('#select_sup_anio_pred_det').val()+'/'+$('#hidden_habilitacion_urbana_det').val()+'');
-    }
-    if(tipo==1)
-    {
-         $('#habilitacion_urbana_det').val("");$('#hidden_habilitacion_urbana_det').val("");
-         window.open('listado_contribuyentes_predios_det/1'+'/'+$('#select_sup_anio_pred_det').val()+'/'+'0');
-    }
+        window.open('listado_contribuyentes_predios_det/'+$('#select_sup_anio_pred_det').val()+'/'+$('#hidden_habilitacion_urbana_det').val()+'');
+   
 }
 function abrir_reporte_cantidad_por_zona(tipo)
 {   if(tipo==0)

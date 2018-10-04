@@ -240,3 +240,4 @@
                 {{$recibo[0]->hora_pago}}<br>
 -->
 
+    

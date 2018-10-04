@@ -114,7 +114,8 @@ class Rep_predioController extends Controller
                 trim($Datos->id_pred),
                 trim($Datos->cod_cat),
                 trim($Datos->direccion),
-                trim($Datos->nro_pisos)
+                trim($Datos->nro_pisos),
+                trim($Datos->id_pred_anio),
             );
         }
         return response()->json($Lista);
@@ -123,10 +124,11 @@ class Rep_predioController extends Controller
     public function replicar_predios(Request $request){
         
         $id_predio = $request['id_predio'];
+        $id_pred_anio = $request['id_pred_anio'];
         $anio_desde = $request['anio_desde'];
         $anio_hasta = $request['anio_hasta'];
         
-        $insert = DB::select('select adm_tri.duplica_predio_atras('.$id_predio.','.$anio_desde.','.$anio_hasta.')');
+        $insert = DB::select('select adm_tri.duplica_predio_atras('.$id_predio.','.$anio_desde.','.$anio_hasta.','.$id_pred_anio.')');
         
 
         if ($insert) {
