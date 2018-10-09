@@ -111,26 +111,89 @@ class ReportesController extends Controller
         //
     }
     
-    public function listado_contribuyentes_predios_det($anio,$id_hab_urb)
-    {
-       
-        $predios = DB::table('reportes.vw_03_contri_predios')->where('anio',$anio)->where('id_hab_urb',$id_hab_urb)->get();
-        set_time_limit(0);
-        ini_set('memory_limit', '3G');
+    
+   
+    public function listado_contribuyentes_predios_det($anio,$hab_urb1)
+    {          
+
+
+        if($anio != 0 && $hab_urb1 != 0){
+            $predios = DB::table('adm_tri.vw_predi_urba')->select('id_persona','nro_doc','contribuyente','dom_fis as domicilio','descripcion','tp','desc_uso','are_com_terr','are_terr','anio','base_impon_afecto as autovaluo','nro_doc_conv','conviviente')->where('anio',$anio)->where('id_hab_urb',$hab_urb1)->orderby('contribuyente')->get();
+            if(count($predios)>0){
+                set_time_limit(0);
+                ini_set('memory_limit', '1G');
+                \Excel::create('REPORTE DE CONTRIBUYENTES', function($excel) use ( $anio, $hab_urb1,$predios ) {
+                $predios = DB::table('adm_tri.vw_predi_urba')->select('id_persona','nro_doc','contribuyente','dom_fis as domicilio','descripcion','tp','desc_uso','are_com_terr','are_terr','anio','base_impon_afecto as autovaluo','id_pred_anio','nro_doc_conv','conviviente')->where('anio',$anio)->where('id_hab_urb',$hab_urb1)->orderby('contribuyente')->get();
+                 $num= 1;
+                 $row = array(
+                            array('N°','CÓDIGO','DNI/RUC','CONTRIBUYENTE','DIRECCIÓN','DNI','CONYUGUE','ESTADO','TIPO','USO','ÁREA COMÚN','AREA TERRENO','AUTOVALUO','N° PISO','CLASIFICACIÓN','MATERIAL','EST. CONSERVACIÓN','CATEGORIAS','ÁREA CONSTYRUCCIÓN','ÁREA COMÚN')
+                        );
+
+                        foreach($predios as $predio){
+                            $pisos = DB::table('reportes.vw_pisos')->where('id_pred_anio',$predio->id_pred_anio)->get();
+                            $row[] = array(
+                                $num++,
+                                $predio->id_persona,
+                                $predio->nro_doc,
+                                $predio->contribuyente,
+                                $predio->domicilio,
+                                $predio->nro_doc_conv,
+                                $predio->conviviente,
+                                $predio->descripcion,
+                                $predio->tp,
+                                $predio->desc_uso,
+                                $predio->are_com_terr,
+                                $predio->are_terr,
+                                $predio->autovaluo);
+                                foreach ($pisos as $piso)
+                                {
+                                    $row[] = array(
+                                        " "," "," "," "," "," "," "," "," "," "," "," "," ",
+                                        $piso->cod_piso,
+                                        $piso->clas,
+                                        $piso->mep,
+                                        $piso->esc,
+                                        $piso->categorias,
+                                        $piso->area_const,
+                                        $piso->val_areas_com
+                                    );
+                                }
+                        }
+                $excel->sheet('CONTRIBUYENTES', function($sheet) use($row) {
+                    $sheet->fromArray($row, null, 'A1', false, false);
+                    $sheet->setWidth(array(
+                                    'A'     =>  3,
+                                    'B'     =>  15,
+                                    'C'     =>  15,
+                                    'D'     =>  40,
+                                    'E'     =>  60,
+                                    'F'     =>  10,
+                                    'G'     =>  40,
+                                    'H'     =>  20,
+                                    'I'     =>  7,
+                                    'J'     =>  20,
+                                    'K'     =>  5,
+                                    'L'     =>  10,
+                                    'M'     =>  10,
+                                    'N'     =>  5,
+                                    'O'     =>  5,
+                                    'P'     =>  5,
+                                    'Q'     =>  5,
+                                    'R'     =>  10,
+                                    'S'     =>  7,
+                                    'T'     =>  7
+                                ));
+                });
+            })->export('xls'); 
+            
+            }
+            else
+            {
+                return 'No hay datos';
+            }
         
-        if (count($predios) > 0) 
-        { 
-            \Excel::create('Listado de Contribuyentes', function($excel) use ($predios) {
-            $excel->sheet('Contribuyentes', function($sheet) use ($predios) {
-                $sheet->loadView('reportes_gonzalo.reportes.prueba_excel')->with("predios", $predios)->freezeFirstRow();
-            });
-            })->export('xls');
         }
-        else
-        {
-             return 'NO SE ENCONTRARON DATOS';
-        }
-        
+
     }
     
     

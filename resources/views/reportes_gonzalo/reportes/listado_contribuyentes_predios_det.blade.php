@@ -2,20 +2,18 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Listado de Datos de los Contribuyentes y Predios</title>
+   
     <link href="{{ asset('css/pdf.css') }}" rel="stylesheet">
     <style>
         .move-ahead { counter-increment: page 2; position: absolute; visibility: hidden; }
         .pagenum:after { content:' ' counter(page); }
-        .footer {position: fixed }
+       .footer {position: fixed }
+
     </style>
 </head>
-    <footer class="footer" style="font-size:0.8em; text-align: left; padding-top: 5px; padding-left: 10px;"><b>Impreso Por:&nbsp; </b>{{$usuario[0]->usuario}}</footer>
+    
 
 <body>
-    <div class="datehead" style="font-size:0.7em;">{{ $fecha }}</div>
-<main>
-
     <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px;">
         <tr>
             <td style="width: 10%; border: 0px;" >
@@ -24,7 +22,6 @@
             <td style="width: 80%; padding-top: 0px; border:0px;">
                 <div id="details" class="sub2">
                     <div id="invoice" style="font-size:0.7em" >
-                        <h1>{{$institucion[0]->nom1}}&nbsp;{{$institucion[0]->nom2}}</h1>
                         <div class="sub2">Creado por Ley 12075 el día 26 de Febrero de 1954</div>
                     </div>
                     <div  style="width: 95%; border-top:1px solid #999; margin-top: 5px; margin-left: 25px"></div>
@@ -35,92 +32,36 @@
 
     </table>
 
-    <center><div Class="asunto" style="margin-top: 1px;font-size:0.8em;"><b>REPORTE DE LISTADO DE CONTRIBUYENTES Y PREDIOS, PISOS, INSTALACIONES E INAFECTACIÓN</b></div></center>
-    <div class="subasunto" style=" margin-bottom:1px; text-align: left; padding-left: 30px;font-size:0.7em;"> 
+    <center><div Class="asunto" style="margin-top: 1px;font-size:0.8em;"><b>REPORTE DE DATOS DE CONTRIBUYENTES</b></div></center>
+    <div class="subasunto" style=" margin-bottom:5px; text-align: left; padding-left: 30px;font-size:0.7em;"> 
         <br>
-        Año: {{ $anio }} - Hab. Urbana: {{$sql[0]->nomb_hab_urba}}
+        
     </div>
-    <input type="hidden" value=" {{$num= 1}}">
     
-    <div class="lado3" style="height: 435px; border-bottom: 1px solid #333">
+    <input type="hidden" value=" {{$num= 1}}">
 
-        <br>
-        <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 30px; font-size: 1.3em;">
+    <div class="lado3" style="height: 435px; margin-bottom: 20px;">
+        <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom:20px; margin-top: 0px;  font-size: 1.0em;">
             <thead>
             <tr>
-                <th style="width: 8%;">Código</th>
-                <th style="width: 8%">DNI/RUC</th>
-                <th style="width: 30%;">Nombre o Razon Social</th>
-                <th style="width: 24%;">Listado de Predios</th>
-                <th style="width: 5%;">Pisos</th>
-                <th style="width: 25%;">Instalaciones</th>
-                <th style="width: 10%">Area de Terreno Construida</th>
-                <th style="width: 10%">Area de Terreno </th>
+                <th style="width: 5%;">N°</th>
+                <th style="width: 95%">DNI/RUC</th>
+                <th style="width: 95%">{{ $anio }}</th>
             </tr>
             </thead>
             <tbody>
 
-            <tr>
-                <td style="text-align: center;">{{$sql[0]->id_persona}}</td>
-                <td style="text-align: center;">{{$sql[0]->nro_doc_contri}}</td>
-                <td style="border-right:0px; text-align: center;">{{$sql[0]->contribuyente}}</td>
-                <td colspan="3" style="text-align: center;"></td>
+            @foreach ($institucion as $cont)
+                <tr>
+                    <td style="text-align: center;">{{ $num++ }}</td>
+                    <td style="text-align: center;">{{$cont->id_persona}}</td>
+                </tr>
+                
+            @endforeach
 
-            </tr>
-
-            <tr>
-                <td style="border-right:0px; border-bottom: 0px; text-align: center;"></td>
-                <td style="border-right:0px; border-bottom: 0px; text-align: center;"></td>
-                <td style="border-right:0px; border-bottom: 0px; text-align: center;"></td>
-                <td style="text-align: center;">{{$sql[0]->cod_via}} - {{$sql[0]->nom_via}} - {{$sql[0]->nro_mun}} - {{$sql[0]->referencia}}</td>
-                <td style="text-align: center;">{{$sql[0]->nro_pisos}}</td>
-                <td style="text-align: center;">{{$sql[0]->descrip_instal}}</td>
-                <td style="text-align: center;">{{number_format($sql[0]->are_terr,2,'.',',')}}</td>
-                <td style="text-align: center;">{{number_format($sql[0]->area_const,2,'.',',')}}</td>
-            </tr>
-            
-            @for ($i = 1; $i < count($sql); $i++)
-                @if($sql[$i]->id_contrib == $sql[$i-1]->id_contrib)
-                    <tr>
-                        <td style="border-right:0px; border-bottom: 0px;border-top: 0px; text-align: center;"></td>
-                        <td style="border-right:0px; border-bottom: 0px;border-top: 0px; text-align: center;"></td>
-                        <td style="border-right:0px; border-bottom: 0px;border-top: 0px; text-align: center;"></td>     
-                        <td style="text-align: center;">{{$sql[$i]->cod_via}} - {{$sql[$i]->nom_via}} - {{$sql[$i]->nro_mun}} - {{$sql[$i]->referencia}}</td>
-                        <td style="text-align: center;">{{$sql[$i]->nro_pisos}}</td>
-                        <td style="text-align: center;">{{$sql[$i]->descrip_instal}}</td>
-                        <td style="text-align: center;">{{number_format($sql[$i]->are_terr,2,'.',',')}}</td>
-                        <td style="text-align: center;">{{number_format($sql[$i]->area_const,2,'.',',')}}</td>
-                    </tr>
-                @else
-
-                    <tr>
-                        <td style="text-align: center;">{{$sql[$i]->id_persona}}</td>
-                        <td style="text-align: center;">{{$sql[$i]->nro_doc_contri}}</td>
-                        <td style="border-right:0px; text-align: center;">{{$sql[$i]->contribuyente}}</td>
-                        <td colspan="6" style="text-align: center;"></td>
-   
-                    </tr>
-
-                    <tr>
-                        <td style="border-right:0px; border-bottom: 0px;border-top: 0px; text-align: center;"></td>
-                        <td style="border-right:0px; border-bottom: 0px;border-top: 0px; text-align: center;"></td>
-                        <td style="border-right:0px; border-bottom: 0px;border-top: 0px; text-align: center;"></td>
-                        <td style="text-align: center;">{{$sql[$i]->cod_via}} - {{$sql[$i]->nom_via}} - {{$sql[$i]->nro_mun}} - {{$sql[$i]->referencia}}</td>
-                        <td style="text-align: center;">{{$sql[$i]->nro_pisos}}</td>
-                        <td style="text-align: center;">{{$sql[$i]->descrip_instal}}</td>
-                        <td style="text-align: center;">{{number_format($sql[$i]->are_terr,2,'.',',')}}</td>
-                        <td style="text-align: center;">{{number_format($sql[$i]->area_const,2,'.',',')}}</td>
-
-                    </tr>
-                @endif
-            @endfor
-            <tr>
-                <td colspan="6" style="border-left:0px; border-bottom: 0px;border-right: 0px"></td>
-            </tr>
             </tbody>
         </table>
     </div>
-  
 </body>
 
 </html>
