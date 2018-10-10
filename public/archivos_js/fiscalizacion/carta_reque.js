@@ -38,11 +38,11 @@ function call_list_contrib_carta(tip)
     $("#table_cartas").jqGrid("clearGridData", true);
     if(tip==0)
     {
-        jQuery("#table_cartas").jqGrid('setGridParam', {url: 'trae_cartas/'+$("#selantra").val()+'/0/0/0/0'}).trigger('reloadGrid');
+        jQuery("#table_cartas").jqGrid('setGridParam', {url: 'trae_cartas/'+$("#selantra").val()+'/0/0/0/0/0'}).trigger('reloadGrid');
     }
     if(tip==1)
     {
-        jQuery("#table_cartas").jqGrid('setGridParam', {url: 'trae_cartas/'+$("#selantra").val()+'/'+$("#dlg_contri_hidden").val()+'/0/0/0'}).trigger('reloadGrid');
+        jQuery("#table_cartas").jqGrid('setGridParam', {url: 'trae_cartas/'+$("#selantra").val()+'/'+$("#dlg_contri_hidden").val()+'/0/0/0/0'}).trigger('reloadGrid');
     }
     if(tip==2)
     {
@@ -53,7 +53,7 @@ function call_list_contrib_carta(tip)
         }
         ini=$("#dlg_bus_fini").val().replace(/\//g,"-");
         fin=$("#dlg_bus_ffin").val().replace(/\//g,"-");
-        jQuery("#table_cartas").jqGrid('setGridParam', {url: 'trae_cartas/0/0/'+ini+'/'+fin+'/0'}).trigger('reloadGrid');
+        jQuery("#table_cartas").jqGrid('setGridParam', {url: 'trae_cartas/0/0/'+ini+'/'+fin+'/0/0'}).trigger('reloadGrid');
     }
     if(tip==3)
     {
@@ -64,7 +64,7 @@ function call_list_contrib_carta(tip)
         }
         ajustar(6,'dlg_bus_num');
         num=$("#dlg_bus_num").val();
-        jQuery("#table_cartas").jqGrid('setGridParam', {url: 'trae_cartas/'+$("#selantra").val()+'/0/0/0/'+num}).trigger('reloadGrid');
+        jQuery("#table_cartas").jqGrid('setGridParam', {url: 'trae_cartas/'+$("#selantra").val()+'/0/0/0/'+num+'/0'}).trigger('reloadGrid');
     }
     
 }

@@ -3,6 +3,7 @@
 <input type="hidden" id="per_imp" value="{{$permisos[0]->btn_imp}}"/>
 <input type="hidden" id="per_edit" value="{{$permisos[0]->btn_edit}}"/>
 <input type="hidden" id="per_del" value="{{$permisos[0]->btn_del}}"/>
+<input type="hidden" id="dlg_inp_idvida" value="0"/>
 <section id="widget-grid" class=""> 
     <div class='cr_content col-xs-12 '>
         <div class="col-xs-9">
@@ -134,7 +135,7 @@
         $("#menu_fisca").show();
         $("#li_ficha_ver").addClass('cr-active')
         jQuery("#table_cartas").jqGrid({
-            url: 'trae_cartas/'+$("#selantra").val()+'/0/0/0/0',
+            url: 'trae_cartas/'+$("#selantra").val()+'/0/0/0/0/1',
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
@@ -974,7 +975,7 @@
                         <div class='col-lg-3 '>
                             <label class="label">Año de Demolición:</label>
                             <label class="input">
-                                <input id="rpiso_inp_fech_demoli_fis" type="text"  class="input-sm" maxlength="4" >
+                                <input id="rpiso_inp_fech_demoli_fis" type="text"  class="input-sm" maxlength="4" value="0" >
                             </label>
                         </div>
                         <div class="col-xs-12"></div>

@@ -143,7 +143,7 @@
             height: '120px', autowidth: true,
             toolbarfilter: true,
             colNames: ['id_tribu', 'Descripción', 'Total a Pagar', 'Saldo S/.', 'Trim I', 'Trim II', 'Trim III', 'Trim IV','con','coa','tim1_cta','tim2_cta','tim3_cta','tim4_cta','Todo'],
-            rowNum: 5, sortname: 'descrip_tributo', sortorder: 'asc', viewrecords: true, align: "center",
+            rowNum: 100, sortname: 'descrip_tributo', sortorder: 'asc', viewrecords: true, align: "center",
             colModel: [
                 {name: 'id_tribu', index: 'id_tribu', hidden:true},
                 {name: 'descrip_tributo', index: 'descrip_tributo', width: 297},
@@ -162,20 +162,27 @@
                 {name: 'total', index: 'total', align: 'right', width: 100},
             ],
             pager: '#pager_table_cta_cte2',
-            rowList: [5, 10],
+            rowList: [100, 200],
             gridComplete: function () {
                 $("#vw_emi_rec_imp_pred_glosa").val("");
                 var predial = ($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("predial"));
                 var formatos = ($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("formatos"));
+                var multas = ($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("multas"));
                 var pre_x_trim = 0;
                 var idarray = jQuery('#table_cta_cte2').jqGrid('getDataIDs');
 
                 for (var i = 0; i < idarray.length; i++) {
-                    var deuda = $("#table_cta_cte2").getCell(idarray[i], 'saldo');
+                    var deuda = $("#table_cta_cte2").getCell(idarray[i], 'saldo').replace(',', '');
                     if(deuda>0 && idarray[i] == predial)
                     {
                         $("#table_cta_cte2").jqGrid("setCell", idarray[i], 'total',
-                                        "<input type='checkbox' name='chk_total' value='" + deuda + "' pago='"+idarray[i]+"' onchange='marcar_todos_predial(this.value,this,"+idarray[i]+")'>"+deuda);
+                                        "<input type='checkbox' name='chk_total' value='" + deuda + "' pago='"+idarray[i]+"' onchange='marcar_todos_predial(this.value,this,"+idarray[i]+",0)'>"+deuda);
+                    }
+                    if(deuda>0 && idarray[i] == multas)
+                    {
+                        tim_multa=$("#table_cta_cte2").getCell(idarray[i], 'tim1_cta');
+                        $("#table_cta_cte2").jqGrid("setCell", idarray[i], 'total',
+                                        "<input type='checkbox' name='chk_multa' value='" + deuda + "' pago='"+idarray[i]+"' tim_multa='"+tim_multa+"' onchange='marcar_todos_predial(this.value,this,"+idarray[i]+",1)'>"+deuda);
                     }
                     var conv = $("#table_cta_cte2").getCell(idarray[i], 'conv');
                     
@@ -191,11 +198,16 @@
                         var tim = $("#table_cta_cte2").getCell(idarray[i], 'tim' + a + '_cta');
                         if (parseFloat(val) > 0 && idarray[i] == predial) {
                             $("#table_cta_cte2").jqGrid("setCell", idarray[i], 'abo' + a + '_cta',
-                                    "<input type='checkbox' name='chk_trim' value='" + a + "' id='chk_calc_pag_" + a + "' cantidad='"+val+"' tim='"+tim+"' onchange='calc_tot_a_pagar_predial(" + a + ",this,"+val+")'>"+val, {'text-align': 'center'});
+                                    "<input type='checkbox' name='chk_trim' value='" + a + "' id='chk_calc_pag_" + a + "' cantidad='"+val+"' tim='"+tim+"' onchange='calc_tot_a_pagar_predial(" + a + ",this,"+val+")'>"+val, {'text-align': 'right'});
                         }
                         if (parseFloat(val) == 0 && idarray[i] == formatos) {
                             $("#table_cta_cte2").jqGrid("setCell", idarray[i], 'abo' + a + '_cta',
-                                    "<input type='checkbox' name='chk_trim_form' value='" + a + "' id='chk_calc_form_imp_" + a + "' cantidad='"+val+"' onchange='calc_tot_a_pagar_predial(" + a + ",this,"+val+")' disabled='disabled' checked>", {'text-align': 'center'});
+                                    "<input type='checkbox' name='chk_trim_form' value='" + a + "' id='chk_calc_form_imp_" + a + "' cantidad='"+val+"' onchange='calc_tot_a_pagar_predial(" + a + ",this,"+val+")' disabled='disabled' checked>", {'text-align': 'right'});
+                        }
+                        if (idarray[i] == multas) {
+                           
+                            $("#table_cta_cte2").jqGrid("setCell", idarray[i], 'abo' + a + '_cta',
+                                    " ", {'text-align': 'right'});
                         }
                     }
                     pre_x_trim = parseFloat($("#table_cta_cte2").getCell(idarray[i], 'ivpp'));
@@ -205,7 +217,7 @@
                 $("#vw_emis_re_pag_pre_x_trim").val(pre_x_trim);
                 form = $("#table_cta_cte2").getCell(formatos, 'saldo') || '0.00';
                 $("#vw_emision_rec_pago_imp_pred_total_trimestre").val(form);
-                $("#input_interes_tot").val('0.00');
+                $("#input_interes_tot,#input_interes_tot_multa").val('0.00');
                 if (idarray.length > 0) {
                     var firstid = jQuery('#table_cta_cte2').jqGrid('getDataIDs')[1];
                     $("#table_cta_cte2").setSelection(firstid);
@@ -478,7 +490,7 @@
                                     <label class="select">
                                         <select onchange="filter_anio(this.value);" id="vw_emi_rec_imp_pre_contrib_anio" class="input-sm">                                       
                                             @foreach ($anio as $anio1)                                        
-                                            <option value='{{$anio1->anio}}' predial = '{{$anio1->impuesto_predial}}' formatos = '{{$anio1->formatos}}' >{{$anio1->anio}}</option>
+                                            <option value='{{$anio1->anio}}' predial = '{{$anio1->impuesto_predial}}' formatos = '{{$anio1->formatos}}' multas = '{{$anio1->multas}}'>{{$anio1->anio}}</option>
                                             @endforeach                                    
                                         </select><i></i>                        
                                 </section>
@@ -526,17 +538,25 @@
                                     <table id="table_cta_cte2"></table>
                                     <div id="pager_table_cta_cte2">
                                         <div class="col-xs-6">
-                                            <div class="col-xs-12" style="padding: 0px;">
+                                            <div class="col-xs-6" style="padding: 0px;">
                                                 <div class="input-group input-group-md">
-                                                    <span class="input-group-addon" style="width: 100px; background-color: white">Interes S/. &nbsp;</span>
+                                                    <span class="input-group-addon" style="width: 100px; background-color: white">Interes Predial S/. &nbsp;</span>
                                                     <div class="">
                                                         <input id="input_interes_tot" type="text"  class="form-control" style="height: 32px; text-align: right; padding-right: 5px;width: 120px;" disabled="" value="0.00">
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="col-xs-6" style="padding: 0px;">
+                                                <div class="input-group input-group-md">
+                                                    <span class="input-group-addon" style="width: 100px; background-color: white">Interes Multa S/. &nbsp;</span>
+                                                    <div class="">
+                                                        <input id="input_interes_tot_multa" type="text"  class="form-control" style="height: 32px; text-align: right; padding-right: 5px;width: 120px;" disabled="" value="0.00">
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="col-xs-3" style="z-index: 99999999">
-                                            <div class="input-group input-group-md" style="background-color: white;margin-top: 34px;">
+                                            <div class="input-group input-group-md" style="background-color: white;">
                                                 <span class="input-group-addon" style="width: 100px; background-color: white">Activar Pago a Cuenta &nbsp;</span>
                                                 <div class="input-group-addon"  style=" background-color: white; ">
                                                     <input id="check_pago_cuenta" type="checkbox" style="margin-top: 5px;" onchange="validar_pago_cuenta()">
@@ -545,7 +565,7 @@
                                         </div>
                                         <div class="col-xs-3" style="padding: 0px;">
                                             
-                                            <div class="col-xs-12" style="padding: 0px;">
+                                            <div class="col-xs-12" style="padding: 0px; display: none">
                                                 <div class="input-group input-group-md">
                                                     <span class="input-group-addon" style="width: 100px; background-color: white">Trimestre S/. &nbsp;</span>
                                                     <div class=""  >
@@ -562,7 +582,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+                                        <div class="col-xs-12" style="margin-bottom: 10px"></div>
                                     </div>
                                 </article>
                             </section>

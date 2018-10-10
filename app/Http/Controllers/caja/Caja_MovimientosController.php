@@ -57,62 +57,69 @@ class Caja_MovimientosController extends Controller {
                         foreach($cuentas as $cta)
                         {
                             $ctacte=new CtaCte();
-                            $editcta = $ctacte::where("id_cta_cte", "=", $cta->id_cta_cte)->first();
+                            $editcta = $ctacte::where("id_cta_cte", $cta->id_cta_cte)->first();
                             if (count($editcta) >= 1) {
-                                $abono_var=0;
+                                $abono_var1=0;
+                                $abono_var2=0;
+                                $abono_var3=0;
+                                $abono_var4=0;
                                 if($editcta->id_rec_trim1==$id)
                                 {
-                                    if($editcta->imp1_cta>0)
+                                    if($editcta->ipm1_cta>0)
                                     {
-                                        $abono_var=($editcta->car1_cta*$editcta->imp1_cta);
+                                        $abono_var1=($editcta->car1_cta*$editcta->ipm1_cta);
                                     }
                                     else
                                     {
-                                        $abono_var=$editcta->car1_cta;
+                                        $abono_var1=$editcta->car1_cta;
                                     }
-                                    $editcta->abo1_cta= $abono_var+$editcta->tim1_cta;
+                                    $editcta->abo1_cta= $abono_var1;
+                                    $editcta->abo1_tim= $editcta->tim1_cta;
                                     $editcta->fec_abo1=date('d-m-Y');
                                     $editcta->flg_rec_trim1=2;
                                 }
                                 if($editcta->id_rec_trim2==$id)
                                 {
-                                     if($editcta->imp2_cta>0)
+                                     if($editcta->ipm2_cta>0)
                                     {
-                                        $abono_var=($editcta->car2_cta*$editcta->imp2_cta);
+                                        $abono_var2=($editcta->car2_cta*$editcta->ipm2_cta);
                                     }
                                     else
                                     {
-                                        $abono_var=$editcta->car2_cta;
+                                        $abono_var2=$editcta->car2_cta;
                                     }
-                                    $editcta->abo2_cta= $abono_var+$editcta->tim2_cta;
+                                    $editcta->abo2_cta= $abono_var2;
+                                    $editcta->abo2_tim= $editcta->tim2_cta;
                                     $editcta->fec_abo2=date('d-m-Y');
                                     $editcta->flg_rec_trim2=2;
                                 }
                                 if($editcta->id_rec_trim3==$id)
                                 {
-                                    if($editcta->imp3_cta>0)
+                                    if($editcta->ipm3_cta>0)
                                     {
-                                        $abono_var=($editcta->car3_cta*$editcta->imp3_cta);
+                                        $abono_var3=($editcta->car3_cta*$editcta->ipm3_cta);
                                     }
                                     else
                                     {
-                                        $abono_var=$editcta->car3_cta;
+                                        $abono_var3=$editcta->car3_cta;
                                     }
-                                    $editcta->abo3_cta= $abono_var+$editcta->tim3_cta;
+                                    $editcta->abo3_cta= $abono_var3;
+                                    $editcta->abo3_tim= $editcta->tim3_cta;
                                     $editcta->fec_abo3=date('d-m-Y');
                                     $editcta->flg_rec_trim3=2;
                                 }
                                 if($editcta->id_rec_trim4==$id)
                                 {
-                                    if($editcta->imp4_cta>0)
+                                    if($editcta->ipm4_cta>0)
                                     {
-                                        $abono_var=($editcta->car4_cta*$editcta->imp4_cta);
+                                        $abono_var4=($editcta->car4_cta*$editcta->ipm4_cta);
                                     }
                                     else
                                     {
-                                        $abono_var=$editcta->car4_cta;
+                                        $abono_var4=$editcta->car4_cta;
                                     }
-                                    $editcta->abo4_cta= $abono_var+$editcta->tim4_cta;
+                                    $editcta->abo4_cta= $abono_var4;
+                                    $editcta->abo4_tim= $editcta->tim4_cta;
                                     $editcta->fec_abo4=date('d-m-Y');
                                     $editcta->flg_rec_trim4=2;
                                 }

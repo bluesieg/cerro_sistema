@@ -90,7 +90,14 @@ class Pisos_FicController extends Controller
             $val->ins_ele = substr($request['estru'],6,1);
             $val->area_const = $request['aconst'];
             $val->val_areas_com = $request['acomun'];
-            $val->anio_demolicion = $request['anio_demolicion'];
+            if($request['anio_demolicion']==null)
+            {
+                $val->anio_demolicion = 0;
+            }
+            else
+            {
+                $val->anio_demolicion = $request['anio_demolicion'];
+            }
             $val->save();
         }
         return $id;

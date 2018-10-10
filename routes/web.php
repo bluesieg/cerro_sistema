@@ -3,7 +3,6 @@
 Route::get('/', function () {
     return view("auth/login");
 });
-
 Route::get('home', 'map\MapController@index');
 
 // Authentication Routes...
@@ -437,7 +436,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('carta_set_fisca', 'Carta_RequerimientoController@fisca_enviados_create'); //
         Route::get('carta_set_adjunta', 'Carta_RequerimientoController@carta_adjunta_create'); //
         Route::get('car_req_rep/{id}', 'Carta_RequerimientoController@carta_repo'); //
-        Route::get('trae_cartas/{an}/{contr}/{ini}/{fin}/{num}', 'Carta_RequerimientoController@get_cartas_req'); //
+        Route::get('trae_cartas/{an}/{contr}/{ini}/{fin}/{num}/{ref}', 'Carta_RequerimientoController@get_cartas_req'); //
         Route::get('trae_pred_carta/{car}', 'Carta_RequerimientoController@get_predios_carta'); //
         Route::get('trae_fisca_carta/{car}', 'Carta_RequerimientoController@get_fisca_enviados'); //
         Route::get('trae_fisca_carta_adjuntas/{car}', 'Carta_RequerimientoController@get_fisca_cartas_adjuntas'); //
@@ -575,7 +574,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('reporte_ep_afecto_exonerado/{tipo}/{anio}/{condicion}','ReportesController@reporte_ep_afecto_exonerado');
         Route::get('reporte_monto_cuentas_imp/{hab_urb}/{anio}','ReportesController@reporte_monto_cuentas_imp');
         Route::get('reporte_monto_cuentas_arb/{hab_urb}/{anio}','ReportesController@reporte_monto_cuentas_arb');
-        
+ 
     });
     Route::group(['namespace' => 'catastro_gonzalo'], function() {
        

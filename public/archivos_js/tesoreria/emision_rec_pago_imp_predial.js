@@ -106,7 +106,10 @@ function gen_rec_imp_pred(ss_checks){
     t2 = $("#vw_emi_rec_imp_pred_t2").val();
     t3 = $("#vw_emi_rec_imp_pred_t3").val();
     t4 = $("#vw_emi_rec_imp_pred_t4").val();
-    
+    totalmulta=0;
+    $('input[type=checkbox][name=chk_multa]:checked').each(function(){
+        totalmulta=parseFloat(redondeo($(this).val(),2));
+    });
     $.confirm({
         title: '.:Recibo:.',
         content: 'Generar Recibo por '+ss_checks+' trimestre(s)',
@@ -125,6 +128,7 @@ function gen_rec_imp_pred(ss_checks){
                         periodo:$("#vw_emi_rec_imp_pre_contrib_anio").val(),
                         clase_recibo:0,
                         id_trib_pred:$("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("predial"),
+                        id_trib_multa:$("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("multas"),
                         id_trib_form:formatos,
                         montopre: (parseFloat($("#vw_emision_rec_pago_imp_pred_total_trimestre").val().replace(',', ''))-parseFloat($("#table_cta_cte2").getCell(formatos, 'saldo'))),
                         montoform: $("#table_cta_cte2").getCell(formatos, 'saldo'),
@@ -136,7 +140,9 @@ function gen_rec_imp_pred(ss_checks){
                         t4:t4,
                         acuenta:$('#check_pago_cuenta').is(':checked')?1:0,
                         monto_acuenta:$("#vw_emision_rec_pago_imp_pred_total_trimestre").val().replace(',', ''),
-                        tim:$("#input_interes_tot").val().replace(',', '')
+                        tim:$("#input_interes_tot").val().replace(',', ''),
+                        tim_multa:$("#input_interes_tot_multa").val().replace(',', ''),
+                        multa:totalmulta
                     },
                     success: function (data) {
                         if (data) {
@@ -183,13 +189,11 @@ function calc_tot_a_pagar_predial(num,esto,val){
     }else{
        $("#vw_emi_rec_imp_pred_t"+num).val("0");
     }
-
-    //rowId=($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("predial"));
-    
-    //pre_x_trim = parseFloat(val);
    
     total=0;
     totaltim=0;
+    totalmulta=0;
+    totaltimmulta=0;
     $('input[type=checkbox][name=chk_trim]:checked').each(function() {
         total=parseFloat(total)+parseFloat($(this).attr("cantidad"));
         totaltim=parseFloat(totaltim)+parseFloat($(this).attr("tim"));
@@ -197,8 +201,14 @@ function calc_tot_a_pagar_predial(num,esto,val){
     $("#input_interes_tot").val(formato_numero(parseFloat(totaltim),2,'.',','));
     var formatos = ($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("formatos"));
     form = $("#table_cta_cte2").getCell(formatos, 'saldo') || '0.00';
-    $("#vw_emision_rec_pago_imp_pred_total_trimestre").val(formato_numero(parseFloat(total)+parseFloat(form)+parseFloat(totaltim),2,'.',','));
+    var multas = ($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("multas"));
+    $('input[type=checkbox][name=chk_multa]:checked').each(function(){
+        totalmulta=parseFloat(redondeo($(this).val(),2));
+        totaltimmulta=parseFloat(totaltimmulta)+parseFloat($(this).attr("tim_multa"));
+    });
+    $("#input_interes_tot_multa").val(formato_numero(parseFloat(totaltimmulta),2,'.',','));
 
+    $("#vw_emision_rec_pago_imp_pred_total_trimestre").val(formato_numero(parseFloat(total)+parseFloat(form)+parseFloat(totaltim)+parseFloat(totalmulta)+parseFloat(totalmulta),2,'.',','));
 }
 var select_check_2=0;
 
@@ -263,19 +273,28 @@ function limpiar_form_rec_imp_predial(){
     $("#vw_emision_rec_pago_imp_pred_total_trimestre").prop( "disabled", true );
 }
 
-function marcar_todos_predial(valor,esto,id){ 
-    if($(esto).is(':checked')){
+function marcar_todos_predial(valor,esto,id,multas){ 
+    if($(esto).is(':checked')&&multas==0){
         $('input[type=checkbox][name=chk_trim]').prop('checked', true);
     }
     $total=0;
     totaltim=0;
+    totalmulta=0;
+    totaltimmulta=0;
     $('input[type=checkbox][name=chk_trim]:checked').each(function(){
-        $total=parseFloat(redondeo($total,2))+parseFloat(redondeo($(this).val(),2));
+        $total=parseFloat($total)+parseFloat($(this).attr("cantidad"));
+        //$total=parseFloat(redondeo($total,2))+parseFloat(redondeo($(this).val(),2));
         totaltim=parseFloat(totaltim)+parseFloat($(this).attr("tim"));
     });
     $("#input_interes_tot").val(formato_numero(parseFloat(totaltim),2,'.',','));
     var formatos = ($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("formatos"));
+    var multas = ($("#vw_emi_rec_imp_pre_contrib_anio option:selected").attr("multas"));
+    $('input[type=checkbox][name=chk_multa]:checked').each(function(){
+        totalmulta=parseFloat(redondeo($(this).val(),2));
+        totaltimmulta=parseFloat(totaltimmulta)+parseFloat($(this).attr("tim_multa"));
+    });
+    $("#input_interes_tot_multa").val(formato_numero(parseFloat(totaltimmulta),2,'.',','));
+    
     form = $("#table_cta_cte2").getCell(formatos, 'saldo') || '0.00';
-    $("#vw_emision_rec_pago_imp_pred_total_trimestre").val(formato_numero(parseFloat(valor)+parseFloat(form)+parseFloat(totaltim),2,'.',','));
-
+    $("#vw_emision_rec_pago_imp_pred_total_trimestre").val(formato_numero(parseFloat($total)+parseFloat(form)+parseFloat(totaltim)+parseFloat(totalmulta)+parseFloat(totaltimmulta),2,'.',','));
 }

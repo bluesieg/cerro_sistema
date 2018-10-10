@@ -38,11 +38,11 @@ function call_list_contrib_carta(tip)
     $("#table_cartas").jqGrid("clearGridData", true);
     if(tip==0)
     {
-        jQuery("#table_cartas").jqGrid('setGridParam', {url: 'trae_cartas/'+$("#selantra").val()+'/0/0/0/0'}).trigger('reloadGrid');
+        jQuery("#table_cartas").jqGrid('setGridParam', {url: 'trae_cartas/'+$("#selantra").val()+'/0/0/0/0/1'}).trigger('reloadGrid');
     }
     if(tip==1)
     {
-        jQuery("#table_cartas").jqGrid('setGridParam', {url: 'trae_cartas/'+$("#selantra").val()+'/'+$("#dlg_contri_hidden").val()+'/0/0/0'}).trigger('reloadGrid');
+        jQuery("#table_cartas").jqGrid('setGridParam', {url: 'trae_cartas/'+$("#selantra").val()+'/'+$("#dlg_contri_hidden").val()+'/0/0/0/1'}).trigger('reloadGrid');
     }
     if(tip==2)
     {
@@ -53,7 +53,7 @@ function call_list_contrib_carta(tip)
         }
         ini=$("#dlg_bus_fini").val().replace(/\//g,"-");
         fin=$("#dlg_bus_ffin").val().replace(/\//g,"-");
-        jQuery("#table_cartas").jqGrid('setGridParam', {url: 'trae_cartas/0/0/'+ini+'/'+fin+'/0'}).trigger('reloadGrid');
+        jQuery("#table_cartas").jqGrid('setGridParam', {url: 'trae_cartas/0/0/'+ini+'/'+fin+'/0/1'}).trigger('reloadGrid');
     }
     if(tip==3)
     {
@@ -64,7 +64,7 @@ function call_list_contrib_carta(tip)
         }
         ajustar(6,'dlg_bus_num')
         num=$("#dlg_bus_num").val();
-        jQuery("#table_cartas").jqGrid('setGridParam', {url: 'trae_cartas/'+$("#selantra").val()+'/0/0/0/'+num}).trigger('reloadGrid');
+        jQuery("#table_cartas").jqGrid('setGridParam', {url: 'trae_cartas/'+$("#selantra").val()+'/0/0/0/'+num+'/1'}).trigger('reloadGrid');
     }
     
 }
@@ -165,6 +165,7 @@ function limpiarpred(tp)
     $( "#dlg_dni, #dlg_lot" ).prop( "disabled", true );
     $('#dlg_inp_condos').val("");
     $("#dlg_inp_areter,#dlg_inp_arecomter").val("");
+    $("#dlg_inp_idvida").val(0);
 }
 function clickmodgrid(Id)
 {
@@ -241,6 +242,7 @@ function clickmodgrid(Id)
             $("#dlg_inp_direcc").attr('title',dir+" "+r[0].habilitacion);
             $("#dlg_inp_areter").val(r[0].are_terr);
             $("#dlg_inp_arecomter").val(r[0].are_com_terr);
+            $("#dlg_inp_idvida").val(r[0].id_via);
         }
         else
         {
@@ -315,7 +317,8 @@ function dlgsave()
                 gr_tierra:$("#dlg_sel_gpoterr").val(),
                 cat_tierra:$("#dlg_sel_gpocatterr").val(),
                 carta:carta,
-                tip_pre_u_r:tp_pre
+                tip_pre_u_r:tp_pre,
+                via:$("#dlg_inp_idvida").val()
             },
         success: function(r) 
         {
@@ -379,7 +382,8 @@ function dlgupdate()
             gr_tierra:$("#dlg_sel_gpoterr").val(),
             cat_tierra:$("#dlg_sel_gpocatterr").val(),
             carta:carta,
-            tip_pre_u_r:tp_pre
+            tip_pre_u_r:tp_pre,
+            via:$("#dlg_inp_idvida").val()
         },
         success: function(r) 
         {
@@ -470,7 +474,7 @@ function creardlgpiso()
 }
 function clicknewpiso()
 {
-    $('#dlg_idpiso').val(0);
+    $('#dlg_idpiso, #rpiso_inp_fech_demoli_fis').val(0);
     if($("#dlg_idfic").val()==0)
     {
         mostraralertas("Para Crear Piso, Primero Guardar Ficha de Fiscalización...");
@@ -576,6 +580,25 @@ function clickmodpiso()
             $("#dlg_reg_piso").dialog('close');
         }
         });
+    }
+    else
+    {
+        if(id_pisos_fic>0)
+            {
+                $("#btnpissave").hide();
+                $("#btnpismod").show();
+                $("#dlg_idpiso_fis").val(id_pisos_fic);
+                
+                traerpisofic(id_pisos_fic);
+            }
+            else
+            {
+                $("#btnpissave").show();
+                $("#btnpismod").hide();
+                $("#dlg_idpiso_fis").val(0);
+                $("#rpiso_inp_fech_demoli_fis").val('');
+
+            } 
     }
 }
 function traerpisofic(Id)

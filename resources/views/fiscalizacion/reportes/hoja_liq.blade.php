@@ -29,71 +29,159 @@
             
         </table>
         
-        <center><div Class="asunto" style="margin-top: 10px;">
+        <center><div Class="asunto" style="margin-top: 5px;">
                 @if($sql->flg_anu==0)
                 <b>Hoja de Liquidación de Deuda Tributaria (Reparo) N° {{$sql->nro_hoja}}-{{$sql->anio}}-SGFT-GAT-MDCC</b>
                 @else
                 <b>ANULADO</b>
                 @endif
             </div></center>
-        <div class="subasunto" style="text-align: left; padding-left: 30px; margin-top: 20px;">Cerro Colorado, {{$sql->fec_reg}}</div>
+        <div class="subasunto" style="text-align: right; padding-left: 30px; margin-top: 10px;">Cerro Colorado, {{$sql->fec_reg}}</div>
 
-        <table style="margin-top: 10px; margin-bottom: 10px !important; border-bottom: 1px solid black">
+        <table style="margin-top: 10px; margin-bottom: 5px !important;">
             <tr>
-                <td style="border:0px; width: 17%">
-                    <b>Señor/es:</b>
+                <td style="border:0px;" colspan="2">
+                    <b>I.- IDENTIFICACION DEL CONTRIBUYENTE, PERIODOS Y PREDIOS FISCALIZADOS.</b>
                 </td>
             </tr>
             <tr>
-                <td style="border:0px; width: 50%">
-                    <b> {{$sql->contribuyente}}</b>
+                <td style="border:0px; width: 10%">
+                    <b> Contribuyente:</b>
+                </td>
+                <td style="border:0px; width: 90%">
+                    <b> {{$sql->pers_nro_doc."-".$sql->contribuyente}}</b>
                 </td>
             </tr>
             <tr>
                 <td style="border:0px; ">
-                    <b>Dirección:</b> {{$sql->ref_dom_fis}}
+                    <b> Código:</b>
+                </td>
+                <td style="border:0px; ">
+                    {{$sql->id_persona}}
                 </td>
             </tr>
             <tr>
-                <td style="border:0px;">
-                    <b>Presente.-</b>
+                <td style="border:0px; ">
+                    <b> Dirección:</b>
+                </td>
+                <td style="border:0px; ">
+                    {{$sql->ref_dom_fis}}
                 </td>
             </tr>
             <tr>
-                <td style="border:0px">
-                    <b>Código:</b> {{$sql->id_persona}}
+                <td style="border:0px; ">
+                    <b> Periodo:</b>
+                </td>
+                <td style="border:0px; ">
+                    {{$sql->anio_fis."-".date("Y")}}
                 </td>
             </tr>
-            <tr>
-                <td style="border:0px;">
-                    <b>N° Doc:</b> {{$sql->pers_nro_doc}}
-                </td>
-            </tr>
+          
+        </table>
+        <table border="0" cellspacing="0" cellpadding="0" style="margin-top: 0px;margin-bottom: 5px;">
+            <thead>
+              <tr>
+                  <th style="width: 80%">Predios Fiscalizados</th>
+                  <th style="width: 4%">N°</th>
+                  <th style="width: 5%">Zona</th>
+                  <th style="width: 6%">Manzana</th>
+                  <th style="width: 5%">Lote</th>
+              </tr>
+            </thead>
+            <tbody>
+                @foreach ($fichas as $pre)
+                    <tr>
+                         
+                        <td style="font-size: 0.7em">
+                            {{$pre->nom_via."-".$pre->habilitacion." ".trim($pre->referencia)}}
+                        </td> 
+                        <td style="text-align: center">
+                            {{$pre->nro_mun}}
+                        </td> 
+                        <td style="text-align: center">
+                            {{$pre->zona}}
+                        </td> 
+                        <td style="text-align: center">
+                            {{$pre->mzna_dist}}
+                        </td> 
+                        <td style="text-align: center">
+                            {{$pre->lote_dist}}
+                        </td> 
+                    </tr>
+                @endforeach
+                
+            </tbody>
         </table>
         </b>
         <div style="width: 100%; text-align: justify; font-size: 1.0em; margin-top: 0px;">
-            Por la presente hacemos de su conocimiento que la Municipalidad Distrital de Cerro Colorado a través del
-            personal de la Sub Gerencia de Fiscalización Tributaria, ha notificado la carta de presentación y
-            Requerimiento de fiscalización N° {{$sql->nro_car."-".$sql->anio_carta}}-SGTF-GAT-MDCC de fecha {{$sql->fec_carta}}, habiéndose
-            realizado la fiscalización in situ con fecha {{$sql->dias_fisca}} según Fichas Únicas de Verificación 
-            del Impuesto Predial N° 
+            <b>II.-Motivo del Reparo.</b><br>
+            
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Que, en ejercicio de las facultades de fiscalización y determinación que confiere el TUO del Código Tributario
+            a esta Administración, es que a través de las Cartas de Presentación y Requerimiento de Fiscalización 
+            N°.{{$sql->nro_car."-".$sql->anio_carta}}-SGTF-GAT-MDCC Notificada {{$sql->carta_fecha_notificacion}},
+            
+            @if(count($adjuntas)>0)
+                @foreach ($adjuntas as $adj)
+                        {{'N°'.$adj->nro_car_adj.'-'.$adj->anio_adj.'-SGFT-GAT-MDCC Notificada '.$adj->fecha_notificacion_adj}},  
+                @endforeach
+                 respectivamente,
+                @else
+
+                @endif
+                se inicia el proceso de fiscalización. <br><br>
+            
+            
+            Que habiéndose
+            realizado la fiscalización in situ con fecha {{$sql->dias_fisca}},
+            se realizó acciones de medición al área de terreno y área construida, categorización de la edificación, 
+            estado de conservación, así como, la medición y valorización de obras complementarias fijas y permanentes,
+            de acuerdo al Reglamento Nacional de Tasaciones, la  toma de fotografías,
+            todo ello contenido en el expediente de fiscalización y en la Ficha Única de Verificación 
+            
+            
             @foreach($fichas as $fic)
-                {{$fic->nro_fic}}, 
+                MDCC {{$fic->nro_fic}}-SGFT-GAT-MDCC, 
             @endforeach
-            emitidas en fechas {{$sql->dias_fisca}} en los predios de su propiedad; se ha procedido a emitir la siguiente liquidación
-            previa a la emisión de la Resolución de Determinación, <B>CONCEDIÉNDOLE UN PLAZO DE {{$sql->dia_plazo}} DÍAS HÁBILES</B>
-            contados a partir de recepcionada la presente para que Uds. puedan Formular cualquier observación
-            y/o inquietud, debiendo según el caso adjuntar los documentos sustentatorios; de no encontrarse ninguna
-            observación deberá efectuar el pago dentro del plazo ya señalado.<br>
-            La presente se emite facultativamente conforme al párrafo segundo del Art. 75° parte final del Código
-            Tributario(DS 133-2013-EF).<br>
-            Vencido el plazo establecido,se procederá a la emisión de los Títulos de Ejecución correspondientes, tales como
-            Resoluciones de Determinación y Resolución de Multa. La presente se emite por los Tributos y 
-            periodos que se indican cuyo monto se ha actualizado a la fecha de la presente liquidación<br>
-            Conforme a la inspección ocular realizada al predio se ha determinado el valúo que le corresponde según
-            cuadros anexos a la presente.
+            
+            emitidas en fechas {{$sql->dias_fisca}} en los predios de su propiedad; por lo que se procedió a hacer el recalculo del impuesto resumido en el siguiente cuadro;
+            
+            
+            
         </div>
         
+        <table border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;margin-bottom: 5px;">
+            <thead>
+              <tr>
+                  <th style="width: 10%" rowspan="2">Periodo</th>
+                  <th style="width: 40%" colspan="2">Base Imponible</th>
+                  <th style="width: 50%" colspan="3">Insoluto  Anual</th>
+              </tr>
+              <tr>
+                  <th>Valor Declarado</th>
+                  <th>Valor Verificado</th>
+                  <th>Impuesto Cancelado</th>
+                  <th>Impuesto Determinado</th>
+                  <th>Diferencia a Reintregrar</th>
+              </tr>
+            </thead>
+            <tbody>
+                @foreach($valores as $val)
+                <tr>
+                    <td style="font-size: 0.7em; text-align: center">{{$val->anio}}</td>
+                    <td style="font-size: 0.7em; text-align: right; padding-right: 5px">{{number_format($val->base_impon_declarado,2,".",",")}}</td>
+                    <td style="font-size: 0.7em; text-align: right; padding-right: 5px">{{number_format($val->base_impon_verificado,2,".",",")}}</td>
+                    <td style="font-size: 0.7em; text-align: right; padding-right: 5px">{{number_format($val->ivpp_cancelado,2,".",",")}}</td>
+                    <td style="font-size: 0.7em; text-align: right; padding-right: 5px">{{number_format($val->ivpp_determiado,2,".",",")}}</td>
+                    <td style="font-size: 0.7em; text-align: right; padding-right: 5px">{{number_format($val->ivpp_determiado-$val->ivpp_cancelado,2,".",",")}}</td>
+                </tr>
+               @endforeach
+                <tr>
+                    <td colspan="3" ><b>Nota: Deuda se actualizará a la fecha de pago</b></td>
+                    <td colspan="2" style="text-align: right"><b>Total</b></td>
+                    <td style="font-size: 0.7em; text-align: right; padding-right: 5px"><b>S/.{{number_format($valores->sum('$val->ivpp_determiado')-$valores->sum('$val->ivpp_cancelado'),3,".",",")}}</b></td>
+                </tr>
+            </tbody>
+        </table>
         <table border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;margin-bottom: 5px;">
             <thead>
               <tr>
@@ -142,16 +230,24 @@
             </tbody>
         </table>
         <div style="width: 100%; text-align: justify; font-size: 1.0em; margin-top: 10px;">
-            <b>Base Legal:</b><br>
-            D. Leg.776(DS 156-2004-EF TUO) y modificada Ley de Tributación Municipal.<br>
-            D. Sup. 133-2013-EF Texto Único ordenado en Código Tributario.<br>
-            Resoluciones Directorales N° 296-2009- VIVIENDA (30-OCT 2009), 175-OCT 2010 VIVIENDA (29-OCT 2010),
-            220-2001 VIVIENDA(30-OCT 2011).<BR>
-            Los Intereses se calculan hasta el día de su cancelación; la tasa vigente de interes es del 1.2% mensual
-            (Art. 33 TUO CT) y Ordenaza Municipal N° 297-2010 del 30 de Abr. del 2010.<br>
-            La Multa Tributaria está contemplada en la Ordenanza Municipal N° 338-MDCC de fecha 29-Mar del 2012.
-            <br> 
-            Atentamente.
+            Se procede a emitir la siguiente liquidación, previa a la emisión de la Resolución de Determinación,
+            CONCEDIÉNDOLE UN PLAZO DE TRES {{$sql->dia_plazo}} DÍAS HABILES, contados a partir de recepcionada
+            la presente, a efecto que pueda formular cualquier observación y/o inquietud, debiendo adjuntar los
+            documentos sustentatorios; de no encontrar ninguna observación deberá efectuar el pago dentro del 
+            plazo ya señalado. Vencido el plazo establecido, se procederá a la emisión de los títulos valores,
+            tales como Resoluciones de Determinación y Resolución de Multa. 
+            <br><br><b>III.-Base Legal</b><br>
+            Ley Nro. 27972 Orgánica de Municipalidades, y Decreto Supremo Nro.133-13-EF TUO del Código Tributario
+            y sus modificatorias, TUO de la Ley Tributación Municipal 776 (D.S. N°154-2004-EF), 
+            Resolución Ministerial Nro. 172-2016-VIVIENDA Reglamento Nacional de Tasaciones y Ordenanza Municipal
+            297-MDCC.
+            
+            <br><br>
+            Agradeciendo anticipadamente por la atención que dispense al presente de ser necesario podrá 
+            comunicarse al teléfono 054-382890 anexo 762 o ubicarnos en las oficinas cito en la calle 
+            Francisco Bolognesi Nº 227 con Calle Mariano Melgar, Plaza las Américas Cerro Colorado.
+            <br><br>
+            @php echo $sql->texto_1 @endphp
         </div>
         
         

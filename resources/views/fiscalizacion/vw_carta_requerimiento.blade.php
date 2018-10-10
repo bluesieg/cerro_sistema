@@ -157,7 +157,7 @@
         $("#menu_fisca").show();
         $("#li_fisca_carta").addClass('cr-active')
         jQuery("#table_cartas").jqGrid({
-            url: 'trae_cartas/'+$("#selantra").val()+'/0/0/0/0',
+            url: 'trae_cartas/'+$("#selantra").val()+'/0/0/0/0/0',
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,

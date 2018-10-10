@@ -52,7 +52,6 @@ class Recibos_MasterController extends Controller
         $data->t2=$request['t2'];
         $data->t3=$request['t3'];
         $data->t4=$request['t4'];
-        $data->t4=$request['t4'];
         $data->fracc_check = $request['fracc_check'] ?? 0;
         $data->pgo_acta = $request['acuenta'];
         if($request['acuenta']=='1')
@@ -69,15 +68,15 @@ class Recibos_MasterController extends Controller
             $data->id_alcab = $request['recibo'];
         }
         $data->save();
-        if($request['montopre']>0&&$request['acuenta']==0)
-        {
-            $count=$this->edit_cta_cte($request['trimestres'],$data->id_rec_mtr,$request['id_pers'],$request['periodo'],$request['id_trib_pred']);
-            $this->detalle_create($request['periodo'],$data->id_rec_mtr,$request['id_trib_pred'],$request['montopre'],1,$request['detalle_trimestres'].' del '.$request['periodo']);
-        }
         if($request['montoform']>0&&$request['acuenta']==0)
         {
             $count=$this->edit_cta_cte('1-2-3-4',$data->id_rec_mtr,$request['id_pers'],$request['periodo'],$request['id_trib_form']);
-            $this->detalle_create($request['periodo'],$data->id_rec_mtr,$request['id_trib_form'],$request['montoform'],$count,'del '.$request['periodo']);
+            $this->detalle_create($request['periodo'],$data->id_rec_mtr,$request['id_trib_form'],$request['montoform'],1,'del '.$request['periodo']);
+        }
+        if($request['montopre']>0&&$request['acuenta']==0)
+        {
+            $count=$this->edit_cta_cte($request['trimestres'],$data->id_rec_mtr,$request['id_pers'],$request['periodo'],$request['id_trib_pred']);
+            $this->detalle_create($request['periodo'],$data->id_rec_mtr,$request['id_trib_pred'],$request['montopre'],$count,$request['detalle_trimestres'].' del '.$request['periodo']);
         }
         if($request['acuenta']==1)
         {
@@ -87,6 +86,16 @@ class Recibos_MasterController extends Controller
         {
             $trib_tim = DB::select('SELECT * from presupuesto.vw_tim where anio='.$request['periodo']);
             $this->detalle_create($request['periodo'],$data->id_rec_mtr,$trib_tim[0]->id_tributo,$request['tim'],1,'del '.$request['periodo']);
+        }
+        if($request['multa']>0&&$request['acuenta']==0)
+        {
+            $count=$this->edit_cta_cte('1',$data->id_rec_mtr,$request['id_pers'],$request['periodo'],$request['id_trib_multa']);
+            $this->detalle_create($request['periodo'],$data->id_rec_mtr,$request['id_trib_multa'],$request['multa'],1,'Multa del '.$request['periodo']);
+        }
+        if($request['tim_multa']>0)
+        {
+            $trib_tim = DB::select('SELECT * from presupuesto.vw_tim where anio='.$request['periodo']);
+            $this->detalle_create($request['periodo'],$data->id_rec_mtr,$trib_tim[0]->id_tributo,$request['tim_multa'],1,'de Multa del '.$request['periodo']);
         }
         return $data->id_rec_mtr;
     }

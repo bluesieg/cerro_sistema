@@ -177,7 +177,7 @@ class Carta_RequerimientoController extends Controller
     public function destroy($id)
     {
     }
-    public function get_cartas_req($an,$contrib,$ini,$fin,$num,Request $request)
+    public function get_cartas_req($an,$contrib,$ini,$fin,$num,$referencia,Request $request)
     {
             header('Content-type: application/json');
             $page = $_GET['page'];
@@ -192,28 +192,59 @@ class Carta_RequerimientoController extends Controller
             {
                 if($an==0)
                 {
-                    $totalg = DB::select("select count(id_car) as total from fiscalizacion.vw_carta_requerimiento where fec_reg between '".$ini."' and '".$fin."'");
-                    $sql = DB::table('fiscalizacion.vw_carta_requerimiento')->wherebetween("fec_reg",[$ini,$fin])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                    if($referencia==0)
+                    {
+                        $totalg = DB::select("select count(id_car) as total from fiscalizacion.vw_carta_requerimiento where fec_reg between '".$ini."' and '".$fin."'");
+                        $sql = DB::table('fiscalizacion.vw_carta_requerimiento')->wherebetween("fec_reg",[$ini,$fin])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                    }
+                    else
+                    {
+                        $totalg = DB::select("select count(id_car) as total from fiscalizacion.vw_carta_requerimiento where id_car_referenciado=0 and fec_reg between '".$ini."' and '".$fin."'");
+                        $sql = DB::table('fiscalizacion.vw_carta_requerimiento')->where("id_car_referenciado",0)->wherebetween("fec_reg",[$ini,$fin])->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                    }
                     
                 }
                 else
                 {
                     if($num==0)
                     {
-                        $totalg = DB::select('select count(id_car) as total from fiscalizacion.vw_carta_requerimiento where anio='.$an);
-                        $sql = DB::table('fiscalizacion.vw_carta_requerimiento')->where("anio",$an)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                        if($referencia==0)
+                        {
+                            $totalg = DB::select('select count(id_car) as total from fiscalizacion.vw_carta_requerimiento where anio='.$an);
+                            $sql = DB::table('fiscalizacion.vw_carta_requerimiento')->where("anio",$an)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                        }
+                        else
+                        {
+                            $totalg = DB::select('select count(id_car) as total from fiscalizacion.vw_carta_requerimiento where id_car_referenciado=0 and anio='.$an);
+                            $sql = DB::table('fiscalizacion.vw_carta_requerimiento')->where("id_car_referenciado",0)->where("anio",$an)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                        }
                     }
                     else
                     {
-                        $totalg = DB::select("select count(id_car) as total from fiscalizacion.vw_carta_requerimiento where nro_car='".$num."' and anio=".$an);
-                        $sql = DB::table('fiscalizacion.vw_carta_requerimiento')->where("anio",$an)->where("nro_car",$num)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                        if($referencia==0)
+                        {
+                            $totalg = DB::select("select count(id_car) as total from fiscalizacion.vw_carta_requerimiento where nro_car='".$num."' and anio=".$an);
+                            $sql = DB::table('fiscalizacion.vw_carta_requerimiento')->where("anio",$an)->where("nro_car",$num)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                        }
+                        else
+                        {
+                            $totalg = DB::select("select count(id_car) as total from fiscalizacion.vw_carta_requerimiento where id_car_referenciado=0 and nro_car='".$num."' and anio=".$an);
+                            $sql = DB::table('fiscalizacion.vw_carta_requerimiento')->where("id_car_referenciado",0)->where("anio",$an)->where("nro_car",$num)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                        }
                     }
                 }
             }
             else
             {
-              $totalg = DB::select('select count(id_car) as total from fiscalizacion.vw_carta_requerimiento where anio='.$an.' and id_contrib='.$contrib);
-              $sql = DB::table('fiscalizacion.vw_carta_requerimiento')->where("anio",$an)->where("id_contrib",$contrib)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                if($referencia==0)
+                {
+                    $totalg = DB::select('select count(id_car) as total from fiscalizacion.vw_carta_requerimiento where anio='.$an.' and id_contrib='.$contrib);
+                    $sql = DB::table('fiscalizacion.vw_carta_requerimiento')->where("anio",$an)->where("id_contrib",$contrib)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                }
+                {
+                    $totalg = DB::select('select count(id_car) as total from fiscalizacion.vw_carta_requerimiento where id_car_referenciado=0 and anio='.$an.' and id_contrib='.$contrib);
+                    $sql = DB::table('fiscalizacion.vw_carta_requerimiento')->where("id_car_referenciado",0)->where("anio",$an)->where("id_contrib",$contrib)->orderBy($sidx, $sord)->limit($limit)->offset($start)->get();
+                }
             }
             $total_pages = 0;
             if (!$sidx) {

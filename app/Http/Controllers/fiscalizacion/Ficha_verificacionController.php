@@ -55,6 +55,7 @@ class Ficha_verificacionController extends Controller
         $ficha->id_est_const=$request['ecc'];
         $ficha->id_tip_pred=$request['tp'];
         $ficha->arancel=$request['arcancel'];
+        $ficha->id_via=$request['via'];
         $ficha->id_usuario = Auth::user()->id;
         if($request['tip_pre_u_r']=="RUS")
         {
@@ -118,7 +119,7 @@ class Ficha_verificacionController extends Controller
             $val->id_est_const=$request['ecc'];
             $val->id_tip_pred=$request['tp'];
             $val->arancel=$request['arcancel'];
-            
+            $val->id_via=$request['via'];
             if($request['tip_pre_u_r']=="RUS")
             {
                 $val->hectareas=$request['hectareas'];

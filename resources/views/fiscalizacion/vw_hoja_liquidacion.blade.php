@@ -127,7 +127,7 @@
             </article>
             <div class="col-xs-1 text-center" style="padding-right: 0px;">
                 @if( $permisos[0]->btn_new ==1 )
-                    <button class="btn bg-color-green txt-color-white btn-circle btn-xl" onclick="fn_sel_carta();" >
+                    <button class="btn bg-color-green txt-color-white btn-circle btn-xl" onclick="fn_sel_carta(1);" >
                         <span  >
                             <i class="glyphicon glyphicon-plus"></i>
                         </span>
@@ -140,6 +140,21 @@
                         </span>
                     </button>
                     <label><b>Nuevo</b></label>
+                @endif
+                @if( $permisos[0]->btn_edit ==1 )
+                    <button class="btn bg-color-blue txt-color-white btn-circle btn-xl" onclick="fn_sel_carta(2);" >
+                        <span  >
+                            <i class="glyphicon glyphicon-plus"></i>
+                        </span>
+                    </button>
+                    <label><b>Editar</b></label>
+                @else
+                    <button class="btn bg-color-blue txt-color-white btn-circle btn-xl" onclick="sin_permiso();" >
+                        <span  >
+                            <i class="glyphicon glyphicon-plus"></i>
+                        </span>
+                    </button>
+                    <label><b>Editar</b></label>
                 @endif
                 @if( $permisos[0]->btn_anu ==1 )
                     <button class="btn bg-color-red txt-color-white btn-circle btn-xl" onclick="fn_anu_hoja();" >
@@ -162,6 +177,7 @@
     
 </section>
 @section('page-js-script')
+<script src="js/plugin/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
     $(document).ready(function (){
         $("#menu_fisca").show();
@@ -171,7 +187,7 @@
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
-            colNames: ['id_hoja_liq', 'N° Hoja Liq.', 'contribuyente', 'Carta Req. Relacionada','Registro','Notificación','Días Plazo','Días Trasncurridos','Ver','RD','gen Rd','Deuda','Anulado'],
+            colNames: ['id_hoja_liq', 'N° Hoja Liq.', 'contribuyente', 'Carta Req. Relacionada','Registro','Notificación','Días Plazo','Días Trasncurridos','Ver','RD','gen Rd','Deuda','Anulado','id_car'],
             rowNum: 20, sortname: 'id_hoja_liq', sortorder: 'desc', viewrecords: true, caption: 'Hojas de Liquidación', align: "center",
             colModel: [
                 {name: 'id_hoja_liq', index: 'id_hoja_liq', hidden: true},
@@ -187,6 +203,7 @@
                 {name: '', index: '', hidden: true},
                 {name: '', index: '', align: 'center', width: 16},
                 {name: 'flg_anu', index: 'flg_anu', align: 'center', width: 5},
+                {name: 'id_car', index: 'id_car', hidden: true},
             ],
             pager: '#pager_table_hojas',
             rowList: [20, 50],
@@ -198,10 +215,12 @@
                         }
                 },
             onSelectRow: function (Id){},
-            ondblClickRow: function (Id){}
+            ondblClickRow: function (Id){
+                    fn_sel_carta(2);
+            }
         });
         jQuery("#table_sel_cartas").jqGrid({
-            url: 'trae_cartas/'+$("#selantra").val()+'/0/0/0/0',
+            url: 'trae_cartas/'+$("#selantra").val()+'/0/0/0/0/1',
             datatype: 'json', mtype: 'GET',
             height: '280px', autowidth: true,
             toolbarfilter: true,
@@ -209,9 +228,9 @@
             rowNum: 20, sortname: 'id_car', sortorder: 'desc', viewrecords: true, caption: 'Cartas de Requerimiento', align: "center",
             colModel: [
                 {name: 'id_car', index: 'id_gen_fis', hidden: true},
-                {name: 'nro_car', index: 'nro_car', align: 'center', width: 80},
+                {name: 'nro_car', index: 'nro_car', align: 'center', width: 60},
                 {name: 'contribuyente', index: 'contribuyente', align: 'left', width: 350},
-                {name: 'fec_reg', index: 'fec_reg', align: 'center', width: 120},
+                {name: 'fec_reg', index: 'fec_reg', align: 'center', width: 100},
                 {name: 'fec_fis', index: 'fec_fis', align: 'center', width: 150},
                 {name: 'fecha_notificacion', index: 'fecha_notificacion', hidden: true},
                 {name: 'flg_est', index: 'flg_est', align: 'center', width: 120},
@@ -278,7 +297,7 @@
                 {name: 'id_fic', index: 'id_fic', hidden: true},
                 {name: 'tp', index: 'tp', hidden: true},
                 {name: 'cod_cat', index: 'cod_cat', hidden: true},
-                {name: 'dir', index: 'dir', align: 'left',width: 445},
+                {name: 'dir', index: 'dir', align: 'left',width: 245},
                 {name: 'est', index: 'est', align: 'center',width: 60},
                 {name: '', index: '',hidden: true},
                 {name: '', index: '',align: 'center',width: 70},
@@ -399,7 +418,7 @@
 
 <div id="dlg_new_hoja" style="display: none;">
     
-    <div class='cr_content col-xs-6 ' style="margin-bottom: 10px;">
+    <div class='cr_content col-xs-4 ' style="margin-bottom: 10px;">
         <div id="div_adquiere" class="col-xs-12 cr-body" style="padding-left: 0px;padding-right: 10px;" >
             <div class="col-xs-12" style="padding: 0px; margin-top: 0px;">
                 <section>
@@ -436,7 +455,7 @@
             </div>
         </div>
     </div>
-    <div class='cr_content col-xs-6 ' style="margin-bottom: 10px;">
+    <div class='cr_content col-xs-8 ' style="margin-bottom: 10px;">
         <div id="div_adquiere" class="col-xs-12 cr-body" style="padding-left: 0px;padding-right: 10px;" >
             <div class="col-xs-12" style="padding: 0px; margin-top: 0px;">
                 <section>
@@ -451,6 +470,7 @@
                     <div class="input-group input-group-md">
                         <span class="input-group-addon">Días de Plazo a pagar &nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-calendar-plus-o"></i></span>
                         <div class="">
+                            <input id="dlg_id_hoja_hidden" type="hidden"  value="0">
                             <input id="dlg_hoja_plazo" type="text"  class="form-control" style="height: 32px; " placeholder="" onkeypress="return soloNumeroTab(event);" autocomplete="off">
                         </div>
                     </div>
@@ -463,17 +483,39 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-12 text-right" style="padding: 0px;  margin-top: 10px">
+                 <div class='cr_content col-xs-12 ' style="margin-bottom: 10px;">
+                    <div class="col-xs-12 cr-body" style="padding-left: 0px;padding-right: 10px;" >
+                        <div class="col-xs-12" style="padding: 0px; margin-top: 0px;">
+                            <textarea name="ckeditor" id="ckeditor" >
+                                Este es el textarea que es modificado por la clase ckeditor
+                            </textarea> 
+                        </div>
+                    </div>
+                </div>
+                <div id="btn_crea_hoja" class="col-xs-12 text-right" style="padding: 0px;  margin-top: 10px">
                     <div class="input-group input-group-md" style="display: none">
                         <div class=""  >
                             <input  type="text"  class="form-control" style="height: 32px; " >
                         </div>
                     </div>
-                    <button class="btn bg-color-green txt-color-white cr-btn-big" style="width: 230px;" onclick="fn_confirmar_hoja()" >
+                    <button class="btn bg-color-green txt-color-white cr-btn-big" style="width: 230px;" onclick="fn_confirmar_hoja(1)" >
                         <span>
                             <i class="glyphicon glyphicon-plus-sign"></i>
                         </span>
                         <label>Crear Hoja de Liquidación</label>
+                    </button>
+                </div>
+                <div id="btn_edit_hoja" class="col-xs-12 text-right" style="padding: 0px;  margin-top: 10px">
+                    <div class="input-group input-group-md" style="display: none">
+                        <div class=""  >
+                            <input  type="text"  class="form-control" style="height: 32px; " >
+                        </div>
+                    </div>
+                    <button class="btn bg-color-blue txt-color-white cr-btn-big" style="width: 230px;" onclick="fn_confirmar_hoja(2)" >
+                        <span>
+                            <i class="glyphicon glyphicon-plus-sign"></i>
+                        </span>
+                        <label>Editar Hoja de Liquidación</label>
                     </button>
                 </div>
                 

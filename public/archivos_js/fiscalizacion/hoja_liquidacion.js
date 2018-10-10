@@ -49,7 +49,7 @@ function buscar_carta(tip)
     if(tip==2)
     {
         $("#table_sel_cartas").jqGrid("clearGridData", true);
-        jQuery("#table_sel_cartas").jqGrid('setGridParam', {url: 'trae_cartas/'+$("#selantra").val()+'/'+$("#dlg_contri_carta_hidden").val()+'/0/0/0'}).trigger('reloadGrid');
+        jQuery("#table_sel_cartas").jqGrid('setGridParam', {url: 'trae_cartas/'+$("#selantra").val()+'/'+$("#dlg_contri_carta_hidden").val()+'/0/0/0/1'}).trigger('reloadGrid');
     }
     if(tip==3)
     {
@@ -60,7 +60,7 @@ function buscar_carta(tip)
         }
         ajustar(6,'dlg_bus_num_carta')
         num=$("#dlg_bus_num_carta").val();
-        jQuery("#table_sel_cartas").jqGrid('setGridParam', {url: 'trae_cartas/'+$("#selantra").val()+'/0/0/0/'+num}).trigger('reloadGrid');
+        jQuery("#table_sel_cartas").jqGrid('setGridParam', {url: 'trae_cartas/'+$("#selantra").val()+'/0/0/0/'+num+"/1"}).trigger('reloadGrid');
     }
     if(tip==4)
     {
@@ -85,29 +85,71 @@ function buscar_carta(tip)
         jQuery("#table_hojas").jqGrid('setGridParam', {url: 'trae_hojas_liq/0/0/'+ini+'/'+fin+'/0/0'}).trigger('reloadGrid');
     }
 }
-function fn_sel_carta()
+iniciar=0;
+function fn_sel_carta(tipo)
 {
+    if(tipo==1)
+    {
     $("#dlg_sel_carta").dialog({
         autoOpen: false, modal: true, width: 1100, 
         show:{ effect: "explode", duration: 500},
         hide:{ effect: "explode", duration: 800}, resizable: false,
         title: "<div class='widget-header'><h4><span class='widget-icon'> <i class='fa fa-align-justify'></i> </span> Crear Hoja de Liquidación</h4></div>"
         }).dialog('open');
-        jQuery("#table_sel_cartas").jqGrid('setGridParam', {url: 'trae_cartas/'+$("#selantra").val()+'/0/0/0/0'}).trigger('reloadGrid');
+        jQuery("#table_sel_cartas").jqGrid('setGridParam', {url: 'trae_cartas/'+$("#selantra").val()+'/0/0/0/0/1'}).trigger('reloadGrid');
+    }
+    if(tipo==2)
+    {
+        if($("#per_edit").val()==0)
+        {
+            sin_permiso();
+        }
+        else
+        {
+            Id=$('#table_hojas').jqGrid ('getGridParam', 'selrow');
+            if(Id)
+            {
+                if(iniciar==0)
+                {
+                    iniciar=1;
+                    CKEDITOR.replace('ckeditor');
+                }
+                CKEDITOR.instances['ckeditor'].setData('Texto extra');
+                limpiar_datos();
+                $("#btn_crea_hoja").hide();
+                $("#btn_edit_hoja").show();
+                $("#dlg_id_hoja_hidden").val(Id);
+                traer_carta($("#table_hojas").jqGrid ('getCell', Id, 'id_car'));
+                mod_hoja(Id);
+                crear_dlg('dlg_new_hoja',1300,'Datos Generales de Carta');
+            }
+            else
+            {
+                mostraralertasconfoco("No Hay Hoja Seleccionada","#table_hojas");
+            }
+        }
+    }
 }
+
 function new_hoja($id)
 {
     limpiar_datos();
-    $("#dlg_new_hoja").dialog({
-        autoOpen: false, modal: true, width: 1300, 
-        show:{ effect: "explode", duration: 500},
-        hide:{ effect: "explode", duration: 800}, resizable: false,
-        title: "<div class='widget-header'><h4><span class='widget-icon'> <i class='fa fa-align-justify'></i> </span> Datos Generales de Carta</h4></div>"
-        }).dialog('open');
+    $("#btn_crea_hoja").show();
+    $("#btn_edit_hoja").hide();
+    crear_dlg('dlg_new_hoja',1300,'Datos Generales de Carta');
+    
+        if(iniciar==0)
+        {
+            iniciar=1;
+            CKEDITOR.replace('ckeditor');
+        }
+        CKEDITOR.instances['ckeditor'].setData('Texto extra');
         traer_carta($id);
 }
+
 function limpiar_datos()
 {
+    $("#dlg_id_hoja_hidden").val(0);
     $("#dlg_nro_car,#dlg_contri_disable,#dlg_hoja_plazo,#dlg_hoja_insitu").val("");
 }
 function traer_carta($id)
@@ -132,7 +174,33 @@ function traer_carta($id)
         }
         });
 }
-function fn_confirmar_hoja()
+function mod_hoja($id)
+{
+    MensajeDialogLoadAjax('dlg_new_hoja', '.:: CARGANDO ...');
+    $.ajax({url: 'hoja_liquidacion/'+$id,
+        type: 'GET',
+        success: function(r) 
+        {
+            $("#dlg_hoja_plazo").val(r[0].dia_plazo);
+            $("#dlg_hoja_insitu").val(r[0].dias_fisca);
+            if(r[0].texto_1!='')
+            {
+                CKEDITOR.instances['ckeditor'].setData(r[0].texto_1);
+            }
+            jQuery("#table_predios_contri").jqGrid('setGridParam', {url: 'trae_pred_carta/'+$id}).trigger('reloadGrid');
+            MensajeDialogLoadAjaxFinish('dlg_new_hoja');
+
+        },
+        error: function(data) {
+            mostraralertas("hubo un error, Comunicar al Administrador");
+            console.log('error');
+            console.log(data);
+            MensajeDialogLoadAjaxFinish('dlg_new_hoja');
+            $("#dlg_new_hoja").dialog('close');
+        }
+        });
+}
+function fn_confirmar_hoja(tip)
 {
     if($("#dlg_hoja_plazo").val()==0||$("#dlg_hoja_plazo").val()=="")
     {
@@ -152,7 +220,7 @@ function fn_confirmar_hoja()
     }, function(ButtonPressed) {
             if (ButtonPressed === "Aceptar") {
 
-                    fn_save_hoja();
+                    fn_save_hoja(tip);
             }
             if (ButtonPressed === "Cancelar") {
                     $.smallBox({
@@ -166,13 +234,27 @@ function fn_confirmar_hoja()
     });
 }
 
-function fn_save_hoja()
+function fn_save_hoja(tip)
 {
     Id=$('#table_sel_cartas').jqGrid ('getGridParam', 'selrow');
+    hoja=$("#dlg_id_hoja_hidden").val();
+    if(hoja==0)
+    {
+        url='hoja_liquidacion/create';
+    }
+    else
+    {
+        url='hoja_liquidacion/'+hoja+'/edit';
+    }
+    var contenido = CKEDITOR.instances['ckeditor'].getData();
+    if(contenido=='Texto Extra')
+    {
+        contenido="";
+    }
     MensajeDialogLoadAjax('dlg_new_hoja', '.:: CARGANDO ...');
-        $.ajax({url: 'hoja_liquidacion/create',
+        $.ajax({url: url,
         type: 'GET',
-        data:{car:Id,plazo:$("#dlg_hoja_plazo").val(),insitu:$("#dlg_hoja_insitu").val()},
+        data:{car:Id,plazo:$("#dlg_hoja_plazo").val(),insitu:$("#dlg_hoja_insitu").val(),contenido:contenido,hoja:hoja},
         success: function(r) 
         {
             MensajeDialogLoadAjaxFinish('dlg_new_hoja');
@@ -187,10 +269,14 @@ function fn_save_hoja()
             if(r>0)
             {
                 MensajeExito("Insertó Correctamente","Su Registro Fue Insertado con Éxito...",4000);
-                $("#dlg_new_hoja").dialog("close");
-                $("#dlg_sel_carta").dialog("close");
+                
                 buscar_carta(0);
                 verhoja(r);
+                $("#dlg_new_hoja").dialog("close");
+                if(hoja==0)
+                {
+                    $("#dlg_sel_carta").dialog("close");
+                }
             }
             
         },

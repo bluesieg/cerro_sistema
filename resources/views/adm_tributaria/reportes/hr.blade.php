@@ -163,32 +163,69 @@
         </tbody>
         
       </table>
+      @if(count($sql_pre)<=10)
         <div class="lado3" style="height: 420px; border-bottom: 1px solid #333">
+            <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px; font-size: 1.3em;">
+      @else
+        <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 5px;">
+      @endif
             VALORIZACION DE PREDIOS Y DETERMINACION DE IMPUESTO
-        <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0px; font-size: 1.3em;">
+        
         <thead>
             <tr >
-              <th style="width: 8%;">N° Anexo</th>
-              <th style="width: 8%">Tip Pred</th>
-              <th style="width: 57%">DIRECCION DEL PREDIO</th>
-              <th style="width: 12%">% Titularidad</th>
-              <th style="width: 15%">VALOR AFECTO</th>
+              <th style="width: 5%;font-size: 0.7em">Anexo</th>
+              <th style="width: 5%;font-size: 0.7em">Tip Pred</th>
+              <th style="width: 70%;font-size: 0.7em">DIRECCION DEL PREDIO</th>
+              <th style="width: 8%;font-size: 0.7em">% Titularidad</th>
+              <th style="width: 12%;font-size: 0.7em">Valor Afecto</th>
           </tr>
         </thead>
         <tbody>
             @foreach ($sql_pre as $pre)
-            <tr>
-              <td>{{ $pre->anexo }}</td>
-              <td>{{$pre->tp}}</td>
-              <td>{{$pre->nom_via." ".$pre->nro_mun." ".($pre->mzna_dist!=null?"MZN ".$pre->mzna_dist:"")." ".($pre->lote_dist!=null?"LT ".$pre->lote_dist:"")." ".($pre->zona!="-"?"ZONA ".$pre->zona:"")." ".($pre->secc!="-"?"SECC ".$pre->secc:"")." ".($pre->dpto!="-"?"DPTO ".$pre->dpto:"")." ".($pre->referencia!=null?$pre->referencia:"")." ".$pre->nomb_hab_urba}}</td>
-              <td style="text-align: center">{{$pre->nro_condominios}}</td>
-              <td style="text-align: right; padding-right: 5px;">{{number_format($pre->base_impon_afecto,2,".",",")}}</td>
+            <tr >
+              <td style="height: 35px">{{ $pre->anexo }}</td>
+              <td style="font-size: 0.7em">{{$pre->tp}}</td>
+              <td style="font-size: 0.6em">{{$pre->nom_via." ".$pre->nro_mun." ".($pre->mzna_dist!=null?"MZN ".$pre->mzna_dist:"")." ".($pre->lote_dist!=null?"LT ".$pre->lote_dist:"")." ".($pre->zona!="-"?"ZONA ".$pre->zona:"")." ".($pre->secc!="-"?"SECC ".$pre->secc:"")." ".($pre->dpto!="-"?"DPTO ".$pre->dpto:"")." ".($pre->referencia!=null?$pre->referencia:"")." ".$pre->nomb_hab_urba}}</td>
+              <td style="text-align: center;font-size: 0.7em">{{$pre->nro_condominios}}</td>
+              <td style="text-align: right; padding-right: 5px;font-size: 0.7em">{{number_format($pre->base_impon_afecto,2,".",",")}}</td>
             </tr>
             @endforeach
         </tbody>
       </table>
+      @if(count($sql_pre)<=10)
         </div>
+      @else
         
+      @endif
+        
+      @if(count($sql_pre)>=11&&count($sql_pre)<=15)
+        <div style="page-break-before:always;"></div>
+      @endif
+      @if(count($sql_pre)>=40&&count($sql_pre)<=44)
+        <div style="page-break-before:always;"></div>
+      @endif
+      @if(count($sql_pre)>=69&&count($sql_pre)<=73)
+        <div style="page-break-before:always;"></div>
+      @endif
+     
+      @if(count($sql_pre)>=98&&count($sql_pre)<=102)
+        <div style="page-break-before:always;"></div>
+      @endif
+      @if(count($sql_pre)>=127&&count($sql_pre)<=131)
+        <div style="page-break-before:always;"></div>
+      @endif
+      @if(count($sql_pre)>=156&&count($sql_pre)<=160)
+        <div style="page-break-before:always;"></div>
+      @endif
+      @if(count($sql_pre)>=185&&count($sql_pre)<=189)
+        <div style="page-break-before:always;"></div>
+      @endif
+      @if(count($sql_pre)>=214&&count($sql_pre)<=218)
+        <div style="page-break-before:always;"></div>
+      @endif
+      @if(count($sql_pre)>=243&&count($sql_pre)<=247)
+        <div style="page-break-before:always;"></div>
+      @endif
         <table border="0" cellspacing="0" cellpadding="0" >
             <thead>
               <tr>
